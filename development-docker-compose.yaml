@@ -1,0 +1,92 @@
+services:
+  plant-tracker:
+    image: python:3.13-slim-bookworm
+    container_name: django-dev
+    working_dir: /mnt/backend
+    entrypoint: []
+    command: >
+      sh -c "pip install --upgrade pip &&
+             pip install pipenv &&
+             pipenv requirements --dev > /mnt/requirements-dev.txt &&
+             pip install -r /mnt/requirements-dev.txt &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8456"
+    volumes:
+      - .:/mnt:cached
+      - ./backend/data:/mnt/backend/data
+      # Don't clear dependencies after restart
+      - pybin:/usr/local/bin
+      - pydeps:/usr/local/lib/python3.13/site-packages
+      - pipcache:/root/.cache/pip
+    ports:
+      - 8456:8456
+    environment:
+      - DEBUG_MODE=True
+      - ALLOWED_HOSTS=desktop.lan,10.80.40.10,dev.lan
+      - URL_PREFIX=dev.lan
+      - VIRTUAL_HOST=dev.lan
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - REDIS_HOST=plant-tracker-redis
+      - REDIS_PORT=6379
+      - SINGLE_USER_MODE=True
+      - DATABASE_HOST=plant-tracker-db
+      - DATABASE_PASSWORD=dbpassword
+    depends_on:
+      plant-tracker-db:
+        condition: service_healthy
+      plant-tracker-redis:
+        condition: service_healthy
+
+  plant-tracker-db:
+    image: postgres:17.5
+    container_name: database-dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d plant_tracker"]
+      interval: 60s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    # shared memory limit
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: plant_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dbpassword
+    volumes:
+      - plant-tracker-database-dev:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+
+  plant-tracker-redis:
+    image: redis:7.4.5
+    container_name: redis-dev
+    hostname: plant-tracker-redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+    volumes:
+      - plant-tracker-redis-data-dev:/data
+    restart: unless-stopped
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy:1.6.4
+    container_name: proxy-dev
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs
+    restart: unless-stopped
+
+volumes:
+  plant-tracker-database-dev:
+  plant-tracker-redis-data-dev:
+  pybin:
+  pydeps:
+  pipcache:
