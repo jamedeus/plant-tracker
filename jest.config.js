@@ -20,6 +20,9 @@ module.exports = {
     moduleNameMapper: {
         '^src/(.*)$': path.resolve(__dirname, 'src/$1'),
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+        // Give libraries that import barcode-detector a mock (avoid mocking
+        // tons of webassembly stuff used by the pollyfill if doesn't exist)
+        '^barcode-detector$': '<rootDir>/src/testUtils/mockBarcodeDetector.js'
     },
     coveragePathIgnorePatterns: [
         'src/css/',
