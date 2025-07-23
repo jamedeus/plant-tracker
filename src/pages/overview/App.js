@@ -7,6 +7,7 @@ import PrintModal, { openPrintModal } from './PrintModal';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 import EditModeFooter from './EditModeFooter';
+import QrScannerButton from 'src/components/QrScanner';
 
 function App() {
     // Load context set by django template
@@ -165,6 +166,7 @@ function App() {
                 menuOptions={DropdownMenuOptions}
                 title={pageTitle}
                 titleOptions={stackedColumns ? TitleQuickNavigation : null}
+                topRightButton={<QrScannerButton />}
             />
 
             <Layout

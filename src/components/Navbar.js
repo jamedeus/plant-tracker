@@ -35,7 +35,7 @@ const DropdownButton = memo(function DropdownButton() {
 // Both option params must be list of <li> elements
 // Optional onOpenMenu and onOpenTitle params are functions called when opening
 // the top-left dropdown and title dropdown respectively
-const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptions, onOpenTitle }) {
+const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptions, onOpenTitle, topRightButton }) {
     // Create refs for navbar and title text (used to read widths)
     const navbarRef = useRef(null);
     const titleRef = useRef(null);
@@ -141,7 +141,9 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
             </div>
 
             {/* Spacer to center title */}
-            <div className="justify-end min-w-12"></div>
+            <div className="justify-end min-w-12">
+                {topRightButton}
+            </div>
         </div>
     );
 });
@@ -151,7 +153,8 @@ Navbar.propTypes = {
     onOpenMenu: PropTypes.func,
     title: PropTypes.string.isRequired,
     titleOptions: PropTypes.node,
-    onOpenTitle: PropTypes.func
+    onOpenTitle: PropTypes.func,
+    topRightButton: PropTypes.node
 };
 
 export default Navbar;
