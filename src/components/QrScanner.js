@@ -2,9 +2,39 @@ import { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { LuScanSearch } from "react-icons/lu";
-import { Scanner, outline } from '@yudiel/react-qr-scanner';
+import { Scanner } from '@yudiel/react-qr-scanner';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import clsx from 'clsx';
+
+const GREEN_FILL = 'oklch(0.7451 0.167 183.61 / 0.35)';
+const GREEN_OUTLINE = 'oklch(0.7451 0.167 183.61 / 1)';
+const RED_FILL = 'oklch(0.7176 0.221 22.18 / 0.35)';
+const RED_OUTLINE = 'oklch(0.7176 0.221 22.18 / 1)';
+
+const highlightQrCodes = (codes, ctx) => {
+    codes.forEach(code => {
+        // Get coordinates of each corner
+        const corners = code.cornerPoints;
+        if (!corners || corners.length !== 4) return;
+
+        // Draw outline around QR code
+        ctx.beginPath();
+        ctx.moveTo(corners[0].x, corners[0].y);
+        for (let i = 1; i < corners.length; i++) {
+            ctx.lineTo(corners[i].x, corners[i].y);
+        }
+        ctx.closePath();
+
+        // Green outline if URL is part of app, red if unsupported
+        const match = code.rawValue.startsWith(window.location.origin);
+        ctx.strokeStyle = match ? GREEN_OUTLINE : RED_OUTLINE;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        // Fill with same color, semi-transparent
+        ctx.fillStyle = match ? GREEN_FILL : RED_FILL;
+        ctx.fill();
+    });
+};
 
 // Button that toggles QR scanner visibility (rendered in portal)
 const QrScannerButton = memo(function QrScannerButton() {
@@ -51,7 +81,7 @@ const QrScanner = ({ onExit }) => {
                 onError={onExit}
                 formats={["qr_code"]}
                 components={{
-                    tracker: outline,
+                    tracker: highlightQrCodes,
                     onOff: true,
                     torch: true,
                     zoom: true,
