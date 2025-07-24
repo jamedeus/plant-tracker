@@ -65,6 +65,7 @@ const QrScanner = ({ onExit }) => {
                         'absolute bottom-4 btn btn-accent rounded-full text-lg',
                         'left-1/2 -translate-x-1/2'
                     )}
+                    data-testid="scanned-url"
                 >
                     Open
                 </a>

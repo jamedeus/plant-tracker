@@ -1,7 +1,8 @@
 import QrScannerButton from 'src/components/QrScanner';
+import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
 import 'jest-canvas-mock';
 
-describe('QrScannerButton', () => {
+describe('QrScanner', () => {
     let user, component;
 
     beforeAll(() => {
@@ -35,6 +36,33 @@ describe('QrScannerButton', () => {
                 getUserMedia: jest.fn()
             },
         });
+
+        // Mock video ready as soon as overlay opens
+        Object.defineProperty(HTMLMediaElement.prototype, 'readyState', {
+            get: () => 4,
+        });
+
+        // Mock methods used to draw bounding box around QR code
+        window.DOMRectReadOnly = class DOMRectReadOnly {
+            constructor(x = 0, y = 0, width = 0, height = 0) {
+                this.x      = x;
+                this.y      = y;
+                this.width  = width;
+                this.height = height;
+                this.top    = y;
+                this.left   = x;
+                this.right  = x + width;
+                this.bottom = y + height;
+            }
+        };
+        window.DOMRect = window.DOMRectReadOnly;
+        window.DOMRectReadOnly.fromRect = function(rect) {
+            return new window.DOMRectReadOnly(
+                rect.x, rect.y,
+                rect.width, rect.height
+            );
+        };
+        window.DOMRect.fromRect = window.DOMRectReadOnly.fromRect;
     });
 
     beforeEach(() => {
@@ -73,5 +101,31 @@ describe('QrScannerButton', () => {
         // Confirm title and aria-label changed to "Close QR scanner"
         expect(button).toHaveAttribute('title', 'Close QR scanner');
         expect(button).toHaveAttribute('aria-label', 'Close QR scanner');
+    });
+
+    it('shows link to scanned URL when QR code detected', async () => {
+        // Mock barcode-detector to simulate detected QR code
+        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
+            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
+            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
+            cornerPoints: [
+                { x: 0,   y: 0   },
+                { x: 200, y: 0   },
+                { x: 200, y: 100 },
+                { x: 0,   y: 100 }
+            ],
+            format: 'qr_code',
+        }]);
+
+        // Open scanner, confirm link to scanned URL appears
+        await user.click(component.getByRole('button'));
+        await waitFor(() => {
+            expect(FakeBarcodeDetector.prototype.detect).toHaveBeenCalled();
+        });
+        expect(component.getByTestId('scanned-url')).toBeInTheDocument();
+        expect(component.getByTestId('scanned-url')).toHaveAttribute(
+            'href',
+            'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'
+        );
     });
 });
