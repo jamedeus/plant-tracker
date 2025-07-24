@@ -1,15 +1,23 @@
-import { useState, memo } from 'react';
+import { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { LuScanSearch } from "react-icons/lu";
 import { Scanner } from '@yudiel/react-qr-scanner';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
+import useSound from 'use-sound';
+import error from 'src/sounds/error.mp3';
+import completed from 'src/sounds/completed.mp3';
 import clsx from 'clsx';
 
 const GREEN_FILL = 'oklch(0.7451 0.167 183.61 / 0.35)';
 const GREEN_OUTLINE = 'oklch(0.7451 0.167 183.61 / 1)';
 const RED_FILL = 'oklch(0.7176 0.221 22.18 / 0.35)';
 const RED_OUTLINE = 'oklch(0.7176 0.221 22.18 / 1)';
+
+// Returns true if URL has same domain as current URL, false if not part of app
+const urlIsSupported = (url) => {
+    return url.startsWith(window.location.origin);
+};
 
 const highlightQrCodes = (codes, ctx) => {
     codes.forEach(code => {
@@ -26,7 +34,7 @@ const highlightQrCodes = (codes, ctx) => {
         ctx.closePath();
 
         // Green outline if URL is part of app, red if unsupported
-        const match = code.rawValue.startsWith(window.location.origin);
+        const match = urlIsSupported(code.rawValue);
         ctx.strokeStyle = match ? GREEN_OUTLINE : RED_OUTLINE;
         ctx.lineWidth = 4;
         ctx.stroke();
@@ -70,6 +78,30 @@ const QrScannerButton = memo(function QrScannerButton() {
 // Lower Z index than navbar (keep close button visible)
 const QrScanner = ({ onExit }) => {
     const [scannedUrl, setScannedUrl] = useState(null);
+    // Get notification sounds
+    const [playMatch] = useSound(completed);
+    const [playError] = useSound(error);
+    // Track URLs that have already been matched (don't play sounds twice)
+    const matchedUrls = useRef([]);
+    const matchedErrorUrls = useRef([]);
+
+    const handleScan = (result) => {
+        result.forEach(code => {
+            if (urlIsSupported(code.rawValue)) {
+                // Show button to open scanned URL
+                setScannedUrl(code.rawValue);
+                // Play sound first time valid QR code is scanned
+                if (!matchedUrls.current.includes(code.rawValue)) {
+                    playMatch();
+                    matchedUrls.current.push(code.rawValue);
+                }
+            // Play sound first time invalid QR code is scanned
+            } else if (!matchedErrorUrls.current.includes(code.rawValue)) {
+                playError();
+                matchedErrorUrls.current.push(code.rawValue);
+            }
+        });
+    };
 
     return (
         <div
@@ -77,7 +109,7 @@ const QrScanner = ({ onExit }) => {
             data-testid="qr-scanner-overlay"
         >
             <Scanner
-                onScan={(result) => setScannedUrl(result[0].rawValue)}
+                onScan={handleScan}
                 onError={onExit}
                 formats={["qr_code"]}
                 components={{
@@ -87,6 +119,7 @@ const QrScanner = ({ onExit }) => {
                     zoom: true,
                     finder: true,
                 }}
+                sound={false}
             />
             {scannedUrl && (
                 <a

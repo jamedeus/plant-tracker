@@ -18,6 +18,9 @@ module.exports = {
     // Tell jest to transform ESM-only dependency
     transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
     moduleNameMapper: {
+        // Ignore mp3 imports
+        '\\.(mp3)$': 'jest-transform-stub',
+        // Alias src directory
         '^src/(.*)$': path.resolve(__dirname, 'src/$1'),
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
         // Give libraries that import barcode-detector a mock (avoid mocking

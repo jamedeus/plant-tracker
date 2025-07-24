@@ -6,6 +6,7 @@ const mockCurrentURL = (url, pathname) => {
             ...window.location,
             href: url,
             pathname: pathname,
+            origin: url.replace(pathname, ''),
             assign: jest.fn()
         }
     });

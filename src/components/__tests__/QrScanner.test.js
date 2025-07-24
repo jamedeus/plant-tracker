@@ -1,5 +1,6 @@
 import QrScannerButton from 'src/components/QrScanner';
 import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import 'jest-canvas-mock';
 
 describe('QrScanner', () => {
@@ -105,6 +106,7 @@ describe('QrScanner', () => {
 
     it('shows link to scanned URL when QR code detected', async () => {
         // Mock barcode-detector to simulate detected QR code
+        mockCurrentURL('https://plants.lan/');
         jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
             rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
             boundingBox: { x: 0, y: 0, width: 200, height: 100 },

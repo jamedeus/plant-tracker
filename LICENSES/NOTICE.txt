@@ -2,4 +2,6 @@ The MIT license only applies to files containing a header comment that reference
 - LICENSES/daisyui-license.txt.
 - LICENSES/yet-another-react-lightbox-license.txt
 
+The license in src/sounds/ applies to the mp3s in that directory.
+
 All other files in this project are covered by the main LICENSE in the repository root.
