@@ -7,6 +7,7 @@ const mockCurrentURL = (url, pathname) => {
             href: url,
             pathname: pathname,
             origin: url.replace(pathname, ''),
+            host: url.replace(pathname, '').replace('http://', '').replace('https://', '').replace(/\/$/, ''),
             assign: jest.fn()
         }
     });

@@ -14,7 +14,12 @@ const RED_OUTLINE = 'oklch(0.7176 0.221 22.18 / 1)';
 
 // Returns true if URL has same domain as current URL, false if not part of app
 const urlIsSupported = (url) => {
-    return url.startsWith(window.location.origin);
+    try {
+        const scannedUrl = new URL(url);
+        return scannedUrl.host === window.location.host;
+    } catch (e) {
+        return false;
+    }
 };
 
 const highlightQrCodes = (codes, ctx) => {
