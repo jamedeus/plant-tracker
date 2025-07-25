@@ -1,0 +1,23 @@
+/* Hide red finder div in center of screen */
+[data-testid="qr-scanner-overlay"] > div > div:nth-child(4) > div > div > div > div {
+    display: none !important;
+}
+
+/* Convert div wrapping icons to flex column */
+/* Reverse direction because stupid library puts zoom out above zoom in */
+[data-testid="qr-scanner-overlay"] > div > div:nth-child(4) > div > div {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    margin-bottom: 2rem;
+    margin-right: 0.5rem;
+    gap: 1.5rem;
+}
+
+/* Remove button absolute position (fix gap where on/off button was removed) */
+[data-testid="qr-scanner-overlay"] > div > div:nth-child(4) > div > div > div {
+    position: static !important;
+    bottom: auto !important;
+    right: auto !important;
+}

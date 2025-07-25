@@ -7,6 +7,7 @@ import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import useSound from 'use-sound';
 import error from 'src/sounds/error.mp3';
 import completed from 'src/sounds/completed.mp3';
+import 'src/css/qrscanner.css';
 import clsx from 'clsx';
 
 const GREEN_FILL = 'oklch(0.7451 0.167 183.61 / 0.35)';
@@ -114,7 +115,7 @@ const QrScanner = ({ onExit }) => {
                 formats={["qr_code"]}
                 components={{
                     tracker: highlightQrCodes,
-                    onOff: true,
+                    onOff: false,
                     torch: true,
                     zoom: true,
                     finder: true,
