@@ -51,7 +51,7 @@ LOGIN_REDIRECT_URL="/"
 # Read SINGLE_USER_MODE from env var, or default to False if not present
 # If True authentication is disabled, all plants are owned by DEFAULT_USERNAME
 # If False authentication is required, separate accounts own separate plants
-SINGLE_USER_MODE = bool(os.environ.get('SINGLE_USER_MODE', 0))
+SINGLE_USER_MODE = os.environ.get('SINGLE_USER_MODE', '').lower() == 'true'
 DEFAULT_USERNAME='DEFAULT'
 
 # Read photo thumbnail/preview resolution and quality env vars, or use defaults
