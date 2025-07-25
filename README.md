@@ -100,12 +100,16 @@ If you create an event accidentally or upload the wrong photo click the 3 dots o
 
 ## Development
 
-A full development environment can be created using `development-docker-compose.yaml`, which includes containers for postgres, redis, and nginx (reverse proxy for HTTPS). To start the server run:
+The simplest way to start a development server is with `development-docker-compose.yaml`, which includes postgres and nginx containers as well as an nginx proxy for HTTPS (some features like opening the camera to scan a QR code will not work over http due to browser policies). This setup mirrors the entire repository into a container where the development server runs, so changes made outside the container will automatically take effect inside.
+
+Before starting the container run `npm install` and `npm run watch` to build the frontend bundles.
+
+To use HTTPS you'll also need to create a `certs/` directory for the reverse proxy. Self-signed certs will not work, you'll need to generate a certificate authority, sign the certs with it, and then install the CA cert on your phone so that the SSL certs will be trusted.
+
+Once that's done start the server with:
 ```
 docker compose --file development-docker-compose.yaml up
 ```
-
-Outside of the container you will need to run `npm install` and `npm run watch` to build the frontend (the whole repo is mounted into the container, so these changes take effect immediately and do not require a rebuild/restart). For HTTPS to work you will need to add certificates to a `certs/` directory and sign them with a CA trusted by yuor test device.
 
 Read below for baremetal development setup.
 

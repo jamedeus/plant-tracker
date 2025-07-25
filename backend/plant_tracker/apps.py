@@ -1,6 +1,19 @@
 import os
 import sys
+from django.conf import settings
 from django.apps import AppConfig
+from django.utils.autoreload import autoreload_started
+
+
+def watch_manifest(sender, **kwargs):
+    '''Watch manifest.json and restart the dev server when it changes.
+
+    The backend reads manifest.json at startup serves the static files it lists
+    for each page. If a new static file is created by webpack the dev server
+    needs to read manifest.json again or it won't serve the new file.
+    '''
+    if os.path.exists(settings.MANIFEST_PATH):
+        sender.watch_dir(settings.MANIFEST_PATH.parent, "manifest.json")
 
 
 class PlantTrackerConfig(AppConfig):
@@ -21,3 +34,7 @@ class PlantTrackerConfig(AppConfig):
 
         from .tasks import update_all_cached_states
         update_all_cached_states.delay()
+
+        # Reload dev server when manifest.json changes
+        if settings.DEBUG:
+            autoreload_started.connect(watch_manifest)
