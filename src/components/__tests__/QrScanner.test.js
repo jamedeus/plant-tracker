@@ -67,8 +67,11 @@ describe('QrScanner', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (skip debounce)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render component + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         component = render(<QrScannerButton />);
     });
 
@@ -119,17 +122,21 @@ describe('QrScanner', () => {
             format: 'qr_code',
         }]);
 
-        // Open scanner, confirm link to scanned URL appears
+        // Open scanner, confirm instructions div is visible
         await user.click(component.getByRole('button'));
-        await waitFor(() => {
-            expect(FakeBarcodeDetector.prototype.detect).toHaveBeenCalled();
+        expect(component.getByText('Point the camera at a QR code')).toBeInTheDocument();
+
+        // Fast forward to detect QR code, confirm link to scanned URL appears
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(100);
         });
+        expect(FakeBarcodeDetector.prototype.detect).toHaveBeenCalled();
         expect(component.getByTestId('scanned-url')).toBeInTheDocument();
         expect(component.getByTestId('scanned-url')).toHaveAttribute(
             'href',
             'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'
         );
-        // Confirm instructions div is not visible
+        // Confirm instructions div is no longer visible
         expect(component.queryByText('Point the camera at a QR code')).toBeNull();
     });
 });
