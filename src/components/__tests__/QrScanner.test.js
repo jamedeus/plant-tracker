@@ -83,12 +83,18 @@ describe('QrScanner', () => {
         await user.click(component.getByRole('button'));
 
         // Confirm qr-scanner-overlay appeared
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(100);
+        });
         expect(component.getByTestId('qr-scanner-overlay')).toBeInTheDocument();
 
         // Click button again to close scanner
         await user.click(component.getByRole('button'));
 
         // Confirm qr-scanner-overlay disappeared
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(100);
+        });
         expect(component.queryByTestId('qr-scanner-overlay')).toBeNull();
     });
 
