@@ -7,6 +7,7 @@ import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
+import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
@@ -307,6 +308,7 @@ function App() {
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title='Registration'
+                topRightButton={<QrScannerButton />}
             />
 
             {showConfirmQr || showConfirmDivide ? (

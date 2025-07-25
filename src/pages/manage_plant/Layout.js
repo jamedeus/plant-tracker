@@ -9,6 +9,7 @@ import EventButtons from './EventButtons';
 import EventCalendar from './EventCalendar';
 import { openGroupModal } from './GroupModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
+import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { FaPlus, FaBan, FaUpRightFromSquare } from 'react-icons/fa6';
@@ -188,6 +189,7 @@ function Layout() {
                 menuOptions={DropdownMenuOptions}
                 title={plantDetails.display_name}
                 titleOptions={PlantDetailsDropdown}
+                topRightButton={<QrScannerButton />}
             />
 
             {/* Don't render event buttons if plant is archived */}

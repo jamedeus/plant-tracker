@@ -11,6 +11,7 @@ function App() {
             <Navbar
                 menuOptions={<NavbarDropdownOptions />}
                 title="Permission Denied"
+                showScanButton={false}
             />
 
             <div className="flex flex-col text-center text-lg mt-[15vh]">

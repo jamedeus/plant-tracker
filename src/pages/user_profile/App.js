@@ -6,6 +6,7 @@ import { parseDomContext, sendPostRequest } from 'src/util';
 import { timestampToRelative, timestampToReadable } from 'src/timestampUtils';
 import Navbar from 'src/components/Navbar';
 import { showToast } from 'src/components/Toast';
+import QrScannerButton from 'src/components/QrScannerButton';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 
@@ -278,6 +279,7 @@ function App() {
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title="User Profile"
+                topRightButton={<QrScannerButton />}
             />
             <div className="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16">
                 <Section title="Details" open={true}>

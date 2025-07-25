@@ -80,7 +80,47 @@ exports[`App matches snapshot 1`] = `
       </div>
       <div
         class="justify-end min-w-12"
-      />
+      >
+        <button
+          aria-label="Open QR scanner"
+          class="btn btn-ghost btn-circle size-12"
+          title="Open QR scanner"
+        >
+          <svg
+            class="size-6"
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 7V5a2 2 0 0 1 2-2h2"
+            />
+            <path
+              d="M17 3h2a2 2 0 0 1 2 2v2"
+            />
+            <path
+              d="M21 17v2a2 2 0 0 1-2 2h-2"
+            />
+            <path
+              d="M7 21H5a2 2 0 0 1-2-2v-2"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            />
+            <path
+              d="m16 16-1.9-1.9"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
     <div
       class="flex flex-col w-96 max-w-[100vw] px-4 mb-8"
@@ -305,7 +345,47 @@ exports[`App matches snapshot when changing group QR code 1`] = `
       </div>
       <div
         class="justify-end min-w-12"
-      />
+      >
+        <button
+          aria-label="Open QR scanner"
+          class="btn btn-ghost btn-circle size-12"
+          title="Open QR scanner"
+        >
+          <svg
+            class="size-6"
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 7V5a2 2 0 0 1 2-2h2"
+            />
+            <path
+              d="M17 3h2a2 2 0 0 1 2 2v2"
+            />
+            <path
+              d="M21 17v2a2 2 0 0 1-2 2h-2"
+            />
+            <path
+              d="M7 21H5a2 2 0 0 1-2-2v-2"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            />
+            <path
+              d="m16 16-1.9-1.9"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
     <div
       class="flex flex-col text-center gap-4 px-4 mt-2 mb-4"
@@ -479,7 +559,47 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
       </div>
       <div
         class="justify-end min-w-12"
-      />
+      >
+        <button
+          aria-label="Open QR scanner"
+          class="btn btn-ghost btn-circle size-12"
+          title="Open QR scanner"
+        >
+          <svg
+            class="size-6"
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 7V5a2 2 0 0 1 2-2h2"
+            />
+            <path
+              d="M17 3h2a2 2 0 0 1 2 2v2"
+            />
+            <path
+              d="M21 17v2a2 2 0 0 1-2 2h-2"
+            />
+            <path
+              d="M7 21H5a2 2 0 0 1-2-2v-2"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            />
+            <path
+              d="m16 16-1.9-1.9"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
     <div
       class="flex flex-col text-center gap-4 px-4 mt-2 mb-4"
@@ -698,7 +818,47 @@ exports[`App matches snapshot when group querystring param is present 1`] = `
       </div>
       <div
         class="justify-end min-w-12"
-      />
+      >
+        <button
+          aria-label="Open QR scanner"
+          class="btn btn-ghost btn-circle size-12"
+          title="Open QR scanner"
+        >
+          <svg
+            class="size-6"
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 7V5a2 2 0 0 1 2-2h2"
+            />
+            <path
+              d="M17 3h2a2 2 0 0 1 2 2v2"
+            />
+            <path
+              d="M21 17v2a2 2 0 0 1-2 2h-2"
+            />
+            <path
+              d="M7 21H5a2 2 0 0 1-2-2v-2"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            />
+            <path
+              d="m16 16-1.9-1.9"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
     <div
       class="flex flex-col w-96 max-w-[100vw] px-4 mb-8"
@@ -905,7 +1065,47 @@ exports[`App matches snapshot when plant division in progress 1`] = `
       </div>
       <div
         class="justify-end min-w-12"
-      />
+      >
+        <button
+          aria-label="Open QR scanner"
+          class="btn btn-ghost btn-circle size-12"
+          title="Open QR scanner"
+        >
+          <svg
+            class="size-6"
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 7V5a2 2 0 0 1 2-2h2"
+            />
+            <path
+              d="M17 3h2a2 2 0 0 1 2 2v2"
+            />
+            <path
+              d="M21 17v2a2 2 0 0 1-2 2h-2"
+            />
+            <path
+              d="M7 21H5a2 2 0 0 1-2-2v-2"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            />
+            <path
+              d="m16 16-1.9-1.9"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
     <div
       class="flex flex-col text-center gap-4 px-4 mt-2 mb-4"

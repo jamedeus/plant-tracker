@@ -13,6 +13,7 @@ import EditGroupModal from './EditGroupModal';
 import FloatingFooter from 'src/components/FloatingFooter';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
+import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
@@ -280,6 +281,7 @@ function App() {
                 menuOptions={DropdownMenuOptions}
                 title={group.display_name}
                 titleOptions={GroupDetailsDropdown}
+                topRightButton={<QrScannerButton />}
             />
 
             <div className={clsx(
