@@ -7,7 +7,7 @@ import PrintModal, { openPrintModal } from './PrintModal';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 import EditModeFooter from './EditModeFooter';
-import QrScannerButton from 'src/components/QrScanner';
+import QrScannerButton from 'src/components/QrScannerButton';
 
 function App() {
     // Load context set by django template

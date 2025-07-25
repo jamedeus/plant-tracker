@@ -1,4 +1,4 @@
-import QrScannerButton from 'src/components/QrScanner';
+import QrScannerButton from 'src/components/QrScannerButton';
 import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import 'jest-canvas-mock';

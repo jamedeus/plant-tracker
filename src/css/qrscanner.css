@@ -1,4 +1,5 @@
 /* Hide red finder div in center of screen */
+/* This can be done with the option but it also removes all buttons (stupid) */
 [data-testid="qr-scanner-overlay"] > div > div:nth-child(4) > div > div > div > div {
     display: none !important;
 }

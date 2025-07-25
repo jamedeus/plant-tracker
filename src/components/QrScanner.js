@@ -1,9 +1,6 @@
-import { useState, useRef, memo } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { createPortal } from 'react-dom';
-import { LuScanSearch } from "react-icons/lu";
 import { Scanner } from '@yudiel/react-qr-scanner';
-import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import useSound from 'use-sound';
 import error from 'src/sounds/error.mp3';
 import completed from 'src/sounds/completed.mp3';
@@ -44,36 +41,6 @@ const highlightQrCodes = (codes, ctx) => {
         ctx.fill();
     });
 };
-
-// Button that toggles QR scanner visibility (rendered in portal)
-const QrScannerButton = memo(function QrScannerButton() {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleScanner = () => {
-        setIsOpen(!isOpen);
-    };
-
-    return (
-        <>
-            <button
-                className="btn btn-ghost btn-circle size-12"
-                title={isOpen ? 'Close QR scanner' : 'Open QR scanner'}
-                aria-label={isOpen ? 'Close QR scanner' : 'Open QR scanner'}
-                onClick={toggleScanner}
-            >
-                {isOpen ? (
-                    <CloseButtonIcon />
-                ) : (
-                    <LuScanSearch className="size-6" />
-                )}
-            </button>
-            {isOpen && createPortal(
-                <QrScanner onExit={() => setIsOpen(false)} />,
-                document.body
-            )}
-        </>
-    );
-});
 
 // Full-screen QR scanner overlay
 // Lower Z index than navbar (keep close button visible)
@@ -142,4 +109,4 @@ QrScanner.propTypes = {
     onExit: PropTypes.func.isRequired,
 };
 
-export default QrScannerButton;
+export default QrScanner;
