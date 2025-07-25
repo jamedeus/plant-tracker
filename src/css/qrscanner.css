@@ -1,3 +1,16 @@
+@reference './index.css';
+
+/* Instructions div */
+.qr-scanner-instructions {
+    @apply absolute bottom-8 left-1/2 -translate-x-1/2 rounded-full px-4 py-2;
+    @apply text-nowrap text-lg;
+
+    /* Semi-transparent frosted background */
+    backdrop-filter: blur(6px) saturate(180%);
+    -webkit-backdrop-filter: blur(6px) saturate(180%);
+    background-color: color-mix(in oklab, var(--color-base-300) 50%, #0000);
+}
+
 /* Hide red finder div in center of screen */
 /* This can be done with the option but it also removes all buttons (stupid) */
 [data-testid="qr-scanner-overlay"] > div > div:nth-child(4) > div > div > div > div {

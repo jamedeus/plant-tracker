@@ -129,5 +129,7 @@ describe('QrScanner', () => {
             'href',
             'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'
         );
+        // Confirm instructions div is not visible
+        expect(component.queryByText('Point the camera at a QR code')).toBeNull();
     });
 });
