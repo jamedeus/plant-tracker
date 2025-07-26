@@ -1,4 +1,4 @@
-import { useState, memo, lazy, Suspense } from 'react';
+import { useState, useEffect, memo, lazy, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { LuScanSearch } from "react-icons/lu";
 import LoadingAnimation from './LoadingAnimation';
@@ -17,6 +17,26 @@ const QrScannerButton = memo(function QrScannerButton() {
     const toggleScanner = () => {
         setIsOpen(!isOpen);
     };
+
+    const closeScanner = () => {
+        setIsOpen(false);
+    };
+
+    // Close scanner if user navigates back to page by pressing back button
+    // Fixes blank scanner (no camera permission, does not re-prompt)
+    useEffect(() => {
+        const handleBackButton = async (event) => {
+            if (event.persisted) {
+                closeScanner();
+            }
+        };
+
+        // Add listener on mount, remove on unmount
+        window.addEventListener('pageshow', handleBackButton);
+        return () => {
+            window.removeEventListener('pageshow', handleBackButton);
+        };
+    }, []);
 
     return (
         <>
@@ -41,7 +61,7 @@ const QrScannerButton = memo(function QrScannerButton() {
                         <LoadingAnimation />
                     </div>
                 }>
-                    <QrScanner onExit={() => setIsOpen(false)} />
+                    <QrScanner onExit={closeScanner} />
                 </Suspense>,
                 document.body
             )}
