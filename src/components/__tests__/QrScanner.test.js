@@ -114,7 +114,8 @@ describe('QrScanner', () => {
     });
 
     it('shows link to scanned URL when QR code detected', async () => {
-        // Mock barcode-detector to simulate detected QR code
+        // Mock barcode-detector to simulate detecting a QR code with a domain
+        // that matches the current URL
         mockCurrentURL('https://plants.lan/');
         jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
             rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
@@ -144,5 +145,76 @@ describe('QrScanner', () => {
         );
         // Confirm instructions div is no longer visible
         expect(component.queryByText('Point the camera at a QR code')).toBeNull();
+    });
+
+    it('does not show link to scanned URL if QR code domain is not part of app', async () => {
+        // Mock barcode-detector to simulate detecting a QR code with a domain
+        // that does NOT match the current URL
+        mockCurrentURL('https://plants.lan/');
+        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
+            rawValue: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
+            cornerPoints: [
+                { x: 0,   y: 0   },
+                { x: 200, y: 0   },
+                { x: 200, y: 100 },
+                { x: 0,   y: 100 }
+            ],
+            format: 'qr_code',
+        }]);
+
+        // Open scanner, fast forward until QR code detected
+        await user.click(component.getByRole('button'));
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(100);
+        });
+
+        // Confirm QR code detected, confirm link did NOT appear
+        expect(FakeBarcodeDetector.prototype.detect).toHaveBeenCalled();
+        expect(component.queryByTestId('scanned-url')).toBeNull();
+    });
+
+    it('does not show scanned link when QR code does not contain a URL', async () => {
+        // Mock barcode-detector to simulate detecting a QR code that does not
+        // contain a URL
+        mockCurrentURL('https://plants.lan/');
+        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
+            rawValue: 'this QR code just contains text',
+            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
+            cornerPoints: [
+                { x: 0,   y: 0   },
+                { x: 200, y: 0   },
+                { x: 200, y: 100 },
+                { x: 0,   y: 100 }
+            ],
+            format: 'qr_code',
+        }]);
+
+        // Open scanner, fast forward until QR code detected
+        await user.click(component.getByRole('button'));
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(100);
+        });
+
+        // Confirm QR code detected, confirm link did NOT appear
+        expect(FakeBarcodeDetector.prototype.detect).toHaveBeenCalled();
+        expect(component.queryByTestId('scanned-url')).toBeNull();
+    });
+
+    it('closes the scanner when user navigates to page with back button', async () => {
+        // Open scanner, confirm overlay appears
+        await user.click(component.getByRole('button'));
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(100);
+        });
+        expect(component.getByTestId('qr-scanner-overlay')).toBeInTheDocument();
+
+        // Simulate user navigating to page with back button
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        await act(() => window.dispatchEvent(pageshowEvent));
+
+        // Confirm overlay is no longer visible
+        expect(component.queryByTestId('qr-scanner-overlay')).toBeNull();
     });
 });
