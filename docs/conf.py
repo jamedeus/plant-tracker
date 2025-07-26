@@ -11,7 +11,7 @@ import django
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Plant Tracker'
-copyright = '2024, Josh Medeiros'
+copyright = '2025, Josh Medeiros'
 author = 'Josh Medeiros'
 release = '1.0'
 
@@ -20,6 +20,7 @@ release = '1.0'
 
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinxcontrib_django',
 ]
 
 templates_path = ['_templates']
@@ -32,6 +33,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '*migrations*', '*tests*
 html_theme = 'alabaster'
 html_static_path = ['_static']
 
+# Add custom CSS
+html_css_files = getattr(globals(), 'html_css_files', [])
+
 sys.path.insert(0, os.path.join(os.path.abspath('..'), 'backend'))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 django.setup()
+
+# Keep members in source order
+autodoc_member_order = 'bysource'

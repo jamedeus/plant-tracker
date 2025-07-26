@@ -1,0 +1,12 @@
+/* Add space between items, increase title font */
+.class, .function {
+    margin-top: 2rem;
+}
+.class > dt, .function > dt {
+    font-size: 1.2rem;
+}
+
+/* Hide full path (already in page header)*/
+.sig-prename {
+    display: none;
+}
