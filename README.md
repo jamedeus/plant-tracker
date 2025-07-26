@@ -104,116 +104,16 @@ The simplest way to start a development server is with `development-docker-compo
 
 Before starting the container run `npm install` and `npm run watch` to build the frontend bundles.
 
-To use HTTPS you'll also need to create a `certs/` directory for the reverse proxy. Self-signed certs will not work, you'll need to generate a certificate authority, sign the certs with it, and then install the CA cert on your phone so that the SSL certs will be trusted.
+To use HTTPS you'll also need to create a `certs/` directory for the reverse proxy. Self-signed certs will not work, you'll need to generate a certificate authority, sign the certs with it, and then install the CA cert on your phone so that the SSL certs will be trusted. Set the `VIRTUAL_HOST` env var in `development-docker-compose.yaml` to the domain in your certs. You'll also need a local DNS setup to point that domain to your dev server IP.
 
 Once that's done start the server with:
 ```
 docker compose --file development-docker-compose.yaml up
 ```
 
-Read below for baremetal development setup.
+The app can now be accessed at [`http://localhost:8456`](http://localhost:8456) or at your `VIRTUAL_HOST` if using SSL. To access django-silk (database query debugging) add `/silk/`. To access django admin add `/admin/`.
 
-### Dependencies
-
-Install dependencies:
-```
-pipenv install
-npm install
-sudo apt update
-sudo apt install -y redis
-```
-
-Build frontend when files change:
-```
-npm run watch
-```
-
-### Database
-
-A postgres database is required for development. The easiest way to set this up is docker. Create `docker-compose.yaml` with:
-```
-services:
-  plant-tracker-db:
-    image: postgres:17.5
-    container_name: plant-tracker-development-db
-    environment:
-      POSTGRES_DB: plant_tracker
-      POSTGRES_USER: postgres
-      # Remember to add the DATABASE_PASSWORD env var to your .env
-      POSTGRES_PASSWORD: supersecrettestingpassword
-    volumes:
-      - plant-tracker-development-db:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    restart: unless-stopped
-
-volumes:
-  filestash:
-  plant-tracker-development-db:
-```
-
-Run `docker compose up -d` to start the database container.
-
-Then create `.env` at the repository root (same directory as `Pipfile`) and set the database password:
-```
-DATABASE_PASSWORD=supersecrettestingpassword
-```
-
-This will set the env var automatically every time you run `pipenv shell`.
-
-The other database env vars do not need to be set, they will default to the values in the docker-compose above. See [settings.py](backend/backend/settings.py) for all database environment variables.
-
-#### Django debug tools
-
-The development dependencies include both [django debug toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/index.html) and [django silk](https://github.com/jazzband/django-silk) which can be useful for debugging SQL queries. These are only available when the `DEBUG_MODE` env var is set to `True` (this can be done in `.env` for convenience). Only one tool can be used at a time, this can be configured with the `DEBUG_TOOL` env var (set to `toolbar` to use django-debug-toolbar, will default to silk if not set).
-
-When running django-debug-toolbar the development server needs to be run with the `--nothreading` arg.
-
-These tools cannot be used in the docker image (does not include development dependencies).
-
-Note that silk is only able to capture SELECT, UPDATE, and DELETE queries. It cannot capture INSERT queries, so any endpoint which creates a model entry will show fewer queries than the [sql query unit tests](backend/plant_tracker/test_sql_queries.py). Tests for new endpoints that create model entries should be added to ensure they create models efficiently (ideally with bulk_create) and do not make o(n) queries.
-
-#### Caching
-
-This project uses caching extensively to avoid building large context objects multiple times (see [here](backend/plant_tracker/cache_documentation.md) for all cache names). These can break during development if the syntax of a context object changes. Run `redis-cli flushall` to clear all old caches after making changes.
-
-### Full development server setup
-
-The production setup requires a celery worker to handle async tasks and redis as a message queue.
-
-Run django server:
-```
-pipenv shell
-cd backend
-python manage.py runserver 0.0.0.0:8000
-```
-
-Run celery worker (separate terminal):
-```
-pipenv shell
-cd backend
-celery -A backend worker
-```
-
-If redis is not running enable the systemd service:
-```
-sudo systemctl enable --now redis-server
-```
-
-### Simplified setup
-
-For quick testing or frontend development everything can be run in a single process by using the unit test settings:
-
-```
-pipenv shell
-export DJANGO_SETTINGS_MODULE=backend.test_settings
-cd backend
-python manage.py runserver 0.0.0.0:8000
-```
-
-This runs celery tasks synchronously (no delay) and stores cached data in memory using [fakeredis](https://pypi.org/project/fakeredis/). Redis does not need to be installed. Photo uploads are also written to `/tmp/plant_tracker_unit_test` instead of the data dir.
-
-This setup behaves differently than production and should not be used for backend development.
+For baremetal development setup instructions see [here](docs/development.md).
 
 ### Unit tests
 
@@ -250,6 +150,8 @@ npm run test -- --coverage -u
 
 ## Documentation
 
-See [docs](docs) for sphinx configuration.
+See [here](docs/sphinx) for sphinx configuration.
 
-See [here](backend/plant_tracker/cache_documentation.md) for redis cache documentation.
+See [here](docs/cache_documentation.md) for redis cache documentation.
+
+See [here](docs/development.md) for baremetal development server setup instructions.
