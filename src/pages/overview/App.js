@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import Navbar from 'src/components/Navbar';
 import DropdownMenu from 'src/components/DropdownMenu';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { parseDomContext } from 'src/util';
 import PrintModal, { openPrintModal } from './PrintModal';
+import { useBackButton } from 'src/useBackButton';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 import EditModeFooter from './EditModeFooter';
@@ -41,28 +42,18 @@ function App() {
 
     // Request new state from backend if user navigates to overview by pressing
     // back button (last watered/details may be outdated if coming from manage)
-    useEffect(() => {
-        const handleBackButton = async (event) => {
-            if (event.persisted) {
-                const response = await fetch('/get_overview_state');
-                if (response.ok) {
-                    const data = await response.json();
-                    setPlants(data.plants);
-                    setGroups(data.groups);
-                } else {
-                    alert('Failed to fetch new data, page may be outdated');
-                }
+    if (!archivedOverview) {
+        useBackButton(async () => {
+            const response = await fetch('/get_overview_state');
+            if (response.ok) {
+                const data = await response.json();
+                setPlants(data.plants);
+                setGroups(data.groups);
+            } else {
+                alert('Failed to fetch new data, page may be outdated');
             }
-        };
-
-        // Add listener on mount, remove on unmount
-        if (!archivedOverview) {
-            window.addEventListener('pageshow', handleBackButton);
-            return () => {
-                window.removeEventListener('pageshow', handleBackButton);
-            };
-        }
-    }, []);
+        });
+    }
 
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);

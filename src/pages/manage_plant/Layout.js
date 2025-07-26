@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, Suspense, lazy } from 'react';
+import React, { useMemo, Suspense, lazy } from 'react';
 import { sendPostRequest } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
@@ -11,6 +11,7 @@ import { openGroupModal } from './GroupModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { useBackButton } from 'src/useBackButton';
 import Timeline from './Timeline';
 import { FaPlus, FaBan, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
@@ -46,14 +47,7 @@ function Layout() {
 
     // Update redux store with new state fetched from backend if user navigates
     // to page by pressing back button (contents may be outdated)
-    useEffect(() => {
-        const handleBackButton = (event) => {
-            event.persisted && dispatch(backButtonPressed());
-        };
-        // Add listener on mount, remove on unmount
-        window.addEventListener('pageshow', handleBackButton);
-        return () => window.removeEventListener('pageshow', handleBackButton);
-    }, []);
+    useBackButton(() => dispatch(backButtonPressed()));
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (

@@ -16,6 +16,7 @@ import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { Tab } from '@headlessui/react';
+import { useBackButton } from 'src/useBackButton';
 import clsx from 'clsx';
 
 function App() {
@@ -29,27 +30,17 @@ function App() {
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
-    useEffect(() => {
-        const handleBackButton = async (event) => {
-            if (event.persisted) {
-                const response = await fetch(`/get_group_state/${group.uuid}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setGroup(data['group_details']);
-                    setPlantDetails(data['plants']);
-                } else {
-                    // Reload page if failed to get new state (group deleted)
-                    window.location.reload();
-                }
-            }
-        };
-
-        window.addEventListener('pageshow', handleBackButton);
-
-        return () => {
-            window.removeEventListener('pageshow', handleBackButton);
-        };
-    }, []);
+    useBackButton(async () => {
+        const response = await fetch(`/get_group_state/${group.uuid}`);
+        if (response.ok) {
+            const data = await response.json();
+            setGroup(data['group_details']);
+            setPlantDetails(data['plants']);
+        } else {
+            // Reload page if failed to get new state (group deleted)
+            window.location.reload();
+        }
+    });
 
     // Buttons add events to all plants if 0, only selected plants if 1
     // Set with tabs above event timestamp input

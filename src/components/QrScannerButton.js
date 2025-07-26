@@ -1,8 +1,9 @@
-import { useState, useEffect, memo, lazy, Suspense } from 'react';
+import { useState, memo, lazy, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { LuScanSearch } from "react-icons/lu";
 import LoadingAnimation from './LoadingAnimation';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
+import { useBackButton } from 'src/useBackButton';
 import clsx from 'clsx';
 
 // Dynamic import (don't request webpack bundle until scanner opened)
@@ -24,19 +25,7 @@ const QrScannerButton = memo(function QrScannerButton() {
 
     // Close scanner if user navigates back to page by pressing back button
     // Fixes blank scanner (no camera permission, does not re-prompt)
-    useEffect(() => {
-        const handleBackButton = async (event) => {
-            if (event.persisted) {
-                closeScanner();
-            }
-        };
-
-        // Add listener on mount, remove on unmount
-        window.addEventListener('pageshow', handleBackButton);
-        return () => {
-            window.removeEventListener('pageshow', handleBackButton);
-        };
-    }, []);
+    useBackButton(closeScanner);
 
     return (
         <>

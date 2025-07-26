@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo, useMemo, useCallback } from 'react';
+import React, { useState, useRef, memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
@@ -9,6 +9,7 @@ import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { useBackButton } from 'src/useBackButton';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
@@ -192,19 +193,7 @@ function App() {
 
     // Reload if user navigates to page by pressing back button (uuid may now
     // be registered, refresh will replace with manage plant/group page if so)
-    useEffect(() => {
-        const handleBackButton = async (event) => {
-            if (event.persisted) {
-                window.location.reload();
-            }
-        };
-
-        // Add listener on mount, remove on unmount
-        window.addEventListener('pageshow', handleBackButton);
-        return () => {
-            window.removeEventListener('pageshow', handleBackButton);
-        };
-    }, []);
+    useBackButton(window.location.reload);
 
     const handleRegister = async () => {
         // Build payload by parsing all fields from visible form
