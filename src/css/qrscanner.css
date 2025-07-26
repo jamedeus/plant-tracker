@@ -41,3 +41,19 @@ body:has(> [data-testid="qr-scanner-overlay"]) {
     bottom: auto !important;
     right: auto !important;
 }
+
+/* Scanned URL button pop animation */
+@keyframes pop {
+    0% {
+        transform: scale(0.3);
+    }
+    70% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+[data-testid="scanned-url"] {
+    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}

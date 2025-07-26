@@ -102,6 +102,7 @@ const QrScanner = ({ onExit }) => {
                         'left-1/2 -translate-x-1/2'
                     )}
                     data-testid="scanned-url"
+                    key={scannedUrl}
                 >
                     Open
                 </a>
