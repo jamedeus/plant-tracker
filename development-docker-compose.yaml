@@ -14,7 +14,6 @@ services:
              python manage.py runserver 0.0.0.0:8456"
     volumes:
       - .:/mnt:cached
-      - ./backend/data:/mnt/backend/data
       # Don't clear dependencies after restart
       - pybin:/usr/local/bin
       - pydeps:/usr/local/lib/python3.13/site-packages
@@ -23,7 +22,8 @@ services:
       - 8456:8456
     environment:
       - DEBUG_MODE=True
-      - ALLOWED_HOSTS=desktop.lan,10.80.40.10,dev.lan
+      - DEBUG_TOOL=silk
+      - ALLOWED_HOSTS=localhost,127.0.0.1,dev.lan
       - URL_PREFIX=dev.lan
       - VIRTUAL_HOST=dev.lan
       - DJANGO_SUPERUSER_USERNAME=admin

@@ -26,9 +26,9 @@ coverage = "*"
 ipython = "*"
 pylint = "*"
 fakeredis = "2.29.0"
-django-debug-toolbar = "*"
 django-silk = "*"
 sphinxcontrib-django = "*"
+django-debug-toolbar = "*"
 
 [requires]
 python_version = "3.13"

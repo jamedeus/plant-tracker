@@ -131,10 +131,10 @@ if DEBUG and not TESTING:
     if DEBUG_TOOL.lower() in ("toolbar", "debug_toolbar"):
         INSTALLED_APPS.append("debug_toolbar")
         MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
-        INTERNAL_IPS = [
-            "127.0.0.1",
-            "10.80.40.10"
-        ]
+        # Make it work on all IPs (won't work in docker dev setup otherwise)
+        DEBUG_TOOLBAR_CONFIG = {
+            'SHOW_TOOLBAR_CALLBACK': lambda request: True,
+        }
     # Otherwise add django-silk
     else:
         INSTALLED_APPS.append("silk")
