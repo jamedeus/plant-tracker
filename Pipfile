@@ -29,6 +29,7 @@ fakeredis = "2.29.0"
 django-silk = "*"
 sphinxcontrib-django = "*"
 django-debug-toolbar = "*"
+sphinx-rtd-theme = "*"
 
 [requires]
 python_version = "3.13"
