@@ -25,6 +25,16 @@ TIME_FORMAT = '%Y:%m:%d %H:%M:%S'
 register_heif_opener()
 
 
+def public_storage():
+    '''Returns an instance of the currently configured public storage backend.
+
+    This is necessary to generate a migration that will use whichever storage
+    backend is configured at runtime (S3 or local) instead of hardcoding the
+    one that was configured when the migration was generated.
+    '''
+    return storages["public"]
+
+
 class Photo(models.Model):
     '''Stores a user-uploaded image of a specific plant.'''
 
@@ -35,7 +45,7 @@ class Photo(models.Model):
     # 200x200 thumbnail (shown on PlantCard, timeline thumbnails, etc)
     thumbnail = models.ImageField(
         upload_to="thumbnails",
-        storage=storages["public"],
+        storage=public_storage,
         null=True,
         blank=True,
     )
