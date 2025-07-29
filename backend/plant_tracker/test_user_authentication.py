@@ -200,6 +200,11 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/accounts/login/')
 
+        # Request logout endpoint while not signed in, confirm still redirected
+        response = self.client.get('/accounts/logout/')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/accounts/login/')
+
     def test_create_user_endpoint(self):
         # Confirm 2 users in database (default + test user from setUpClass)
         self.assertEqual(len(user_model.objects.all()), 2)
