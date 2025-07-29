@@ -246,6 +246,7 @@ if LOCAL_MEDIA_ROOT:
     # Prevent auth_views helper functions from crashing
     CLOUDFRONT_KEY_ID = None
     CLOUDFRONT_PRIVKEY_PATH = None
+    CLOUDFRONT_COOKIE_DOMAIN = None
 
 # AWS S3 settings
 else:

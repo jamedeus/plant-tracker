@@ -30,6 +30,13 @@ from .view_decorators import (
 
 user_model = get_user_model()
 
+# Names of cloudfront signed cookies used when S3 storage is enabled
+CLOUDFRONT_COOKIE_NAMES = (
+    "CloudFront-Policy",
+    "CloudFront-Signature",
+    "CloudFront-Key-Pair-Id"
+)
+
 
 def rsa_signer(message):
     '''Signs message with cloudfront private key (SHA1 required by cloudfront).'''
@@ -182,8 +189,20 @@ class LoginView(views.LoginView):
 @disable_in_single_user_mode
 def logout_view(request):
     '''Logs the user out and redirects to login page'''
+    response = HttpResponseRedirect("/accounts/login/")
+
+    # Delete cloudfront signed cookies (grants access to user's images)
+    user = request.user if request.user.is_authenticated else None
+    if user:
+        for cookie_name in CLOUDFRONT_COOKIE_NAMES:
+            response.delete_cookie(
+                cookie_name,
+                domain=settings.CLOUDFRONT_COOKIE_DOMAIN,
+                path=f"/user_{user.id}/"
+            )
+
     logout(request)
-    return HttpResponseRedirect("/accounts/login/")
+    return response
 
 
 class PasswordChangeView(views.PasswordChangeView):
