@@ -25,11 +25,6 @@ TIME_FORMAT = '%Y:%m:%d %H:%M:%S'
 register_heif_opener()
 
 
-def public_storage():
-    '''Stub to keep old migration from failing.'''
-    return default_storage
-
-
 def user_image_path(instance, filename):
     '''Returns path to original image in user namespace directory.'''
     return f"user_{instance.plant.user_id}/images/{filename}"

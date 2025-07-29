@@ -46,13 +46,6 @@ STORAGES = {
             "base_url": MEDIA_URL,
         },
     },
-    "public": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-        "OPTIONS": {
-            "location": MEDIA_ROOT,
-            "base_url": MEDIA_URL,
-        },
-    },
     # Disable whitenoise (static files don't exist in CI/CD)
     "staticfiles": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
