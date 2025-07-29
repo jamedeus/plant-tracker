@@ -124,7 +124,7 @@ def logout_view(request):
         for cookie_name in CLOUDFRONT_COOKIE_NAMES:
             response.delete_cookie(
                 cookie_name,
-                domain=settings.CLOUDFRONT_COOKIE_DOMAIN,
+                domain=settings.BASE_URL,
                 path=f"/user_{user.id}/"
             )
 

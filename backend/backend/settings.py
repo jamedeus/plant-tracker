@@ -30,20 +30,17 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 if SECRET_KEY is None:
     SECRET_KEY = get_random_secret_key()
 
-# Read ALLOWED_HOSTS from env var, or use wildcard if not present
-try:
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
-except AttributeError:
-    ALLOWED_HOSTS = ['*']
+# Read BASE_URL from env var
+BASE_URL = os.environ.get('BASE_URL')
+if not BASE_URL:
+    raise ImproperlyConfigured('BASE_URL is required')
 
-# Add all allowed hosts to CSRF_TRUSTED_ORIGINS
-CSRF_TRUSTED_ORIGINS = []
-for i in ALLOWED_HOSTS:
-    CSRF_TRUSTED_ORIGINS.append(f'http://{i}')
-    CSRF_TRUSTED_ORIGINS.append(f'https://{i}')
+# Use BASE_URL for ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS
+ALLOWED_HOSTS = [BASE_URL]
+CSRF_TRUSTED_ORIGINS = [f'http://{BASE_URL}', f'https://{BASE_URL}']
 
-# Get URL prefix used to generate QR code stickers from env var
-URL_PREFIX = validate_url_prefix(os.environ.get('URL_PREFIX'))
+# Get URL prefix used to generate QR code stickers
+URL_PREFIX = validate_url_prefix(BASE_URL)
 
 # Redirect to overview page after successful login
 LOGIN_REDIRECT_URL="/"
@@ -127,6 +124,9 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 # Add debug tools in debug mode
 if DEBUG and not TESTING:
+    # Allow connections on all hosts in debug mode
+    ALLOWED_HOSTS = ['*']
+
     # Add django-debug-toolbar if env var set
     if DEBUG_TOOL.lower() in ("toolbar", "debug_toolbar"):
         INSTALLED_APPS.append("debug_toolbar")
@@ -201,7 +201,6 @@ LOCAL_MEDIA_ROOT = not all(
         "AWS_SECRET_ACCESS_KEY",
         "AWS_STORAGE_BUCKET_NAME",
         "AWS_S3_REGION_NAME",
-        "CLOUDFRONT_COOKIE_DOMAIN",
         "CLOUDFRONT_IMAGE_DOMAIN",
         "CLOUDFRONT_KEY_ID",
     ]
@@ -238,7 +237,6 @@ if LOCAL_MEDIA_ROOT:
     # Prevent auth_views helper functions from crashing
     CLOUDFRONT_KEY_ID = None
     CLOUDFRONT_PRIVKEY_PATH = None
-    CLOUDFRONT_COOKIE_DOMAIN = None
 
 # AWS S3 settings
 else:
@@ -249,7 +247,6 @@ else:
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
     CLOUDFRONT_KEY_ID = os.environ.get("CLOUDFRONT_KEY_ID")
     CLOUDFRONT_IMAGE_DOMAIN = os.environ.get("CLOUDFRONT_IMAGE_DOMAIN")
-    CLOUDFRONT_COOKIE_DOMAIN = os.environ.get("CLOUDFRONT_COOKIE_DOMAIN")
     CLOUDFRONT_PRIVKEY_PATH = os.environ.get("CLOUDFRONT_PRIVKEY_PATH", "./private_key.pem")
 
     # Add middleware that sets cloudfront signed cookies

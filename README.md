@@ -104,14 +104,17 @@ The simplest way to start a development server is with `development-docker-compo
 
 Before starting the container run `npm install` and `npm run watch` to build the frontend bundles.
 
-To use HTTPS you'll also need to create a `certs/` directory for the reverse proxy. Self-signed certs will not work, you'll need to generate a certificate authority, sign the certs with it, and then install the CA cert on your phone so that the SSL certs will be trusted. Set the `VIRTUAL_HOST` env var in `development-docker-compose.yaml` to the domain in your certs. You'll also need a local DNS setup to point that domain to your dev server IP.
+To use HTTPS you'll also need to create a `certs/` directory for the reverse proxy. Self-signed certs will not work, you'll need to generate a certificate authority, sign the certs with it, and then install the CA cert on your phone so that the SSL certs will be trusted. Set the `BASE_URL` and `VIRTUAL_HOST` env vars in `development-docker-compose.yaml` to the domain in your certs. You'll also need a local DNS setup to point that domain to your dev server IP.
 
 Once that's done start the server with:
 ```
 docker compose --file development-docker-compose.yaml up
 ```
 
-The app can now be accessed at [`http://localhost:8456`](http://localhost:8456) or at your `VIRTUAL_HOST` if using SSL. To access django-silk (database query debugging) add `/silk/`. To access django admin add `/admin/`.
+The app can now be accessed at [`http://localhost:8456`](http://localhost:8456) or at your `VIRTUAL_HOST` if using SSL.
+- To access django admin add `/admin/`.
+- To access django-silk (database query debugging) add `/silk/`.
+- To switch from silk to django-debug-toolbar change the `DEBUG_TOOL` env var to `toolbar` and restart the container.
 
 For baremetal development setup instructions see [here](docs/development.md).
 

@@ -23,8 +23,7 @@ services:
     environment:
       - DEBUG_MODE=True
       - DEBUG_TOOL=silk
-      - ALLOWED_HOSTS=localhost,127.0.0.1,dev.lan
-      - URL_PREFIX=dev.lan
+      - BASE_URL=dev.lan
       - VIRTUAL_HOST=dev.lan
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_PASSWORD=admin

@@ -11,11 +11,11 @@ services:
         condition: service_healthy
         restart: true
     environment:
-      # Comma-seperated list, access on all others will be blocked
-      # Defaults to * if omitted (not recommended)
-      - ALLOWED_HOSTS=plants.lan,localhost
-      # Domain for QR code URLS, use one of the ALLOWED_HOSTS
-      - URL_PREFIX=plants.lan
+      # Base URL where the app is accessed (all others will be blocked)
+      # Will be used to generate QR code URLs (adds /manage/<uuid>)
+      - BASE_URL=plants.lan
+      # Optional: Serve static files (JS bundles) from CDN if set
+      # - DJANGO_STATIC_HOST=https://static.plants.joshmedeiros.dev
       # Optional: Store user-uploaded files in S3 if all variables set
       # Photos will be stored locally if any AWS variables are missing
       # - AWS_ACCESS_KEY_ID=
@@ -26,12 +26,8 @@ services:
       # - CLOUDFRONT_KEY_ID=
       # # Optional (only if mounting privkey to different location)
       # - CLOUDFRONT_PRIVKEY_PATH=/mnt/backend/private_key.pem
-      # # Cloudfront alternate domain used for photos (subdomain of URL_PREFIX)
+      # # Cloudfront alternate domain used for photos (subdomain of BASE_URL)
       # - CLOUDFRONT_IMAGE_DOMAIN=static.plants.joshmedeiros.dev
-      # # App domain (remove cloudfront subdomain so can set auth cookies)
-      # - CLOUDFRONT_COOKIE_DOMAIN=.plants.joshmedeiros.dev
-      # Serve static files (JS bundles) from CDN if set
-      # - DJANGO_STATIC_HOST=https://static.plants.joshmedeiros.dev
       # Postgres database host (must match container below)
       - DATABASE_HOST=plant-tracker-db
       # Postgres database password (must match container below)

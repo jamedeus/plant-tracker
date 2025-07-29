@@ -95,8 +95,8 @@ class CloudFrontCookieMiddleware:
             response.set_cookie(
                 cookie_name,
                 cookie_value,
-                # Apply to all subdomains (env var should be base domain)
-                domain=settings.CLOUDFRONT_COOKIE_DOMAIN,
+                # Apply to all subdomains
+                domain=settings.BASE_URL,
                 httponly=True,
                 secure=True,
                 samesite="None",

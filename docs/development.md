@@ -8,6 +8,11 @@ This setup does not include a reverse proxy for SSL. Everything should work if y
 
 ### Backend
 
+Copy the `.env.example` to set env vars automatically when the venv is activated:
+```
+cp .env.example .env
+```
+
 Install python dependencies and redis:
 ```
 pipenv install --dev
@@ -48,7 +53,7 @@ volumes:
 
 Run `docker compose up -d` to start the database container.
 
-Then create `.env` at the repository root (same directory as `Pipfile`) and set the database password:
+Make sure the `DATABASE_PASSWORD` env var in `.env` matches what you set in the container:
 ```
 DATABASE_PASSWORD=supersecrettestingpassword
 ```

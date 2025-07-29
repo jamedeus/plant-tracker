@@ -25,10 +25,11 @@ test_backend:
   variables:
     DATABASE_PASSWORD: unittest
     DATABASE_HOST: db
+    BASE_URL: 127.0.0.1
+    DJANGO_SETTINGS_MODULE: backend.test_settings
   before_script:
     - pip3 install pipenv
     - pipenv install --dev
-    - export DJANGO_SETTINGS_MODULE=backend.test_settings
     - cd backend/
   script:
     - pipenv run coverage run manage.py test
@@ -56,6 +57,8 @@ pylint:
   tags:
     - nas
     - docker
+  variables:
+    BASE_URL: 127.0.0.1
   before_script:
     - pip3 install pipenv
     - pipenv install --dev

@@ -33,7 +33,6 @@ class CloudFrontCookieMiddlewareTests(TestCase):
             'AWS_SECRET_ACCESS_KEY': 'test-secret-access-key',
             'AWS_STORAGE_BUCKET_NAME': 'test-bucket',
             'AWS_S3_REGION_NAME': 'us-west-2',
-            'CLOUDFRONT_COOKIE_DOMAIN': '.example.com',
             'CLOUDFRONT_IMAGE_DOMAIN': 'images.example.com',
             'CLOUDFRONT_KEY_ID': 'K86ALCJM6RYZT',
             'CLOUDFRONT_PRIVKEY_PATH': '/test/private_key.pem'
@@ -173,7 +172,7 @@ YZ1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
             # Confirm all cookies have correct attributes
             for call in calls:
                 kwargs = call[1]
-                self.assertEqual(kwargs['domain'], self.aws_env_vars['CLOUDFRONT_COOKIE_DOMAIN'])
+                self.assertEqual(kwargs['domain'], settings.BASE_URL)
                 self.assertTrue(kwargs['httponly'])
                 self.assertTrue(kwargs['secure'])
                 self.assertEqual(kwargs['samesite'], 'None')
@@ -221,7 +220,7 @@ YZ1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
             calls = mock_response.set_cookie.call_args_list
             for call in calls:
                 kwargs = call[1]
-                self.assertEqual(kwargs['domain'], self.aws_env_vars['CLOUDFRONT_COOKIE_DOMAIN'])
+                self.assertEqual(kwargs['domain'], settings.BASE_URL)
                 self.assertTrue(kwargs['httponly'])
                 self.assertTrue(kwargs['secure'])
                 self.assertEqual(kwargs['samesite'], 'None')
