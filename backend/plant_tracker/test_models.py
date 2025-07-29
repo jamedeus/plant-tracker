@@ -46,12 +46,13 @@ class PlantModelTests(TestCase):
         # Delete mock photos between tests to prevent duplicate names (django
         # appends random string to keep unique, which makes testing difficult)
         try:
-            for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
-                os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
-            for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
-                os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
-            for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews')):
-                os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews', i))
+            user_photos = os.path.join(settings.TEST_DIR, 'data', 'images', 'user_1')
+            for i in os.listdir(os.path.join(user_photos, 'images')):
+                os.remove(os.path.join(user_photos, 'images', i))
+            for i in os.listdir(os.path.join(user_photos, 'thumbnails')):
+                os.remove(os.path.join(user_photos, 'thumbnails', i))
+            for i in os.listdir(os.path.join(user_photos, 'previews')):
+                os.remove(os.path.join(user_photos, 'previews', i))
         except FileNotFoundError:
             pass
 
@@ -146,23 +147,23 @@ class PlantModelTests(TestCase):
             {
                 photo2.pk: {
                     'timestamp': '2024-03-22T10:52:03+00:00',
-                    'photo': '/media/images/IMG2.jpg',
-                    'thumbnail': '/media/thumbnails/IMG2_thumb.webp',
-                    'preview': '/media/previews/IMG2_preview.webp',
+                    'photo': '/media/user_1/images/IMG2.jpg',
+                    'thumbnail': '/media/user_1/thumbnails/IMG2_thumb.webp',
+                    'preview': '/media/user_1/previews/IMG2_preview.webp',
                     'key': photo2.pk
                 },
                 photo1.pk: {
                     'timestamp': '2024-02-21T10:52:03+00:00',
-                    'photo': '/media/images/IMG1.jpg',
-                    'thumbnail': '/media/thumbnails/IMG1_thumb.webp',
-                    'preview': '/media/previews/IMG1_preview.webp',
+                    'photo': '/media/user_1/images/IMG1.jpg',
+                    'thumbnail': '/media/user_1/thumbnails/IMG1_thumb.webp',
+                    'preview': '/media/user_1/previews/IMG1_preview.webp',
                     'key': photo1.pk
                 },
                 photo3.pk: {
                     'timestamp': '2024-01-28T10:52:03+00:00',
-                    'photo': '/media/images/IMG3.jpg',
-                    'thumbnail': '/media/thumbnails/IMG3_thumb.webp',
-                    'preview': '/media/previews/IMG3_preview.webp',
+                    'photo': '/media/user_1/images/IMG3.jpg',
+                    'thumbnail': '/media/user_1/thumbnails/IMG3_thumb.webp',
+                    'preview': '/media/user_1/previews/IMG3_preview.webp',
                     'key': photo3.pk
                 },
             }
@@ -368,12 +369,13 @@ class PhotoModelTests(TestCase):
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
         # appends random string to keep unique, which makes testing difficult)
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews', i))
+        user_photos = os.path.join(settings.TEST_DIR, 'data', 'images', 'user_1')
+        for i in os.listdir(os.path.join(user_photos, 'images')):
+            os.remove(os.path.join(user_photos, 'images', i))
+        for i in os.listdir(os.path.join(user_photos, 'thumbnails')):
+            os.remove(os.path.join(user_photos, 'thumbnails', i))
+        for i in os.listdir(os.path.join(user_photos, 'previews')):
+            os.remove(os.path.join(user_photos, 'previews', i))
 
     def test_str_method(self):
         # Should return "<plant name> - <photo creation timestamp> - <filename>"

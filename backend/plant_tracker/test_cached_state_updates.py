@@ -799,7 +799,7 @@ class EndpointStateUpdateTests(TestCase):
         # Confirm cached overview state now has new photo thumbnail for plant1
         self.assertEqual(
             self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail'],
-            '/media/thumbnails/new_photo_thumb.webp'
+            '/media/user_1/thumbnails/new_photo_thumb.webp'
         )
 
     def test_delete_plant_photos(self):
@@ -820,7 +820,7 @@ class EndpointStateUpdateTests(TestCase):
         # Confirm cached overview state has photo thumbnail for plant1
         self.assertEqual(
             self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail'],
-            '/media/thumbnails/existing_photo_thumb.webp'
+            '/media/user_1/thumbnails/existing_photo_thumb.webp'
         )
 
         # Delete photo with /delete_plant_photos endpoint
@@ -856,7 +856,7 @@ class EndpointStateUpdateTests(TestCase):
         # Confirm cached overview state used most-recent photo for thumbnail
         self.assertEqual(
             self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail'],
-            '/media/thumbnails/newer_photo_thumb.webp'
+            '/media/user_1/thumbnails/newer_photo_thumb.webp'
         )
 
         # Set older photo as default with /set_plant_default_photo endpoint
@@ -869,5 +869,5 @@ class EndpointStateUpdateTests(TestCase):
         # Confirm cached overview state changed thumbnail to older photo
         self.assertEqual(
             self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail'],
-            '/media/thumbnails/older_photo_thumb.webp'
+            '/media/user_1/thumbnails/older_photo_thumb.webp'
         )

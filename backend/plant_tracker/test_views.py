@@ -907,7 +907,7 @@ class ManagePageTests(TestCase):
         # Confirm plant.thumbnail contains URL of most recent photo
         self.assertEqual(
             response.context['state']['plant_details']['thumbnail'],
-            '/media/thumbnails/photo2_thumb.webp'
+            '/media/user_1/thumbnails/photo2_thumb.webp'
         )
 
         # Confirm photos key contains list of dicts with timestamps, database
@@ -917,16 +917,16 @@ class ManagePageTests(TestCase):
             {
                 photo2.pk: {
                     'timestamp': '2024-03-22T10:52:03+00:00',
-                    'photo': '/media/images/photo2.jpg',
-                    'thumbnail': '/media/thumbnails/photo2_thumb.webp',
-                    'preview': '/media/previews/photo2_preview.webp',
+                    'photo': '/media/user_1/images/photo2.jpg',
+                    'thumbnail': '/media/user_1/thumbnails/photo2_thumb.webp',
+                    'preview': '/media/user_1/previews/photo2_preview.webp',
                     'key': photo2.pk
                 },
                 photo1.pk: {
                     'timestamp': '2024-03-21T10:52:03+00:00',
-                    'photo': '/media/images/photo1.jpg',
-                    'thumbnail': '/media/thumbnails/photo1_thumb.webp',
-                    'preview': '/media/previews/photo1_preview.webp',
+                    'photo': '/media/user_1/images/photo1.jpg',
+                    'thumbnail': '/media/user_1/thumbnails/photo1_thumb.webp',
+                    'preview': '/media/user_1/previews/photo1_preview.webp',
                     'key': photo1.pk
                 },
             }
@@ -2483,12 +2483,13 @@ class PlantPhotoEndpointTests(TestCase):
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
         # appends random string to keep unique, which makes testing difficult)
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews', i))
+        user_photos = os.path.join(settings.TEST_DIR, 'data', 'images', 'user_1')
+        for i in os.listdir(os.path.join(user_photos, 'images')):
+            os.remove(os.path.join(user_photos, 'images', i))
+        for i in os.listdir(os.path.join(user_photos, 'thumbnails')):
+            os.remove(os.path.join(user_photos, 'thumbnails', i))
+        for i in os.listdir(os.path.join(user_photos, 'previews')):
+            os.remove(os.path.join(user_photos, 'previews', i))
 
     def test_add_plant_photos(self):
         # Confirm no photos exist in database or plant reverse relation
@@ -2518,9 +2519,9 @@ class PlantPhotoEndpointTests(TestCase):
             [
                 {
                     "timestamp": "2024-03-22T10:52:03+00:00",
-                    "photo": "/media/images/mock_photo.jpg",
-                    "thumbnail": "/media/thumbnails/mock_photo_thumb.webp",
-                    "preview": "/media/previews/mock_photo_preview.webp",
+                    "photo": "/media/user_1/images/mock_photo.jpg",
+                    "thumbnail": "/media/user_1/thumbnails/mock_photo_thumb.webp",
+                    "preview": "/media/user_1/previews/mock_photo_preview.webp",
                     "key": Photo.objects.all()[0].pk
                 }
             ]
@@ -2638,9 +2639,9 @@ class PlantPhotoEndpointTests(TestCase):
             {'default_photo': {
                 'set': True,
                 'timestamp': '2024-03-21T10:52:03+00:00',
-                'photo': '/media/images/mock_photo.jpg',
-                'thumbnail': '/media/thumbnails/mock_photo_thumb.webp',
-                'preview': '/media/previews/mock_photo_preview.webp',
+                'photo': '/media/user_1/images/mock_photo.jpg',
+                'thumbnail': '/media/user_1/thumbnails/mock_photo_thumb.webp',
+                'preview': '/media/user_1/previews/mock_photo_preview.webp',
                 'key': photo.pk
             }}
         )

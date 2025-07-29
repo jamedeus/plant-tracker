@@ -35,20 +35,30 @@ def public_storage():
     return storages["public"]
 
 
+def user_image_path(instance, filename):
+    '''Returns path to original image in user namespace directory.'''
+    return f"user_{instance.plant.user_id}/images/{filename}"
+
+
+def user_preview_path(instance, filename):
+    '''Returns path to preview image in user namespace directory.'''
+    return f"user_{instance.plant.user_id}/previews/{filename}"
+
+
+def user_thumb_path(instance, filename):
+    '''Returns path to thumbnail image in user namespace directory.'''
+    return f"user_{instance.plant.user_id}/thumbnails/{filename}"
+
+
 class Photo(models.Model):
     '''Stores a user-uploaded image of a specific plant.'''
 
     # Original full-resolution photo
-    photo = models.ImageField(upload_to="images")
+    photo = models.ImageField(upload_to=user_image_path)
     # 800x800 preview (shown in photo modals)
-    preview = models.ImageField(upload_to="previews", null=True, blank=True)
+    preview = models.ImageField(upload_to=user_preview_path, null=True, blank=True)
     # 200x200 thumbnail (shown on PlantCard, timeline thumbnails, etc)
-    thumbnail = models.ImageField(
-        upload_to="thumbnails",
-        storage=public_storage,
-        null=True,
-        blank=True,
-    )
+    thumbnail = models.ImageField(upload_to=user_thumb_path, null=True, blank=True)
 
     # Store timestamp when created (not editable)
     created = models.DateTimeField(auto_now_add=True)
@@ -62,7 +72,7 @@ class Photo(models.Model):
     def __str__(self):
         name = self.plant.get_display_name()
         timestamp = self.timestamp.strftime(TIME_FORMAT)
-        filename = self.photo.name.split("/", 1)[-1]
+        filename = self.photo.name.rsplit("/", 1)[-1]
         return f"{name} - {timestamp} - {filename}"
 
     def get_details(self):

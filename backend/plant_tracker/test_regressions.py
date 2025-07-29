@@ -114,7 +114,7 @@ class ModelRegressionTests(TestCase):
         # Confirm filename was not truncated
         self.assertEqual(
             photo.thumbnail.name,
-            'thumbnails/photo.of.my.plant.flowering_thumb.webp'
+            'user_1/thumbnails/photo.of.my.plant.flowering_thumb.webp'
         )
 
     def test_should_not_allow_creating_plant_with_same_uuid_as_group(self):
@@ -1114,16 +1114,16 @@ class CachedStateRegressionTests(TestCase):
         response = self.client.get(f'/manage/{plant.uuid}')
         self.assertEqual(
             response.context['state']['plant_details']['thumbnail'],
-            '/media/thumbnails/photo1_thumb.webp'
+            '/media/user_1/thumbnails/photo1_thumb.webp'
         )
         self.assertEqual(
             response.context['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': '2024-02-21T10:52:03+00:00',
-                'photo': '/media/images/photo1.jpg',
-                'thumbnail': '/media/thumbnails/photo1_thumb.webp',
-                'preview': '/media/previews/photo1_preview.webp',
+                'photo': '/media/user_1/images/photo1.jpg',
+                'thumbnail': '/media/user_1/thumbnails/photo1_thumb.webp',
+                'preview': '/media/user_1/previews/photo1_preview.webp',
                 'key': photo.pk
             }
         )
