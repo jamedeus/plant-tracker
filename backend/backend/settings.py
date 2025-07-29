@@ -260,12 +260,12 @@ else:
     CLOUDFRONT_COOKIE_DOMAIN = os.environ.get("CLOUDFRONT_COOKIE_DOMAIN")
     CLOUDFRONT_PRIVKEY_PATH = os.environ.get("CLOUDFRONT_PRIVKEY_PATH", "./private_key.pem")
 
-    try:
-        CLOUDFRONT_PRIVKEY = open(CLOUDFRONT_PRIVKEY_PATH, "rb").read()
-    except FileNotFoundError as exc:
-        raise ImproperlyConfigured(
-            "Cloudfront private key not found (set CLOUDFRONT_PRIVKEY_PATH)"
-        ) from exc
+    # Add middleware that sets cloudfront signed cookies
+    # Must be after auth middleware (checks if user is authenticated)
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.contrib.auth.middleware.AuthenticationMiddleware") + 1,
+        "backend.CloudFrontCookieMiddleware.CloudFrontCookieMiddleware"
+    )
 
     STORAGES = {
         # Full-resolution and preview resolution photos (requires signed URLs)
