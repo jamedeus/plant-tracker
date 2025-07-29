@@ -177,9 +177,6 @@ YZ1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
                 self.assertTrue(kwargs['secure'])
                 self.assertEqual(kwargs['samesite'], 'None')
 
-                # Confirm user ID is in path
-                self.assertEqual(kwargs['path'], f'/user_{self.test_user.id}/')
-
                 # Confirm expiration matches session
                 self.assertEqual(kwargs['expires'], session_expiry)
 
@@ -224,7 +221,6 @@ YZ1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
                 self.assertTrue(kwargs['httponly'])
                 self.assertTrue(kwargs['secure'])
                 self.assertEqual(kwargs['samesite'], 'None')
-                self.assertEqual(kwargs['path'], f'/user_{self.test_user.id}/')
                 self.assertEqual(kwargs['expires'], session_expiry)
 
             # Confirm correct CloudFront policy was generated for the user

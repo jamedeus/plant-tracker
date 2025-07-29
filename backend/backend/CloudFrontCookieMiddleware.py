@@ -100,8 +100,6 @@ class CloudFrontCookieMiddleware:
                 httponly=True,
                 secure=True,
                 samesite="None",
-                # Only send cookies when requesting photos from namespace
-                path=f"/user_{user.id}/",
                 # Expire at same time as session cookie
                 expires=request.session.get_expiry_date()
             )
