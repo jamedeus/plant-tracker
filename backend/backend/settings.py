@@ -222,16 +222,8 @@ if LOCAL_MEDIA_ROOT:
     MEDIA_URL = "/media/"
 
     STORAGES = {
-        # Full-resolution and preview resolution photos
+        # User-uploaded photos
         "default": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
-            "OPTIONS": {
-                "location": MEDIA_ROOT,
-                "base_url": MEDIA_URL,
-            },
-        },
-        # Photo thumbnails
-        "public": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
             "OPTIONS": {
                 "location": MEDIA_ROOT,
@@ -268,7 +260,7 @@ else:
     )
 
     STORAGES = {
-        # Full-resolution and preview resolution photos (requires signed URLs)
+        # User-uploaded photos (requires signed cloudfront cookies)
         "default": {
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {
@@ -276,20 +268,6 @@ else:
                 "region_name": AWS_S3_REGION_NAME,
                 "custom_domain": CLOUDFRONT_IMAGE_DOMAIN,
                 # Used signed cookies (not querystring auth)
-                "querystring_auth": False,
-                # Cache up to 30 days
-                "object_parameters": {
-                    "CacheControl": "public,max-age=2592000,immutable"
-                },
-            },
-        },
-        # Photo thumbnails (publicly accessible)
-        "public": {
-            "BACKEND": "storages.backends.s3.S3Storage",
-            "OPTIONS": {
-                "bucket_name": AWS_STORAGE_BUCKET_NAME,
-                "region_name": AWS_S3_REGION_NAME,
-                "custom_domain": CLOUDFRONT_IMAGE_DOMAIN,
                 "querystring_auth": False,
                 # Cache up to 30 days
                 "object_parameters": {

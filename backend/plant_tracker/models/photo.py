@@ -10,7 +10,7 @@ from pillow_heif import register_heif_opener
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
-from django.core.files.storage import storages
+from django.core.files.storage import default_storage
 from django.db.models.signals import post_delete
 from django.utils import timezone as django_timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -26,13 +26,8 @@ register_heif_opener()
 
 
 def public_storage():
-    '''Returns an instance of the currently configured public storage backend.
-
-    This is necessary to generate a migration that will use whichever storage
-    backend is configured at runtime (S3 or local) instead of hardcoding the
-    one that was configured when the migration was generated.
-    '''
-    return storages["public"]
+    '''Stub to keep old migration from failing.'''
+    return default_storage
 
 
 def user_image_path(instance, filename):
