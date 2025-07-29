@@ -197,11 +197,11 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 LOCAL_MEDIA_ROOT = not all(
     var in os.environ
     for var in [
+        "IMAGE_URL",
         "AWS_ACCESS_KEY_ID",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_STORAGE_BUCKET_NAME",
         "AWS_S3_REGION_NAME",
-        "CLOUDFRONT_IMAGE_DOMAIN",
         "CLOUDFRONT_KEY_ID",
     ]
 )
@@ -241,12 +241,12 @@ if LOCAL_MEDIA_ROOT:
 # AWS S3 settings
 else:
     # Read AWS settings from env vars
+    IMAGE_URL = os.environ.get("IMAGE_URL")
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
     CLOUDFRONT_KEY_ID = os.environ.get("CLOUDFRONT_KEY_ID")
-    CLOUDFRONT_IMAGE_DOMAIN = os.environ.get("CLOUDFRONT_IMAGE_DOMAIN")
     CLOUDFRONT_PRIVKEY_PATH = os.environ.get("CLOUDFRONT_PRIVKEY_PATH", "./private_key.pem")
 
     # Add middleware that sets cloudfront signed cookies
@@ -263,7 +263,7 @@ else:
             "OPTIONS": {
                 "bucket_name": AWS_STORAGE_BUCKET_NAME,
                 "region_name": AWS_S3_REGION_NAME,
-                "custom_domain": CLOUDFRONT_IMAGE_DOMAIN,
+                "custom_domain": IMAGE_URL,
                 # Used signed cookies (not querystring auth)
                 "querystring_auth": False,
                 # Cache up to 30 days
@@ -320,7 +320,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 # Serve static files from CDN if configured
-STATIC_HOST = os.environ.get("DJANGO_STATIC_HOST", "")
+STATIC_HOST = os.environ.get("STATIC_URL", "")
 
 STATIC_URL = STATIC_HOST + "/static/"
 

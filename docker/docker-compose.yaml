@@ -15,19 +15,20 @@ services:
       # Will be used to generate QR code URLs (adds /manage/<uuid>)
       - BASE_URL=plants.lan
       # Optional: Serve static files (JS bundles) from CDN if set
-      # - DJANGO_STATIC_HOST=https://static.plants.joshmedeiros.dev
+      # - STATIC_URL=https://static.plants.joshmedeiros.dev
       # Optional: Store user-uploaded files in S3 if all variables set
       # Photos will be stored locally if any AWS variables are missing
       # - AWS_ACCESS_KEY_ID=
       # - AWS_SECRET_ACCESS_KEY=
       # - AWS_STORAGE_BUCKET_NAME=
       # - AWS_S3_REGION_NAME=
+      # # Cloudfront alternate domain used for photos (subdomain of BASE_URL)
+      # # Can be the same as STATIC_URL or different, cannot have protocol
+      # - IMAGE_URL=media.plants.joshmedeiros.dev
       # # Cloudfront public key ID (Cloudfront -> Key management -> Public keys)
       # - CLOUDFRONT_KEY_ID=
       # # Optional (only if mounting privkey to different location)
       # - CLOUDFRONT_PRIVKEY_PATH=/mnt/backend/private_key.pem
-      # # Cloudfront alternate domain used for photos (subdomain of BASE_URL)
-      # - CLOUDFRONT_IMAGE_DOMAIN=static.plants.joshmedeiros.dev
       # Postgres database host (must match container below)
       - DATABASE_HOST=plant-tracker-db
       # Postgres database password (must match container below)

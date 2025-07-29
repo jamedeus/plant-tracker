@@ -56,7 +56,7 @@ class CloudFrontCookieMiddleware:
 
         # Build policy with user namespace directory URL, sign with privkey
         policy = self._cloudfront_signer.build_policy(
-            f"https://{settings.CLOUDFRONT_IMAGE_DOMAIN}/user_{user_id}/*",
+            f"https://{settings.IMAGE_URL}/user_{user_id}/*",
             expires_at
         ).encode("utf8")
         signature = self._rsa_signer(policy)

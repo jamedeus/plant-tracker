@@ -47,7 +47,7 @@ Serving behind a reverse proxy like nginx is highly recommended for security. Yo
 
 ### Static file CDN
 
-By default static files will be served by django using whitenoise. To serve from a CDN instead uncomment the `DJANGO_STATIC_HOST` env var in docker-compose.yaml and add your CDN URL. This can speed up page loads and take load off the django backend.
+By default static files will be served by django using whitenoise. To serve from a CDN instead uncomment the `STATIC_URL` env var in docker-compose.yaml and add your CDN URL. This can speed up page loads and take load off the django backend.
 
 If using cloudfront go to your distribution -> Behaviors -> Edit and make sure `Cache policy` is set to `CachingOptimized` so that cloudfront can store each static file and serve from the cache (much faster). This is disabled by default which will perform worse than no CDN at all (cloudfront will just request the static files from django every time).
 

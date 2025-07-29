@@ -33,7 +33,7 @@ class CloudFrontCookieMiddlewareTests(TestCase):
             'AWS_SECRET_ACCESS_KEY': 'test-secret-access-key',
             'AWS_STORAGE_BUCKET_NAME': 'test-bucket',
             'AWS_S3_REGION_NAME': 'us-west-2',
-            'CLOUDFRONT_IMAGE_DOMAIN': 'images.example.com',
+            'IMAGE_URL': 'images.example.com',
             'CLOUDFRONT_KEY_ID': 'K86ALCJM6RYZT',
             'CLOUDFRONT_PRIVKEY_PATH': '/test/private_key.pem'
         }
@@ -185,7 +185,7 @@ YZ1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
 
             # Confirm correct CloudFront policy was generated for the user
             mock_signer.build_policy.assert_called_once_with(
-                f"https://{self.aws_env_vars['CLOUDFRONT_IMAGE_DOMAIN']}/user_{self.test_user.id}/*",
+                f"https://{self.aws_env_vars['IMAGE_URL']}/user_{self.test_user.id}/*",
                 session_expiry
             )
 
@@ -229,7 +229,7 @@ YZ1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
 
             # Confirm correct CloudFront policy was generated for the user
             mock_signer.build_policy.assert_called_once_with(
-                f"https://{self.aws_env_vars['CLOUDFRONT_IMAGE_DOMAIN']}/user_{self.test_user.id}/*",
+                f"https://{self.aws_env_vars['IMAGE_URL']}/user_{self.test_user.id}/*",
                 session_expiry
             )
 
