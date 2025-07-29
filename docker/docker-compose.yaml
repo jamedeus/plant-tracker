@@ -31,7 +31,7 @@ services:
       # # App domain (remove cloudfront subdomain so can set auth cookies)
       # - CLOUDFRONT_COOKIE_DOMAIN=.plants.joshmedeiros.dev
       # Serve static files (JS bundles) from CDN if set
-      # - DJANGO_STATIC_HOST=static.plants.joshmedeiros.dev
+      # - DJANGO_STATIC_HOST=https://static.plants.joshmedeiros.dev
       # Postgres database host (must match container below)
       - DATABASE_HOST=plant-tracker-db
       # Postgres database password (must match container below)
