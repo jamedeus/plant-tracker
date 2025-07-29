@@ -201,7 +201,9 @@ LOCAL_MEDIA_ROOT = not all(
         "AWS_SECRET_ACCESS_KEY",
         "AWS_STORAGE_BUCKET_NAME",
         "AWS_S3_REGION_NAME",
-        "THUMBNAIL_CDN_DOMAIN",
+        "CLOUDFRONT_COOKIE_DOMAIN",
+        "CLOUDFRONT_IMAGE_DOMAIN",
+        "CLOUDFRONT_KEY_ID",
     ]
 )
 
@@ -241,6 +243,10 @@ if LOCAL_MEDIA_ROOT:
         },
     }
 
+    # Prevent auth_views helper functions from crashing
+    CLOUDFRONT_KEY_ID = None
+    CLOUDFRONT_PRIVKEY_PATH = None
+
 # AWS S3 settings
 else:
     # Read AWS settings from env vars
@@ -248,7 +254,17 @@ else:
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
-    THUMBNAIL_CDN_DOMAIN = os.environ.get("THUMBNAIL_CDN_DOMAIN")
+    CLOUDFRONT_KEY_ID = os.environ.get("CLOUDFRONT_KEY_ID")
+    CLOUDFRONT_IMAGE_DOMAIN = os.environ.get("CLOUDFRONT_IMAGE_DOMAIN")
+    CLOUDFRONT_COOKIE_DOMAIN = os.environ.get("CLOUDFRONT_COOKIE_DOMAIN")
+    CLOUDFRONT_PRIVKEY_PATH = os.environ.get("CLOUDFRONT_PRIVKEY_PATH", "./private_key.pem")
+
+    try:
+        CLOUDFRONT_PRIVKEY = open(CLOUDFRONT_PRIVKEY_PATH, "rb").read()
+    except FileNotFoundError as exc:
+        raise ImproperlyConfigured(
+            "Cloudfront private key not found (set CLOUDFRONT_PRIVKEY_PATH)"
+        ) from exc
 
     STORAGES = {
         # Full-resolution and preview resolution photos (requires signed URLs)
@@ -257,10 +273,13 @@ else:
             "OPTIONS": {
                 "bucket_name": AWS_STORAGE_BUCKET_NAME,
                 "region_name": AWS_S3_REGION_NAME,
-                # Require signed URLs, grant access for 2 hours (full-res URLs
-                # aren't requested until gallery opened which could be a while)
-                "querystring_auth": True,
-                "querystring_expire": 7200,
+                "custom_domain": CLOUDFRONT_IMAGE_DOMAIN,
+                # Used signed cookies (not querystring auth)
+                "querystring_auth": False,
+                # Cache up to 30 days
+                "object_parameters": {
+                    "CacheControl": "public,max-age=2592000,immutable"
+                },
             },
         },
         # Photo thumbnails (publicly accessible)
@@ -269,7 +288,7 @@ else:
             "OPTIONS": {
                 "bucket_name": AWS_STORAGE_BUCKET_NAME,
                 "region_name": AWS_S3_REGION_NAME,
-                "custom_domain": THUMBNAIL_CDN_DOMAIN,
+                "custom_domain": CLOUDFRONT_IMAGE_DOMAIN,
                 "querystring_auth": False,
                 # Cache up to 30 days
                 "object_parameters": {

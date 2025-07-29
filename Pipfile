@@ -16,6 +16,7 @@ django-unique-user-email = "*"
 psycopg = {extras = ["binary"], version = "*"}
 whitenoise = "*"
 django-storages = {extras = ["s3"], version = "*"}
+cryptography = "*"
 
 [dev-packages]
 pylint-django = "*"

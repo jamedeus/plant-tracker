@@ -14,3 +14,4 @@ node_modules/
 *.webp
 *.crt
 *.key
+*.pem

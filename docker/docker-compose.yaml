@@ -22,9 +22,16 @@ services:
       # - AWS_SECRET_ACCESS_KEY=
       # - AWS_STORAGE_BUCKET_NAME=
       # - AWS_S3_REGION_NAME=
-      # - THUMBNAIL_CDN_DOMAIN=
+      # # Cloudfront public key ID (Cloudfront -> Key management -> Public keys)
+      # - CLOUDFRONT_KEY_ID=
+      # # Optional (only if mounting privkey to different location)
+      # - CLOUDFRONT_PRIVKEY_PATH=/mnt/backend/private_key.pem
+      # # Cloudfront alternate domain used for photos (subdomain of URL_PREFIX)
+      # - CLOUDFRONT_IMAGE_DOMAIN=static.plants.joshmedeiros.dev
+      # # App domain (remove cloudfront subdomain so can set auth cookies)
+      # - CLOUDFRONT_COOKIE_DOMAIN=.plants.joshmedeiros.dev
       # Serve static files (JS bundles) from CDN if set
-      # - DJANGO_STATIC_HOST=
+      # - DJANGO_STATIC_HOST=static.plants.joshmedeiros.dev
       # Postgres database host (must match container below)
       - DATABASE_HOST=plant-tracker-db
       # Postgres database password (must match container below)
@@ -52,6 +59,8 @@ services:
     volumes:
       # Persistent storage between sessions (if not using AWS S3)
       - plant-tracker-data:/mnt/backend/data/
+      # Cloudfront private key for signed URLs (if using AWS S3)
+      # - ./private_key.pem:/mnt/backend/private_key.pem
     ports:
       - 8456:8456
     restart: unless-stopped

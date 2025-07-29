@@ -1,5 +1,12 @@
 '''Django API endpoint functions for user authentication and account management'''
 
+import base64
+
+from botocore.signers import CloudFrontSigner
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import serialization, hashes
+
 from django.conf import settings
 from django.contrib.auth import views
 from django.contrib.auth import get_user_model
@@ -22,6 +29,20 @@ from .view_decorators import (
 )
 
 user_model = get_user_model()
+
+
+def rsa_signer(message):
+    '''Signs message with cloudfront private key (SHA1 required by cloudfront).'''
+    with open(settings.CLOUDFRONT_PRIVKEY_PATH, 'rb') as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+            backend=default_backend()
+        )
+    return private_key.sign(message, padding.PKCS1v15(), hashes.SHA1())
+
+
+cloudfront_signer = CloudFrontSigner(settings.CLOUDFRONT_KEY_ID, rsa_signer)
 
 
 class EmailOrUsernameAuthenticationForm(AuthenticationForm):
@@ -90,6 +111,32 @@ class LoginView(views.LoginView):
         'css_files': settings.PAGE_DEPENDENCIES['login']['css']
     }
 
+    def _base64_encode_url(self, data):
+        '''Takes bytes, returns URL-safe base64 encoded string.'''
+        return base64.b64encode(data) \
+            .replace(b"+", b"-") \
+            .replace(b"=", b"_") \
+            .replace(b"/", b"~") \
+            .decode("utf8")
+
+    def _get_cloudfront_cookies(self, user_id, expires_at):
+        '''Takes user_id and session expiration time, returns dict of signed
+        cloudfront cookies granting access to user's namespace directory.
+        '''
+        # Build policy with user namespace directory URL, sign with privkey
+        policy = cloudfront_signer.build_policy(
+            f"https://{settings.CLOUDFRONT_IMAGE_DOMAIN}/user_{user_id}/*",
+            expires_at
+        ).encode("utf8")
+        signature = rsa_signer(policy)
+
+        # Return signed cloudfront cookies
+        return {
+            "CloudFront-Policy": self._base64_encode_url(policy),
+            "CloudFront-Signature": self._base64_encode_url(signature),
+            "CloudFront-Key-Pair-Id": settings.CLOUDFRONT_KEY_ID
+        }
+
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(disable_in_single_user_mode)
     def dispatch(self, request, *args, **kwargs):
@@ -99,7 +146,33 @@ class LoginView(views.LoginView):
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''
         super().form_valid(form)
-        return JsonResponse({"success": "logged in"})
+        response = JsonResponse({"success": "logged in"})
+
+        # If using S3 storage add cloudfront signed cookies to response
+        if not settings.LOCAL_MEDIA_ROOT:
+            # Create cloudfront signed cookies scoped to user's photos
+            user = self.request.user
+            cookies = self._get_cloudfront_cookies(
+                user_id=user.id,
+                expires_at=self.request.session.get_expiry_date()
+            )
+            # Add all cookies to response
+            for cookie_name, cookie_value in cookies.items():
+                response.set_cookie(
+                    cookie_name,
+                    cookie_value,
+                    # Apply to all subdomains
+                    domain=settings.CLOUDFRONT_COOKIE_DOMAIN,
+                    httponly=True,
+                    secure=True,
+                    samesite="None",
+                    # Only send cookies when requesting photos from namespace
+                    path=f"/user_{user.id}/",
+                    # Expire at same time as session cookie
+                    expires=self.request.session.get_expiry_date()
+                )
+
+        return response
 
     def form_invalid(self, form):
         '''Returns errors as JSON instead of redirect with error context.'''
