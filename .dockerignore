@@ -1,2 +1,5 @@
 db.sqlite3
-**/static/*
+**/static/*.js
+**/static/*.css
+**/static/*.mp3
+**/static/*.json

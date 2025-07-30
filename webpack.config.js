@@ -70,7 +70,9 @@ module.exports = (env, argv) => {
         output: {
             path: path.resolve('backend/plant_tracker/static/plant_tracker/'),
             filename: '[name].js',
-            clean: true
+            clean: {
+                keep: /\.(?:png|svg|ico)$/i
+            }
         },
         devServer: {
             open: true,

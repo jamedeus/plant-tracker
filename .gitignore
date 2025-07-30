@@ -2,7 +2,10 @@
 coverage/
 docs/sphinx/_build/
 .env
-backend/plant_tracker/static/
+backend/plant_tracker/static/**/*.js
+backend/plant_tracker/static/**/*.css
+backend/plant_tracker/static/**/*.mp3
+backend/plant_tracker/static/**/*.json
 backend/staticfiles/
 backend/data/
 backend/*.json
