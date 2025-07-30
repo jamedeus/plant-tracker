@@ -10,7 +10,6 @@ from pillow_heif import register_heif_opener
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
-from django.core.files.storage import default_storage
 from django.db.models.signals import post_delete
 from django.utils import timezone as django_timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile
