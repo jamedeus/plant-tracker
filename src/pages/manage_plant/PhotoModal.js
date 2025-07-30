@@ -56,7 +56,10 @@ const PhotoModal = () => {
     const [uploading, setUploading] = useState(false);
 
     const handleSelect = (event) => {
-        setSelectedFiles(Array.from(event.target.files));
+        setSelectedFiles([
+            ...selectedFiles,
+            ...Array.from(event.target.files)
+        ]);
     };
 
     const resetSelection = () => {
