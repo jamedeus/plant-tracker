@@ -135,14 +135,43 @@ const PrintModal = memo(function PrintModal() {
         const qr = new Blob([imageBytes], { type: 'image/png' });
         const uri = URL.createObjectURL(qr);
 
-        // Open print dialog, close print modal
-        print({
-            printable: uri,
-            type: 'image',
-            documentTitle: '',
-            header: null,
-            footer: null
-        });
+        // iOS non-safari browser workaround (only supports printing page)
+        // Open new tab containing nothing but image, print, then close tab
+        if (/crios|fxios/i.test(navigator.userAgent)) {
+            const printWindow = window.open('', '_blank');
+
+            // Make image fill full page without changing aspect ratio
+            const style = printWindow.document.createElement('style');
+            style.textContent = `
+                @page { size: letter portrait; margin: 0 }
+                html, body { width: 100%; height: 100%; margin: 0; padding: 0 }
+                body { display: flex; align-items: center; justify-content: center }
+                img { max-width: 100%; max-height: 100%; object-fit: contain }
+            `;
+            printWindow.document.head.appendChild(style);
+
+            // Add image to new tab body
+            const img = printWindow.document.createElement('img');
+            img.src = uri;
+            img.alt = 'QR code';
+            printWindow.document.body.appendChild(img);
+
+            // Open print dialog, immediately close tab (dialog stays open)
+            printWindow.print();
+            setTimeout(() => {
+                printWindow.close();
+            }, 100);
+
+        // Call print-js directly on all other browsers
+        } else {
+            print({
+                printable: uri,
+                type: 'image',
+                documentTitle: '',
+                header: null,
+                footer: null
+            });
+        }
         modalRef.current.close();
     };
 
