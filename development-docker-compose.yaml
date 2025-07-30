@@ -74,7 +74,13 @@ services:
     restart: unless-stopped
 
   nginx-proxy:
-    image: jwilder/nginx-proxy:1.6.4
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM jwilder/nginx-proxy:1.6.4
+        # Fix reverse proxy blocking photo uploads
+        RUN mkdir -p /etc/nginx/vhost.d/
+        RUN printf 'client_max_body_size 250m;\n' > /etc/nginx/vhost.d/dev.lan
     container_name: proxy-dev
     ports:
       - "80:80"
