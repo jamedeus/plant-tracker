@@ -637,7 +637,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
     </div>
     <div
       class="floating-footer floating-footer-hidden"
-      data-testid="floating-footer"
+      data-testid="edit-mode-footer"
     >
       <div
         class="flex flex-col items-center gap-4 w-full"
@@ -891,7 +891,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
     </div>
     <div
       class="floating-footer floating-footer-hidden"
-      data-testid="floating-footer"
+      data-testid="edit-mode-footer"
     >
       <div
         class="flex flex-col items-center gap-4 w-full"
@@ -921,6 +921,34 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               </span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="floating-footer floating-footer-hidden"
+      data-testid="add-events-footer"
+    >
+      <div
+        class="flex flex-col items-center gap-4 w-full"
+      >
+        <div
+          class="flex flex-row justify-center gap-8"
+        >
+          <button
+            class="btn btn-neutral"
+          >
+            Done
+          </button>
+          <button
+            class="btn btn-info"
+          >
+            Water
+          </button>
+          <button
+            class="btn btn-success"
+          >
+            Fertilize
+          </button>
         </div>
       </div>
     </div>
@@ -1346,7 +1374,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
     </div>
     <div
       class="floating-footer floating-footer-hidden"
-      data-testid="floating-footer"
+      data-testid="edit-mode-footer"
     >
       <div
         class="flex flex-col items-center gap-4 w-full"
@@ -1376,6 +1404,34 @@ exports[`App matches snapshot when only groups exist 1`] = `
               </span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="floating-footer floating-footer-hidden"
+      data-testid="add-events-footer"
+    >
+      <div
+        class="flex flex-col items-center gap-4 w-full"
+      >
+        <div
+          class="flex flex-row justify-center gap-8"
+        >
+          <button
+            class="btn btn-neutral"
+          >
+            Done
+          </button>
+          <button
+            class="btn btn-info"
+          >
+            Water
+          </button>
+          <button
+            class="btn btn-success"
+          >
+            Fertilize
+          </button>
         </div>
       </div>
     </div>
@@ -1581,7 +1637,29 @@ exports[`App matches snapshot when only plants exist 1`] = `
               </div>
               <div
                 class="dropdown-content z-50 mt-14"
-              />
+              >
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
+                  tabindex="0"
+                >
+                  <li>
+                    <a
+                      class="flex justify-center"
+                      data-testid="add_plants_option"
+                    >
+                      Add events
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="flex justify-center"
+                      data-testid="edit_plants_option"
+                    >
+                      Edit plants
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div
               class="flex px-4 mb-4"
@@ -1848,7 +1926,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
     </div>
     <div
       class="floating-footer floating-footer-hidden"
-      data-testid="floating-footer"
+      data-testid="edit-mode-footer"
     >
       <div
         class="flex flex-col items-center gap-4 w-full"
@@ -1878,6 +1956,34 @@ exports[`App matches snapshot when only plants exist 1`] = `
               </span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="floating-footer floating-footer-hidden"
+      data-testid="add-events-footer"
+    >
+      <div
+        class="flex flex-col items-center gap-4 w-full"
+      >
+        <div
+          class="flex flex-row justify-center gap-8"
+        >
+          <button
+            class="btn btn-neutral"
+          >
+            Done
+          </button>
+          <button
+            class="btn btn-info"
+          >
+            Water
+          </button>
+          <button
+            class="btn btn-success"
+          >
+            Fertilize
+          </button>
         </div>
       </div>
     </div>
@@ -2083,7 +2189,29 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               </div>
               <div
                 class="dropdown-content z-50 mt-14"
-              />
+              >
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
+                  tabindex="0"
+                >
+                  <li>
+                    <a
+                      class="flex justify-center"
+                      data-testid="add_plants_option"
+                    >
+                      Add events
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="flex justify-center"
+                      data-testid="edit_plants_option"
+                    >
+                      Edit plants
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div
               class="flex px-4 mb-4"
@@ -2588,7 +2716,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
     </div>
     <div
       class="floating-footer floating-footer-hidden"
-      data-testid="floating-footer"
+      data-testid="edit-mode-footer"
     >
       <div
         class="flex flex-col items-center gap-4 w-full"
@@ -2618,6 +2746,34 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               </span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="floating-footer floating-footer-hidden"
+      data-testid="add-events-footer"
+    >
+      <div
+        class="flex flex-col items-center gap-4 w-full"
+      >
+        <div
+          class="flex flex-row justify-center gap-8"
+        >
+          <button
+            class="btn btn-neutral"
+          >
+            Done
+          </button>
+          <button
+            class="btn btn-info"
+          >
+            Water
+          </button>
+          <button
+            class="btn btn-success"
+          >
+            Fertilize
+          </button>
         </div>
       </div>
     </div>
@@ -2846,7 +3002,29 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               </div>
               <div
                 class="dropdown-content z-50 mt-14"
-              />
+              >
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
+                  tabindex="0"
+                >
+                  <li>
+                    <a
+                      class="flex justify-center"
+                      data-testid="add_plants_option"
+                    >
+                      Add events
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="flex justify-center"
+                      data-testid="edit_plants_option"
+                    >
+                      Edit plants
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div
               class="flex px-4 mb-4"
@@ -3351,7 +3529,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
     </div>
     <div
       class="floating-footer floating-footer-hidden"
-      data-testid="floating-footer"
+      data-testid="edit-mode-footer"
     >
       <div
         class="flex flex-col items-center gap-4 w-full"
@@ -3381,6 +3559,34 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               </span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="floating-footer floating-footer-hidden"
+      data-testid="add-events-footer"
+    >
+      <div
+        class="flex flex-col items-center gap-4 w-full"
+      >
+        <div
+          class="flex flex-row justify-center gap-8"
+        >
+          <button
+            class="btn btn-neutral"
+          >
+            Done
+          </button>
+          <button
+            class="btn btn-info"
+          >
+            Water
+          </button>
+          <button
+            class="btn btn-success"
+          >
+            Fertilize
+          </button>
         </div>
       </div>
     </div>

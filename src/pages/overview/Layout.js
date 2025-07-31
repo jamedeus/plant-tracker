@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Setup from './Setup';
 import PlantsCol from 'src/components/PlantsCol';
 import GroupsCol from 'src/components/GroupsCol';
+import DropdownMenu from 'src/components/DropdownMenu';
 import clsx from 'clsx';
 import { v4 as uuidv4 } from 'uuid';
 import { FaPlus } from 'react-icons/fa6';
@@ -13,7 +14,9 @@ const Layout = ({
     selectedPlantsRef,
     selectedGroupsRef,
     editing,
+    addingEvents,
     toggleEditing,
+    toggleAddingEvents,
     plantsColRef,
     groupsColRef,
     archivedOverview
@@ -39,10 +42,30 @@ const Layout = ({
                 >
                     <PlantsCol
                         plants={plants}
-                        editing={editing}
+                        editing={editing || addingEvents}
                         formRef={selectedPlantsRef}
                         storageKey='overviewPlantsColumn'
-                        onOpenTitle={toggleEditing}
+                        // Archived overview: Click title to enter edit mode
+                        onOpenTitle={archivedOverview ? toggleEditing : null}
+                        // Main overview: Show add events and edit options
+                        titleOptions={archivedOverview ? null : (
+                            <DropdownMenu>
+                                <li><a
+                                    className="flex justify-center"
+                                    onClick={toggleAddingEvents}
+                                    data-testid="add_plants_option"
+                                >
+                                    Add events
+                                </a></li>
+                                <li><a
+                                    className="flex justify-center"
+                                    onClick={toggleEditing}
+                                    data-testid="edit_plants_option"
+                                >
+                                    Edit plants
+                                </a></li>
+                            </DropdownMenu>
+                        )}
                     >
                         {!archivedOverview && (
                             <a
@@ -104,7 +127,9 @@ Layout.propTypes = {
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     editing: PropTypes.bool.isRequired,
+    addingEvents: PropTypes.bool.isRequired,
     toggleEditing: PropTypes.func.isRequired,
+    toggleAddingEvents: PropTypes.func.isRequired,
     plantsColRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),

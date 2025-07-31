@@ -22,7 +22,7 @@ describe('App', () => {
 
     beforeEach(() => {
         // Allow fast forwarding (must hold delete button to confirm)
-        jest.useFakeTimers();
+        jest.useFakeTimers({ doNotFake: ['Date'] });
 
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
@@ -54,7 +54,7 @@ describe('App', () => {
 
     it('shows checkboxes and delete button when edit option clicked', async () => {
         // Get reference to footer, confirm hidden (default)
-        const floatingFooter = app.getByTestId('floating-footer');
+        const floatingFooter = app.getByTestId('edit-mode-footer');
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         // Checkboxes are rendered underneath card with position: absolute, so
         // they are not visible until margin-left is added to the card wrapper
@@ -70,8 +70,8 @@ describe('App', () => {
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
-        // Click Plants column title, confirm entered edit mode again
-        await user.click(app.getByText('Plants (2)'));
+        // Click edit option in Plants column dropdown, confirm entered edit mode again
+        await user.click(app.getByTestId('edit_plants_option'));
         expect(floatingFooter.classList).toContain('floating-footer-visible');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
@@ -85,11 +85,11 @@ describe('App', () => {
         expect(floatingFooter.classList).toContain('floating-footer-visible');
 
         // Swipe down on footer, confirm footer disappeared
-        const footer = app.getByTestId("floating-footer");
+        const footer = app.getByTestId("edit-mode-footer");
         fireEvent.touchStart(footer, {touches: [{ clientX: 50, clientY: 10 }]});
         fireEvent.touchMove(footer, {touches: [{ clientX:  50, clientY: 100 }]});
         fireEvent.touchEnd(footer, {changedTouches: [{ clientX:  50, clientY: 100 }]});
-        expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-hidden");
+        expect(app.getByTestId("edit-mode-footer").classList).toContain("floating-footer-hidden");
     });
 
     it('sends correct payload when plants are deleted', async () => {
@@ -368,6 +368,131 @@ describe('App', () => {
 
         // Confirm edit option no longer exists
         expect(app.queryByText('Edit')).toBeNull();
+    });
+
+    it('shows checkboxes and event buttons when add events option clicked', async () => {
+        // Get reference to footer, confirm hidden (default)
+        const floatingFooter = app.getByTestId('add-events-footer');
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
+        // Checkboxes are rendered underneath card with position: absolute, so
+        // they are not visible until margin-left is added to the card wrapper
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
+
+        // Click add events option, confirm checkboxes and buttons appear
+        await user.click(app.getByTestId('add_plants_option'));
+        expect(floatingFooter.classList).toContain('floating-footer-visible');
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
+
+        // Click Done button, confirm checkboxes and buttons disappear
+        await user.click(app.getByRole('button', {name: 'Done'}));
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
+    });
+
+    it('sends correct payload when selected plants are watered', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T20:00:00.000+00:00",
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                failed: []
+            })
+        }));
+
+        // Confirm plants were last watered 4 and 5 days ago respectively
+        expect(app.queryAllByText(/5 days ago/).length).toBe(1);
+        expect(app.queryAllByText(/4 days ago/).length).toBe(1);
+        // Confirm no plants were last watered today
+        expect(app.queryAllByText(/Today/).length).toBe(0);
+
+        // Click add events option, select first plant, click water button
+        await user.click(app.getByTestId('add_plants_option'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByText('Water'));
+
+        // Confirm correct data posted to /bulk_add_plant_events endpoint
+        // Should contain UUIDs of both plants in group
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                event_type: "water",
+                timestamp: "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+
+        // Confirm selected plant was last watered today
+        expect(app.queryAllByText('Today').length).toBe(1);
+        expect(app.queryAllByText('5 days ago').length).toBe(0);
+        // Confirm unselected plant was still last watered 4 days ago
+        expect(app.queryAllByText('4 days ago').length).toBe(1);
+
+        // Confirm toast appeared, floating footer disappeared
+        expect(app.queryByText('Plants watered!')).not.toBeNull();
+        expect(app.getByTestId('add-events-footer').classList).toContain(
+            'floating-footer-hidden'
+        );
+    });
+
+    it('sends correct payload when selected plants are fertilized', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "fertilize",
+                timestamp: "2024-03-01T20:00:00.000+00:00",
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                failed: []
+            })
+        }));
+
+        // Click add events option, select first plant, click fertilize button
+        await user.click(app.getByTestId('add_plants_option'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByText('Fertilize'));
+
+        // Confirm correct data posted to /bulk_add_plant_events endpoint
+        // Should contain UUIDs of both plants in group
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                event_type: "fertilize",
+                timestamp: "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+
+        // Confirm toast appeared, floating footer disappeared
+        expect(app.queryByText('Plants fertilized!')).not.toBeNull();
+        expect(app.getByTestId('add-events-footer').classList).toContain(
+            'floating-footer-hidden'
+        );
+    });
+
+    it('does not make request when event buttons clicked if no plants selected', async () => {
+        // Click add events option, click water button without selecting any plants
+        await user.click(app.getByTestId('add_plants_option'));
+        await user.click(app.getByText('Water'));
+
+        // Confirm no request was made
+        expect(global.fetch).not.toHaveBeenCalled();
+
+        // Confirm footer did not disappear
+        expect(app.getByTestId('add-events-footer').classList).toContain(
+            'floating-footer-visible'
+        );
     });
 
     it('fetches new state when user navigates to overview with back button', async () => {

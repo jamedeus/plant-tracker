@@ -54,7 +54,7 @@ describe('App', () => {
 
     it('shows checkboxes and delete button when edit option clicked', async () => {
         // Get reference to footer, confirm hidden (default)
-        const floatingFooter = app.getByTestId('floating-footer');
+        const floatingFooter = app.getByTestId('edit-mode-footer');
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         // Checkboxes are rendered underneath card with position: absolute, so
         // they are not visible until margin-left is added to the card wrapper

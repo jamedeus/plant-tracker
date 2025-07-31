@@ -3,7 +3,7 @@ import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
-const FloatingFooter = ({ visible, children, text, fadeText, onClose }) => {
+const FloatingFooter = ({ visible, children, text, fadeText, onClose, testId='floating-footer' }) => {
     // Track displayed text (prevents immediate change when prop changes)
     const [displayedText, setDisplayedText] = useState(text);
     // Text fades in if true, fades out if false
@@ -52,7 +52,7 @@ const FloatingFooter = ({ visible, children, text, fadeText, onClose }) => {
                 'floating-footer',
                 visible ? 'floating-footer-visible' : 'floating-footer-hidden'
             )}
-            data-testid='floating-footer'
+            data-testid={testId}
             {...handlers}
         >
             <div className="flex flex-col items-center gap-4 w-full">
@@ -81,7 +81,8 @@ FloatingFooter.propTypes = {
     children: PropTypes.node.isRequired,
     text: PropTypes.string,
     fadeText: PropTypes.bool,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
+    testId: PropTypes.string
 };
 
 export default FloatingFooter;

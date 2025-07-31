@@ -8,6 +8,7 @@ import { useBackButton } from 'src/useBackButton';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 import EditModeFooter from './EditModeFooter';
+import AddEventsFooter from './AddEventsFooter';
 import QrScannerButton from 'src/components/QrScannerButton';
 
 function App() {
@@ -55,12 +56,22 @@ function App() {
         });
     }
 
-    // State object to track edit mode (shows checkbox for each card when true)
+    // States to control edit and add events modes (shows checkboxes when true)
+    // Renders EditModeFooter and AddEventsFooter respectively when true
     const [editing, setEditing] = useState(false);
+    const [addingEvents, setAddingEvents] = useState(false);
 
     const toggleEditing = useCallback(() => {
         setEditing(!editing);
+        setAddingEvents(false);
+        document.activeElement.blur();
     }, [editing]);
+
+    const toggleAddingEvents = useCallback(() => {
+        setAddingEvents(!addingEvents);
+        setEditing(false);
+        document.activeElement.blur();
+    }, [addingEvents]);
 
     // FormRefs for PlantsCol and GroupsCol, used to read user selection
     const selectedPlantsRef = useRef(null);
@@ -166,7 +177,9 @@ function App() {
                 selectedPlantsRef={selectedPlantsRef}
                 selectedGroupsRef={selectedGroupsRef}
                 editing={editing}
+                addingEvents={addingEvents}
                 toggleEditing={toggleEditing}
+                toggleAddingEvents={toggleAddingEvents}
                 plantsColRef={plantsColRef}
                 groupsColRef={groupsColRef}
                 archivedOverview={archivedOverview}
@@ -184,6 +197,16 @@ function App() {
                 archivedOverview={archivedOverview}
                 setShowArchive={setShowArchive}
             />
+
+            {!archivedOverview &&
+                <AddEventsFooter
+                    visible={addingEvents}
+                    selectedPlantsRef={selectedPlantsRef}
+                    plants={plants}
+                    setPlants={setPlants}
+                    setAddingEvents={setAddingEvents}
+                />
+            }
 
             <PrintModal />
         </div>
