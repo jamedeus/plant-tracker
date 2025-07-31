@@ -580,6 +580,66 @@ describe('App', () => {
         expect(app.queryByText(/failed to bulk add events/)).not.toBeNull();
     });
 
+    it('does not show AddEventsFooter and EditModeFooter at the same time', async () => {
+        // Confirm both footers are hidden
+        const EditModeFooter = app.getByTestId('edit-mode-footer');
+        expect(EditModeFooter.classList).toContain('floating-footer-hidden');
+        const AddEventsFooter = app.getByTestId('add-events-footer');
+        expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
+
+        // Click edit option, confirm EditModeFooter appears
+        await user.click(app.getByTestId('edit_plants_option'));
+        expect(EditModeFooter.classList).toContain('floating-footer-visible');
+        expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
+
+        // Click add events option, confirm AddEventsFooter appears, EditModeFooter disappears
+        await user.click(app.getByTestId('add_plants_option'));
+        expect(EditModeFooter.classList).toContain('floating-footer-hidden');
+        expect(AddEventsFooter.classList).toContain('floating-footer-visible');
+
+        // Click edit option, confirm EditModeFooter appears, AddEventsFooter disappears
+        await user.click(app.getByTestId('edit_plants_option'));
+        expect(EditModeFooter.classList).toContain('floating-footer-visible');
+        expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
+    });
+
+    it('does not cover AddEventsFooter with toast', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "fertilize",
+                timestamp: "2024-03-01T20:00:00.000+00:00",
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                failed: []
+            })
+        }));
+
+        // Click add events option, select first plant, click fertilize button
+        await user.click(app.getByTestId('add_plants_option'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByTestId('fertilize-button'));
+
+        // Confirm request made, toast appeared
+        expect(global.fetch).toHaveBeenCalled();
+        expect(app.container.querySelector('.toast')).not.toBeNull();
+
+        // Reopen AddEventsFooter before toast disappears
+        await user.click(app.getByTestId('add_plants_option'));
+
+        // Confirm AddEventsFooter is visible, toast immediately starts fading out
+        expect(app.getByTestId('add-events-footer').classList).toContain(
+            'floating-footer-visible'
+        );
+        expect(app.container.querySelector('.toast').classList).toContain('opacity-0');
+
+        // Wait for toast fade animation (500ms), confirm toast disappeared
+        await act(async () => await jest.advanceTimersByTimeAsync(500));
+        expect(app.container.querySelector('.toast')).toBeNull();
+    });
+
     it('fetches new state when user navigates to overview with back button', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
