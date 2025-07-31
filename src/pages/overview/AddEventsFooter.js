@@ -16,6 +16,42 @@ const AddEventsFooter = memo(function AddEventsFooter({
 }) {
     // Track total selected items (shown in footer text)
     const [totalSelected, setTotalSelected] = useState(0);
+    // Controls text shown in footer (instructions, number selected, or success)
+    const [footerText, setFooterText] = useState('');
+    // Controls whether there is a fade transition when footer text changes
+    // Should fade when changing from instructions to number selected, or when
+    // changing to success message, but not when number of selected changes
+    const [shouldFade, setShouldFade] = useState(false);
+    // Used to keep shouldFade true while success message shown/hidden
+    const successTimerRef = useRef(null);
+
+    // Sets footer text to number of selected plants (or instructions if none)
+    const setNumberSelectedText = () => {
+        setFooterText(
+            totalSelected > 0 ? (
+                `${totalSelected} plant${totalSelected !== 1 ? 's' : ''} selected`
+            ) : (
+                'Select plants to add events'
+            )
+        );
+    };
+
+    // Sets footer text to success message, changes back after 3 seconds
+    const showSuccessMessage = (message) => {
+        clearTimeout(successTimerRef.current);
+
+        // Fade to success message
+        setShouldFade(true);
+        setFooterText(message);
+
+        // Fade back to instructions text in 3 seconds
+        successTimerRef.current = setTimeout(() => {
+            setNumberSelectedText();
+            setTimeout(() => {
+                setShouldFade(false);
+            }, 200);
+        }, 3000);
+    };
 
     // Update total selected count when user checks/unchecks checkboxes
     useEffect(() => {
@@ -42,41 +78,10 @@ const AddEventsFooter = memo(function AddEventsFooter({
         };
     }, [selectedPlantsRef, totalSelected, visible]);
 
-    // Show instructions until something selected, then number of selected items
-    const [instructionsText, setInstructionsText] = useState('');
-    const setNumberSelectedText = () => {
-        setInstructionsText(
-            totalSelected > 0 ? (
-                `${totalSelected} plant${totalSelected !== 1 ? 's' : ''} selected`
-            ) : (
-                'Select plants to add events'
-            )
-        );
-    };
+    // Update instructions text when total selected changes
     useEffect(() => {
         setNumberSelectedText();
     }, [totalSelected]);
-
-    // Instructions text fades when true, changes instantly when false
-    const [shouldFade, setShouldFade] = useState(false);
-
-    // Replaces instructions text with success message for 3 seconds
-    const successTimerRef = useRef(null);
-    const showSuccessMessage = (message) => {
-        clearTimeout(successTimerRef.current);
-
-        // Fade to success message
-        setShouldFade(true);
-        setInstructionsText(message);
-
-        // Fade back to instructions text in 3 seconds
-        successTimerRef.current = setTimeout(() => {
-            setNumberSelectedText();
-            setTimeout(() => {
-                setShouldFade(false);
-            }, 200);
-        }, 3000);
-    };
 
     const cancelAddEvents = () => {
         setAddingEvents(false);
@@ -130,7 +135,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
     return (
         <FloatingFooter
             visible={visible}
-            text={instructionsText}
+            text={footerText}
             fadeText={shouldFade}
             onClose={cancelAddEvents}
             closeButton={true}

@@ -18,8 +18,6 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const holdToConfirmDelay = useSelector(
         (state) => state.settings.holdToConfirmDelay
     );
-    // Track if user is holding delete (set by onHoldStart and onHoldStop)
-    const [holdingDelete, setHoldingDelete] = useState(false);
 
     // Get number of selected events, photos, and notes
     const totalSelectedEvents = Object.values(selectedEvents).reduce(
@@ -27,40 +25,47 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     );
     const totalSelected = totalSelectedEvents + selectedPhotos.length + selectedNotes.length;
 
-    // Show instructions until something selected, then number of selected items
-    const [instructionsText, setInstructionsText] = useState('');
-    useEffect(() => {
-        setInstructionsText(
+    // Controls text shown in footer (instructions or number selected)
+    const [footerText, setFooterText] = useState('');
+    // Controls whether there is a fade transition when footer text changes
+    // Should fade when changing from instructions to number selected, or when
+    // changing to "Hold to confirm", but not when number of selected changes
+    const [shouldFade, setShouldFade] = useState(false);
+
+    // Sets footer text to number of selected items (or instructions if none)
+    const setNumberSelectedText = () => {
+        setFooterText(
             totalSelected > 0 ? (
                 `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
             ) : (
                 'Select timeline items to delete'
             )
         );
-    }, [totalSelected]);
-
-    // Controls whether instruction text fades when changed
-    // Should fade when changing from instructions to number selected, or when
-    // changing to "Hold to confirm", but not when number of selected changes
-    const [fadeText, setFadeText] = useState(false);
-
-    // Fade out current text, fade in "Hold to confirm"
-    const handleHoldStart = () => {
-        setHoldingDelete(true);
-        setFadeText(true);
     };
 
-    // Fade out "Hold to confirm", fade in current text
-    const handleHoldStop = () => {
-        setHoldingDelete(false);
+    // Update instructions text when total selected changes
+    useEffect(() => {
+        setNumberSelectedText();
+    }, [totalSelected]);
+
+    // Fade out number of selected items, fade in "Hold to confirm"
+    const handleHoldDeleteStart = () => {
+        setFooterText('Hold to confirm');
+        setShouldFade(true);
+    };
+
+    // Fade out "Hold to confirm", fade in number of selected items
+    const handleHoldDeleteStop = () => {
+        setNumberSelectedText();
         // Keep fade enabled until new text fades in
-        setTimeout(() => setFadeText(false), 250);
+        setTimeout(() => setShouldFade(false), 250);
     };
 
     const cancelDeleteMode = () => {
         dispatch(deleteModeChanged({editing: false}));
     };
 
+    // Callback fired when delete button held for required interval
     const handleDelete = async () => {
         // Delete events if 1 or more selected
         if (Object.values(selectedEvents).some(arr => arr.length > 0)) {
@@ -127,8 +132,8 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     return (
         <FloatingFooter
             visible={deleteMode}
-            text={holdingDelete ? 'Hold to confirm' : instructionsText}
-            fadeText={totalSelected <= 1 || fadeText}
+            text={footerText}
+            fadeText={totalSelected <= 1 || shouldFade}
             onClose={cancelDeleteMode}
         >
             <button
@@ -143,8 +148,8 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
                 timeout={holdToConfirmDelay}
                 buttonText="Delete"
                 buttonClass="w-20"
-                onHoldStart={handleHoldStart}
-                onHoldStop={handleHoldStop}
+                onHoldStart={handleHoldDeleteStart}
+                onHoldStop={handleHoldDeleteStop}
             />
         </FloatingFooter>
     );

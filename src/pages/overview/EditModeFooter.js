@@ -18,11 +18,25 @@ const EditModeFooter = memo(function EditModeFooter({
     archivedOverview,
     setShowArchive
 }) {
-    // Track if user is holding delete (set by onHoldStart and onHoldStop)
-    const [holdingDelete, setHoldingDelete] = useState(false);
-
     // Track total selected items (shown in footer text)
     const [totalSelected, setTotalSelected] = useState(0);
+    // Controls text shown in footer (instructions or number selected)
+    const [footerText, setFooterText] = useState('');
+    // Controls whether there is a fade transition when footer text changes
+    // Should fade when changing from instructions to number selected, or when
+    // changing to "Hold to confirm", but not when number of selected changes
+    const [shouldFade, setShouldFade] = useState(false);
+
+    // Sets footer text to number of selected items (or instructions if none)
+    const setNumberSelectedText = () => {
+        setFooterText(
+            totalSelected > 0 ? (
+                `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
+            ) : (
+                'Select plants and groups'
+            )
+        );
+    };
 
     // Update total selected count when user checks/unchecks checkboxes
     useEffect(() => {
@@ -38,7 +52,7 @@ const EditModeFooter = memo(function EditModeFooter({
             const newTotalSelected = selectedPlants + selectedGroups;
             // Fade text when first plant selected or last plant unselected
             // (first selected: total=0 new=1, last unselected: total=1 new=0)
-            setFadeText(totalSelected + newTotalSelected === 1);
+            setShouldFade(totalSelected + newTotalSelected === 1);
             setTotalSelected(newTotalSelected);
         };
 
@@ -63,41 +77,29 @@ const EditModeFooter = memo(function EditModeFooter({
         };
     }, [selectedPlantsRef, selectedGroupsRef, totalSelected, visible]);
 
-    // Show instructions until something selected, then number of selected items
-    const [instructionsText, setInstructionsText] = useState('');
+    // Update instructions text when total selected changes
     useEffect(() => {
-        setInstructionsText(
-            totalSelected > 0 ? (
-                `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
-            ) : (
-                'Select plants and groups'
-            )
-        );
+        setNumberSelectedText();
     }, [totalSelected]);
 
-    // Controls whether instruction text fades when changed
-    // Should fade when changing from instructions to number selected, or when
-    // changing to "Hold to confirm", but not when number of selected changes
-    const [fadeText, setFadeText] = useState(false);
-
-    // Fade out current text, fade in "Hold to confirm"
-    const handleHoldStart = () => {
-        setHoldingDelete(true);
-        setFadeText(true);
+    // Fade out number of selected items, fade in "Hold to confirm"
+    const handleHoldDeleteStart = () => {
+        setFooterText('Hold to confirm');
+        setShouldFade(true);
     };
 
-    // Fade out "Hold to confirm", fade in current text
-    const handleHoldStop = () => {
-        setHoldingDelete(false);
+    // Fade out "Hold to confirm", fade in number of selected items
+    const handleHoldDeleteStop = () => {
+        setNumberSelectedText();
         // Keep fade enabled until new text fades in
-        setTimeout(() => setFadeText(false), 250);
+        setTimeout(() => setShouldFade(false), 250);
     };
 
     const cancelEditing = () => {
         setEditing(false);
     };
 
-    // Handler for delete button that appears while editing
+    // Callback fired when delete button held for required interval
     const handleDelete = async () => {
         // Get combined array of selected plant and group uuids
         const selectedPlants = getSelectedItems(selectedPlantsRef);
@@ -191,8 +193,8 @@ const EditModeFooter = memo(function EditModeFooter({
     return (
         <FloatingFooter
             visible={visible}
-            text={holdingDelete ? 'Hold to confirm' : instructionsText}
-            fadeText={fadeText}
+            text={footerText}
+            fadeText={shouldFade}
             onClose={cancelEditing}
             testId="edit-mode-footer"
         >
@@ -215,8 +217,8 @@ const EditModeFooter = memo(function EditModeFooter({
                 timeout={2500}
                 buttonText="Delete"
                 buttonClass="w-20"
-                onHoldStart={handleHoldStart}
-                onHoldStop={handleHoldStop}
+                onHoldStart={handleHoldDeleteStart}
+                onHoldStop={handleHoldDeleteStop}
             />
         </FloatingFooter>
     );

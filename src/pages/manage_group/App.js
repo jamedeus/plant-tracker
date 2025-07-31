@@ -10,7 +10,7 @@ import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
 import EditGroupModal from './EditGroupModal';
-import FloatingFooter from 'src/components/FloatingFooter';
+import RemovePlantsFooter from './RemovePlantsFooter';
 import { getSelectedItems } from 'src/components/EditableNodeList';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
@@ -72,43 +72,6 @@ function App() {
 
     // FormRef for FilterColumn used to add events to subset of plants in group
     const selectedPlantsRef = useRef(null);
-
-    // Track total selected plants (shown in FloatingFooter text)
-    const [totalSelected, setTotalSelected] = useState(0);
-
-    // Update total selected count when user checks/unchecks checkboxes
-    useEffect(() => {
-        // Only update when footer is visible
-        if (!removingPlants) {
-            return;
-        }
-
-        // Updates total selected plants count
-        const updateSelectedCount = () => {
-            setTotalSelected(getSelectedItems(selectedPlantsRef).length);
-        };
-
-        // Add listener to PlantsCol form to update count
-        const plantsForm = selectedPlantsRef.current;
-        plantsForm.addEventListener('change', updateSelectedCount);
-
-        // Remove event listener when component unmounts (don't stack)
-        return () => {
-            plantsForm.removeEventListener('change', updateSelectedCount);
-        };
-    }, [selectedPlantsRef, removingPlants]);
-
-    // Set FloatingFooter text based on number of selected plants
-    const [instructionsText, setInstructionsText] = useState('');
-    useEffect(() => {
-        setInstructionsText(
-            totalSelected > 0 ? (
-                `${totalSelected} plant${totalSelected !== 1 ? 's' : ''} selected`
-            ) : (
-                'Select plants to remove'
-            )
-        );
-    }, [totalSelected]);
 
     // Ref to access timestamp input used by water/fertilize buttons
     const addEventTimeInput = useRef(null);
@@ -324,26 +287,12 @@ function App() {
                 </PlantsCol>
             </div>
 
-            <FloatingFooter
+            <RemovePlantsFooter
                 visible={removingPlants}
-                text={instructionsText}
-                fadeText={totalSelected <= 1}
-                onClose={stopRemovingPlants}
-            >
-                <button
-                    className="btn btn-neutral w-22"
-                    onClick={stopRemovingPlants}
-                >
-                    Cancel
-                </button>
-
-                <button
-                    className="btn btn-error"
-                    onClick={removePlants}
-                >
-                    Remove
-                </button>
-            </FloatingFooter>
+                selectedPlantsRef={selectedPlantsRef}
+                removePlants={removePlants}
+                stopRemovingPlants={stopRemovingPlants}
+            />
 
             <EditGroupModal group={group} setGroup={setGroup} />
 
