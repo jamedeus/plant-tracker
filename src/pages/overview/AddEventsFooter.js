@@ -26,8 +26,11 @@ const AddEventsFooter = memo(function AddEventsFooter({
 
         // Updates total selected items count
         const updateSelectedCount = () => {
-            const selectedPlants = getSelectedItems(selectedPlantsRef);
-            setTotalSelected(selectedPlants.length);
+            const newTotalSelected = getSelectedItems(selectedPlantsRef).length;
+            // Fade text when first plant selected or last plant unselected
+            // (first selected: total=0 new=1, last unselected: total=1 new=0)
+            setShouldFade(totalSelected + newTotalSelected === 1);
+            setTotalSelected(newTotalSelected);
         };
 
         // Add listeners to plant form to update count
@@ -37,7 +40,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
         return () => {
             selectedPlantsRef.current?.removeEventListener('change', updateSelectedCount);
         };
-    }, [selectedPlantsRef, visible]);
+    }, [selectedPlantsRef, totalSelected, visible]);
 
     // Show instructions until something selected, then number of selected items
     const [instructionsText, setInstructionsText] = useState('');
@@ -128,7 +131,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
         <FloatingFooter
             visible={visible}
             text={instructionsText}
-            fadeText={totalSelected <= 1 || shouldFade}
+            fadeText={shouldFade}
             onClose={cancelAddEvents}
             closeButton={true}
             testId="add-events-footer"

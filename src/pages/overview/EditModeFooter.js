@@ -33,9 +33,13 @@ const EditModeFooter = memo(function EditModeFooter({
 
         // Updates total selected items count
         const updateSelectedCount = () => {
-            const selectedPlants = getSelectedItems(selectedPlantsRef);
-            const selectedGroups = getSelectedItems(selectedGroupsRef);
-            setTotalSelected(selectedPlants.length + selectedGroups.length);
+            const selectedPlants = getSelectedItems(selectedPlantsRef).length;
+            const selectedGroups = getSelectedItems(selectedGroupsRef).length;
+            const newTotalSelected = selectedPlants + selectedGroups;
+            // Fade text when first plant selected or last plant unselected
+            // (first selected: total=0 new=1, last unselected: total=1 new=0)
+            setFadeText(totalSelected + newTotalSelected === 1);
+            setTotalSelected(newTotalSelected);
         };
 
         // Add listeners to both forms to update count
@@ -57,7 +61,7 @@ const EditModeFooter = memo(function EditModeFooter({
                 groupsForm.removeEventListener('change', updateSelectedCount);
             }
         };
-    }, [selectedPlantsRef, selectedGroupsRef, visible]);
+    }, [selectedPlantsRef, selectedGroupsRef, totalSelected, visible]);
 
     // Show instructions until something selected, then number of selected items
     const [instructionsText, setInstructionsText] = useState('');
@@ -188,7 +192,7 @@ const EditModeFooter = memo(function EditModeFooter({
         <FloatingFooter
             visible={visible}
             text={holdingDelete ? 'Hold to confirm' : instructionsText}
-            fadeText={totalSelected <= 1 || fadeText}
+            fadeText={fadeText}
             onClose={cancelEditing}
             testId="edit-mode-footer"
         >

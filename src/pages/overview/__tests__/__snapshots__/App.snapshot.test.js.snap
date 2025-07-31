@@ -643,6 +643,11 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
+        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -897,6 +902,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
+        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -949,6 +959,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -1440,6 +1455,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
+        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -1492,6 +1512,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -2052,6 +2077,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
+        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -2104,6 +2134,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -2902,6 +2937,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
+        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -2954,6 +2994,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -3775,6 +3820,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
+        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -3827,6 +3877,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
