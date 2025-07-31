@@ -1,4 +1,4 @@
-import { Toast, showToast } from 'src/components/Toast';
+import { Toast, showToast, hideToast } from 'src/components/Toast';
 
 const TestComponent = () => {
     const showInfo = () => {
@@ -69,9 +69,49 @@ describe('ToastContext', () => {
         // Click button, confirm toast appears
         await user.click(component.getByText('Show Info Toast'));
         expect(component.container.querySelectorAll('.toast').length).toBe(1);
+        // Confirm toast is fully visible
+        expect(component.container.querySelector('.toast').classList).toContain('opacity-100');
 
-        // Wait for timeout + animation (100 + 500ms), confirm toast disappeared
-        await advanceTimers(600);
+        // Wait for timeout (100ms), confirm toast still visible but fading out
+        await advanceTimers(100);
+        expect(component.container.querySelectorAll('.toast').length).toBe(1);
+        expect(component.container.querySelector('.toast').classList).toContain('opacity-0');
+
+        // Wait for fade animation (500ms), confirm toast disappeared
+        await advanceTimers(500);
+        expect(component.container.querySelectorAll('.toast').length).toBe(0);
+    });
+
+    it('fades out toast immediately when clicked', async () => {
+        // Click button, confirm toast appears
+        await user.click(component.getByText('Show Info Toast'));
+        expect(component.container.querySelectorAll('.toast').length).toBe(1);
+        // Confirm toast is fully visible
+        expect(component.container.querySelector('.toast').classList).toContain('opacity-100');
+
+        // Click toast immediately, confirm toast starts fading out
+        await user.click(component.getByText('Everything is OK'));
+        expect(component.container.querySelector('.toast').classList).toContain('opacity-0');
+
+        // Wait for fade animation (500ms), confirm toast disappeared
+        await advanceTimers(500);
+        expect(component.container.querySelectorAll('.toast').length).toBe(0);
+    });
+
+    it('fades out toast immediately when hideToast function called', async () => {
+        // Click button, confirm toast appears
+        await user.click(component.getByText('Show Info Toast'));
+        expect(component.container.querySelectorAll('.toast').length).toBe(1);
+        // Confirm toast is fully visible
+        expect(component.container.querySelector('.toast').classList).toContain('opacity-100');
+
+        // Call hideToast immediately, confirm toast starts fading out
+        hideToast();
+        await advanceTimers(0);
+        expect(component.container.querySelector('.toast').classList).toContain('opacity-0');
+
+        // Wait for fade animation (500ms), confirm toast disappeared
+        await advanceTimers(500);
         expect(component.container.querySelectorAll('.toast').length).toBe(0);
     });
 

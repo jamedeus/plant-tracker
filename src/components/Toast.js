@@ -8,7 +8,7 @@ const colorMap = {
     yellow: 'bg-warning'
 };
 
-export let showToast;
+export let showToast, hideToast;
 
 export const Toast = () => {
     // State for text and color, default to blue
@@ -43,7 +43,7 @@ export const Toast = () => {
         if (message) popoverRef.current?.showPopover();
     }, [message]);
 
-    const hideToast = () => {
+    hideToast = () => {
         setFade(false);
         // Wait for fade animation, clear message state (unmounts Toast)
         setTimeout(() => {

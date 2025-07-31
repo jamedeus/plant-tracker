@@ -2,6 +2,7 @@ import React, { useState, useRef, useMemo, useCallback } from 'react';
 import Navbar from 'src/components/Navbar';
 import DropdownMenu from 'src/components/DropdownMenu';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
+import { hideToast } from 'src/components/Toast';
 import { parseDomContext } from 'src/util';
 import PrintModal, { openPrintModal } from './PrintModal';
 import { useBackButton } from 'src/useBackButton';
@@ -64,12 +65,14 @@ function App() {
     const toggleEditing = useCallback(() => {
         setEditing(!editing);
         setAddingEvents(false);
+        hideToast();
         document.activeElement.blur();
     }, [editing]);
 
     const toggleAddingEvents = useCallback(() => {
         setAddingEvents(!addingEvents);
         setEditing(false);
+        hideToast();
         document.activeElement.blur();
     }, [addingEvents]);
 
