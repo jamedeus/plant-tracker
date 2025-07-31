@@ -25,7 +25,7 @@ describe('HoldToConfirm', () => {
 
     beforeEach(() => {
         // Allow fast forwarding
-        jest.useFakeTimers();
+        jest.useFakeTimers({ doNotFake: ['Date'] });
 
         // Create new mock callback for each test
         callback = jest.fn();

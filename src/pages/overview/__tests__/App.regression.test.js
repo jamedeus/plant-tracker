@@ -19,7 +19,7 @@ describe('App', () => {
 
     beforeEach(() => {
         // Allow fast forwarding (must hold delete button to confirm)
-        jest.useFakeTimers();
+        jest.useFakeTimers({ doNotFake: ['Date'] });
 
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
