@@ -31,16 +31,11 @@ const AddEventsFooter = memo(function AddEventsFooter({
         };
 
         // Add listeners to plant form to update count
-        const plantsForm = selectedPlantsRef.current;
-        if (plantsForm) {
-            plantsForm.addEventListener('change', updateSelectedCount);
-        }
+        selectedPlantsRef.current?.addEventListener('change', updateSelectedCount);
 
         // Remove event listeners when component unmounts (don't stack)
         return () => {
-            if (plantsForm) {
-                plantsForm.removeEventListener('change', updateSelectedCount);
-            }
+            selectedPlantsRef.current?.removeEventListener('change', updateSelectedCount);
         };
     }, [selectedPlantsRef, visible]);
 

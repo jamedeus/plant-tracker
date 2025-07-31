@@ -495,6 +495,51 @@ describe('App', () => {
         );
     });
 
+    it('updates AddEventsFooter text to show number of selected items', async () => {
+        // Click add events option
+        await user.click(app.getByTestId('add_plants_option'));
+
+        // Confirm initial instructions text is visible
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
+        expect(app.queryByText('Select plants to add events')).not.toBeNull();
+
+        // Select first plant, confirm text changed to 1 plant selected
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
+        expect(app.queryByText('1 plant selected')).not.toBeNull();
+        expect(app.queryByText('Select plants to add events')).toBeNull();
+
+        // Select second plant, confirm text changed to 2 plants selected
+        await user.click(app.getByLabelText('Select Second Test Plant'));
+        expect(app.queryByText('2 plants selected')).not.toBeNull();
+
+        // Unselect first plant, confirm text changed back to 1 plant selected
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
+        expect(app.queryByText('1 plant selected')).not.toBeNull();
+    });
+
+    it('shows error modal if error received while bulk adding events', async() => {
+        // Mock fetch function to return arbitrary error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            json: () => Promise.resolve({
+                error: "failed to bulk add events"
+            })
+        }));
+
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/failed to bulk add events/)).toBeNull();
+
+        // Click add events option, select first plant, click water button
+        await user.click(app.getByTestId('add_plants_option'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByText('Water'));
+
+        // Confirm modal appeared with arbitrary error text
+        expect(app.queryByText(/failed to bulk add events/)).not.toBeNull();
+    });
+
     it('fetches new state when user navigates to overview with back button', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
