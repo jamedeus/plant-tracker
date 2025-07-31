@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
+import { sendPostRequest, parseDomContext, pastTense, getMostRecent } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import DropdownMenu from 'src/components/DropdownMenu';
@@ -11,6 +11,7 @@ import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
 import EditGroupModal from './EditGroupModal';
 import FloatingFooter from 'src/components/FloatingFooter';
+import { getSelectedItems } from 'src/components/EditableNodeList';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import QrScannerButton from 'src/components/QrScannerButton';
@@ -72,12 +73,6 @@ function App() {
     // FormRef for FilterColumn used to add events to subset of plants in group
     const selectedPlantsRef = useRef(null);
 
-    // Returns array of selected plant UUIDs parsed from FilterColumn form
-    const getSelectedPlants = () => {
-        const selected = new FormData(selectedPlantsRef.current);
-        return Array.from(selected.keys());
-    };
-
     // Track total selected plants (shown in FloatingFooter text)
     const [totalSelected, setTotalSelected] = useState(0);
 
@@ -90,7 +85,7 @@ function App() {
 
         // Updates total selected plants count
         const updateSelectedCount = () => {
-            setTotalSelected(getSelectedPlants().length);
+            setTotalSelected(getSelectedItems(selectedPlantsRef).length);
         };
 
         // Add listener to PlantsCol form to update count
@@ -144,7 +139,7 @@ function App() {
 
     const addEventSelected = async (eventType) => {
         // Prevent adding event to archived plants
-        const selected = removeArchivedPlants(getSelectedPlants());
+        const selected = removeArchivedPlants(getSelectedItems(selectedPlantsRef));
         if (selected.length) {
             await bulkAddPlantEvents(eventType, selected);
         } else {
@@ -194,18 +189,6 @@ function App() {
         setPlantDetails(newPlantDetails);
     };
 
-    // Takes 2 ISO 8601 timestamps, returns most recent
-    const getMostRecent = (oldTime, newTime) => {
-        // Return new if old is null (ie plant had no water events before)
-        if (!oldTime) {
-            return newTime;
-        } else if (newTime > oldTime) {
-            return newTime;
-        } else {
-            return oldTime;
-        }
-    };
-
     // Handler for add button in AddPlantsModal, takes array of UUIDs
     const addPlants = useCallback(async (selected) => {
         const response = await sendPostRequest('/bulk_add_plants_to_group', {
@@ -229,7 +212,7 @@ function App() {
     const removePlants = useCallback(async () => {
         const response = await sendPostRequest('/bulk_remove_plants_from_group', {
             group_id: group.uuid,
-            plants: getSelectedPlants()
+            plants: getSelectedItems(selectedPlantsRef)
         });
         if (response.ok) {
             const data = await response.json();

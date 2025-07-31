@@ -2,6 +2,16 @@ import React, { useId } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
+// Takes formRef passed to EditableNodeList, returns array of selected item keys
+export const getSelectedItems = (formRef) => {
+    if (formRef.current) {
+        const selected = new FormData(formRef.current);
+        return Array.from(selected.keys());
+    } else {
+        return [];
+    }
+};
+
 // Takes editing (bool), formRef (used to parse FormData), and node list
 // Returns node list wrapped in form with a hidden checkbox for each node
 // When editing is true nodes shrink to show hidden checkbox

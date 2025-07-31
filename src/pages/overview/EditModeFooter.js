@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { getSelectedItems } from 'src/components/EditableNodeList';
 import FloatingFooter from 'src/components/FloatingFooter';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
@@ -20,26 +21,6 @@ const EditModeFooter = memo(function EditModeFooter({
     // Track if user is holding delete (set by onHoldStart and onHoldStop)
     const [holdingDelete, setHoldingDelete] = useState(false);
 
-    // Returns array of selected plant UUIDs parsed from PlantsCol form
-    const getSelectedPlants = () => {
-        if (selectedPlantsRef.current) {
-            const selected = new FormData(selectedPlantsRef.current);
-            return Array.from(selected.keys());
-        } else {
-            return [];
-        }
-    };
-
-    // Returns array of selected group UUIDs parsed from GroupsCol form
-    const getSelectedGroups = () => {
-        if (selectedGroupsRef.current) {
-            const selected = new FormData(selectedGroupsRef.current);
-            return Array.from(selected.keys());
-        } else {
-            return [];
-        }
-    };
-
     // Track total selected items (shown in footer text)
     const [totalSelected, setTotalSelected] = useState(0);
 
@@ -52,8 +33,8 @@ const EditModeFooter = memo(function EditModeFooter({
 
         // Updates total selected items count
         const updateSelectedCount = () => {
-            const selectedPlants = getSelectedPlants();
-            const selectedGroups = getSelectedGroups();
+            const selectedPlants = getSelectedItems(selectedPlantsRef);
+            const selectedGroups = getSelectedItems(selectedGroupsRef);
             setTotalSelected(selectedPlants.length + selectedGroups.length);
         };
 
@@ -115,8 +96,8 @@ const EditModeFooter = memo(function EditModeFooter({
     // Handler for delete button that appears while editing
     const handleDelete = async () => {
         // Get combined array of selected plant and group uuids
-        const selectedPlants = getSelectedPlants();
-        const selectedGroups = getSelectedGroups();
+        const selectedPlants = getSelectedItems(selectedPlantsRef);
+        const selectedGroups = getSelectedItems(selectedGroupsRef);
         const selectedUuids = selectedPlants.concat(selectedGroups);
 
         // Don't send empty request if nothing selected
@@ -156,8 +137,8 @@ const EditModeFooter = memo(function EditModeFooter({
         const archived = !archivedOverview;
 
         // Get combined array of selected plant and group uuids
-        const selectedPlants = getSelectedPlants();
-        const selectedGroups = getSelectedGroups();
+        const selectedPlants = getSelectedItems(selectedPlantsRef);
+        const selectedGroups = getSelectedItems(selectedGroupsRef);
         const selectedUuids = selectedPlants.concat(selectedGroups);
 
         // Don't send empty request if nothing selected

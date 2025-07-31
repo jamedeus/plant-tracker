@@ -60,10 +60,23 @@ function stringMatchesPattern(regex) {
     };
 }
 
+// Takes 2 ISO 8601 timestamps, returns most recent
+const getMostRecent = (oldTime, newTime) => {
+    // Return new if old is null (ie plant had no water events before)
+    if (!oldTime) {
+        return newTime;
+    } else if (newTime > oldTime) {
+        return newTime;
+    } else {
+        return oldTime;
+    }
+};
+
 export {
     parseDomContext,
     sendPostRequest,
     capitalize,
     pastTense,
-    stringMatchesPattern
+    stringMatchesPattern,
+    getMostRecent
 };

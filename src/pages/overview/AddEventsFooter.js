@@ -1,28 +1,19 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest, pastTense } from 'src/util';
+import { sendPostRequest, pastTense, getMostRecent } from 'src/util';
+import { getSelectedItems } from 'src/components/EditableNodeList';
 import FloatingFooter from 'src/components/FloatingFooter';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { showToast } from 'src/components/Toast';
 
-const EditModeFooter = memo(function EditModeFooter({
+const AddEventsFooter = memo(function AddEventsFooter({
     visible,
     selectedPlantsRef,
     plants,
     setPlants,
     setAddingEvents,
 }) {
-    // Returns array of selected plant UUIDs parsed from PlantsCol form
-    const getSelectedPlants = () => {
-        if (selectedPlantsRef.current) {
-            const selected = new FormData(selectedPlantsRef.current);
-            return Array.from(selected.keys());
-        } else {
-            return [];
-        }
-    };
-
     // Track total selected items (shown in footer text)
     const [totalSelected, setTotalSelected] = useState(0);
 
@@ -35,7 +26,7 @@ const EditModeFooter = memo(function EditModeFooter({
 
         // Updates total selected items count
         const updateSelectedCount = () => {
-            const selectedPlants = getSelectedPlants();
+            const selectedPlants = getSelectedItems(selectedPlantsRef);
             setTotalSelected(selectedPlants.length);
         };
 
@@ -76,20 +67,8 @@ const EditModeFooter = memo(function EditModeFooter({
         fertilize: "last_fertilized"
     };
 
-    // Takes 2 ISO 8601 timestamps, returns most recent
-    const getMostRecent = (oldTime, newTime) => {
-        // Return new if old is null (ie plant had no water events before)
-        if (!oldTime) {
-            return newTime;
-        } else if (newTime > oldTime) {
-            return newTime;
-        } else {
-            return oldTime;
-        }
-    };
-
     const handleAddEvents = async (eventType) => {
-        const selectedPlants = getSelectedPlants();
+        const selectedPlants = getSelectedItems(selectedPlantsRef);
 
         // Don't send empty request if nothing selected
         if (!selectedPlants.length) {
@@ -158,7 +137,7 @@ const EditModeFooter = memo(function EditModeFooter({
     );
 });
 
-EditModeFooter.propTypes = {
+AddEventsFooter.propTypes = {
     visible: PropTypes.bool.isRequired,
     selectedPlantsRef: PropTypes.oneOfType([
         PropTypes.func,
@@ -169,4 +148,4 @@ EditModeFooter.propTypes = {
     setAddingEvents: PropTypes.func.isRequired,
 };
 
-export default EditModeFooter;
+export default AddEventsFooter;
