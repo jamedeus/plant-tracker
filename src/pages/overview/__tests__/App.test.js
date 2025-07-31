@@ -434,11 +434,9 @@ describe('App', () => {
         // Confirm unselected plant was still last watered 4 days ago
         expect(app.queryAllByText('4 days ago').length).toBe(1);
 
-        // Confirm toast appeared, floating footer disappeared
+        // Confirm number of selected plants changed to success message
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(app.queryByText('Plants watered!')).not.toBeNull();
-        expect(app.getByTestId('add-events-footer').classList).toContain(
-            'floating-footer-hidden'
-        );
     });
 
     it('sends correct payload when selected plants are fertilized', async () => {
@@ -474,11 +472,9 @@ describe('App', () => {
             headers: postHeaders
         });
 
-        // Confirm toast appeared, floating footer disappeared
+        // Confirm number of selected plants changed to success message
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(app.queryByText('Plants fertilized!')).not.toBeNull();
-        expect(app.getByTestId('add-events-footer').classList).toContain(
-            'floating-footer-hidden'
-        );
     });
 
     it('sends correct payload when selected plants are pruned', async () => {
@@ -514,11 +510,9 @@ describe('App', () => {
             headers: postHeaders
         });
 
-        // Confirm toast appeared, floating footer disappeared
+        // Confirm number of selected plants changed to success message
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(app.queryByText('Plants pruned!')).not.toBeNull();
-        expect(app.getByTestId('add-events-footer').classList).toContain(
-            'floating-footer-hidden'
-        );
     });
 
     it('does not make request when event buttons clicked if no plants selected', async () => {
@@ -535,7 +529,7 @@ describe('App', () => {
         );
     });
 
-    it('updates AddEventsFooter text to show number of selected items', async () => {
+    it('updates AddEventsFooter text to show number of selected plants', async () => {
         // Click add events option
         await user.click(app.getByTestId('add_plants_option'));
 
@@ -557,6 +551,42 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Test Plant'));
         await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('1 plant selected')).not.toBeNull();
+    });
+
+    it('changes AddEventsFooter number selected to success message when request made', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "fertilize",
+                timestamp: "2024-03-01T20:00:00.000+00:00",
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                failed: []
+            })
+        }));
+
+        // Click add events option, select both plants, confirm correct text
+        await user.click(app.getByTestId('add_plants_option'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select Second Test Plant'));
+        expect(app.queryByText('2 plants selected')).not.toBeNull();
+        expect(app.queryByText('Plants fertilized!')).toBeNull();
+
+        // Click fertilize button, confirm request made
+        await user.click(app.getByTestId('fertilize-button'));
+        expect(global.fetch).toHaveBeenCalled();
+
+        // Confirm number of selected plants changed to success message
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
+        expect(app.queryByText('2 plants selected')).toBeNull();
+        expect(app.queryByText('Plants fertilized!')).not.toBeNull();
+
+        // Confirm success message changes back to number of selected in 3 seconds
+        await act(async () => await jest.advanceTimersByTimeAsync(3000));
+        expect(app.queryByText('2 plants selected')).not.toBeNull();
+        expect(app.queryByText('Plants fertilized!')).toBeNull();
     });
 
     it('shows error modal if error received while bulk adding events', async() => {
@@ -601,43 +631,6 @@ describe('App', () => {
         await user.click(app.getByTestId('edit_plants_option'));
         expect(EditModeFooter.classList).toContain('floating-footer-visible');
         expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
-    });
-
-    it('does not cover AddEventsFooter with toast', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "fertilize",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                ],
-                failed: []
-            })
-        }));
-
-        // Click add events option, select first plant, click fertilize button
-        await user.click(app.getByTestId('add_plants_option'));
-        await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByTestId('fertilize-button'));
-
-        // Confirm request made, toast appeared
-        expect(global.fetch).toHaveBeenCalled();
-        expect(app.container.querySelector('.toast')).not.toBeNull();
-
-        // Reopen AddEventsFooter before toast disappears
-        await user.click(app.getByTestId('add_plants_option'));
-
-        // Confirm AddEventsFooter is visible, toast immediately starts fading out
-        expect(app.getByTestId('add-events-footer').classList).toContain(
-            'floating-footer-visible'
-        );
-        expect(app.container.querySelector('.toast').classList).toContain('opacity-0');
-
-        // Wait for toast fade animation (500ms), confirm toast disappeared
-        await act(async () => await jest.advanceTimersByTimeAsync(500));
-        expect(app.container.querySelector('.toast')).toBeNull();
     });
 
     it('fetches new state when user navigates to overview with back button', async () => {

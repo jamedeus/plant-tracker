@@ -1,11 +1,10 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, pastTense, getMostRecent } from 'src/util';
 import { getSelectedItems } from 'src/components/EditableNodeList';
 import FloatingFooter from 'src/components/FloatingFooter';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { showToast } from 'src/components/Toast';
 import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
 
 const AddEventsFooter = memo(function AddEventsFooter({
@@ -42,7 +41,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
 
     // Show instructions until something selected, then number of selected items
     const [instructionsText, setInstructionsText] = useState('');
-    useEffect(() => {
+    const setNumberSelectedText = () => {
         setInstructionsText(
             totalSelected > 0 ? (
                 `${totalSelected} plant${totalSelected !== 1 ? 's' : ''} selected`
@@ -50,7 +49,31 @@ const AddEventsFooter = memo(function AddEventsFooter({
                 'Select plants to add events'
             )
         );
+    };
+    useEffect(() => {
+        setNumberSelectedText();
     }, [totalSelected]);
+
+    // Instructions text fades when true, changes instantly when false
+    const [shouldFade, setShouldFade] = useState(false);
+
+    // Replaces instructions text with success message for 3 seconds
+    const successTimerRef = useRef(null);
+    const showSuccessMessage = (message) => {
+        clearTimeout(successTimerRef.current);
+
+        // Fade to success message
+        setShouldFade(true);
+        setInstructionsText(message);
+
+        // Fade back to instructions text in 3 seconds
+        successTimerRef.current = setTimeout(() => {
+            setNumberSelectedText();
+            setTimeout(() => {
+                setShouldFade(false);
+            }, 200);
+        }, 3000);
+    };
 
     const cancelAddEvents = () => {
         setAddingEvents(false);
@@ -93,22 +116,19 @@ const AddEventsFooter = memo(function AddEventsFooter({
                 });
                 setPlants(newPlants);
             }
-            // Show toast
-            showToast(`Plants ${pastTense(eventType)}!`, 'blue', 5000);
+            // Show success message in footer
+            showSuccessMessage(`Plants ${pastTense(eventType)}!`);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
-
-        // Hide footer
-        setAddingEvents(false);
     };
 
     return (
         <FloatingFooter
             visible={visible}
             text={instructionsText}
-            fadeText={totalSelected <= 1}
+            fadeText={totalSelected <= 1 || shouldFade}
             onClose={cancelAddEvents}
             closeButton={true}
             testId="add-events-footer"
