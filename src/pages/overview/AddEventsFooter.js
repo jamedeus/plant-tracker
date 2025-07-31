@@ -6,6 +6,7 @@ import { getSelectedItems } from 'src/components/EditableNodeList';
 import FloatingFooter from 'src/components/FloatingFooter';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { showToast } from 'src/components/Toast';
+import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
 
 const AddEventsFooter = memo(function AddEventsFooter({
     visible,
@@ -77,19 +78,22 @@ const AddEventsFooter = memo(function AddEventsFooter({
             event_type: eventType,
             timestamp: timestamp
         });
-        // Update last_watered/last_fertilized timestamps for all plants
         if (response.ok) {
             const data = await response.json();
 
-            let newPlants = { ...plants };
-            const lastEvent = eventTypeMap[eventType];
-            data.plants.forEach(uuid => {
-                newPlants[uuid][lastEvent] = getMostRecent(
-                    newPlants[uuid][lastEvent],
-                    timestamp
-                );
-            });
-            setPlants(newPlants);
+            // Update last_watered/last_fertilized times for selected plants
+            if (eventType in eventTypeMap) {
+                let newPlants = { ...plants };
+                const lastEvent = eventTypeMap[eventType];
+                data.plants.forEach(uuid => {
+                    newPlants[uuid][lastEvent] = getMostRecent(
+                        newPlants[uuid][lastEvent],
+                        timestamp
+                    );
+                });
+                setPlants(newPlants);
+            }
+            // Show toast
             showToast(`Plants ${pastTense(eventType)}!`, 'blue', 5000);
         } else {
             const error = await response.json();
@@ -106,27 +110,31 @@ const AddEventsFooter = memo(function AddEventsFooter({
             text={instructionsText}
             fadeText={totalSelected <= 1}
             onClose={cancelAddEvents}
+            closeButton={true}
             testId="add-events-footer"
         >
             <button
-                className="btn btn-neutral"
-                onClick={cancelAddEvents}
-            >
-                Done
-            </button>
-
-            <button
-                className="btn btn-info"
+                className="btn btn-square btn-info"
                 onClick={() => handleAddEvents('water')}
+                data-testid="water-button"
             >
-                Water
+                <FaDroplet className="size-5 text-neutral" />
             </button>
 
             <button
-                className="btn btn-success"
+                className="btn btn-square btn-success"
                 onClick={() => handleAddEvents('fertilize')}
+                data-testid="fertilize-button"
             >
-                Fertilize
+                <FaSeedling className="size-5 text-neutral" />
+            </button>
+
+            <button
+                className="btn btn-square btn-prune"
+                onClick={() => handleAddEvents('prune')}
+                data-testid="prune-button"
+            >
+                <FaScissors className="size-5 text-neutral" />
             </button>
         </FloatingFooter>
     );

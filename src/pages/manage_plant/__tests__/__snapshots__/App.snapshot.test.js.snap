@@ -1674,7 +1674,7 @@ exports[`App matches snapshot 1`] = `
       data-testid="floating-footer"
     >
       <div
-        class="flex flex-col items-center gap-4 w-full"
+        class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
           class="flex flex-row justify-center gap-8"
@@ -3890,7 +3890,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
       data-testid="floating-footer"
     >
       <div
-        class="flex flex-col items-center gap-4 w-full"
+        class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
           class="flex flex-row justify-center gap-8"

@@ -383,8 +383,8 @@ describe('App', () => {
         expect(floatingFooter.classList).toContain('floating-footer-visible');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
-        // Click Done button, confirm checkboxes and buttons disappear
-        await user.click(app.getByRole('button', {name: 'Done'}));
+        // Click close button, confirm checkboxes and buttons disappear
+        await user.click(app.getByTestId('close-add-events-footer'));
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
     });
@@ -412,7 +412,7 @@ describe('App', () => {
         // Click add events option, select first plant, click water button
         await user.click(app.getByTestId('add_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByText('Water'));
+        await user.click(app.getByTestId('water-button'));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
         // Should contain UUIDs of both plants in group
@@ -458,7 +458,7 @@ describe('App', () => {
         // Click add events option, select first plant, click fertilize button
         await user.click(app.getByTestId('add_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByText('Fertilize'));
+        await user.click(app.getByTestId('fertilize-button'));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
         // Should contain UUIDs of both plants in group
@@ -481,10 +481,50 @@ describe('App', () => {
         );
     });
 
+    it('sends correct payload when selected plants are pruned', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "prune",
+                timestamp: "2024-03-01T20:00:00.000+00:00",
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                failed: []
+            })
+        }));
+
+        // Click add events option, select first plant, click prune button
+        await user.click(app.getByTestId('add_plants_option'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByTestId('prune-button'));
+
+        // Confirm correct data posted to /bulk_add_plant_events endpoint
+        // Should contain UUIDs of both plants in group
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                event_type: "prune",
+                timestamp: "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+
+        // Confirm toast appeared, floating footer disappeared
+        expect(app.queryByText('Plants pruned!')).not.toBeNull();
+        expect(app.getByTestId('add-events-footer').classList).toContain(
+            'floating-footer-hidden'
+        );
+    });
+
     it('does not make request when event buttons clicked if no plants selected', async () => {
         // Click add events option, click water button without selecting any plants
         await user.click(app.getByTestId('add_plants_option'));
-        await user.click(app.getByText('Water'));
+        await user.click(app.getByTestId('water-button'));
 
         // Confirm no request was made
         expect(global.fetch).not.toHaveBeenCalled();
@@ -534,7 +574,7 @@ describe('App', () => {
         // Click add events option, select first plant, click water button
         await user.click(app.getByTestId('add_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByText('Water'));
+        await user.click(app.getByTestId('water-button'));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to bulk add events/)).not.toBeNull();

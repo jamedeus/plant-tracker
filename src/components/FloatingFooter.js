@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
+import { XMarkIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 
-const FloatingFooter = ({ visible, children, text, fadeText, onClose, testId='floating-footer' }) => {
+const FloatingFooter = ({ visible, children, text, fadeText, onClose, closeButton, testId='floating-footer' }) => {
     // Track displayed text (prevents immediate change when prop changes)
     const [displayedText, setDisplayedText] = useState(text);
     // Text fades in if true, fades out if false
@@ -55,7 +56,21 @@ const FloatingFooter = ({ visible, children, text, fadeText, onClose, testId='fl
             data-testid={testId}
             {...handlers}
         >
-            <div className="flex flex-col items-center gap-4 w-full">
+            <div className="relative flex flex-col items-center gap-4 w-full">
+                {/* Render close button if arg given */}
+                {closeButton && (
+                    <button
+                        className="absolute -top-2 -right-2 btn-close size-6"
+                        onClick={onClose}
+                        data-testid={`close-${testId}`}
+                        style={{
+                            '--btn-bg': 'color-mix(in oklab,var(--color-base-content)20%,#0000)'
+                        }}
+                    >
+                        <XMarkIcon className="size-5" />
+                    </button>
+                )}
+
                 {/* Render text div if arg given */}
                 {displayedText && (
                     <div className={clsx(
@@ -82,6 +97,7 @@ FloatingFooter.propTypes = {
     text: PropTypes.string,
     fadeText: PropTypes.bool,
     onClose: PropTypes.func,
+    closeButton: PropTypes.bool,
     testId: PropTypes.string
 };
 
