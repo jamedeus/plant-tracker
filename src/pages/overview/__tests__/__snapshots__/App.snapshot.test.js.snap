@@ -51,11 +51,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             </a>
           </li>
           <li>
-            <a>
-              Edit
-            </a>
-          </li>
-          <li>
             <button>
               Light mode
             </button>
@@ -1110,11 +1105,6 @@ exports[`App matches snapshot when only groups exist 1`] = `
           </li>
           <li>
             <a>
-              Edit
-            </a>
-          </li>
-          <li>
-            <a>
               Print QR Codes
             </a>
           </li>
@@ -1649,11 +1639,6 @@ exports[`App matches snapshot when only plants exist 1`] = `
               href="/accounts/profile/"
             >
               User profile
-            </a>
-          </li>
-          <li>
-            <a>
-              Edit
             </a>
           </li>
           <li>
@@ -2261,11 +2246,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               href="/accounts/profile/"
             >
               User profile
-            </a>
-          </li>
-          <li>
-            <a>
-              Edit
             </a>
           </li>
           <li>
@@ -3111,11 +3091,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               href="/accounts/profile/"
             >
               User profile
-            </a>
-          </li>
-          <li>
-            <a>
-              Edit
             </a>
           </li>
           <li>

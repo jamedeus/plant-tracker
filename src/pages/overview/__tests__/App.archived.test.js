@@ -60,8 +60,8 @@ describe('App', () => {
         // they are not visible until margin-left is added to the card wrapper
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
-        // Click Edit option, confirm buttons and checkboxes appear
-        await user.click(app.getByText("Edit"));
+        // Click plants column title, confirm buttons and checkboxes appear
+        await user.click(app.getByText('Plants (2)'));
         expect(floatingFooter.classList).toContain('floating-footer-visible');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
@@ -81,8 +81,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click first checkbox (plant)
-        await user.click(app.getByText("Edit"));
+        // Click plants column title, click first checkbox (plant)
+        await user.click(app.getByText('Plants (2)'));
         await user.click(app.getByLabelText('Select Test Plant'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
@@ -111,8 +111,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click first checkbox (plant)
-        await user.click(app.getByText("Edit"));
+        // Click plants column title, click first checkbox (plant)
+        await user.click(app.getByText('Plants (2)'));
         await user.click(app.getByLabelText('Select Test Plant'));
 
         // Click un-archive button in floating div
@@ -139,8 +139,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, select first group checkbox
-        await user.click(app.getByText("Edit"));
+        // Click groups column title, select first group checkbox
+        await user.click(app.getByText('Groups (2)'));
         await user.click(app.getByLabelText('Select Test group'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
@@ -181,8 +181,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, select first group checkbox
-        await user.click(app.getByText("Edit"));
+        // Click groups column title, select first group checkbox
+        await user.click(app.getByText('Groups (2)'));
         await user.click(app.getByLabelText('Select Test group'));
 
         // Click un-archive button in floating div
@@ -214,8 +214,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click all checkboxes (2 plants 2 groups)
-        await user.click(app.getByText("Edit"));
+        // Click groups column title, click all checkboxes (2 plants 2 groups)
+        await user.click(app.getByText('Groups (2)'));
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByLabelText('Select Second Test Plant'));
         await user.click(app.getByLabelText('Select Test group'));

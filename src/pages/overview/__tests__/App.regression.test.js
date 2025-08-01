@@ -87,8 +87,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, select first plant and first group checkboxes
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, select first plant and first group checkboxes
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByLabelText('Select Test group'));
 
@@ -113,8 +113,8 @@ describe('App', () => {
         // Clear mock fetch calls
         jest.clearAllMocks();
 
-        // Click edit option, hold delete button again
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, hold delete button again
+        await user.click(app.getByTestId('edit_plants_option'));
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);
@@ -141,8 +141,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, select first plant and first group checkboxes
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, select first plant and first group checkboxes
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByLabelText('Select Test group'));
 
@@ -165,8 +165,8 @@ describe('App', () => {
         // Clear mock fetch calls
         jest.clearAllMocks();
 
-        // Click edit option, click archive again
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, click archive again
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByText('Archive'));
 
         // Confirm no request was made (selection cleared after first request)

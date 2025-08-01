@@ -52,7 +52,7 @@ describe('App', () => {
         expect(app.queryByText(/QR codes per sheet/)).not.toBeNull();
     });
 
-    it('shows checkboxes and delete button when edit option clicked', async () => {
+    it('shows checkboxes and delete button when edit options clicked', async () => {
         // Get reference to footer, confirm hidden (default)
         const floatingFooter = app.getByTestId('edit-mode-footer');
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
@@ -60,28 +60,18 @@ describe('App', () => {
         // they are not visible until margin-left is added to the card wrapper
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
-        // Click Edit option, confirm buttons and checkboxes appear
-        await user.click(app.getByText("Edit"));
-        expect(floatingFooter.classList).toContain('floating-footer-visible');
-        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
-
-        // Click cancel button, confirm buttons and checkboxes disappear
-        await user.click(app.getByRole('button', {name: 'Cancel'}));
-        expect(floatingFooter.classList).toContain('floating-footer-hidden');
-        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
-
-        // Click edit option in Plants column dropdown, confirm entered edit mode again
+        // Click edit option in Plants column dropdown, confirm buttons and checkboxes appear
         await user.click(app.getByTestId('edit_plants_option'));
         expect(floatingFooter.classList).toContain('floating-footer-visible');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
-        // Click Groups column title, confirm exited edit
+        // Click Groups column title, confirm buttons and checkboxes disappear
         await user.click(app.getByText('Groups (2)'));
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
-        // Click Edit option again, confirm footer appeared
-        await user.click(app.getByText("Edit"));
+        // Click Groups column title again, confirm footer appeared again
+        await user.click(app.getByText('Groups (2)'));
         expect(floatingFooter.classList).toContain('floating-footer-visible');
 
         // Swipe down on footer, confirm footer disappeared
@@ -102,8 +92,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click first checkbox (plant)
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, click first checkbox (plant)
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
@@ -132,8 +122,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click first checkbox (plant)
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, click first checkbox (plant)
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
 
         // Click archive button in floating div
@@ -160,8 +150,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, select first group checkbox
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, select first group checkbox
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test group'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
@@ -190,8 +180,8 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, select first group checkbox
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, select first group checkbox
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test group'));
 
         // Click archive button in floating div
@@ -224,8 +214,8 @@ describe('App', () => {
             'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         )).toBeNull();
 
-        // Click edit option, click first checkbox
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, click first checkbox
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
@@ -256,8 +246,8 @@ describe('App', () => {
             'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         )).toBeNull();
 
-        // Click edit option, click first checkbox, click archive button
-        await user.click(app.getByText("Edit"));
+        // Enter edit mode, click first checkbox, click archive button
+        await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByText('Archive'));
 
@@ -265,109 +255,6 @@ describe('App', () => {
         expect(app.queryByText(
             'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         )).not.toBeNull();
-    });
-
-    it('removes edit option from dropdown if all plants and groups are deleted', async () => {
-        // Mock fetch to simulate successfully deleting both plants
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-fb15-a078-d6e7ec66be12"
-                ],
-                failed: []
-            })
-        }));
-
-        // Confirm edit option exists
-        expect(app.queryByText('Edit')).not.toBeNull();
-
-        // Click edit option, select all plants
-        await user.click(app.getByText("Edit"));
-        await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByLabelText('Select Second Test Plant'));
-
-        // Click delete button in floating div, hold for 2.5 seconds, release
-        const button = app.getByRole('button', { name: 'Delete' });
-        fireEvent.mouseDown(button);
-        await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
-
-        // Confirm edit option still exists
-        expect(app.queryByText('Edit')).not.toBeNull();
-
-        // Mock fetch to simulate successfully deleting both groups
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
-                ],
-                failed: []
-            })
-        }));
-
-        // Click edit option again, select all groups
-        await user.click(app.getByText("Edit"));
-        await user.click(app.getByLabelText('Select Test group'));
-        await user.click(app.getByLabelText('Select Second Test group'));
-
-        // Click delete button in floating div, hold for 2.5 seconds, release
-        fireEvent.mouseDown(button);
-        await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
-
-        // Confirm edit option no longer exists
-        expect(app.queryByText('Edit')).toBeNull();
-    });
-
-    it('removes edit option from dropdown if all plants and groups are archived', async () => {
-        // Mock fetch to simulate successfully archiving both groups
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
-                ],
-                failed: []
-            })
-        }));
-
-        // Confirm edit option exists
-        expect(app.queryByText('Edit')).not.toBeNull();
-
-        // Click edit option, archive all groups
-        await user.click(app.getByText("Edit"));
-        await user.click(app.getByLabelText('Select Test group'));
-        await user.click(app.getByLabelText('Select Second Test group'));
-        await user.click(app.getByText('Archive'));
-
-        // Confirm edit option still exists
-        expect(app.queryByText('Edit')).not.toBeNull();
-
-        // Mock fetch to simulate successfully archiving both plants
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-fb15-a078-d6e7ec66be12"
-                ],
-                failed: []
-            })
-        }));
-
-        // Click edit option again, archive all plants
-        await user.click(app.getByText("Edit"));
-        await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByLabelText('Select Second Test Plant'));
-        await user.click(app.getByText('Archive'));
-
-        // Confirm edit option no longer exists
-        expect(app.queryByText('Edit')).toBeNull();
     });
 
     it('shows checkboxes and event buttons when add events option clicked', async () => {

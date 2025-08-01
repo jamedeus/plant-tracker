@@ -1,15 +1,12 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import Navbar from 'src/components/Navbar';
 import DropdownMenu from 'src/components/DropdownMenu';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
-import { hideToast } from 'src/components/Toast';
 import { parseDomContext } from 'src/util';
 import PrintModal, { openPrintModal } from './PrintModal';
 import { useBackButton } from 'src/useBackButton';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
-import EditModeFooter from './EditModeFooter';
-import AddEventsFooter from './AddEventsFooter';
 import QrScannerButton from 'src/components/QrScannerButton';
 
 function App() {
@@ -57,45 +54,12 @@ function App() {
         });
     }
 
-    // States to control edit and add events modes (shows checkboxes when true)
-    // Renders EditModeFooter and AddEventsFooter respectively when true
-    const [editing, setEditing] = useState(false);
-    const [addingEvents, setAddingEvents] = useState(false);
-
-    const toggleEditing = useCallback(() => {
-        setEditing(!editing);
-        setAddingEvents(false);
-        hideToast();
-        document.activeElement.blur();
-    }, [editing]);
-
-    const toggleAddingEvents = useCallback(() => {
-        setAddingEvents(!addingEvents);
-        setEditing(false);
-        hideToast();
-        document.activeElement.blur();
-    }, [addingEvents]);
-
-    // FormRefs for PlantsCol and GroupsCol, used to read user selection
-    const selectedPlantsRef = useRef(null);
-    const selectedGroupsRef = useRef(null);
-
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
     const groupsColRef = useRef(null);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
-        // Toggle editing state, remove focus (closes dropdown)
-        const toggleEditing = () => {
-            setEditing(!editing);
-            document.activeElement.blur();
-        };
-
-        // Only add edit option if at least 1 plant or group
-        const showEditOption = Object.keys(plants).length > 0 ||
-                               Object.keys(groups).length > 0;
-
         return (
             <>
                 {/* Main overview: Link to archive overview if it exists */}
@@ -116,12 +80,6 @@ function App() {
                         User profile
                     </a></li>
                 )}
-                {/* Show edit option if at least 1 plant or group exists */}
-                {showEditOption && (
-                    <li><a onClick={toggleEditing}>
-                        Edit
-                    </a></li>
-                )}
                 {/* Main overview: Show Print QR Codes option */}
                 {!archivedOverview && (
                     <li><a onClick={openPrintModal}>
@@ -132,7 +90,7 @@ function App() {
 
             </>
         );
-    }, [editing, ToggleThemeOption]);
+    }, [ToggleThemeOption]);
 
     // Dropdown with links to jump to plant or group columns
     // Only rendered on mobile layout (both columns always visible on desktop)
@@ -177,39 +135,13 @@ function App() {
             <Layout
                 plants={plants}
                 groups={groups}
-                selectedPlantsRef={selectedPlantsRef}
-                selectedGroupsRef={selectedGroupsRef}
-                editing={editing}
-                addingEvents={addingEvents}
-                toggleEditing={toggleEditing}
-                toggleAddingEvents={toggleAddingEvents}
+                setPlants={setPlants}
+                setGroups={setGroups}
                 plantsColRef={plantsColRef}
                 groupsColRef={groupsColRef}
                 archivedOverview={archivedOverview}
-            />
-
-            <EditModeFooter
-                visible={editing}
-                selectedPlantsRef={selectedPlantsRef}
-                selectedGroupsRef={selectedGroupsRef}
-                plants={plants}
-                groups={groups}
-                setPlants={setPlants}
-                setGroups={setGroups}
-                setEditing={setEditing}
-                archivedOverview={archivedOverview}
                 setShowArchive={setShowArchive}
             />
-
-            {!archivedOverview &&
-                <AddEventsFooter
-                    visible={addingEvents}
-                    selectedPlantsRef={selectedPlantsRef}
-                    plants={plants}
-                    setPlants={setPlants}
-                    setAddingEvents={setAddingEvents}
-                />
-            }
 
             <PrintModal />
         </div>
