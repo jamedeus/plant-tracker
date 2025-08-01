@@ -2,7 +2,7 @@ import React, { memo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, pastTense, getMostRecent } from 'src/util';
-import { getSelectedItems } from 'src/components/EditableNodeList';
+import { getSelectedItems, filterSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
@@ -34,7 +34,12 @@ const AddEventsFooter = memo(function AddEventsFooter({
     };
 
     const handleAddEvents = async (eventType) => {
-        const selectedPlants = getSelectedItems(selectedPlantsRef);
+        // Get all selected plants that are not archived
+        const selectedPlants = filterSelectedItems(
+            getSelectedItems(selectedPlantsRef),
+            plants,
+            { archived: false }
+        );
 
         // Don't send empty request if nothing selected
         if (!selectedPlants.length) {

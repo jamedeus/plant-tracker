@@ -208,7 +208,7 @@ describe('App', () => {
         // Click Select plants tab, select first plant, click water
         await user.click(app.getByRole("tab", {name: "Select plants"}));
         await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByRole("button", {name: "Water"}));
+        await user.click(app.getByTestId("water-button"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
         // Should only contain UUID of first plant
@@ -242,7 +242,7 @@ describe('App', () => {
         // Click Select plants tab, select third plant, click fertilize
         await user.click(app.getByRole("tab", {name: "Select plants"}));
         await user.click(app.getByLabelText('Select Newest plant'));
-        await user.click(app.getByRole("button", {name: "Fertilize"}));
+        await user.click(app.getByTestId("fertilize-button"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
         // Should only contain UUID of third plant
@@ -257,19 +257,6 @@ describe('App', () => {
             }),
             headers: postHeaders
         });
-    });
-
-    it('shows toast if event buttons clicked with no plants selected', async () => {
-        // Confirm toast warning message is not on page
-        expect(app.queryByText('No plants selected!')).toBeNull();
-
-        // Click Select plants tab, click water without selecting anything
-        await user.click(app.getByRole("tab", {name: "Select plants"}));
-        await user.click(app.getByRole("button", {name: "Water"}));
-
-        // Confirm toast appeared, no request was made
-        expect(app.getByText('No plants selected!')).not.toBeNull();
-        expect(global.fetch).not.toHaveBeenCalled();
     });
 
     it('sends correct payload when Add Plants modal is submitted', async () => {

@@ -12,6 +12,21 @@ export const getSelectedItems = (formRef) => {
     }
 };
 
+// Takes array of selected item keys, object with details of each item (keys
+// match selectedItems), and object with one or more required attribute values.
+//
+// Filters selectedItems to the items with all required attributes and returns.
+export const filterSelectedItems = (selectedItems, itemDetails, requiredAttributes) => {
+    return selectedItems.filter(key => {
+        // Key is not in itemDetails
+        if (!itemDetails[key]) return false;
+        // Check if all required attributes have correct values
+        return Object.entries(requiredAttributes).every(([attribute, value]) =>
+            itemDetails[key][attribute] === value
+        );
+    });
+};
+
 // Takes editing (bool), formRef (used to parse FormData), and node list
 // Returns node list wrapped in form with a hidden checkbox for each node
 // When editing is true nodes shrink to show hidden checkbox

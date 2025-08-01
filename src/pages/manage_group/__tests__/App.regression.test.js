@@ -139,7 +139,7 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByLabelText('Select node'));
         await user.click(app.getByLabelText('Select Newest plant'));
-        await user.click(app.getByRole("button", {name: "Water"}));
+        await user.click(app.getByTestId("water-button"));
 
         // Confirm payload only contains UUIDs of the first and third plants
         // (the second plant is archived and can not be watered)
@@ -351,7 +351,7 @@ describe('App', () => {
 
         // Click water button, confirm payload only includes the third plant
         // uuid (first plant was removed from group after selecting)
-        await user.click(app.getByRole("button", {name: "Water"}));
+        await user.click(app.getByTestId("water-button"));
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({

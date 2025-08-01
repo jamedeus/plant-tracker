@@ -11,7 +11,8 @@ import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
 import EditGroupModal from './EditGroupModal';
 import RemovePlantsFooter from './RemovePlantsFooter';
-import { getSelectedItems } from 'src/components/EditableNodeList';
+import AddEventsFooter from 'src/components/AddEventsFooter';
+import { getSelectedItems, filterSelectedItems } from 'src/components/EditableNodeList';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import QrScannerButton from 'src/components/QrScannerButton';
@@ -79,38 +80,16 @@ function App() {
     // Ref to access timestamp input used by water/fertilize buttons
     const addEventTimeInput = useRef(null);
 
-    // Takes array of plant UUIDs, removes archived plants and returns
-    const removeArchivedPlants = (selected) => {
-        return selected.filter(uuid => {
-            const plant = plantDetails[uuid];
-            if (plant && !plant.archived) {
-                return uuid;
-            }
-        });
-    };
-
     // Handler for water and fertilize buttons
     const addEvents = async (eventType) => {
-        // If "Select plants" tab active: only add events to selected plants
-        if (addEventsMode) {
-            await addEventSelected(eventType);
-        // If "All plants" tab active: add events to all plants in group
-        } else {
-            await bulkAddPlantEvents(
-                eventType,
-                removeArchivedPlants(Object.keys(plantDetails))
-            );
-        }
-    };
-
-    const addEventSelected = async (eventType) => {
-        // Prevent adding event to archived plants
-        const selected = removeArchivedPlants(getSelectedItems(selectedPlantsRef));
-        if (selected.length) {
-            await bulkAddPlantEvents(eventType, selected);
-        } else {
-            showToast('No plants selected!', 'yellow', 3000);
-        }
+        // Get all plants in group that are not archived
+        const selected = filterSelectedItems(
+            Object.keys(plantDetails),
+            plantDetails,
+            { archived: false }
+        );
+        // Add events to all non-archived plants
+        await bulkAddPlantEvents(eventType, selected);
     };
 
     // Creates event with specified type and timestamp from addEventTimeInput
@@ -226,9 +205,12 @@ function App() {
 
             <div className={clsx(
                 "flex flex-col items-center transition-[height] duration-300",
-                removingPlants || noPlants ? "h-0" : "h-[14.25rem]"
+                selectingPlants || noPlants ? "h-0" : "h-[14.25rem]"
             )}>
-                <Tab.Group onChange={(index) => setAddEventsMode(index)}>
+                <Tab.Group
+                    selectedIndex={addEventsMode}
+                    onChange={(index) => setAddEventsMode(index)}
+                >
                     <Tab.List className="tab-group my-2 w-64">
                         <Tab className={({ selected }) => clsx(
                             'tab-option whitespace-nowrap',
@@ -305,6 +287,14 @@ function App() {
                     )}
                 </PlantsCol>
             </div>
+
+            <AddEventsFooter
+                visible={Boolean(addEventsMode)}
+                selectedPlantsRef={selectedPlantsRef}
+                plants={plantDetails}
+                setPlants={setPlantDetails}
+                setAddingEvents={setAddEventsMode}
+            />
 
             <RemovePlantsFooter
                 visible={removingPlants}

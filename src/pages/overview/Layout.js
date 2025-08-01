@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Setup from './Setup';
 import EditModeFooter from './EditModeFooter';
-import AddEventsFooter from './AddEventsFooter';
+import AddEventsFooter from 'src/components/AddEventsFooter';
 import PlantsCol from 'src/components/PlantsCol';
 import GroupsCol from 'src/components/GroupsCol';
 import { hideToast } from 'src/components/Toast';
