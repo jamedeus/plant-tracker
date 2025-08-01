@@ -1,7 +1,7 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getSelectedItems } from 'src/components/EditableNodeList';
-import FloatingFooter from 'src/components/FloatingFooter';
+import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
 import HoldToConfirm from 'src/components/HoldToConfirm';
@@ -18,76 +18,16 @@ const EditModeFooter = memo(function EditModeFooter({
     archivedOverview,
     setShowArchive
 }) {
-    // Track total selected items (shown in footer text)
-    const [totalSelected, setTotalSelected] = useState(0);
-    // Controls text shown in footer (instructions or number selected)
-    const [footerText, setFooterText] = useState('');
-    // Controls whether there is a fade transition when footer text changes
-    // Should fade when changing from instructions to number selected, or when
-    // changing to "Hold to confirm", but not when number of selected changes
-    const [shouldFade, setShouldFade] = useState(false);
-
-    // Sets footer text to number of selected plants (or instructions if none)
-    const setNumberSelectedText = (numSelected) => {
-        setFooterText(
-            numSelected > 0 ? (
-                `${numSelected} item${numSelected !== 1 ? 's' : ''} selected`
-            ) : (
-                'Select plants and groups'
-            )
-        );
-    };
-
-    // Updates total selected items count + text shown in footer
-    const updateSelectedCount = () => {
-        const selectedPlants = getSelectedItems(selectedPlantsRef).length;
-        const selectedGroups = getSelectedItems(selectedGroupsRef).length;
-        const newTotalSelected = selectedPlants + selectedGroups;
-        // Fade text when first plant selected or last plant unselected
-        // (first selected: total=0 new=1, last unselected: total=1 new=0)
-        setShouldFade(totalSelected + newTotalSelected === 1);
-        setTotalSelected(newTotalSelected);
-        setNumberSelectedText(newTotalSelected);
-    };
-
-    // Set correct footer text when footer opened
-    useEffect(() => {
-        visible && updateSelectedCount();
-    }, [visible]);
-
-    // Update total selected count when user checks/unchecks checkboxes
-    useEffect(() => {
-        // Only update when footer is visible
-        if (!visible) {
-            return;
-        }
-
-        // Add listeners to both forms to update count
-        selectedPlantsRef.current?.addEventListener('change', updateSelectedCount);
-        selectedGroupsRef.current?.addEventListener('change', updateSelectedCount);
-
-        // Remove event listeners when component unmounts (don't stack)
-        return () => {
-            selectedPlantsRef.current?.removeEventListener('change', updateSelectedCount);
-            selectedGroupsRef.current?.removeEventListener('change', updateSelectedCount);
-        };
-    }, [selectedPlantsRef, selectedGroupsRef, totalSelected, visible]);
+    const [alternateText, setAlternateText] = useState(null);
 
     // Fade out number of selected items, fade in "Hold to confirm"
     const handleHoldDeleteStart = () => {
-        setFooterText('Hold to confirm');
-        setShouldFade(true);
+        setAlternateText('Hold to confirm');
     };
 
     // Fade out "Hold to confirm", fade in number of selected items
     const handleHoldDeleteStop = () => {
-        setNumberSelectedText(totalSelected);
-        // Keep fade enabled until new text fades in
-        setTimeout(() => setShouldFade(false), 250);
-    };
-
-    const cancelEditing = () => {
-        setEditing(false);
+        setAlternateText(null);
     };
 
     // Callback fired when delete button held for required interval
@@ -182,16 +122,18 @@ const EditModeFooter = memo(function EditModeFooter({
     };
 
     return (
-        <FloatingFooter
+        <EditableNodeListActions
             visible={visible}
-            text={footerText}
-            fadeText={shouldFade}
-            onClose={cancelEditing}
+            formRefs={[selectedPlantsRef, selectedGroupsRef]}
+            onClose={() => setEditing(false)}
+            itemName="item"
+            initialText="Select plants and groups"
+            alternateText={alternateText}
             testId="edit-mode-footer"
         >
             <button
                 className="btn btn-neutral w-20"
-                onClick={cancelEditing}
+                onClick={() => setEditing(false)}
             >
                 Cancel
             </button>
@@ -211,7 +153,7 @@ const EditModeFooter = memo(function EditModeFooter({
                 onHoldStart={handleHoldDeleteStart}
                 onHoldStop={handleHoldDeleteStop}
             />
-        </FloatingFooter>
+        </EditableNodeListActions>
     );
 });
 

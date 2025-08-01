@@ -1,9 +1,9 @@
-import React, { memo, useState, useEffect, useRef } from 'react';
+import React, { memo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, pastTense, getMostRecent } from 'src/util';
 import { getSelectedItems } from 'src/components/EditableNodeList';
-import FloatingFooter from 'src/components/FloatingFooter';
+import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
 
@@ -14,78 +14,16 @@ const AddEventsFooter = memo(function AddEventsFooter({
     setPlants,
     setAddingEvents,
 }) {
-    // Track total selected items (shown in footer text)
-    const [totalSelected, setTotalSelected] = useState(0);
-    // Controls text shown in footer (instructions, number selected, or success)
-    const [footerText, setFooterText] = useState('');
-    // Controls whether there is a fade transition when footer text changes
-    // Should fade when changing from instructions to number selected, or when
-    // changing to success message, but not when number of selected changes
-    const [shouldFade, setShouldFade] = useState(false);
-    // Used to keep shouldFade true while success message shown/hidden
-    const successTimerRef = useRef(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const successMessageTimerRef = useRef(null);
 
-    // Sets footer text to number of selected plants (or instructions if none)
-    const setNumberSelectedText = (numSelected) => {
-        setFooterText(
-            numSelected > 0 ? (
-                `${numSelected} plant${numSelected !== 1 ? 's' : ''} selected`
-            ) : (
-                'Select plants to add events'
-            )
-        );
-    };
-
-    // Sets footer text to success message, changes back after 3 seconds
+    // Replaces number of plants selected with success message for 3 seconds
     const showSuccessMessage = (message) => {
-        clearTimeout(successTimerRef.current);
-
-        // Fade to success message
-        setShouldFade(true);
-        setFooterText(message);
-
-        // Fade back to instructions text in 3 seconds
-        successTimerRef.current = setTimeout(() => {
-            setNumberSelectedText(totalSelected);
-            setTimeout(() => {
-                setShouldFade(false);
-            }, 200);
+        clearTimeout(successMessageTimerRef.current);
+        setSuccessMessage(message);
+        successMessageTimerRef.current = setTimeout(() => {
+            setSuccessMessage(null);
         }, 3000);
-    };
-
-    // Updates total selected items count + text shown in footer
-    const updateSelectedCount = () => {
-        const newTotalSelected = getSelectedItems(selectedPlantsRef).length;
-        // Fade text when first plant selected or last plant unselected
-        // (first selected: total=0 new=1, last unselected: total=1 new=0)
-        setShouldFade(totalSelected + newTotalSelected === 1);
-        setTotalSelected(newTotalSelected);
-        setNumberSelectedText(newTotalSelected);
-    };
-
-    // Set correct footer text when footer opened
-    useEffect(() => {
-        visible && updateSelectedCount();
-    }, [visible]);
-
-    // Update total selected count when user checks/unchecks checkboxes
-    useEffect(() => {
-        // Only update when footer is visible
-        if (!visible) {
-            return;
-        }
-
-        // Add listeners to plant form to update count
-        selectedPlantsRef.current?.addEventListener('change', updateSelectedCount);
-
-        // Remove event listeners when component unmounts (don't stack)
-        return () => {
-            selectedPlantsRef.current?.removeEventListener('change', updateSelectedCount);
-        };
-    }, [selectedPlantsRef, totalSelected, visible]);
-
-    const cancelAddEvents = () => {
-        setAddingEvents(false);
     };
 
     // Map eventType taken by bulk_add_plant_events to the plantDetails state
@@ -134,11 +72,13 @@ const AddEventsFooter = memo(function AddEventsFooter({
     };
 
     return (
-        <FloatingFooter
+        <EditableNodeListActions
             visible={visible}
-            text={footerText}
-            fadeText={shouldFade}
-            onClose={cancelAddEvents}
+            formRefs={[selectedPlantsRef]}
+            onClose={() => setAddingEvents(false)}
+            itemName="plant"
+            initialText="Select plants to add events"
+            alternateText={successMessage}
             closeButton={true}
             testId="add-events-footer"
         >
@@ -165,7 +105,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
             >
                 <FaScissors className="size-5 text-neutral" />
             </button>
-        </FloatingFooter>
+        </EditableNodeListActions>
     );
 });
 

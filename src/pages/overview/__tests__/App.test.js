@@ -585,8 +585,10 @@ describe('App', () => {
 
         // Confirm success message changes back to number of selected in 3 seconds
         await act(async () => await jest.advanceTimersByTimeAsync(3000));
-        expect(app.queryByText('2 plants selected')).not.toBeNull();
-        expect(app.queryByText('Plants fertilized!')).toBeNull();
+        await waitFor(() => {
+            expect(app.queryByText('2 plants selected')).not.toBeNull();
+            expect(app.queryByText('Plants fertilized!')).toBeNull();
+        });
     });
 
     it('shows error modal if error received while bulk adding events', async() => {
