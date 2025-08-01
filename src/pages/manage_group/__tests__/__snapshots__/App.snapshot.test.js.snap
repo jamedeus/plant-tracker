@@ -828,7 +828,7 @@ exports[`App matches snapshot 1`] = `
     </div>
     <div
       class="floating-footer floating-footer-hidden"
-      data-testid="floating-footer"
+      data-testid="remove-plants-footer"
     >
       <div
         class="relative flex flex-col items-center gap-4 w-full"
@@ -1311,7 +1311,7 @@ exports[`App matches snapshot when no plants 1`] = `
             class="flex flex-col gap-4"
           />
           <span
-            class="text-center text-base-content font-semibold my-2"
+            class="text-center font-semibold my-2"
           >
             No plants!
           </span>
@@ -1428,7 +1428,7 @@ exports[`App matches snapshot when no plants 1`] = `
     </div>
     <div
       class="floating-footer floating-footer-hidden"
-      data-testid="floating-footer"
+      data-testid="remove-plants-footer"
     >
       <div
         class="relative flex flex-col items-center gap-4 w-full"

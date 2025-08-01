@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense, getMostRecent } from 'src/util';
 import Navbar from 'src/components/Navbar';
@@ -51,27 +51,22 @@ function App() {
     // Set with tabs above event timestamp input
     const [addEventsMode, setAddEventsMode] = useState(0);
 
-    // Controls whether EditableNodeList checkboxes next to plants are visible
-    const [selectingPlants, setSelectingPlants] = useState(false);
-
-    // Show checkboxes next to plants when "Select plants" tab active, hide
-    // when "All plants" tab clicked
-    useEffect(() => {
-        setSelectingPlants(Boolean(addEventsMode));
-    }, [addEventsMode]);
-
     // Controls whether FloatingFooter with remove from group button is visible
     const [removingPlants, setRemovingPlants] = useState(false);
 
+    // Hide event buttons if no plants OR selecting plants to remove/add events
+    const hideEventButtons = addEventsMode || removingPlants || noPlants;
+
+    // Show RemovePlantsFooter, hide AddEventsFooter, close dropdown menu
     const startRemovingPlants = () => {
         setRemovingPlants(true);
-        setSelectingPlants(true);
+        setAddEventsMode(0);
         document.activeElement.blur();
     };
 
+    // Hide RemovePlantsFooter
     const stopRemovingPlants = () => {
         setRemovingPlants(false);
-        setSelectingPlants(false);
     };
 
     // FormRef for FilterColumn used to add events to subset of plants in group
@@ -102,9 +97,8 @@ function App() {
             timestamp: timestamp
         });
         if (response.ok) {
-            // Show toast with correct message (All plants or Selected plants)
-            const updated = addEventsMode ? "Selected plants" : "All plants";
-            showToast(`${updated} ${pastTense(eventType)}!`, 'blue', 5000);
+            // Show toast with success message
+            showToast(`All plants ${pastTense(eventType)}!`, 'blue', 5000);
             // Update last watered/fertilized times for all plants in response
             const data = await response.json();
             updatePlantTimestamps(data.plants, data.timestamp, data.action);
@@ -205,7 +199,7 @@ function App() {
 
             <div className={clsx(
                 "flex flex-col items-center transition-[height] duration-300",
-                selectingPlants || noPlants ? "h-0" : "h-[14.25rem]"
+                hideEventButtons ? "h-0" : "h-[14.25rem]"
             )}>
                 <Tab.Group
                     selectedIndex={addEventsMode}
@@ -247,7 +241,7 @@ function App() {
             <div className="px-4 relative">
                 <PlantsCol
                     plants={plantDetails}
-                    editing={selectingPlants}
+                    editing={Boolean(addEventsMode) || removingPlants}
                     formRef={selectedPlantsRef}
                     storageKey={`group-${group.uuid}`}
                     // Render dropdown with add/remove options unless no plants
@@ -273,7 +267,7 @@ function App() {
                     {/* Render message and add plants button if no plants */}
                     {noPlants && (
                         <>
-                            <span className="text-center text-base-content font-semibold my-2">
+                            <span className="text-center font-semibold my-2">
                                 No plants!
                             </span>
                             <button

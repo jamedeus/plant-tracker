@@ -15,6 +15,7 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
             onClose={stopRemovingPlants}
             itemName="plant"
             initialText="Select plants to remove"
+            testId="remove-plants-footer"
         >
             <button
                 className="btn btn-neutral w-22"

@@ -345,7 +345,7 @@ describe('App', () => {
         // Confirm plant list contains 3 cards, floating footer not visible
         const plantsCol = app.getByText("Plants (3)").closest('.section');
         expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
-        const floatingFooter = app.getByTestId('floating-footer');
+        const floatingFooter = app.getByTestId('remove-plants-footer');
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
 
         // Click Remove plants dropdown option, confirm floating footer appeared
@@ -433,5 +433,23 @@ describe('App', () => {
 
         // Confirm did not call fetch
         expect(global.fetch).not.toHaveBeenCalled();
+    });
+
+    it('does not show AddEventsFooter and RemovePlantsFooter at the same time', async () => {
+        // Confirm both footers are hidden
+        const RemovePlantsFooter = app.getByTestId('remove-plants-footer');
+        expect(RemovePlantsFooter.classList).toContain('floating-footer-hidden');
+        const AddEventsFooter = app.getByTestId('add-events-footer');
+        expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
+
+        // Click select plants option, confirm AddEventsFooter appears, RemovePlantsFooter disappears
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
+        expect(RemovePlantsFooter.classList).toContain('floating-footer-hidden');
+        expect(AddEventsFooter.classList).toContain('floating-footer-visible');
+
+        // Click remove plants option, confirm RemovePlantsFooter appears, AddEventsFooter disappears
+        await user.click(app.getByTestId('remove_plants_option'));
+        expect(RemovePlantsFooter.classList).toContain('floating-footer-visible');
+        expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
     });
 });
