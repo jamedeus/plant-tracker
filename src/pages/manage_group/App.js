@@ -18,6 +18,7 @@ import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { Tab } from '@headlessui/react';
 import { useBackButton } from 'src/useBackButton';
+import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
     const [plantDetails, setPlantDetails] = useState(() => {
         return parseDomContext("plants");
     });
+    // Hide event buttons if no plants in group
+    const noPlants = Object.keys(plantDetails).length === 0;
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
@@ -223,7 +226,7 @@ function App() {
 
             <div className={clsx(
                 "flex flex-col items-center transition-[height] duration-300",
-                removingPlants ? "h-0" : "h-[14.25rem]"
+                removingPlants || noPlants ? "h-0" : "h-[14.25rem]"
             )}>
                 <Tab.Group onChange={(index) => setAddEventsMode(index)}>
                     <Tab.List className="tab-group my-2 w-64">
@@ -265,7 +268,8 @@ function App() {
                     editing={selectingPlants}
                     formRef={selectedPlantsRef}
                     storageKey={`group-${group.uuid}`}
-                    titleOptions={
+                    // Render dropdown with add/remove options unless no plants
+                    titleOptions={noPlants ? null : (
                         <DropdownMenu>
                             <li><a
                                 className="flex justify-center"
@@ -282,8 +286,23 @@ function App() {
                                 Remove
                             </a></li>
                         </DropdownMenu>
-                    }
+                    )}
                 >
+                    {/* Render message and add plants button if no plants */}
+                    {noPlants && (
+                        <>
+                            <span className="text-center text-base-content font-semibold my-2">
+                                No plants!
+                            </span>
+                            <button
+                                className="btn btn-accent mx-auto mt-4"
+                                onClick={openAddPlantsModal}
+                                data-testid="add_plants_button"
+                            >
+                                <FaPlus className="size-5 mr-1" /> Add plants
+                            </button>
+                        </>
+                    )}
                 </PlantsCol>
             </div>
 

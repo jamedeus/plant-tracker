@@ -13,4 +13,14 @@ describe('App', () => {
         const { container } = render(<App />);
         expect(container).toMatchSnapshot();
     });
+
+    it('matches snapshot when no plants', () => {
+        // Create mock state objects (override plants to empty object)
+        bulkCreateMockContext({ ...mockContext, plants: {} });
+        createMockContext('user_accounts_enabled', true);
+
+        // Render App, confirm matches snapshot
+        const { container } = render(<App />);
+        expect(container).toMatchSnapshot();
+    });
 });
