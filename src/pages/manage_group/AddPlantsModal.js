@@ -25,7 +25,7 @@ const Options = ({ options, addPlants }) => {
     if (options) {
         return (
             <>
-                <div className="md:max-h-[50vh] max-w-94 mx-auto overflow-y-auto pr-4 my-4">
+                <div className="md:max-h-[50vh] max-w-94 w-full mx-auto overflow-y-auto pr-4 my-4">
                     {Object.keys(options).length > 0 ? (
                         <EditableNodeList editing={true} formRef={formRef}>
                             {Object.entries(options).map(([uuid, plant]) => (
