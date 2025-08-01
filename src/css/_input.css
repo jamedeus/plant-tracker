@@ -10,7 +10,7 @@
  */
 
 @utility input {
-    @apply relative inline-flex shrink appearance-none text-base cursor-text h-12 px-4;
+    @apply relative inline-flex shrink appearance-none text-base cursor-text h-12 min-h-12 px-4;
     border: var(--border)solid #0000;
     border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
     border-radius: var(--radius-field);
