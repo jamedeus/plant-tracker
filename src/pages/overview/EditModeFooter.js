@@ -27,16 +27,33 @@ const EditModeFooter = memo(function EditModeFooter({
     // changing to "Hold to confirm", but not when number of selected changes
     const [shouldFade, setShouldFade] = useState(false);
 
-    // Sets footer text to number of selected items (or instructions if none)
-    const setNumberSelectedText = () => {
+    // Sets footer text to number of selected plants (or instructions if none)
+    const setNumberSelectedText = (numSelected) => {
         setFooterText(
-            totalSelected > 0 ? (
-                `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
+            numSelected > 0 ? (
+                `${numSelected} item${numSelected !== 1 ? 's' : ''} selected`
             ) : (
                 'Select plants and groups'
             )
         );
     };
+
+    // Updates total selected items count + text shown in footer
+    const updateSelectedCount = () => {
+        const selectedPlants = getSelectedItems(selectedPlantsRef).length;
+        const selectedGroups = getSelectedItems(selectedGroupsRef).length;
+        const newTotalSelected = selectedPlants + selectedGroups;
+        // Fade text when first plant selected or last plant unselected
+        // (first selected: total=0 new=1, last unselected: total=1 new=0)
+        setShouldFade(totalSelected + newTotalSelected === 1);
+        setTotalSelected(newTotalSelected);
+        setNumberSelectedText(newTotalSelected);
+    };
+
+    // Set correct footer text when footer opened
+    useEffect(() => {
+        visible && updateSelectedCount();
+    }, [visible]);
 
     // Update total selected count when user checks/unchecks checkboxes
     useEffect(() => {
@@ -45,42 +62,16 @@ const EditModeFooter = memo(function EditModeFooter({
             return;
         }
 
-        // Updates total selected items count
-        const updateSelectedCount = () => {
-            const selectedPlants = getSelectedItems(selectedPlantsRef).length;
-            const selectedGroups = getSelectedItems(selectedGroupsRef).length;
-            const newTotalSelected = selectedPlants + selectedGroups;
-            // Fade text when first plant selected or last plant unselected
-            // (first selected: total=0 new=1, last unselected: total=1 new=0)
-            setShouldFade(totalSelected + newTotalSelected === 1);
-            setTotalSelected(newTotalSelected);
-        };
-
         // Add listeners to both forms to update count
-        const plantsForm = selectedPlantsRef.current;
-        const groupsForm = selectedGroupsRef.current;
-        if (plantsForm) {
-            plantsForm.addEventListener('change', updateSelectedCount);
-        }
-        if (groupsForm) {
-            groupsForm.addEventListener('change', updateSelectedCount);
-        }
+        selectedPlantsRef.current?.addEventListener('change', updateSelectedCount);
+        selectedGroupsRef.current?.addEventListener('change', updateSelectedCount);
 
         // Remove event listeners when component unmounts (don't stack)
         return () => {
-            if (plantsForm) {
-                plantsForm.removeEventListener('change', updateSelectedCount);
-            }
-            if (groupsForm) {
-                groupsForm.removeEventListener('change', updateSelectedCount);
-            }
+            selectedPlantsRef.current?.removeEventListener('change', updateSelectedCount);
+            selectedGroupsRef.current?.removeEventListener('change', updateSelectedCount);
         };
     }, [selectedPlantsRef, selectedGroupsRef, totalSelected, visible]);
-
-    // Update instructions text when total selected changes
-    useEffect(() => {
-        setNumberSelectedText();
-    }, [totalSelected]);
 
     // Fade out number of selected items, fade in "Hold to confirm"
     const handleHoldDeleteStart = () => {
@@ -90,7 +81,7 @@ const EditModeFooter = memo(function EditModeFooter({
 
     // Fade out "Hold to confirm", fade in number of selected items
     const handleHoldDeleteStop = () => {
-        setNumberSelectedText();
+        setNumberSelectedText(totalSelected);
         // Keep fade enabled until new text fades in
         setTimeout(() => setShouldFade(false), 250);
     };

@@ -19,15 +19,31 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
     const [shouldFade, setShouldFade] = useState(false);
 
     // Sets footer text to number of selected plants (or instructions if none)
-    const setNumberSelectedText = () => {
+    const setNumberSelectedText = (numSelected) => {
         setFooterText(
-            totalSelected > 0 ? (
-                `${totalSelected} plant${totalSelected !== 1 ? 's' : ''} selected`
+            numSelected > 0 ? (
+                `${numSelected} plant${numSelected !== 1 ? 's' : ''} selected`
             ) : (
                 'Select plants to remove'
             )
         );
     };
+
+    // Updates total selected items count + text shown in footer
+    const updateSelectedCount = () => {
+        console.log('updateSelectedCount');
+        const newTotalSelected = getSelectedItems(selectedPlantsRef).length;
+        // Fade text when first plant selected or last plant unselected
+        // (first selected: total=0 new=1, last unselected: total=1 new=0)
+        setShouldFade(totalSelected + newTotalSelected === 1);
+        setTotalSelected(newTotalSelected);
+        setNumberSelectedText(newTotalSelected);
+    };
+
+    // Set correct footer text when footer opened
+    useEffect(() => {
+        visible && updateSelectedCount();
+    }, [visible]);
 
     // Update total selected count when user checks/unchecks checkboxes
     useEffect(() => {
@@ -35,15 +51,6 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
         if (!visible) {
             return;
         }
-
-        // Updates total selected items count
-        const updateSelectedCount = () => {
-            const newTotalSelected = getSelectedItems(selectedPlantsRef).length;
-            // Fade text when first plant selected or last plant unselected
-            // (first selected: total=0 new=1, last unselected: total=1 new=0)
-            setShouldFade(totalSelected + newTotalSelected === 1);
-            setTotalSelected(newTotalSelected);
-        };
 
         // Add listeners to plant form to update count
         selectedPlantsRef.current?.addEventListener('change', updateSelectedCount);
@@ -53,11 +60,6 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
             selectedPlantsRef.current?.removeEventListener('change', updateSelectedCount);
         };
     }, [selectedPlantsRef, totalSelected, visible]);
-
-    // Update instructions text when total selected changes
-    useEffect(() => {
-        setNumberSelectedText();
-    }, [totalSelected]);
 
     return (
         <FloatingFooter
