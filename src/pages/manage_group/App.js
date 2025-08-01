@@ -290,10 +290,10 @@ function App() {
 
             <AddEventsFooter
                 visible={Boolean(addEventsMode)}
+                onClose={() => setAddEventsMode(0)}
                 selectedPlantsRef={selectedPlantsRef}
                 plants={plantDetails}
                 setPlants={setPlantDetails}
-                setAddingEvents={setAddEventsMode}
             />
 
             <RemovePlantsFooter

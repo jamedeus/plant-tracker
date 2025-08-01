@@ -9,10 +9,10 @@ import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
 
 const AddEventsFooter = memo(function AddEventsFooter({
     visible,
+    onClose,
     selectedPlantsRef,
     plants,
     setPlants,
-    setAddingEvents,
 }) {
     const [successMessage, setSuccessMessage] = useState(null);
     const successMessageTimerRef = useRef(null);
@@ -80,7 +80,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
         <EditableNodeListActions
             visible={visible}
             formRefs={[selectedPlantsRef]}
-            onClose={() => setAddingEvents(false)}
+            onClose={onClose}
             itemName="plant"
             initialText="Select plants to add events"
             alternateText={successMessage}
@@ -116,13 +116,13 @@ const AddEventsFooter = memo(function AddEventsFooter({
 
 AddEventsFooter.propTypes = {
     visible: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
     selectedPlantsRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     plants: PropTypes.object.isRequired,
     setPlants: PropTypes.func.isRequired,
-    setAddingEvents: PropTypes.func.isRequired,
 };
 
 export default AddEventsFooter;

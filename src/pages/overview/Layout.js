@@ -154,10 +154,10 @@ const Layout = ({
             {!archivedOverview &&
                 <AddEventsFooter
                     visible={addingEvents}
+                    onClose={() => setAddingEvents(false)}
                     selectedPlantsRef={selectedPlantsRef}
                     plants={plants}
                     setPlants={setPlants}
-                    setAddingEvents={setAddingEvents}
                 />
             }
         </>
