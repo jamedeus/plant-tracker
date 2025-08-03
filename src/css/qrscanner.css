@@ -29,8 +29,8 @@ body:has(> [data-testid="qr-scanner-overlay"]) {
     display: flex !important;
     flex-direction: column-reverse !important;
     align-items: flex-end !important;
-    justify-content: flex-start !important;
-    margin-bottom: 2rem;
+    justify-content: center !important;
+    margin-top: 6rem;
     margin-right: 0.5rem;
     gap: 1.5rem;
 }
