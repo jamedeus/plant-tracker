@@ -340,12 +340,15 @@ DivisionEventMarker.propTypes = {
 };
 
 // Takes parent plant display name and UUID, renders marker with link to parent
-const DividedFromMarker = ({ name, uuid }) => {
+const DividedFromMarker = ({ name, uuid, dateKey }) => {
     return (
         <span className="m-2 text-sm md:text-base line-clamp-1">
             <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
             Divided from&nbsp;
-            <a href={`/manage/${uuid}`} className="plant-link">
+            <a
+                href={`/manage/${uuid}?scrollToDate=${dateKey}`}
+                className="plant-link"
+            >
                 {name}
             </a>
         </span>
@@ -354,7 +357,8 @@ const DividedFromMarker = ({ name, uuid }) => {
 
 DividedFromMarker.propTypes = {
     name: PropTypes.string.isRequired,
-    uuid: PropTypes.string.isRequired
+    uuid: PropTypes.string.isRequired,
+    dateKey: PropTypes.string.isRequired
 };
 
 // Takes photo thumbnail URL, creation timestamp, and database key
@@ -661,6 +665,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     <DividedFromMarker
                         name={contents.dividedFrom.name}
                         uuid={contents.dividedFrom.uuid}
+                        dateKey={dateKey}
                     />
                 }
             </div>
@@ -678,6 +683,24 @@ const Timeline = memo(function Timeline() {
 
     // Get array of yyyy-mm-dd keys sorted chronologically (recent first)
     const dayKeys = Object.keys(timelineDays).sort().reverse();
+
+    // Scroll to date specified in qurystring parameter if present
+    useEffect(() => {
+        const params = new URL(window.location.href).searchParams;
+        const scrollToDate = params.get('scrollToDate');
+        if (scrollToDate) {
+            const timer = setTimeout(() => {
+                const timelineRow = document.querySelector(
+                    `[data-date="${scrollToDate}"]`
+                );
+                timelineRow?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, []);
 
     return (
         <div className='section max-w-full'>
