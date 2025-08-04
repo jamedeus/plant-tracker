@@ -1,4 +1,5 @@
 import { fireEvent, waitFor } from '@testing-library/react';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
@@ -19,6 +20,9 @@ describe('App', () => {
     beforeEach(() => {
         // Allow fast forwarding (must hold delete button to confirm)
         jest.useFakeTimers({ doNotFake: ['Date'] });
+
+        // Mock window.location (querystring parsed when page loads)
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });

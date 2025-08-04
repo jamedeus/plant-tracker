@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
@@ -6,6 +7,11 @@ import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('Timeline regressions', () => {
+    beforeEach(() => {
+        // Mock window.location (querystring parsed when page loads)
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+    });
+
     // Original bug: If a month contained photos/notes but no events it would
     // appear at the bottom of QuickNavigation menu options, not chronological
     // order. This happened because buildNavigationOptions (store.js) assumed

@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { mockContext, mockphotos } from './mockContext';
 import { ReduxProvider } from '../store';
@@ -26,6 +27,8 @@ describe('Gallery', () => {
         createMockContext('user_accounts_enabled', true);
         // Override photos state with mock containing more photos
         createMockContext('photos', mockphotos);
+        // Mock window.location (querystring parsed when page loads)
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
     });
 
     it('matches snapshot for desktop layout', async () => {

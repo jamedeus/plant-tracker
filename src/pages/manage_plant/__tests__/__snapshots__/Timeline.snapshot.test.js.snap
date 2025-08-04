@@ -6965,7 +6965,7 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           Divided from 
           <a
             class="plant-link"
-            href="/manage/cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+            href="/manage/cc3fcb4f-120a-4577-ac87-ac6b5bea8968?scrollToDate=2024-02-10"
           >
             Parent plant
           </a>

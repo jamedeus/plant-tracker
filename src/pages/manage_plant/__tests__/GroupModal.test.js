@@ -1,4 +1,5 @@
 import React from 'react';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import GroupModal, { openGroupModal } from '../GroupModal';
 import { ReduxProvider } from '../store';
@@ -18,6 +19,9 @@ describe('GroupModal', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
+        // Mock window.location (querystring parsed when page loads)
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+
         act(() => jest.runAllTimers());
         jest.useRealTimers();
     });

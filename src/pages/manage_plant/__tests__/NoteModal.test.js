@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import NoteModal, { openNoteModal } from '../NoteModal';
@@ -41,6 +42,9 @@ describe('Add new note', () => {
     });
 
     beforeEach(async () => {
+        // Mock window.location (querystring parsed when page loads)
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(

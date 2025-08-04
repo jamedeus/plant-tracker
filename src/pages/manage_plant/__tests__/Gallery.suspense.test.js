@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import Layout from '../Layout';
 import { ReduxProvider } from '../store';
@@ -20,7 +21,9 @@ describe('Gallery suspense overlay', () => {
     beforeEach(() => {
         // Allow fast forwarding
         jest.useFakeTimers({ doNotFake: ['Date'] });
-    });
+        // Mock window.location (querystring parsed when page loads)
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+        });
 
     // Clean up pending timers after each test
     afterEach(() => {

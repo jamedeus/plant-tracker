@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
@@ -16,6 +17,9 @@ describe('Timeline', () => {
     });
 
     it('matches snapshot when plant is not archived', () => {
+        // Mock window.location (querystring parsed when page loads)
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+
         // Render Timeline, confirm matches snapshot
         const { container } = render(
             <PageWrapper>
