@@ -23,7 +23,7 @@ describe('Gallery suspense overlay', () => {
         jest.useFakeTimers({ doNotFake: ['Date'] });
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
-        });
+    });
 
     // Clean up pending timers after each test
     afterEach(() => {

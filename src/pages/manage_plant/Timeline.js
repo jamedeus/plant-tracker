@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, memo, useEffect, Fragment } from 'react';
+import React, { useRef, useState, useLayoutEffect, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
