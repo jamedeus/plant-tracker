@@ -9,6 +9,12 @@ import 'src/testUtils/dateMock';
 expect.extend(matchers);
 
 beforeAll(() => {
+    // Mock navigator.userAgent to simulate iOS Safari (most common client)
+    Object.defineProperty(navigator, 'userAgent', {
+        writable: true,
+        value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1'
+    });
+
     // Mock methods not implemented in jsdom
     HTMLDialogElement.prototype.show = jest.fn(function () {
         this.setAttribute("open", "");
