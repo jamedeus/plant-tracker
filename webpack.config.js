@@ -46,7 +46,7 @@ module.exports = (env, argv) => {
                     },
                     // Move libraries used by all pages to libs.js
                     libs: {
-                        test: /[\\/]node_modules[\\/](luxon|clsx)[\\/]/,
+                        test: /[\\/]node_modules[\\/](luxon|clsx|ua-parser-js)[\\/]/,
                         name: 'libs',
                         chunks: 'all',
                         enforce: true,
