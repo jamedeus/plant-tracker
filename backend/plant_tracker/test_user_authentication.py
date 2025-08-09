@@ -2,6 +2,7 @@
 
 from uuid import uuid4
 from urllib.parse import urlencode
+from unittest.mock import patch
 
 from django.contrib import auth
 from django.conf import settings
@@ -9,9 +10,12 @@ from django.test import TestCase
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.test.client import MULTIPART_CONTENT
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
-from .models import Plant, Group
 from .view_decorators import get_default_user
+from .models import Plant, Group, UserEmailVerification
+from .auth_views import email_verification_token_generator
 from .unit_test_helpers import JSONClient, create_mock_photo
 
 user_model = get_user_model()
@@ -226,6 +230,35 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(len(user_model.objects.all()), 3)
         user = user_model.objects.get(username='newuser')
         self.assertNotEqual(user.password, 'acceptablepasswordlength')
+
+        # Confirm email verification record was created, is not verified
+        verification = UserEmailVerification.objects.get(user=user)
+        self.assertFalse(verification.is_email_verified)
+
+    def test_create_user_sends_verification_email(self):
+        # Confirm 2 users in database (default + test user from setUpClass)
+        self.assertEqual(len(user_model.objects.all()), 2)
+
+        with patch('plant_tracker.auth_views.send_verification_email.delay') as mock_delay:
+            response = self.client.post('/accounts/create_user/', {
+                'username': 'newuser',
+                'password': 'acceptablepasswordlength',
+                'email': 'myfirstemail@hotmail.com',
+                'first_name': '',
+                'last_name': ''
+            })
+
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm task was queued with expected params
+        self.assertTrue(mock_delay.called)
+        args, _ = mock_delay.call_args
+        # args: (email, uidb64, token)
+        self.assertEqual(args[0], 'myfirstemail@hotmail.com')
+        new_user = user_model.objects.get(username='newuser')
+        expected_uidb64 = urlsafe_base64_encode(force_bytes(new_user.pk))
+        self.assertEqual(args[1], expected_uidb64)
+        self.assertTrue(email_verification_token_generator.check_token(new_user, args[2]))
 
     def test_create_user_endpoint_missing_fields(self):
         # Confirm 2 users in database (default + test user from setUpClass)
@@ -569,6 +602,16 @@ class SingleUserModeTests(TestCase):
             {'error': 'User accounts are disabled'}
         )
 
+    def test_verify_email_page_single_user_mode(self):
+        # Request verify page while SINGLE_USER_MODE is enabled
+        response = self.client.get('/accounts/verify/abc/def/')
+        # Confirm returns permission denied page
+        self.assertReceivedPermissionDeniedPage(response)
+        self.assertEqual(
+            response.context['state'],
+            {'error': 'User accounts are disabled'}
+        )
+
     def test_edit_user_details_endpoint(self):
         # Submit new user details while SINGLE_USER_MODE is enabled
         self.assertReceivedUserAccountsDisabledError(
@@ -777,6 +820,35 @@ class MultiUserModeTests(TestCase):
     def tearDown(self):
         # Ensure user logged out between tests
         self.client.logout()
+
+    def test_verify_email_endpoint_success(self):
+        # Ensure verification row exists and is unverified
+        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
+        verification.is_email_verified = False
+        verification.save()
+
+        uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
+        token = email_verification_token_generator.make_token(self.test_user)
+        response = self.client.get(f'/accounts/verify/{uidb64}/{token}/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "email verified"})
+
+        verification.refresh_from_db()
+        self.assertTrue(verification.is_email_verified)
+
+    def test_verify_email_endpoint_invalid_token(self):
+        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
+        verification.is_email_verified = False
+        verification.save()
+
+        uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
+        response = self.client.get(f'/accounts/verify/{uidb64}/invalidtoken/')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "invalid or expired verification link"})
+        verification.refresh_from_db()
+        self.assertFalse(verification.is_email_verified)
 
     # pylint: disable-next=invalid-name
     def assertAuthenticationRequiredError(self, response):

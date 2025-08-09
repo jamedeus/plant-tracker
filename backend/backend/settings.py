@@ -51,6 +51,16 @@ LOGIN_REDIRECT_URL="/"
 SINGLE_USER_MODE = os.environ.get('SINGLE_USER_MODE', '').lower() == 'true'
 DEFAULT_USERNAME='DEFAULT'
 
+# Email settings when not running in single user mode (verify account emails)
+if not SINGLE_USER_MODE:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = os.environ.get('SES_SMTP_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('SES_SMTP_PASSWORD')
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', f'support@{BASE_URL}')
+
 # Application definition
 
 INSTALLED_APPS = [

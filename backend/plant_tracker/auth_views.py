@@ -10,9 +10,13 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.debug import sensitive_variables
 from django.contrib.auth.password_validation import validate_password
+from django.utils import timezone
 
 from .views import render_react_app
 from .view_decorators import (
@@ -20,6 +24,8 @@ from .view_decorators import (
     requires_json_post,
     disable_in_single_user_mode
 )
+from .models import UserEmailVerification
+from .tasks import send_verification_email
 
 user_model = get_user_model()
 
@@ -29,6 +35,21 @@ CLOUDFRONT_COOKIE_NAMES = (
     "CloudFront-Signature",
     "CloudFront-Key-Pair-Id"
 )
+
+
+class EmailVerificationTokenGenerator(PasswordResetTokenGenerator):
+    '''Token generator for email verification that doesn't depend on last_login
+    or password hash. Uses user id, email, current verification flag, and timestamp.
+    '''
+    def _make_hash_value(self, user, timestamp):
+        try:
+            verified = user.email_verification.is_email_verified
+        except Exception:  # pragma: no cover
+            verified = False
+        return f"{user.pk}{user.email}{int(verified)}{timestamp}"
+
+
+email_verification_token_generator = EmailVerificationTokenGenerator()
 
 
 class EmailOrUsernameAuthenticationForm(AuthenticationForm):
@@ -180,13 +201,33 @@ def create_user(request, data):
     try:
         # transaction.atomic cleans up after IntegrityError if username not unique
         with transaction.atomic():
-            user_model.objects.create_user(
+            user = user_model.objects.create_user(
                 username=data["username"],
                 password=data["password"],
                 email=data["email"],
                 first_name=data["first_name"],
                 last_name=data["last_name"],
             )
+        # Mark email as unverified
+        verification, _ = UserEmailVerification.objects.get_or_create(user=user)
+        verification.is_email_verified = False
+        verification.verification_sent_at = None
+        verification.verified_at = None
+        verification.save(update_fields=[
+            "is_email_verified",
+            "verification_sent_at",
+            "verified_at",
+            "updated"
+        ])
+
+        # Send verification email
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = email_verification_token_generator.make_token(user)
+        send_verification_email.delay(user.email, uidb64, token)
+        # Mark when the verification email was queued for sending
+        verification.verification_sent_at = timezone.now()
+        verification.save(update_fields=["verification_sent_at", "updated"])
+
         user = authenticate(
             request,
             username=data["username"],
@@ -201,6 +242,29 @@ def create_user(request, data):
     except IntegrityError as e:
         duplicate = 'email' if 'email' in str(e) else 'username'
         return JsonResponse({"error": [f"{duplicate} already exists"]}, status=409)
+
+
+@disable_in_single_user_mode
+def verify_email(request, uidb64, token):
+    '''Verifies a user's email address (called from link in verification email).'''
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+    except Exception:  # pragma: no cover - defensive
+        return JsonResponse({"error": "invalid or expired verification link"}, status=400)
+
+    try:
+        user = user_model.objects.get(pk=uid)
+    except user_model.DoesNotExist:
+        return JsonResponse({"error": "invalid or expired verification link"}, status=400)
+
+    if not email_verification_token_generator.check_token(user, token):
+        return JsonResponse({"error": "invalid or expired verification link"}, status=400)
+
+    verification, _ = UserEmailVerification.objects.get_or_create(user=user)
+    if not verification.is_email_verified:
+        verification.mark_verified()
+
+    return JsonResponse({"success": "email verified"})
 
 
 @get_user_token

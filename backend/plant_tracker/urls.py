@@ -11,6 +11,7 @@ urlpatterns = [
     path('', views.overview, name='overview'),
     path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
     path("accounts/logout/", auth_views.logout_view, name="logout"),
+    path("accounts/verify/<str:uidb64>/<str:token>/", auth_views.verify_email, name="verify_email"),
     path("accounts/profile/", auth_views.user_profile_page, name="user_profile_page"),
     path("accounts/create_user/", auth_views.create_user, name="create_user"),
     path("accounts/edit_user_details/", auth_views.edit_user_details, name="edit_user_details"),

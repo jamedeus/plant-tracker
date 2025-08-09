@@ -1,10 +1,23 @@
 '''Async tasks run by celery worker to update cached frontend states.'''
 
 from celery import shared_task
+from django.conf import settings
 from django.core.cache import cache
+from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
-
 from .build_states import build_overview_state
+
+
+@shared_task
+def send_verification_email(user_email, uidb64, token):
+    '''Send verification email to new user.'''
+    verification_url = f"https://{settings.BASE_URL}/accounts/verify/{uidb64}/{token}"
+    send_mail(
+        subject='Verify your account',
+        message=f'Click to verify: {verification_url}',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email],
+    )
 
 
 @shared_task()

@@ -1394,8 +1394,8 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_create_user_endpoint(self):
-        '''/accounts/create_user/ should make 6 database queries.'''
-        with self.assertNumQueries(6):
+        '''/accounts/create_user/ should make 10 database queries.'''
+        with self.assertNumQueries(10):
             response = self.client.post('/accounts/create_user/', {
                 'username': 'newuser',
                 'password': 'acceptablepasswordlength',
