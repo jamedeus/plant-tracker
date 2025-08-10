@@ -242,22 +242,17 @@ def verify_email(request, uidb64, token):
     '''Verifies a user's email address (called from link in verification email).'''
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
-    except Exception:  # pragma: no cover - defensive
-        return JsonResponse({"error": "invalid or expired verification link"}, status=400)
-
-    try:
-        user = user_model.objects.get(pk=uid)
-    except user_model.DoesNotExist:
-        return JsonResponse({"error": "invalid or expired verification link"}, status=400)
-
-    if not email_verification_token_generator.check_token(user, token):
-        return JsonResponse({"error": "invalid or expired verification link"}, status=400)
+        user = user_model.objects.select_related('email_verification').get(pk=uid)
+        if not email_verification_token_generator.check_token(user, token):
+            raise ValueError("invalid token")
+    except (ValueError, user_model.DoesNotExist):
+        return JsonResponse({"error": "invalid verification link"}, status=400)
 
     verification, _ = UserEmailVerification.objects.get_or_create(user=user)
-    if not verification.is_email_verified:
-        verification.mark_verified()
+    verification.mark_verified()
 
-    return JsonResponse({"success": "email verified"})
+    # Redirect to overview after successful verification
+    return HttpResponseRedirect("/")
 
 
 @get_user_token

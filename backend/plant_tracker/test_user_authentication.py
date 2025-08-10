@@ -1,4 +1,4 @@
-# pylint: disable=missing-docstring,too-many-lines
+# pylint: disable=missing-docstring,too-many-lines,too-many-public-methods
 
 from uuid import uuid4
 from urllib.parse import urlencode
@@ -831,8 +831,9 @@ class MultiUserModeTests(TestCase):
         token = email_verification_token_generator.make_token(self.test_user)
         response = self.client.get(f'/accounts/verify/{uidb64}/{token}/')
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"success": "email verified"})
+        # Confirm redirected to overview page
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
 
         verification.refresh_from_db()
         self.assertTrue(verification.is_email_verified)
@@ -846,7 +847,7 @@ class MultiUserModeTests(TestCase):
         response = self.client.get(f'/accounts/verify/{uidb64}/invalidtoken/')
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "invalid or expired verification link"})
+        self.assertEqual(response.json(), {"error": "invalid verification link"})
         verification.refresh_from_db()
         self.assertFalse(verification.is_email_verified)
 

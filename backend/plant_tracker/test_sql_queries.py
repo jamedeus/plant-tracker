@@ -21,7 +21,8 @@ from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.test.client import MULTIPART_CONTENT
 from django.test.utils import CaptureQueriesContext
-
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from .models import (
     Group,
     Plant,
@@ -31,10 +32,12 @@ from .models import (
     RepotEvent,
     DivisionEvent,
     Photo,
-    NoteEvent
+    NoteEvent,
+    UserEmailVerification
 )
 from .build_states import build_overview_state
 from .view_decorators import get_default_user, events_map
+from .auth_views import email_verification_token_generator
 from .unit_test_helpers import JSONClient, create_mock_photo
 
 user_model = get_user_model()
@@ -1404,6 +1407,40 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
                 'last_name': ''
             })
             self.assertEqual(response.status_code, 200)
+
+    def test_verify_email_endpoint(self):
+        '''/accounts/verify/ should make 3 database queries when email is not verified.'''
+
+        # Simulate pending verification
+        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
+        verification.is_email_verified = False
+        verification.save()
+
+        # Get parameters for verification URL
+        uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
+        token = email_verification_token_generator.make_token(self.test_user)
+
+        # Confirm makes 3 queries and redirects to overview page
+        with self.assertNumQueries(3):
+            response = self.client.get(f'/accounts/verify/{uidb64}/{token}/')
+            self.assertEqual(response.status_code, 302)
+
+    def test_verify_email_endpoint_already_verified(self):
+        '''/accounts/verify/ should make 2 database queries when email is already verified.'''
+
+        # Simulate already verified
+        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
+        verification.is_email_verified = True
+        verification.save()
+
+        # Get parameters for verification URL
+        uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
+        token = email_verification_token_generator.make_token(self.test_user)
+
+        # Confirm makes 2 queries and redirects to overview page
+        with self.assertNumQueries(2):
+            response = self.client.get(f'/accounts/verify/{uidb64}/{token}/')
+            self.assertEqual(response.status_code, 302)
 
     def test_edit_user_details_endpoint(self):
         '''/accounts/edit_user_details/ should make 2 database queries'''
