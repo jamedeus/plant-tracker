@@ -130,3 +130,31 @@ You'll also need to copy the `private_key.pem` used to sign the cookies to your 
 ```
 
 If for some reason you want to mount this to a different location than `/mnt/backend/private_key.pem` set the `CLOUDFRONT_PRIVKEY_PATH` env var.
+
+## Email
+
+Go to Amazon SES and add personal email address, click next
+- Sending domain: `plants.joshmedeiros.dev`
+- MAIL FROM domain: leave blank
+- Behavior on MX failure: use default
+
+Click next, skip Virtual Deliverability Manager, click get started
+
+Click verification link in email sent to personal address
+
+On SES homepage click `Get DNS Records` under Verify sending domain.
+- Create the 3 CNAME records it shows
+- Under MAIL FROM records it should says something like `To configure MAIL FROM records go to plants.joshmedeiros.dev` - click that link
+- At the bottom under "Domain-based Message Authentication, Reporting, and Conformance (DMARC)" there is a TXT record, create that
+
+Once everything verifies send a test email to make sure it works (set own email in CC since can't set recipient)
+- Can view stats on sent emails on dashboard, top of sidebar
+
+Click SMTP settings in sidebar -> Create SMTP credentials
+- Accept default username (save it though)
+- Save SMTP credentials on next screen (will not be shown again)
+
+Then add the SMTP credentials to docker compose env vars:
+- `SES_SMTP_USER`
+- `SES_SMTP_PASSWORD`
+- `DEFAULT_FROM_EMAIL` - eg support@plants.joshmedeiros.dev
