@@ -199,6 +199,7 @@ def create_user(request, data):
         return JsonResponse({"error": e.messages}, status=400)
 
     try:
+        # Create user account
         # transaction.atomic cleans up after IntegrityError if username not unique
         with transaction.atomic():
             user = user_model.objects.create_user(
@@ -208,26 +209,18 @@ def create_user(request, data):
                 first_name=data["first_name"],
                 last_name=data["last_name"],
             )
-        # Mark email as unverified
+
+        # Create email verification record
         verification, _ = UserEmailVerification.objects.get_or_create(user=user)
-        verification.is_email_verified = False
-        verification.verification_sent_at = None
-        verification.verified_at = None
-        verification.save(update_fields=[
-            "is_email_verified",
-            "verification_sent_at",
-            "verified_at",
-            "updated"
-        ])
+        verification.verification_sent_at = timezone.now()
+        verification.save()
 
         # Send verification email
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         token = email_verification_token_generator.make_token(user)
         send_verification_email.delay(user.email, uidb64, token)
-        # Mark when the verification email was queued for sending
-        verification.verification_sent_at = timezone.now()
-        verification.save(update_fields=["verification_sent_at", "updated"])
 
+        # Log user in automatically
         user = authenticate(
             request,
             username=data["username"],
