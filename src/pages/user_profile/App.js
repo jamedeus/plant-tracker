@@ -9,6 +9,7 @@ import { showToast } from 'src/components/Toast';
 import QrScannerButton from 'src/components/QrScannerButton';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
+import { FaCheck } from 'react-icons/fa6';
 
 const UserDetails = memo(function UserDetails() {
     // Get initial details for form from django context
@@ -83,17 +84,31 @@ const UserDetails = memo(function UserDetails() {
                 <div className="my-auto text-nowrap">
                     Email:
                 </div>
-                <input
-                    name="email"
-                    type="email"
-                    autoCapitalize="off"
-                    aria-label="Email address input"
-                    className="input w-full"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onKeyDown={(e) => submitOnEnterKey(e)}
-                    data-testid="email_input"
-                />
+                <div>
+                    <input
+                        name="email"
+                        type="email"
+                        autoCapitalize="off"
+                        aria-label="Email address input"
+                        className="input w-full"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        onKeyDown={(e) => submitOnEnterKey(e)}
+                        data-testid="email_input"
+                    />
+                    {userDetails.email_verified ? (
+                        <div className="text-success text-sm text-center mt-2">
+                            <FaCheck className="fa-inline mr-2" />
+                            <span>Email verified</span>
+                        </div>
+                    ) : (
+                        <div className="text-error text-sm text-center mt-2">
+                            <span>Not verified</span>
+                            <span> — </span>
+                            <a className="underline" href="">resend email</a>
+                        </div>
+                    )}
+                </div>
                 <div className="my-auto text-nowrap">
                     Joined:
                 </div>

@@ -32,6 +32,7 @@ class AuthenticationPageTests(TestCase):
             last_name='Smith',
             email='bob.smith@hotmail.com'
         )
+        UserEmailVerification.objects.create(user=cls.test_user)
 
     def setUp(self):
         # Clear entire cache before each test
@@ -81,6 +82,7 @@ class AuthenticationPageTests(TestCase):
         self.assertEqual(details_context['first_name'], 'Bob')
         self.assertEqual(details_context['last_name'], 'Smith')
         self.assertEqual(details_context['email'], 'bob.smith@hotmail.com')
+        self.assertFalse(details_context['email_verified'])
 
     def test_user_profile_page_not_signed_in(self):
         # Request user profile page without signing in

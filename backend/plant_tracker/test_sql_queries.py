@@ -1352,6 +1352,7 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
             last_name='Smith',
             email='bob.smith@hotmail.com'
         )
+        UserEmailVerification.objects.create(user=cls.test_user)
 
         # Ensure SINGLE_USER_MODE is disabled
         settings.SINGLE_USER_MODE = False
@@ -1380,9 +1381,9 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_user_profile_page(self):
-        '''Loading the profile page should make 1 database query.'''
+        '''Loading the profile page should make 2 database queries.'''
         self.client.login(username='unittest', password='12345')
-        with self.assertNumQueries(1):
+        with self.assertNumQueries(2):
             response = self.client.get('/accounts/profile/')
             self.assertEqual(response.status_code, 200)
 
@@ -1412,7 +1413,7 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
         '''/accounts/verify/ should make 3 database queries when email is not verified.'''
 
         # Simulate pending verification
-        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
+        verification = UserEmailVerification.objects.get(user=self.test_user)
         verification.is_email_verified = False
         verification.save()
 
@@ -1429,11 +1430,12 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
         '''/accounts/verify/ should make 2 database queries when email is already verified.'''
 
         # Simulate already verified
-        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
+        verification = UserEmailVerification.objects.get(user=self.test_user)
         verification.is_email_verified = True
         verification.save()
 
         # Get parameters for verification URL
+        self.test_user.refresh_from_db()
         uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
         token = email_verification_token_generator.make_token(self.test_user)
 
