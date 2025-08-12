@@ -396,6 +396,28 @@ class AuthenticationEndpointTests(TestCase):
         user = user_model.objects.get(username='unittest')
         self.assertNotEqual(user.password, 'more secure password')
 
+    def test_resend_verification_email_endpoint(self):
+        # Log in with test user
+        self.client.login(username='unittest', password='12345')
+
+        # Request new verification email
+        with patch('plant_tracker.auth_views.send_verification_email.delay') as mock_delay:
+            response = self.client.get('/accounts/resend_verification_email/')
+
+        # Confirm success response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "verification email sent"})
+
+        # Confirm task was queued to resend email
+        self.assertTrue(mock_delay.called)
+        args, _ = mock_delay.call_args
+        self.assertEqual(args[0], 'bob.smith@hotmail.com')
+        expected_uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
+        self.assertEqual(args[1], expected_uidb64)
+        # Confirm token in email is valid
+        self.test_user.refresh_from_db()
+        self.assertTrue(email_verification_token_generator.check_token(self.test_user, args[2]))
+
     def test_change_password_endpoint_errors(self):
         # Log in with test user
         self.client.login(username='unittest', password='12345')
@@ -607,6 +629,17 @@ class SingleUserModeTests(TestCase):
     def test_verify_email_page_single_user_mode(self):
         # Request verify page while SINGLE_USER_MODE is enabled
         response = self.client.get('/accounts/verify/abc/def/')
+        # Confirm returns permission denied page
+        self.assertReceivedPermissionDeniedPage(response)
+        self.assertEqual(
+            response.context['state'],
+            {'error': 'User accounts are disabled'}
+        )
+
+    def test_resend_verification_email_endpoint(self):
+        # Request resend_verification_email endpoint while SINGLE_USER_MODE is enabled
+        response = self.client.get('/accounts/resend_verification_email/')
+
         # Confirm returns permission denied page
         self.assertReceivedPermissionDeniedPage(response)
         self.assertEqual(
@@ -1148,6 +1181,11 @@ class MultiUserModeTests(TestCase):
                 'photo_key': 1
             })
         )
+
+        # Confirm resend_verification_email redirects unauthenticated user
+        response = self.client.get('/accounts/resend_verification_email/')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/accounts/login/?next=/accounts/resend_verification_email/')
 
     def test_endpoints_reject_requests_from_user_who_does_not_own_plant(self):
         # Create plant and group owned by default user

@@ -242,4 +242,42 @@ describe('App', () => {
         expect(app.getByLabelText('New password').classList).toContain('border-error');
         expect(app.getByLabelText('Confirm new password').classList).toContain('border-error');
     });
+
+    it('sends request to resend verification email when link clicked', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({success: 'verification email sent'})
+        }));
+
+        // Confirm toast is not visible
+        expect(app.queryByText('Verification email sent!')).toBeNull();
+
+        // Click "resend email" link
+        await user.click(app.getByText('resend email'));
+
+        // Confirm correct request was made, toast appeared
+        expect(global.fetch).toHaveBeenCalledWith('/accounts/resend_verification_email/');
+        expect(app.queryByText('Verification email sent!')).not.toBeNull();
+    });
+
+    it('shows error toast when unable to resend verification email', async () => {
+        // Mock fetch function to return expected error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 400,
+            json: () => Promise.resolve({error: "failed to send verification email"})
+        }));
+
+        // Confirm toast is not visible
+        expect(app.queryByText('Unable to send verification email')).toBeNull();
+
+        // Click "resend email" link
+        await user.click(app.getByText('resend email'));
+
+        // Confirm correct request was made, error toast appeared
+        expect(global.fetch).toHaveBeenCalledWith('/accounts/resend_verification_email/');
+        expect(app.queryByText('Unable to send verification email')).not.toBeNull();
+    });
 });

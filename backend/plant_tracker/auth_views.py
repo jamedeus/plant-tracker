@@ -52,6 +52,17 @@ class EmailVerificationTokenGenerator(PasswordResetTokenGenerator):
 email_verification_token_generator = EmailVerificationTokenGenerator()
 
 
+def _generate_and_send_verification_email(user):
+    '''Creates/updates email verification record in database and queues email.'''
+    verification, _ = UserEmailVerification.objects.get_or_create(user=user)
+    verification.verification_sent_at = timezone.now()
+    verification.save()
+
+    uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+    token = email_verification_token_generator.make_token(user)
+    send_verification_email.delay(user.email, uidb64, token)
+
+
 class EmailOrUsernameAuthenticationForm(AuthenticationForm):
     '''AuthenticationForm subclass that accepts email address or username.'''
 
@@ -210,15 +221,8 @@ def create_user(request, data):
                 last_name=data["last_name"],
             )
 
-        # Create email verification record
-        verification, _ = UserEmailVerification.objects.get_or_create(user=user)
-        verification.verification_sent_at = timezone.now()
-        verification.save()
-
-        # Send verification email
-        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-        token = email_verification_token_generator.make_token(user)
-        send_verification_email.delay(user.email, uidb64, token)
+        # Create/refresh verification record and send verification email
+        _generate_and_send_verification_email(user)
 
         # Log user in automatically
         user = authenticate(
@@ -253,6 +257,16 @@ def verify_email(request, uidb64, token):
 
     # Redirect to overview after successful verification
     return HttpResponseRedirect("/")
+
+
+@get_user_token
+@disable_in_single_user_mode
+def resend_verification_email(request, user, **kwargs):
+    '''Resends email verification link to the requesting user's email address.
+    Requesting user must be logged in (prevent sending emails to other users).
+    '''
+    _generate_and_send_verification_email(user)
+    return JsonResponse({"success": "verification email sent"})
 
 
 @get_user_token

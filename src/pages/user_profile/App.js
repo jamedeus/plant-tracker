@@ -52,6 +52,15 @@ const UserDetails = memo(function UserDetails() {
         }
     };
 
+    const resendVerificationEmail = async () => {
+        const response = await fetch('/accounts/resend_verification_email/');
+        if (response.ok) {
+            showToast('Verification email sent!', 'green', 2000);
+        } else {
+            showToast('Unable to send verification email', 'red', 2000);
+        }
+    };
+
     return (
         <div className="flex flex-col gap-4">
             <div className="grid grid-cols-min-max gap-4">
@@ -103,9 +112,13 @@ const UserDetails = memo(function UserDetails() {
                         </div>
                     ) : (
                         <div className="text-error text-sm text-center mt-2">
-                            <span>Not verified</span>
-                            <span> — </span>
-                            <a className="underline" href="">resend email</a>
+                            <span>Not verified — </span>
+                            <span
+                                className="underline cursor-pointer"
+                                onClick={resendVerificationEmail}
+                            >
+                                resend email
+                            </span>
                         </div>
                     )}
                 </div>

@@ -187,17 +187,13 @@ exports[`App matches snapshot 1`] = `
                   class="text-error text-sm text-center mt-2"
                 >
                   <span>
-                    Not verified
+                    Not verified — 
                   </span>
-                  <span>
-                     — 
-                  </span>
-                  <a
-                    class="underline"
-                    href=""
+                  <span
+                    class="underline cursor-pointer"
                   >
                     resend email
-                  </a>
+                  </span>
                 </div>
               </div>
               <div
