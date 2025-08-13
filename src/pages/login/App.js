@@ -43,6 +43,25 @@ const LoginForm = () => {
         }
     };
 
+    const resetPassword = async (e) => {
+        e.preventDefault();
+        // Post FormData to backend (change username field name to email)
+        const formData = new FormData(formRef.current);
+        formData.append("email", formData.get("username"));
+        formData.delete("username");
+        formData.delete("password");
+        const response = await fetch('/accounts/password_reset/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                "X-CSRFToken": Cookies.get('csrftoken')
+            }
+        });
+        const data = await response.json();
+        console.log(data);
+    };
+
     return (
         <form ref={formRef} className="flex flex-col gap-4 mt-8">
             <label title="Username or email address">
@@ -85,9 +104,21 @@ const LoginForm = () => {
             </button>
 
             {showError && (
-                <span className="text-error text-center">
-                    Invalid username or password
-                </span>
+                <>
+                    <span className="text-error text-center">
+                        Invalid username or password
+                    </span>
+                    <span className="text-center">
+                        Forgot password?{' '}
+                        <span
+                            className="underline cursor-pointer"
+                            onClick={resetPassword}
+                            data-testid="reset-password-link"
+                        >
+                            Click here
+                        </span>.
+                    </span>
+                </>
             )}
         </form>
     );

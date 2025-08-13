@@ -1,5 +1,6 @@
 '''Django API endpoint functions for user authentication and account management'''
 
+from django import forms
 from django.conf import settings
 from django.contrib.auth import views
 from django.contrib.auth import get_user_model
@@ -7,11 +8,11 @@ from django.core.validators import validate_email
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
-from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.debug import sensitive_variables
@@ -35,6 +36,15 @@ CLOUDFRONT_COOKIE_NAMES = (
     "CloudFront-Signature",
     "CloudFront-Key-Pair-Id"
 )
+
+
+def is_email(username):
+    '''Returns True if arg matches email regex, otherwise returns False.'''
+    try:
+        validate_email(username)
+        return True
+    except ValidationError:
+        return False
 
 
 class EmailVerificationTokenGenerator(PasswordResetTokenGenerator):
@@ -71,7 +81,7 @@ class EmailOrUsernameAuthenticationForm(AuthenticationForm):
         If username matches email regex returns as the email kwarg, otherwise
         returns as the username kwarg.
         '''
-        if self.is_email(username):
+        if is_email(username):
             return {
                 "email": username,
                 "password": password
@@ -80,14 +90,6 @@ class EmailOrUsernameAuthenticationForm(AuthenticationForm):
             "username": username,
             "password": password
         }
-
-    def is_email(self, username):
-        '''Returns True if arg matches email regex, otherwise returns False.'''
-        try:
-            validate_email(username)
-            return True
-        except ValidationError:
-            return False
 
     @sensitive_variables()
     def clean(self):
@@ -182,6 +184,108 @@ class PasswordChangeView(views.PasswordChangeView):
                 status=403
             )
         return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        '''Returns JSON success message instead of redirect.'''
+        super().form_valid(form)
+        return JsonResponse({"success": "password changed"})
+
+    def form_invalid(self, form):
+        '''Returns errors as JSON instead of redirect with error context.'''
+        return JsonResponse({"errors": form.errors}, status=400)
+
+
+class EmailOrUsernamePasswordResetForm(PasswordResetForm):
+    '''PasswordResetForm subclass that accepts email address or username.'''
+
+    # Don't enforce email syntax (rejects usernames)
+    email = forms.CharField(
+        label="Email",
+        max_length=254,
+    )
+
+    def get_users(self, email):
+        '''Subclass of get_users that accepts username or email address.'''
+
+        # Use default behavior if arg is an email address
+        if is_email(email):
+            yield from super().get_users(email)
+            return
+
+        # Otherwise look up user by username
+        active_users = user_model._default_manager.filter(
+            **{
+                f"{user_model.USERNAME_FIELD}__iexact": email,
+                "is_active": True,
+            }
+        )
+        yield from (user for user in active_users if user.has_usable_password())
+
+
+class PasswordResetView(views.PasswordResetView):
+    '''PasswordResetView subclass that accepts email address or username.'''
+
+    form_class = EmailOrUsernamePasswordResetForm
+
+    @method_decorator(disable_in_single_user_mode)
+    def dispatch(self, request, *args, **kwargs):
+        '''Sends password reset email unless SINGLE_USER_MODE is enabled.'''
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        '''Reject GET requests (must POST to request password reset).'''
+        return JsonResponse({"error": "must post data"}, status=405)
+
+    def form_valid(self, form):
+        '''Returns JSON success message instead of redirect.'''
+
+        # Determine if any users match before saving (to decide JSON response)
+        users = list(form.get_users(form.cleaned_data.get('email')))
+        if not users:
+            return JsonResponse({"error": "account not found"}, status=404)
+        form.save(
+            request=self.request,
+            use_https=self.request.is_secure(),
+            email_template_name=self.email_template_name,
+            html_email_template_name=self.html_email_template_name,
+            subject_template_name=self.subject_template_name,
+            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', None),
+        )
+
+        return JsonResponse({"success": "password reset email sent"})
+
+    def form_invalid(self, form):
+        '''Returns errors as JSON instead of redirect with error context.'''
+        return JsonResponse({"errors": form.errors}, status=400)
+
+
+class PasswordResetConfirmView(views.PasswordResetConfirmView):
+    '''Renders page used to reset password.'''
+
+    # Log user in and redirect to profile page after resetting password
+    post_reset_login = True
+    post_reset_login_backend = settings.AUTHENTICATION_BACKENDS[0]
+    success_url = "/accounts/profile/"
+
+    # Override default django form with boilerplate template + webpack bundles
+    template_name = "plant_tracker/index.html"
+    extra_context = {
+        "title": "Reset Password",
+        'js_files': settings.PAGE_DEPENDENCIES['password_reset']['js'],
+        'css_files': settings.PAGE_DEPENDENCIES['password_reset']['css']
+    }
+
+    @method_decorator(ensure_csrf_cookie)
+    @method_decorator(disable_in_single_user_mode)
+    def dispatch(self, request, *args, **kwargs):
+        '''Returns password reset page unless SINGLE_USER_MODE is enabled.'''
+        return super().dispatch(request, *args, **kwargs)
+
+    def render_to_response(self, context, **kwargs):
+        '''Redirects expired links to login page.'''
+        if context.get('validlink') is False:
+            return HttpResponseRedirect("/accounts/login/")
+        return super().render_to_response(context, **kwargs)
 
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''

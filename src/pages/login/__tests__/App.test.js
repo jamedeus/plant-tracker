@@ -118,6 +118,43 @@ describe('App', () => {
         expect(app.queryByText("Invalid username or password")).toBeNull();
     });
 
+    it('sends correct payload when user requests password reset', async () => {
+        // Mock fetch function to return invalid credentials error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 400,
+            json: () => Promise.resolve({
+                errors: {
+                    __all__: [
+                        "Please enter a correct username and password. Note that both fields may be case-sensitive."
+                    ]
+                }
+            })
+        }));
+
+        // Simulate user typing credentials and logging in
+        await user.type(app.getByLabelText('Username'), 'carlosdanger');
+        await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
+        await user.click(app.getByRole("button", {name: "Login"}));
+
+        // Confirm fetch was called, error text and reset link appeared
+        expect(global.fetch).toHaveBeenCalled();
+        expect(app.queryByText("Invalid username or password")).not.toBeNull();
+        expect(app.queryByText(/Forgot password/)).not.toBeNull();
+
+        // Simulate user clicking reset link
+        await user.click(app.getByTestId('reset-password-link'));
+
+        // Confirm correct data posted to /accounts/password_reset/ endpoint
+        expect(global.fetch).toHaveBeenCalled();
+        const [url, fetchOptions] = global.fetch.mock.calls[1];
+        expect(url).toBe('/accounts/password_reset/');
+        expect(fetchOptions.method).toBe('POST');
+        expect(fetchOptions.body).toBeInstanceOf(FormData);
+        expect(fetchOptions.body.get('email')).toBe('carlosdanger');
+        expect(fetchOptions.body.get('password')).toBeNull();
+    });
+
     it('sends correct payload when user registers account', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({

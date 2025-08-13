@@ -116,6 +116,17 @@ PAGE_DEPENDENCIES = {
             "shared.css"
         ]
     },
+    "password_reset": {
+        "js": [
+            "icons.js",
+            "react-common.js",
+            "libs.js",
+            "password_reset.js"
+        ],
+        "css": [
+            "shared.css"
+        ]
+    },
     "permission_denied": {
         "js": [
             "react-common.js",

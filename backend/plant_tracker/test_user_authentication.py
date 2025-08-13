@@ -1,14 +1,17 @@
 # pylint: disable=missing-docstring,too-many-lines,too-many-public-methods
 
+import re
 from uuid import uuid4
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 from unittest.mock import patch
 
+from django.core import mail
 from django.contrib import auth
 from django.conf import settings
 from django.test import TestCase
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
+from django.test.utils import override_settings
 from django.test.client import MULTIPART_CONTENT
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -459,6 +462,157 @@ class AuthenticationEndpointTests(TestCase):
             response.json(),
             {"error": "cannot change default user password"}
         )
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_password_reset_endpoint_with_username(self):
+        mail.outbox.clear()
+        response = self.client.post(
+            '/accounts/password_reset/',
+            urlencode({'email': 'unittest'}),
+            content_type='application/x-www-form-urlencoded'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "password reset email sent"})
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('Reset your Plant Tracker password', mail.outbox[0].subject)
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_password_reset_endpoint_with_email(self):
+        mail.outbox.clear()
+        response = self.client.post(
+            '/accounts/password_reset/',
+            urlencode({'email': 'bob.smith@hotmail.com'}),
+            content_type='application/x-www-form-urlencoded'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "password reset email sent"})
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('Reset your Plant Tracker password', mail.outbox[0].subject)
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_password_reset_endpoint_unknown_email(self):
+        mail.outbox.clear()
+        response = self.client.post(
+            '/accounts/password_reset/',
+            urlencode({'email': 'doesnotexist'}),
+            content_type='application/x-www-form-urlencoded'
+        )
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "account not found"})
+        self.assertEqual(len(mail.outbox), 0)
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_password_reset_endpoint_invalid_get_request(self):
+        mail.outbox.clear()
+        response = self.client.get('/accounts/password_reset/')
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.json(), {'error': 'must post data'})
+        self.assertEqual(len(mail.outbox), 0)
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_password_reset_endpoint_form_invalid(self):
+        mail.outbox.clear()
+        # Send request with missing email field, confirm expected error response
+        response = self.client.post(
+            '/accounts/password_reset/',
+            urlencode({}),
+            content_type='application/x-www-form-urlencoded'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('errors', response.json())
+        # Confirm no email was sent
+        self.assertEqual(len(mail.outbox), 0)
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_password_reset_link_loads_and_changes_password(self):
+        # Request password_reset endpoint to generate reset link
+        mail.outbox.clear()
+        response = self.client.post(
+            '/accounts/password_reset/',
+            urlencode({'email': 'unittest'}),
+            content_type='application/x-www-form-urlencoded'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+
+        # Extract reset URL from email body
+        body = mail.outbox[0].body
+        match = re.search(r"https?://[^\s]+/accounts/reset/[^\s]+/[^\s]+/", body)
+        self.assertIsNotNone(match)
+        reset_url = match.group(0)
+        reset_path = urlsplit(reset_url).path
+
+        # Confirm first GET redirects to /set-password/ (renders form)
+        first = self.client.get(reset_path)
+        self.assertEqual(first.status_code, 302)
+        self.assertRegex(first.url, r"^/accounts/reset/[A-Za-z0-9_\-]+/set-password/\Z")
+
+        # Load /set-password/ page, confirm uses correct JS bundle and title
+        page = self.client.get(first.url)
+        self.assertEqual(page.status_code, 200)
+        self.assertTemplateUsed(page, 'plant_tracker/index.html')
+        self.assertEqual(page.context['title'], 'Reset Password')
+        self.assertEqual(
+            page.context['js_files'],
+            settings.PAGE_DEPENDENCIES['password_reset']['js']
+        )
+
+        # Simulate user submitting form with new password
+        post_response = self.client.post(
+            first.url,
+            urlencode({
+                'new_password1': 'a password I can actually remember',
+                'new_password2': 'a password I can actually remember',
+            }),
+            content_type='application/x-www-form-urlencoded'
+        )
+        self.assertEqual(post_response.status_code, 200)
+        self.assertEqual(post_response.json(), {"success": "password changed"})
+
+        # Confirm user is now authenticated and password was changed
+        self.assertTrue(auth.get_user(self.client).is_authenticated)
+        user = user_model.objects.get(username='unittest')
+        self.assertTrue(user.check_password('a password I can actually remember'))
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_password_reset_confirm_form_invalid(self):
+        # Request password_reset endpoint to generate reset link
+        mail.outbox.clear()
+        response = self.client.post(
+            '/accounts/password_reset/',
+            urlencode({'email': 'unittest'}),
+            content_type='application/x-www-form-urlencoded'
+        )
+        self.assertEqual(response.status_code, 200)
+        body = mail.outbox[0].body
+        match = re.search(r"https?://[^\s]+/accounts/reset/[^\s]+/[^\s]+/", body)
+        reset_path = urlsplit(match.group(0)).path
+
+        # Follow redirect to set-password
+        first = self.client.get(reset_path)
+        self.assertEqual(first.status_code, 302)
+        set_password_path = first.url
+
+        # Submit passwords that don't match, confirm expected error response
+        response = self.client.post(
+            set_password_path,
+            urlencode({
+                'new_password1': 'abc123456',
+                'new_password2': 'abc1234567',
+            }),
+            content_type='application/x-www-form-urlencoded'
+        )
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertIn('errors', data)
+        self.assertIn('new_password2', data['errors'])
+
+    def test_password_reset_confirm_invalid_link_redirects(self):
+        # Confirm redirects to login page when token is invalid
+        invalid_path = '/accounts/reset/INVALIDUID/invalid-token/'
+        response = self.client.get(invalid_path)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/accounts/login/')
 
     def test_edit_user_details_endpoint(self):
         # Confirm initial test user details
