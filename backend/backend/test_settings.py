@@ -63,7 +63,9 @@ DEFAULT_USERNAME='DEFAULT'
 PAGE_DEPENDENCIES = {
     "login": {
         "js": [
+            "icons.js",
             "react-common.js",
+            "libs.js",
             "login.js"
         ],
         "css": [
@@ -72,7 +74,9 @@ PAGE_DEPENDENCIES = {
     },
     "user_profile": {
         "js": [
+            "icons.js",
             "react-common.js",
+            "libs.js",
             "user_profile.js"
         ],
         "css": [
@@ -81,7 +85,10 @@ PAGE_DEPENDENCIES = {
     },
     "overview": {
         "js": [
+            "icons.js",
             "react-common.js",
+            "libs.js",
+            "headlessui.js",
             "overview.js"
         ],
         "css": [
@@ -90,7 +97,10 @@ PAGE_DEPENDENCIES = {
     },
     "register": {
         "js": [
+            "icons.js",
             "react-common.js",
+            "libs.js",
+            "headlessui.js",
             "register.js"
         ],
         "css": [
@@ -99,7 +109,10 @@ PAGE_DEPENDENCIES = {
     },
     "manage_plant": {
         "js": [
+            "icons.js",
             "react-common.js",
+            "libs.js",
+            "headlessui.js",
             "manage_plant.js"
         ],
         "css": [
@@ -109,7 +122,10 @@ PAGE_DEPENDENCIES = {
     },
     "manage_group": {
         "js": [
+            "icons.js",
             "react-common.js",
+            "libs.js",
+            "headlessui.js",
             "manage_group.js"
         ],
         "css": [
@@ -129,20 +145,13 @@ PAGE_DEPENDENCIES = {
     },
     "permission_denied": {
         "js": [
+            "icons.js",
             "react-common.js",
+            "libs.js",
             "permission_denied.js"
         ],
         "css": [
             "shared.css"
         ]
     },
-    "confirm_new_qr_code": {
-        "js": [
-            "react-common.js",
-            "confirm_new_qr_code.js"
-        ],
-        "css": [
-            "shared.css"
-        ]
-    }
 }
