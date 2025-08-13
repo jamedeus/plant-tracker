@@ -6,11 +6,11 @@ from django.contrib.auth import views
 from django.contrib.auth import get_user_model
 from django.core.validators import validate_email
 from django.db import transaction, IntegrityError
-from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.utils.encoding import force_bytes
@@ -54,7 +54,7 @@ class EmailVerificationTokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
         try:
             verified = user.email_verification.is_email_verified
-        except Exception:  # pragma: no cover
+        except ObjectDoesNotExist:  # pragma: no cover
             verified = False
         return f"{user.pk}{user.email}{int(verified)}{timestamp}"
 
@@ -228,9 +228,9 @@ class PasswordResetView(views.PasswordResetView):
     form_class = EmailOrUsernamePasswordResetForm
 
     @method_decorator(disable_in_single_user_mode)
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):
         '''Sends password reset email unless SINGLE_USER_MODE is enabled.'''
-        return super().dispatch(request, *args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     def get(self, *args, **kwargs):
         '''Reject GET requests (must POST to request password reset).'''
@@ -277,9 +277,9 @@ class PasswordResetConfirmView(views.PasswordResetConfirmView):
 
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(disable_in_single_user_mode)
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):
         '''Returns password reset page unless SINGLE_USER_MODE is enabled.'''
-        return super().dispatch(request, *args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     def render_to_response(self, context, **kwargs):
         '''Redirects expired links to login page.'''
