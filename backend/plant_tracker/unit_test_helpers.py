@@ -1,11 +1,16 @@
 '''Helper functions used in unit tests'''
 
+import os
+import shutil
+import tempfile
 from io import BytesIO
 
 import piexif
 from PIL import Image
 
 from django.test import Client
+from django.conf import settings
+from django.test.utils import override_settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
@@ -16,6 +21,36 @@ class JSONClient(Client):
     def post(self, path, data=None, content_type='application/json', **extra):
         return super().post(path, data, content_type, **extra)
 
+
+def enable_isolated_media_root():
+    '''Create a per-module temporary MEDIA_ROOT and apply override_settings.
+
+    Returns a tuple of (override_object, module_temp_dir) so the caller can
+    disable the override and delete the temp directory in tearDownModule.
+    '''
+    module_test_dir = tempfile.mkdtemp(prefix='plant_tracker_unit_test_')
+    media_root = os.path.join(module_test_dir, 'data', 'images')
+    storages = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {
+                "location": media_root,
+                "base_url": settings.MEDIA_URL,
+            },
+        },
+        "staticfiles": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    }
+    override = override_settings(TEST_DIR=module_test_dir, MEDIA_ROOT=media_root, STORAGES=storages)
+    override.enable()
+    os.makedirs(media_root, exist_ok=True)
+    return override, module_test_dir
+
+
+def cleanup_isolated_media_root(override, module_test_dir):
+    '''Disable overrides and remove the temporary directory created above.'''
+    shutil.rmtree(module_test_dir, ignore_errors=True)
+    if override:
+        override.disable()
 
 def create_mock_photo(
     creation_time=None,

@@ -32,7 +32,7 @@ test_backend:
     - pipenv install --dev
     - cd backend/
   script:
-    - pipenv run coverage run manage.py test
+    - pipenv run coverage run manage.py test --parallel 8
     - pipenv run coverage report
   coverage: '/TOTAL.*\s+(\d+\.\d+\%)$/'
 

@@ -6,6 +6,7 @@ import sys
 import json
 import base64
 import shutil
+import tempfile
 from uuid import uuid4
 from datetime import datetime
 from unittest.mock import patch
@@ -31,15 +32,28 @@ from .models import (
     Photo,
     NoteEvent
 )
-from .unit_test_helpers import JSONClient, create_mock_photo
+from .unit_test_helpers import (
+    JSONClient,
+    create_mock_photo,
+    enable_isolated_media_root,
+    cleanup_isolated_media_root,
+)
 
 user_model = get_user_model()
+
+_override = None
+_module_test_dir = None
+
+
+def setUpModule():
+    global _override, _module_test_dir
+    _override, _module_test_dir = enable_isolated_media_root()
 
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
+    cleanup_isolated_media_root(_override, _module_test_dir)
 
 
 class RenderReactAppTests(TestCase):

@@ -1,6 +1,8 @@
 # pylint: disable=missing-docstring,R0801,too-many-lines
 
 import shutil
+import os
+import tempfile
 import threading
 from uuid import uuid4
 from types import NoneType
@@ -14,6 +16,7 @@ from django.test.client import MULTIPART_CONTENT
 from django.db import IntegrityError, connections
 from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
+from django.test.utils import override_settings
 
 from .build_states import build_overview_state, get_overview_state
 from .models import (
@@ -34,14 +37,24 @@ from .view_decorators import (
 from .unit_test_helpers import (
     JSONClient,
     create_mock_photo,
-    create_mock_rgba_png
+    create_mock_rgba_png,
+    enable_isolated_media_root,
+    cleanup_isolated_media_root,
 )
 
+
+_override = None
+_module_test_dir = None
+
+
+def setUpModule():
+    global _override, _module_test_dir
+    _override, _module_test_dir = enable_isolated_media_root()
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
+    cleanup_isolated_media_root(_override, _module_test_dir)
 
 
 class ModelRegressionTests(TestCase):
@@ -248,8 +261,8 @@ class ModelRegressionTestsTransaction(TransactionTestCase):
         # Clear entire cache before each test
         cache.clear()
 
-        # Recreate default user (deleted by TransactionTestCase)
-        self.user = get_user_model().objects.create(username=settings.DEFAULT_USERNAME)
+        # Ensure default user exists (may already exist from migrations)
+        self.user, _ = get_user_model().objects.get_or_create(username=settings.DEFAULT_USERNAME)
 
         # Clear cached user instance
         get_default_user.cache_clear()

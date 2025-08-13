@@ -1,10 +1,13 @@
 # pylint: disable=missing-docstring,line-too-long,R0801,too-many-lines,too-many-public-methods
 
 import shutil
+import os
+import tempfile
 from uuid import uuid4
 
 from django.conf import settings
 from django.test import TestCase
+from django.test.utils import override_settings
 from django.utils import timezone
 from django.core.cache import cache
 from django.test.client import MULTIPART_CONTENT
@@ -12,13 +15,26 @@ from django.test.client import MULTIPART_CONTENT
 from .view_decorators import get_default_user
 from .build_states import build_overview_state
 from .models import Group, Plant, DivisionEvent, Photo
-from .unit_test_helpers import JSONClient, create_mock_photo
+from .unit_test_helpers import (
+    JSONClient,
+    create_mock_photo,
+    enable_isolated_media_root,
+    cleanup_isolated_media_root,
+)
+
+_override = None
+_module_test_dir = None
+
+
+def setUpModule():
+    global _override, _module_test_dir
+    _override, _module_test_dir = enable_isolated_media_root()
 
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
+    cleanup_isolated_media_root(_override, _module_test_dir)
 
 
 class EndpointStateUpdateTests(TestCase):

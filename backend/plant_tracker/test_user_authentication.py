@@ -1,6 +1,9 @@
 # pylint: disable=missing-docstring,too-many-lines,too-many-public-methods
 
 import re
+import os
+import shutil
+import tempfile
 from uuid import uuid4
 from urllib.parse import urlencode, urlsplit
 from unittest.mock import patch
@@ -19,10 +22,23 @@ from django.utils.http import urlsafe_base64_encode
 from .view_decorators import get_default_user
 from .models import Plant, Group, UserEmailVerification
 from .auth_views import email_verification_token_generator
-from .unit_test_helpers import JSONClient, create_mock_photo
+from .unit_test_helpers import (
+    JSONClient,
+    create_mock_photo,
+    enable_isolated_media_root,
+    cleanup_isolated_media_root,
+)
 
 user_model = get_user_model()
 
+
+_override = None
+_module_test_dir = None
+
+
+def setUpModule():
+    global _override, _module_test_dir
+    _override, _module_test_dir = enable_isolated_media_root()
 
 class AuthenticationPageTests(TestCase):
     @classmethod
@@ -50,6 +66,12 @@ class AuthenticationPageTests(TestCase):
     def tearDown(self):
         # Ensure user logged out between tests
         self.client.logout()
+
+
+def tearDownModule():
+    # Delete mock photo directory after tests
+    print("\nDeleting mock photos...\n")
+    cleanup_isolated_media_root(_override, _module_test_dir)
 
     def test_login_page(self):
         # Request login page, confirm uses correct JS bundle and title

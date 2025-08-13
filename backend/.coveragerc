@@ -1,6 +1,8 @@
 [run]
 branch = True
 source = .
+parallel = True
+concurrency = multiprocessing
 omit =
     *manage.py
     *wsgi.py

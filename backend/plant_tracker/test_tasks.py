@@ -1,19 +1,31 @@
 # pylint: disable=missing-docstring,line-too-long,R0801,too-many-lines
 
 import shutil
+import os
+import tempfile
 
 from django.conf import settings
 from django.test import TestCase
+from django.test.utils import override_settings
 from django.core.cache import cache
 
 from .view_decorators import get_default_user
 from .tasks import update_cached_overview_state, update_all_cached_states
+from .unit_test_helpers import enable_isolated_media_root, cleanup_isolated_media_root
+
+_override = None
+_module_test_dir = None
+
+
+def setUpModule():
+    global _override, _module_test_dir
+    _override, _module_test_dir = enable_isolated_media_root()
 
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
+    cleanup_isolated_media_root(_override, _module_test_dir)
 
 
 class HelperFunctionTests(TestCase):
