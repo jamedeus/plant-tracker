@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
+import { showToast } from 'src/components/Toast';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest } from 'src/util';
 import { EMAIL_REGEX } from 'src/regex';
@@ -58,8 +59,9 @@ const LoginForm = () => {
                 "X-CSRFToken": Cookies.get('csrftoken')
             }
         });
-        const data = await response.json();
-        console.log(data);
+        if (response.ok) {
+            showToast('Password reset email sent.', 'green', 5000);
+        }
     };
 
     return (

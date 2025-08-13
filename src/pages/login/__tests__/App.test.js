@@ -142,17 +142,34 @@ describe('App', () => {
         expect(app.queryByText("Invalid username or password")).not.toBeNull();
         expect(app.queryByText(/Forgot password/)).not.toBeNull();
 
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "success": "password reset email sent"
+            })
+        }));
+
+        // Confirm toast message is not visible
+        expect(app.queryByText('Password reset email sent.')).toBeNull();
+
         // Simulate user clicking reset link
         await user.click(app.getByTestId('reset-password-link'));
 
         // Confirm correct data posted to /accounts/password_reset/ endpoint
         expect(global.fetch).toHaveBeenCalled();
-        const [url, fetchOptions] = global.fetch.mock.calls[1];
+        const [[url, fetchOptions]] = global.fetch.mock.calls;
         expect(url).toBe('/accounts/password_reset/');
         expect(fetchOptions.method).toBe('POST');
         expect(fetchOptions.body).toBeInstanceOf(FormData);
         expect(fetchOptions.body.get('email')).toBe('carlosdanger');
         expect(fetchOptions.body.get('password')).toBeNull();
+
+        // Confirm toast message appeared
+        await waitFor(() => {
+            expect(app.queryByText('Password reset email sent.')).not.toBeNull();
+        });
     });
 
     it('sends correct payload when user registers account', async () => {
