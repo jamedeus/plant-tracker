@@ -28,8 +28,8 @@ def enable_isolated_media_root():
     Returns a tuple of (override_object, module_temp_dir) so the caller can
     disable the override and delete the temp directory in tearDownModule.
     '''
-    module_test_dir = tempfile.mkdtemp(prefix='plant_tracker_unit_test_')
-    media_root = os.path.join(module_test_dir, 'data', 'images')
+    module_media_root = tempfile.mkdtemp(prefix='plant_tracker_unit_test_')
+    media_root = os.path.join(module_media_root, 'data', 'images')
     storages = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -40,15 +40,19 @@ def enable_isolated_media_root():
         },
         "staticfiles": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     }
-    override = override_settings(TEST_DIR=module_test_dir, MEDIA_ROOT=media_root, STORAGES=storages)
+    override = override_settings(
+        TEST_DIR=module_media_root,
+        MEDIA_ROOT=media_root,
+        STORAGES=storages
+    )
     override.enable()
     os.makedirs(media_root, exist_ok=True)
-    return override, module_test_dir
+    return override, module_media_root
 
 
-def cleanup_isolated_media_root(override, module_test_dir):
+def cleanup_isolated_media_root(override, module_media_root):
     '''Disable overrides and remove the temporary directory created above.'''
-    shutil.rmtree(module_test_dir, ignore_errors=True)
+    shutil.rmtree(module_media_root, ignore_errors=True)
     if override:
         override.disable()
 

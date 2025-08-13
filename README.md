@@ -128,7 +128,8 @@ Django tests should be run with the [test_settings](backend/backend/test_setting
 pipenv install --dev
 pipenv shell
 cd backend
-coverage run manage.py test --settings=backend.test_settings
+coverage run manage.py test --settings=backend.test_settings --parallel 16
+coverage combine
 coverage report
 ```
 

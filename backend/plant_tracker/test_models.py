@@ -1,7 +1,6 @@
-# pylint: disable=missing-docstring,line-too-long
+# pylint: disable=missing-docstring,line-too-long,global-statement
 
 import os
-import shutil
 from uuid import uuid4
 from concurrent.futures import ThreadPoolExecutor, wait
 
@@ -10,8 +9,6 @@ from django.utils import timezone
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.test import TestCase, TransactionTestCase
-from django.test.utils import override_settings
-import tempfile
 from django.db import transaction, connection, IntegrityError
 
 from .view_decorators import get_default_user
@@ -33,19 +30,19 @@ from .unit_test_helpers import (
     cleanup_isolated_media_root,
 )
 
-_override = None
-_module_test_dir = None
+OVERRIDE = None
+MODULE_MEDIA_ROOT = None
 
 
 def setUpModule():
-    global _override, _module_test_dir
-    _override, _module_test_dir = enable_isolated_media_root()
+    global OVERRIDE, MODULE_MEDIA_ROOT
+    OVERRIDE, MODULE_MEDIA_ROOT = enable_isolated_media_root()
 
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    cleanup_isolated_media_root(_override, _module_test_dir)
+    cleanup_isolated_media_root(OVERRIDE, MODULE_MEDIA_ROOT)
 
 
 class PlantModelTests(TestCase):

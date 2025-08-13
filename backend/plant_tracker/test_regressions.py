@@ -1,8 +1,5 @@
-# pylint: disable=missing-docstring,R0801,too-many-lines
+# pylint: disable=missing-docstring,R0801,too-many-lines,global-statement
 
-import shutil
-import os
-import tempfile
 import threading
 from uuid import uuid4
 from types import NoneType
@@ -16,7 +13,6 @@ from django.test.client import MULTIPART_CONTENT
 from django.db import IntegrityError, connections
 from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
-from django.test.utils import override_settings
 
 from .build_states import build_overview_state, get_overview_state
 from .models import (
@@ -43,18 +39,19 @@ from .unit_test_helpers import (
 )
 
 
-_override = None
-_module_test_dir = None
+OVERRIDE = None
+MODULE_MEDIA_ROOT = None
 
 
 def setUpModule():
-    global _override, _module_test_dir
-    _override, _module_test_dir = enable_isolated_media_root()
+    global OVERRIDE, MODULE_MEDIA_ROOT
+    OVERRIDE, MODULE_MEDIA_ROOT = enable_isolated_media_root()
+
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    cleanup_isolated_media_root(_override, _module_test_dir)
+    cleanup_isolated_media_root(OVERRIDE, MODULE_MEDIA_ROOT)
 
 
 class ModelRegressionTests(TestCase):

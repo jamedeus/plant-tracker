@@ -1,13 +1,8 @@
-# pylint: disable=missing-docstring,line-too-long,R0801,too-many-lines,too-many-public-methods
+# pylint: disable=missing-docstring,line-too-long,R0801,too-many-lines,too-many-public-methods,global-statement
 
-import shutil
-import os
-import tempfile
 from uuid import uuid4
 
-from django.conf import settings
 from django.test import TestCase
-from django.test.utils import override_settings
 from django.utils import timezone
 from django.core.cache import cache
 from django.test.client import MULTIPART_CONTENT
@@ -22,19 +17,19 @@ from .unit_test_helpers import (
     cleanup_isolated_media_root,
 )
 
-_override = None
-_module_test_dir = None
+OVERRIDE = None
+MODULE_MEDIA_ROOT = None
 
 
 def setUpModule():
-    global _override, _module_test_dir
-    _override, _module_test_dir = enable_isolated_media_root()
+    global OVERRIDE, MODULE_MEDIA_ROOT
+    OVERRIDE, MODULE_MEDIA_ROOT = enable_isolated_media_root()
 
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    cleanup_isolated_media_root(_override, _module_test_dir)
+    cleanup_isolated_media_root(OVERRIDE, MODULE_MEDIA_ROOT)
 
 
 class EndpointStateUpdateTests(TestCase):
