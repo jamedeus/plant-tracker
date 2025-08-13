@@ -38,8 +38,8 @@ describe('App', () => {
             json: () => Promise.resolve({success: "password_changed"})
         }));
 
-        // Confirm success toast is not rendered
-        expect(app.queryByText('Password changed!')).toBeNull();
+        // Confirm submit button says "Change Password"
+        expect(app.getByTestId('submit-button')).toHaveTextContent('Change Password');
 
         // Simulate user entering new password twice
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
@@ -57,11 +57,11 @@ describe('App', () => {
         expect(fetchOptions.body.get('new_password1')).toBe('thispasswordisbetter');
         expect(fetchOptions.body.get('new_password2')).toBe('thispasswordisbetter');
 
-        // Confirm toast message appeared
-        expect(app.queryByText('Password changed!')).not.toBeNull();
+        // Confirm submit button changed to success animation
+        expect(app.getByTestId('submit-button')).not.toHaveTextContent();
 
         // Confirm automatically redirects to profile page
-        await act(async () => await jest.advanceTimersByTimeAsync(800));
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
         expect(window.location.href).toBe('/accounts/profile/');
     });
 
@@ -85,6 +85,31 @@ describe('App', () => {
         const [[url, fetchOptions]] = global.fetch.mock.calls;
         expect(url).toBe('/accounts/reset/OA/set-password/');
         expect(fetchOptions.method).toBe('POST');
+    });
+
+    it('does not submit form again if submit button is clicked while loading', async () => {
+        // Mock fetch to simulate slow response
+        global.fetch = jest.fn(() => new Promise((resolve) => {
+            setTimeout(() => resolve({
+                ok: true,
+                status: 200,
+                json: () => Promise.resolve({ success: 'password_changed' })
+            }), 5000);
+        }));
+
+        // Simulate user entering new password twice
+        await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
+        await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbetter');
+
+        // Click change password button, confirm changes to loading spinner
+        await user.click(app.getByTestId('submit-button'));
+        expect(app.getByTestId('submit-button').querySelector('.loading-spinner')).not.toBeNull();
+
+        // Click again while still loading
+        await user.click(app.getByTestId('submit-button'));
+
+        // Confirm no duplicate request was made
+        expect(global.fetch).toHaveBeenCalledTimes(1);
     });
 
     it('highlights new password fields if new passwords do not match', async () => {

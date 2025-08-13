@@ -1,15 +1,17 @@
 import React, { useState, useMemo, useRef } from 'react';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import Navbar from 'src/components/Navbar';
-import { showToast } from 'src/components/Toast';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
+import 'src/css/checkmark.css';
 
 function App() {
     const formRef = useRef(null);
     const [newPassword1, setNewPassword1] = useState('');
     const [newPassword2, setNewPassword2] = useState('');
     const [newPasswordError, setNewPasswordError] = useState('');
+    // Either 'idle', 'loading', or 'success'
+    const [submitStatus, setSubmitStatus] = useState('idle');
 
     // Enable submit button when all fields reach minimum password length and
     // both new password fields match
@@ -19,6 +21,10 @@ function App() {
 
     const submit = async (e) => {
         e.preventDefault();
+        if (submitStatus !== 'idle') {
+            return;
+        }
+        setSubmitStatus('loading');
         // Post new password to backend
         const formData = new FormData(formRef.current);
         const response = await fetch(window.location.pathname, {
@@ -29,10 +35,10 @@ function App() {
                 'X-CSRFToken': Cookies.get('csrftoken')
             }
         });
-        // Show toast and redirect to profile page if successful
+        // Show checkmark and redirect to profile page if successful
         if (response.ok) {
-            showToast('Password changed!', 'green', 1500);
-            setTimeout(() => { window.location.href = '/accounts/profile/'; }, 800);
+            setSubmitStatus('success');
+            setTimeout(() => { window.location.href = '/accounts/profile/'; }, 1500);
         // Show error and highlight fields red if unsuccessful
         } else {
             const errors = await response.json();
@@ -41,6 +47,7 @@ function App() {
                 return;
             }
             setNewPasswordError('Failed to change password.');
+            setSubmitStatus('idle');
         }
     };
 
@@ -105,8 +112,20 @@ function App() {
                         className="btn btn-accent mt-6"
                         disabled={submitButtonDisabled}
                         onClick={(e) => submit(e)}
+                        data-testid="submit-button"
                     >
-                        Change Password
+                        {submitStatus === 'idle' && (
+                            <span>Change Password</span>
+                        )}
+                        {submitStatus === 'loading' && (
+                            <span className="loading loading-spinner loading-xl"></span>
+                        )}
+                        {submitStatus === 'success' && (
+                            <svg className="checkmark z-99" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                            </svg>
+                        )}
                     </button>
                 </form>
             </div>
