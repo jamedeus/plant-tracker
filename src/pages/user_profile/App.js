@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { EMAIL_REGEX } from 'src/regex';
-import { parseDomContext, sendPostRequest } from 'src/util';
+import { sendPostRequest } from 'src/util';
 import { timestampToRelative, timestampToReadable } from 'src/timestampUtils';
 import Navbar from 'src/components/Navbar';
 import { showToast } from 'src/components/Toast';
@@ -11,11 +11,9 @@ import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import { FaCheck } from 'react-icons/fa6';
 
-const UserDetails = memo(function UserDetails() {
-    // Get initial details for form from django context
-    const [userDetails, setUserDetails] = useState(() => (
-        parseDomContext('user_details')
-    ));
+const UserDetails = memo(function UserDetails({ initialUserDetails }) {
+    // Initialize from SPA-provided state
+    const [userDetails, setUserDetails] = useState(initialUserDetails);
 
     const [firstName, setFirstName] = useState(userDetails.first_name);
     const [lastName, setLastName] = useState(userDetails.last_name);
@@ -146,6 +144,17 @@ const UserDetails = memo(function UserDetails() {
         </div>
     );
 });
+
+UserDetails.propTypes = {
+    initialUserDetails: PropTypes.shape({
+        username: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        email_verified: PropTypes.bool.isRequired,
+        first_name: PropTypes.string.isRequired,
+        last_name: PropTypes.string.isRequired,
+        date_joined: PropTypes.string.isRequired,
+    }).isRequired
+};
 
 const ChangePassword = memo(function ChangePassword() {
     const formRef = useRef(null);
@@ -292,7 +301,7 @@ Section.propTypes = {
     children: PropTypes.node.isRequired
 };
 
-function App() {
+function App({ initialUserDetails }) {
     const DropdownMenuOptions = useMemo(() => (
         <>
             <li><a href='/'>
@@ -311,7 +320,7 @@ function App() {
             />
             <div className="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16">
                 <Section title="Details" open={true}>
-                    <UserDetails />
+                    <UserDetails initialUserDetails={initialUserDetails} />
                 </Section>
                 <Section title="Change Password">
                     <ChangePassword />
@@ -328,3 +337,14 @@ function App() {
 }
 
 export default App;
+
+App.propTypes = {
+    initialUserDetails: PropTypes.shape({
+        username: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        email_verified: PropTypes.bool.isRequired,
+        first_name: PropTypes.string.isRequired,
+        last_name: PropTypes.string.isRequired,
+        date_joined: PropTypes.string.isRequired,
+    }).isRequired
+};

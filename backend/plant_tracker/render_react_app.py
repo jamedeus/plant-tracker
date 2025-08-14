@@ -36,6 +36,6 @@ def render_permission_denied_page(request, error_string):
     return render_react_app(
         request,
         title='Permission Denied',
-        bundle='permission_denied',
+        bundle='spa',
         state={'error': error_string}
     )

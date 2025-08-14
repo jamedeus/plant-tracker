@@ -323,7 +323,7 @@ def disable_in_single_user_mode(func):
             # User POSTing to disabled endpoint: return error response
             return JsonResponse(
                 {"error": "user accounts are disabled"},
-                status=400
+                status=403
             )
         return func(request, *args, **kwargs)
     return wrapper

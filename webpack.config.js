@@ -63,10 +63,10 @@ module.exports = (env, argv) => {
                 },
             }
         },
-        // Add entry for each directory in src/pages
-        entry: fs.readdirSync(path.resolve('src/pages')).reduce((o, page) => (
-            { ...o, [page]: `./src/pages/${page}/index.js`}
-        ), {}),
+        // Add entry for each directory in src/pages, plus the SPA shell entry
+        entry: fs.readdirSync(path.resolve('src/pages')).reduce((entryMap, page) => (
+            { ...entryMap, [page]: `./src/pages/${page}/index.js`}
+        ), { spa: './src/spa/index.js' }),
         output: {
             path: path.resolve('backend/plant_tracker/static/plant_tracker/'),
             filename: '[name].js',

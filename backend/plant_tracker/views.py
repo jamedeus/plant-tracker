@@ -88,11 +88,12 @@ def overview(request, user):
     else:
         title=f"{user.first_name}'s Plants"
 
+    # Serve SPA shell; the frontend fetches overview state via /get_overview_state
     return render_react_app(
         request,
         title=title,
-        bundle='overview',
-        state=get_overview_state(user)
+        bundle='spa',
+        state={}
     )
 
 
@@ -107,24 +108,38 @@ def get_overview_page_state(_, user):
     )
 
 
+def get_app_config(_):
+    '''Returns global, page-agnostic config used by the SPA shell.'''
+    return JsonResponse({
+        'user_accounts_enabled': not settings.SINGLE_USER_MODE
+    }, status=200)
+
+
 @get_user_token
 def archived_overview(request, user):
     '''Renders overview page for the requesting user showing only their
     archived plants and groups.
     '''
 
-    state = build_overview_state(user, archived=True)
-
-    # Redirect to main overview if user has no archived plants or groups
-    if not state:
-        return HttpResponseRedirect('/')
-
+    # Serve SPA shell; the frontend fetches archived state via /get_archived_overview_state
     return render_react_app(
         request,
         title='Archived',
-        bundle='overview',
-        state=state
+        bundle='spa',
+        state={}
     )
+
+
+@get_user_token
+def get_archived_overview_state(_, user):
+    '''Returns archived overview page state for the requesting user as JSON.
+    Used by SPA to bootstrap the archived overview route.
+    '''
+    state = build_overview_state(user, archived=True)
+    if not state:
+        # Mirror server-rendered behavior (redirects to '/') with an indicator
+        return JsonResponse({'redirect': '/'}, status=200)
+    return JsonResponse(state, status=200)
 
 
 @get_user_token
@@ -134,18 +149,92 @@ def manage(request, uuid, user):
       - manage_group: rendered if QR code UUID matches an existing Group entry
       - register: rendered if the QR code UUID does not match an existing Plant/Group
     '''
+    # Serve SPA shell; the frontend resolves type and state via /resolve_manage/<uuid>
+    return render_react_app(
+        request,
+        title='Manage',
+        bundle='spa',
+        state={}
+    )
+
+
+@get_user_token
+def resolve_manage(request, uuid, user):
+    '''Resolves a UUID to the correct page and returns initial state as JSON.
+    Returns page key (manage_plant, manage_group, or register), page title, and
+    the initial state object for that page. Intended for SPA bootstrapping.
+    '''
 
     model_type = find_model_type(uuid)
     if model_type == 'plant':
         plant = Plant.objects.get_with_manage_plant_annotation(uuid)
-        return render_manage_plant_page(request, plant, user)
+        if plant.user != user:
+            return JsonResponse({
+                'page': 'permission_denied',
+                'title': 'Permission Denied',
+                'state': {'error': 'You do not have permission to view this plant'}
+            }, status=403)
+        return JsonResponse({
+            'page': 'manage_plant',
+            'title': 'Manage Plant',
+            'state': build_manage_plant_state(plant)
+        }, status=200)
 
     if model_type == 'group':
         group = Group.objects.get_with_manage_group_annotation(uuid)
-        return render_manage_group_page(request, group, user)
+        if group.user != user:
+            return JsonResponse({
+                'page': 'permission_denied',
+                'title': 'Permission Denied',
+                'state': {'error': 'You do not have permission to view this group'}
+            }, status=403)
+        return JsonResponse({
+            'page': 'manage_group',
+            'title': 'Manage Group',
+            'state': build_manage_group_state(group)
+        }, status=200)
 
-    # Render register page if UUID is new
-    return render_registration_page(request, uuid, user)
+    # UUID not found: return registration page state
+    def _build_register_state(new_uuid):
+        state = { 'new_id': new_uuid }
+
+        # Include context for changing QR code if present
+        old_uuid = cache.get(f'old_uuid_{user.pk}')
+        if old_uuid:
+            instance = get_plant_or_group_by_uuid(old_uuid, annotate=True)
+            if instance:
+                state['changing_qr_code'] = {
+                    'type': instance._meta.model_name,
+                    'instance': instance.get_details(),
+                    'new_uuid': new_uuid
+                }
+                if state['changing_qr_code']['type'] == 'plant':
+                    preview_url = instance.get_default_photo_details()['preview']
+                    state['changing_qr_code']['preview'] = preview_url
+            else:
+                cache.delete(f'old_uuid_{user.pk}')
+
+        # Include context for dividing plant if present
+        division_in_progress = cache.get(f'division_in_progress_{user.pk}')
+        if division_in_progress:
+            plant = Plant.objects.get_with_overview_annotation(
+                uuid=division_in_progress['divided_from_plant_uuid']
+            )
+            if plant:
+                state['dividing_from'] = {
+                    'plant_details': plant.get_details(),
+                    'default_photo': plant.get_default_photo_details(),
+                    'plant_key': str(plant.pk),
+                    'event_key': division_in_progress['division_event_key']
+                }
+
+        return state
+
+    return JsonResponse({
+        'page': 'register',
+        'title': 'Register New Plant',
+        'state': _build_register_state(uuid)
+    }, status=200)
 
 
 def render_manage_plant_page(request, plant, user):

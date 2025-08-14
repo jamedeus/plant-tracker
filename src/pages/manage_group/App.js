@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest, parseDomContext, pastTense, getMostRecent } from 'src/util';
+import { sendPostRequest, pastTense, getMostRecent } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import DropdownMenu from 'src/components/DropdownMenu';
@@ -22,14 +23,10 @@ import { useBackButton } from 'src/useBackButton';
 import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
 
-function App() {
-    // Load context set by django template
-    const [group, setGroup] = useState(() => {
-        return parseDomContext("group_details");
-    });
-    const [plantDetails, setPlantDetails] = useState(() => {
-        return parseDomContext("plants");
-    });
+function App({ initialState }) {
+    // Initialize entirely from SPA-provided state
+    const [group, setGroup] = useState(initialState.group_details);
+    const [plantDetails, setPlantDetails] = useState(initialState.plants);
     // Hide event buttons if no plants in group
     const noPlants = Object.keys(plantDetails).length === 0;
 
@@ -309,3 +306,10 @@ function App() {
 }
 
 export default App;
+
+App.propTypes = {
+    initialState: PropTypes.shape({
+        group_details: PropTypes.object.isRequired,
+        plants: PropTypes.object.isRequired
+    }).isRequired
+};

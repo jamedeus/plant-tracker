@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
-import { sendPostRequest, parseDomContext } from 'src/util';
+import { sendPostRequest } from 'src/util';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import QrScannerButton from 'src/components/QrScannerButton';
@@ -138,11 +138,11 @@ ConfirmPrompt.propTypes = {
     rejectButtonTitle: PropTypes.string.isRequired
 };
 
-function App() {
-    // Load context set by django template
-    const newID = parseDomContext("new_id");
-    const dividingFrom = parseDomContext("dividing_from");
-    const changingQrCode = parseDomContext("changing_qr_code");
+function App({ initialState }) {
+    // Initialize entirely from SPA-provided state
+    const newID = initialState.new_id;
+    const dividingFrom = initialState.dividing_from;
+    const changingQrCode = initialState.changing_qr_code;
 
     // Default form values (only used when dividing existing plant)
     const defaultValues = useMemo(() => {
@@ -328,5 +328,9 @@ function App() {
         </div>
     );
 }
+
+App.propTypes = {
+    initialState: PropTypes.object
+};
 
 export default App;

@@ -1,11 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
-import { parseDomContext } from 'src/util';
 
-function App() {
-    const errorMessage = useMemo(() => parseDomContext('error'));
-
+function App({ errorMessage }) {
     return (
         <div className="container flex flex-col full-screen mx-auto items-center gap-16">
             <Navbar
@@ -26,3 +24,7 @@ function App() {
 }
 
 export default App;
+
+App.propTypes = {
+    errorMessage: PropTypes.string.isRequired
+};

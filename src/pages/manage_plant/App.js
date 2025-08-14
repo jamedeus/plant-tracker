@@ -8,9 +8,9 @@ import RepotModal from './RepotModal';
 import DivisionModal from './DivisionModal';
 import EditPlantModal from './EditPlantModal';
 
-const App = () => {
+const App = ({ initialState = null }) => {
     return (
-        <ReduxProvider>
+        <ReduxProvider initialState={initialState}>
             <Layout />
             <Settings />
             <NoteModal />

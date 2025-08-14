@@ -123,12 +123,12 @@ class LoginView(views.LoginView):
     # Allow logging in with email address instead of username
     form_class = EmailOrUsernameAuthenticationForm
 
-    # Override default django form with boilerplate template + webpack bundles
+    # Override default django form with SPA shell + bundles
     template_name = "plant_tracker/index.html"
     extra_context = {
         "title": "Login",
-        'js_files': settings.PAGE_DEPENDENCIES['login']['js'],
-        'css_files': settings.PAGE_DEPENDENCIES['login']['css']
+        'js_files': settings.PAGE_DEPENDENCIES['spa']['js'],
+        'css_files': settings.PAGE_DEPENDENCIES['spa']['css']
     }
 
     @method_decorator(ensure_csrf_cookie)
@@ -234,7 +234,13 @@ class PasswordResetView(views.PasswordResetView):
 
     def get(self, *args, **kwargs):
         '''Reject GET requests (must POST to request password reset).'''
-        return JsonResponse({"error": "must post data"}, status=405)
+        # Serve SPA shell so route exists in frontend; page submits POSTs
+        return render_react_app(
+            self.request,
+            title='Password Reset',
+            bundle='spa',
+            state={}
+        )
 
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''
@@ -267,12 +273,12 @@ class PasswordResetConfirmView(views.PasswordResetConfirmView):
     post_reset_login_backend = settings.AUTHENTICATION_BACKENDS[0]
     success_url = "/accounts/profile/"
 
-    # Override default django form with boilerplate template + webpack bundles
+    # Override default django form with SPA shell + bundles
     template_name = "plant_tracker/index.html"
     extra_context = {
         "title": "Reset Password",
-        'js_files': settings.PAGE_DEPENDENCIES['password_reset']['js'],
-        'css_files': settings.PAGE_DEPENDENCIES['password_reset']['css']
+        'js_files': settings.PAGE_DEPENDENCIES['spa']['js'],
+        'css_files': settings.PAGE_DEPENDENCIES['spa']['css']
     }
 
     @method_decorator(ensure_csrf_cookie)
@@ -381,7 +387,7 @@ def user_profile_page(request, user):
     return render_react_app(
         request,
         title='User Profile',
-        bundle='user_profile',
+        bundle='spa',
         state={
             'user_details': {
                 'username': user.username,
