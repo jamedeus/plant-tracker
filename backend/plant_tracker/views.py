@@ -14,7 +14,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from PIL import UnidentifiedImageError
 
 from generate_qr_code_grid import generate_layout
-from .render_react_app import render_react_app, render_permission_denied_page
+from .render_react_app import render_react_app
 from .models import (
     Group,
     Plant,
@@ -189,6 +189,17 @@ def resolve_manage(request, uuid, user):
 
     # UUID not found: return registration page state
     def _build_register_state(new_uuid):
+        '''Returns initial state for register page.
+
+        If the old_uuid cache is set (see /change_qr_code endpoint) context includes
+        information used by frontend to show change QR prompt (calls /change_uuid
+        and redirects if confirmed, shows normal registration form if rejected).
+
+        If the dividing_from cache is set (see /divide_plant endpoint) context
+        includes information used by frontend to show confirm dividing prompt (shows
+        plant form with pre-filled details if confirmed, shows normal registration
+        form if rejected).
+        '''
         state = { 'new_id': new_uuid }
 
         # Include context for changing QR code if present
@@ -228,26 +239,6 @@ def resolve_manage(request, uuid, user):
         'title': 'Register New Plant',
         'state': _build_register_state(uuid)
     }, status=200)
-
-
-def render_manage_plant_page(request, plant, user):
-    '''Renders management page for an existing plant.
-    Called by /manage endpoint if UUID is found in database plant table.
-    '''
-
-    # Render permission denied page if requesting user does not own plant
-    if plant.user != user:
-        return render_permission_denied_page(
-            request,
-            'You do not have permission to view this plant'
-        )
-
-    return render_react_app(
-        request,
-        title='Manage Plant',
-        bundle='manage_plant',
-        state=build_manage_plant_state(plant)
-    )
 
 
 @get_user_token
@@ -297,26 +288,6 @@ def get_add_to_group_options(request, user):
     )
 
 
-def render_manage_group_page(request, group, user):
-    '''Renders management page for an existing group.
-    Called by /manage endpoint if UUID is found in database group table.
-    '''
-
-    # Render permission denied page if requesting user does not own group
-    if group.user != user:
-        return render_permission_denied_page(
-            request,
-            'You do not have permission to view this group'
-        )
-
-    return render_react_app(
-        request,
-        title='Manage Group',
-        bundle='manage_group',
-        state=build_manage_group_state(group)
-    )
-
-
 @get_user_token
 def get_group_state(request, uuid, user):
     '''Returns current manage_group state for the requested group.
@@ -337,62 +308,6 @@ def get_group_state(request, uuid, user):
         )
     except ValidationError:
         return JsonResponse({'Error': 'Requires group UUID'}, status=400)
-
-
-def render_registration_page(request, uuid, user):
-    '''Renders registration page used to create a new plant or group.
-    Called by /manage endpoint if UUID does not exist in database.
-
-    If the old_uuid cache is set (see /change_qr_code endpoint) context includes
-    information used by frontend to show change QR prompt (calls /change_uuid
-    and redirects if confirmed, shows normal registration form if rejected).
-
-    If the dividing_from cache is set (see /divide_plant endpoint) context
-    includes information used by frontend to show confirm dividing prompt (shows
-    plant form with pre-filled details if confirmed, shows normal registration
-    for if rejected).
-    '''
-
-    state = { 'new_id': uuid }
-
-    # Check if user is changing plant QR code, add details if so
-    old_uuid = cache.get(f'old_uuid_{user.pk}')
-    if old_uuid:
-        instance = get_plant_or_group_by_uuid(old_uuid, annotate=True)
-        if instance:
-            state['changing_qr_code'] = {
-                'type': instance._meta.model_name,
-                'instance': instance.get_details(),
-                'new_uuid': uuid
-            }
-            if state['changing_qr_code']['type'] == 'plant':
-                preview_url = instance.get_default_photo_details()['preview']
-                state['changing_qr_code']['preview'] = preview_url
-
-        # If UUID no longer exists in database (plant/group deleted) clear cache
-        else:
-            cache.delete(f'old_uuid_{user.pk}')
-
-    # Check if user is dividing plant, add details if dividing
-    division_in_progress = cache.get(f'division_in_progress_{user.pk}')
-    if division_in_progress:
-        plant = Plant.objects.get_with_overview_annotation(
-            uuid=division_in_progress['divided_from_plant_uuid']
-        )
-        if plant:
-            state['dividing_from'] = {
-                'plant_details': plant.get_details(),
-                'default_photo': plant.get_default_photo_details(),
-                'plant_key': str(plant.pk),
-                'event_key': division_in_progress['division_event_key']
-            }
-
-    return render_react_app(
-        request,
-        title='Register New Plant',
-        bundle='register',
-        state=state
-    )
 
 
 @get_user_token

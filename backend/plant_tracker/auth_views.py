@@ -388,16 +388,7 @@ def user_profile_page(request, user):
         request,
         title='User Profile',
         bundle='spa',
-        state={
-            'user_details': {
-                'username': user.username,
-                'email': user.email,
-                'email_verified': user.email_verification.is_email_verified,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'date_joined': user.date_joined.isoformat()
-            }
-        }
+        state={}
     )
 
 
@@ -429,3 +420,19 @@ def edit_user_details(data, user, **kwargs):
             "date_joined": user.date_joined.isoformat()
         }
     })
+
+
+@get_user_token
+@disable_in_single_user_mode
+def get_user_details(_, user):
+    '''Returns user profile details for the requesting user as JSON.'''
+    return JsonResponse({
+        "user_details": {
+            "username": user.username,
+            "email": user.email,
+            "email_verified": user.email_verification.is_email_verified,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "date_joined": user.date_joined.isoformat()
+        }
+    }, status=200)

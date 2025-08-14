@@ -106,7 +106,7 @@ async function fetchForRoute(route) {
         }
         case 'user_profile': {
             await importUserProfile();
-            const response = await fetch('/accounts/profile/');
+            const response = await fetch('/accounts/get_user_details/');
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {
                 if (response.redirected) {
@@ -114,17 +114,18 @@ async function fetchForRoute(route) {
                     return { redirected: true };
                 }
             }
-            const html = await response.text();
-            try {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const el = doc.getElementById('user_details');
-                if (!el) throw new Error('Missing user details');
-                const userDetails = JSON.parse(el.textContent || 'null');
-                return { data: { user_details: userDetails }, status: response.status };
-            } catch (e) {
-                return { error: String(e), status: response.status };
+            if (response.status === 403) {
+                // Single-user mode or not authenticated
+                const payload = contentType.includes('application/json') ? await response.json() : null;
+                const error = payload?.error || 'You do not have permission to view this page';
+                return { denied: true, error, status: response.status };
             }
+            const payload = contentType.includes('application/json') ? await response.json() : null;
+            if (!response.ok) {
+                const error = payload?.error || `Request failed (${response.status})`;
+                return { error, status: response.status };
+            }
+            return { data: payload, status: response.status };
         }
         default:
             return { data: null, status: 200 };
