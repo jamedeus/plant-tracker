@@ -1,5 +1,4 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { PageWrapper } from 'src/index';
@@ -8,8 +7,7 @@ import { mockContext } from './mockContext';
 
 describe('App', () => {
     it('does not stack pageshow listeners each time back button pressed', async () => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
 
         // Mock /get_plant_species_options response (requested when page loads)
@@ -21,7 +19,7 @@ describe('App', () => {
         // Render app, confirm reload was not called
         const { unmount } = render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
         expect(window.location.reload).not.toHaveBeenCalled();
@@ -40,7 +38,7 @@ describe('App', () => {
         await act(async () => {
             render(
                 <PageWrapper>
-                    <App />
+                    <App initialState={mockContext} />
                 </PageWrapper>
             );
         });

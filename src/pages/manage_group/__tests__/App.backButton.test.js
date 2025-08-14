@@ -1,13 +1,11 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
     it('does not stack pageshow listeners each time back button pressed', async () => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
 
         // Mock fetch function to return expected response
@@ -22,7 +20,7 @@ describe('App', () => {
         // Render app, confirm /get_group_state was not called
         const { unmount } = render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
         expect(global.fetch.mock.calls.filter(
@@ -44,7 +42,7 @@ describe('App', () => {
         unmount();
         render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
 

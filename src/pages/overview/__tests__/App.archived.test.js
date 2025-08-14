@@ -10,18 +10,7 @@ describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (flip all archived bools to true)
-        createMockContext('plants', Object.fromEntries(
-            Object.entries(mockContext.plants).map(
-                ([uuid, plant]) => [ uuid, { ...plant, archived: true } ]
-            )
-        ));
-        createMockContext('groups', Object.fromEntries(
-            Object.entries(mockContext.groups).map(
-                ([uuid, group]) => [ uuid, { ...group, archived: true } ]
-            )
-        ));
-        createMockContext('show_archive', mockContext.show_archive);
+        // Minimal DOM context needed
         createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview
@@ -41,7 +30,19 @@ describe('App', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App />
+                <App
+                    initialPlants={Object.fromEntries(
+                        Object.entries(mockContext.plants).map(
+                            ([uuid, plant]) => [ uuid, { ...plant, archived: true } ]
+                        )
+                    )}
+                    initialGroups={Object.fromEntries(
+                        Object.entries(mockContext.groups).map(
+                            ([uuid, group]) => [ uuid, { ...group, archived: true } ]
+                        )
+                    )}
+                    initialShowArchive={mockContext.show_archive}
+                />
             </PageWrapper>
         );
     });

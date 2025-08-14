@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
@@ -11,17 +10,8 @@ describe('Delete mode', () => {
     let app, user;
 
     beforeAll(() => {
-        // Add prune and repot events to mock context
-        const mockEvents = {
-            ...mockContext.events,
-            prune: ["2024-01-01T15:45:44+00:00"],
-            repot: ["2024-01-01T15:45:44+00:00"],
-        };
-
-        // Create mock state objects (used by ReduxProvider)
-        bulkCreateMockContext(mockContext);
-        // Override events state with mock containing more events
-        createMockContext('events', mockEvents);
+        // Create mock state object
+        createMockContext('user_accounts_enabled', true);
     });
 
     beforeEach(() => {
@@ -35,7 +25,11 @@ describe('Delete mode', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App />
+                <App initialState={{ ...mockContext, events: {
+                    ...mockContext.events,
+                    prune: ["2024-01-01T15:45:44+00:00"],
+                    repot: ["2024-01-01T15:45:44+00:00"],
+                } }} />
             </PageWrapper>
         );
     });

@@ -1,5 +1,4 @@
 import React from 'react';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
@@ -10,7 +9,7 @@ import { mockContext } from './mockContext';
 const TestComponent = () => {
     // Render app
     return (
-        <ReduxProvider>
+        <ReduxProvider initialState={mockContext}>
             <PhotoModal />
             <button onClick={openPhotoModal}>
                 Open photo modal
@@ -21,11 +20,6 @@ const TestComponent = () => {
 
 describe('PhotoModal', () => {
     let app, user;
-
-    beforeAll(() => {
-        // Create mock state objects (used by ReduxProvider)
-        bulkCreateMockContext(mockContext);
-    });
 
     beforeEach(async () => {
         // Mock window.location (querystring parsed when page loads)

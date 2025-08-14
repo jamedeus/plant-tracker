@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
@@ -11,11 +10,7 @@ describe('Timeline', () => {
 
     beforeAll(() => {
         // Create mock state object
-        bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
-        // Override events and photos states with mocks containing more items
-        createMockContext('events', mockEvents);
-        createMockContext('photos', mockphotos);
     });
 
     beforeEach(() => {
@@ -26,7 +21,7 @@ describe('Timeline', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <ReduxProvider>
+                <ReduxProvider initialState={{ ...mockContext, events: mockEvents, photos: mockphotos }}>
                     <Timeline />
                 </ReduxProvider>
             </PageWrapper>

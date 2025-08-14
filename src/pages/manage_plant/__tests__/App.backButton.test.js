@@ -1,14 +1,12 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
     });
 
@@ -38,7 +36,7 @@ describe('App', () => {
         // Render app, confirm /get_plant_state was not called
         const { unmount } = render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
         expect(global.fetch.mock.calls.filter(
@@ -60,7 +58,7 @@ describe('App', () => {
         unmount();
         render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
 
@@ -89,7 +87,7 @@ describe('App', () => {
         const user = userEvent.setup();
         render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
 
@@ -176,7 +174,7 @@ describe('App', () => {
         // Render app
         render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
 

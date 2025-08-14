@@ -11,10 +11,8 @@ describe('Register page while plant division in progress', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (including dividing_from)
-        bulkCreateMockContext(mockContext);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
-        createMockContext('dividing_from', mockDividingFrom);
     });
 
     beforeEach(() => {
@@ -28,7 +26,7 @@ describe('Register page while plant division in progress', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <App />
+                <App initialState={{ ...mockContext, dividing_from: mockDividingFrom }} />
             </PageWrapper>
         );
     });

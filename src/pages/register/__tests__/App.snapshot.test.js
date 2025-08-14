@@ -1,5 +1,4 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
@@ -20,12 +19,9 @@ describe('App', () => {
     });
 
     it('matches snapshot', async () => {
-        // Create mock state objects (no dividing_from)
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-
         // Render App, wait for species options to be fetched
-        const { container } = render(<App />);
+        createMockContext('user_accounts_enabled', true);
+        const { container } = render(<App initialState={mockContext} />);
         await waitFor(() => {
             expect(global.fetch).toHaveBeenCalled();
         });
@@ -34,9 +30,6 @@ describe('App', () => {
     });
 
     it('matches snapshot when group querystring param is present', () => {
-        // Create mock state objects (no dividing_from)
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to add querystring to URL (start on group form)
         mockCurrentURL(
@@ -44,40 +37,35 @@ describe('App', () => {
         );
 
         // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        createMockContext('user_accounts_enabled', true);
+        const { container } = render(<App initialState={mockContext} />);
         expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when plant division in progress', () => {
-        // Create mock state objects (including dividing_from)
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-        createMockContext('dividing_from', mockDividingFrom);
-
         // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        createMockContext('user_accounts_enabled', true);
+        const { container } = render(
+            <App initialState={{ ...mockContext, dividing_from: mockDividingFrom }} />
+        );
         expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when changing plant QR code', () => {
-        // Create mock state objects (including changing_qr_code)
-        bulkCreateMockContext(mockContext);
-        bulkCreateMockContext(mockChangingPlantQrCode);
-        createMockContext('user_accounts_enabled', true);
-
         // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        createMockContext('user_accounts_enabled', true);
+        const { container } = render(
+            <App initialState={{ ...mockContext, ...mockChangingPlantQrCode }} />
+        );
         expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when changing group QR code', () => {
-        // Create mock state objects (including changing_qr_code)
-        bulkCreateMockContext(mockContext);
-        bulkCreateMockContext(mockChangingGroupQrCode);
-        createMockContext('user_accounts_enabled', true);
-
         // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        createMockContext('user_accounts_enabled', true);
+        const { container } = render(
+            <App initialState={{ ...mockContext, ...mockChangingGroupQrCode }} />
+        );
         expect(container).toMatchSnapshot();
     });
 });

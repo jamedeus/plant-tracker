@@ -11,12 +11,6 @@ jest.mock('print-js');
 describe('App', () => {
     let app, user;
 
-    beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-    });
-
     beforeEach(() => {
         // Allow fast forwarding (must hold delete button to confirm)
         jest.useFakeTimers({ doNotFake: ['Date'] });
@@ -27,7 +21,11 @@ describe('App', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App />
+                <App
+                    initialPlants={mockContext.plants}
+                    initialGroups={mockContext.groups}
+                    initialShowArchive={mockContext.show_archive}
+                />
             </PageWrapper>
         );
     });

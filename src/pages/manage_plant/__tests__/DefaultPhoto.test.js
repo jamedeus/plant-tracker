@@ -1,37 +1,27 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { fireEvent } from '@testing-library/react';
 import App from '../App';
-import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
 import { act } from '@testing-library/react';
-
-const TestComponent = () => {
-    // Render app
-    return (
-        <ReduxProvider>
-            <App />
-        </ReduxProvider>
-    );
-};
 
 describe('Plant with no photos (no default photo set)', () => {
     let app, user;
 
+    // Mock state objects simulating plant with no photos
+    const initialState = { ...mockContext,
+        photos: {},
+        default_photo: { ...mockContext.default_photo,
+            set: false,
+            timestamp: null,
+            image: null,
+            thumbnail: null,
+            key: null
+        }
+    };
+
     beforeAll(() => {
-        // Create mock state objects (override photos and default_photo to
-        // simulate plant with no photos)
-        bulkCreateMockContext({ ...mockContext,
-            photos: {},
-            default_photo: { ...mockContext.default_photo,
-                set: false,
-                timestamp: null,
-                image: null,
-                thumbnail: null,
-                key: null
-            }
-        });
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
     });
 
@@ -44,7 +34,7 @@ describe('Plant with no photos (no default photo set)', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(<TestComponent />);
+        app = render(<App initialState={initialState} />);
     });
 
     // Clean up pending timers after each test
@@ -107,14 +97,16 @@ describe('Plant with no photos (no default photo set)', () => {
 describe('Plant with photos but no configured default photo', () => {
     let app, user;
 
+    // Mock state objects simulating plant with photos but no default photo set
+    // (uses most-recent photo as default photo)
+    const initialStateNoDefaultPhoto = { ...mockContext,
+        default_photo: { ...mockContext.default_photo,
+            set: false
+        }
+    };
+
     beforeAll(() => {
-        // Create mock state objects to simulate plant with photos but no
-        // default photo set (uses most-recent photo as default photo)
-        bulkCreateMockContext({ ...mockContext,
-            default_photo: { ...mockContext.default_photo,
-                set: false
-            }
-        });
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
     });
 
@@ -124,7 +116,7 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(<TestComponent />);
+        app = render(<App initialState={initialStateNoDefaultPhoto} />);
     });
 
     // Clean up pending timers after each test
@@ -248,8 +240,7 @@ describe('Plant with default photo configured', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (has default photo set)
-        bulkCreateMockContext(mockContext);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
     });
 
@@ -259,7 +250,7 @@ describe('Plant with default photo configured', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(<TestComponent />);
+        app = render(<App initialState={mockContext} />);
     });
 
     // Clean up pending timers after each test

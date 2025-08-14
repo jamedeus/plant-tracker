@@ -1,7 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import App from '../App';
 import { PageWrapper } from 'src/index';
@@ -12,8 +11,7 @@ describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContextNoEvents);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
     });
 
@@ -28,7 +26,7 @@ describe('App', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContextNoEvents} />
             </PageWrapper>
         );
     });

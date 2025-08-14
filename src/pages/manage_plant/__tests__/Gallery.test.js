@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
@@ -11,8 +10,7 @@ describe('Gallery', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
 
         // Mock viewport height (simulate thumbnails inside/outside viewport)
@@ -34,7 +32,7 @@ describe('Gallery', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
     });

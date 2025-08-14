@@ -16,7 +16,7 @@ const mockNotes = {
 
 const TestComponent = () => {
     return (
-        <ReduxProvider>
+        <ReduxProvider initialState={{ ...mockContext, notes: mockNotes }}>
             <NoteModal />
             <button onClick={() => openNoteModal()}>
                 Add New Note
@@ -33,13 +33,6 @@ const TestComponent = () => {
 
 describe('Add new note', () => {
     let app, user;
-
-    beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        // Override notes state with mock containing more notes
-        createMockContext('notes', mockNotes);
-    });
 
     beforeEach(async () => {
         // Mock window.location (querystring parsed when page loads)
@@ -152,13 +145,6 @@ describe('Add new note', () => {
 
 describe('Edit existing note', () => {
     let app, user;
-
-    beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        // Override notes state with mock containing more notes
-        createMockContext('notes', mockNotes);
-    });
 
     beforeEach(async () => {
         // Allow fast forwarding (must hold delete note button to confirm)

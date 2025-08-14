@@ -1,6 +1,4 @@
 import { fireEvent, waitFor } from '@testing-library/react';
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
@@ -12,10 +10,6 @@ describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-
         // Mock width to force mobile layout (renders title nav dropdown)
         window.innerWidth = 750;
     });
@@ -30,7 +24,11 @@ describe('App', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App />
+                <App
+                    initialPlants={mockContext.plants}
+                    initialGroups={mockContext.groups}
+                    initialShowArchive={mockContext.show_archive}
+                />
             </PageWrapper>
         );
     });

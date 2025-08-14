@@ -1,5 +1,4 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
@@ -11,9 +10,7 @@ describe('Register page while changing QR code in progress', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (including changing_qr_code)
-        bulkCreateMockContext(mockContext);
-        bulkCreateMockContext(mockChangingPlantQrCode);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
     });
 
@@ -25,7 +22,7 @@ describe('Register page while changing QR code in progress', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <App />
+                <App initialState={{ ...mockContext, ...mockChangingPlantQrCode }} />
             </PageWrapper>
         );
     });

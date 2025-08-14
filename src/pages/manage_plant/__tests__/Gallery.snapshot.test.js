@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { mockContext, mockphotos } from './mockContext';
 import { ReduxProvider } from '../store';
 import { useDispatch } from 'react-redux';
@@ -22,11 +21,8 @@ const TestComponent = () => {
 
 describe('Gallery', () => {
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
-        // Override photos state with mock containing more photos
-        createMockContext('photos', mockphotos);
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
     });
@@ -36,7 +32,7 @@ describe('Gallery', () => {
         window.innerWidth = 800;
         const user = userEvent.setup();
         const { container, getByRole } = render(
-            <ReduxProvider>
+            <ReduxProvider initialState={{ ...mockContext, photos: mockphotos }}>
                 <TestComponent />
             </ReduxProvider>
         );
@@ -51,7 +47,7 @@ describe('Gallery', () => {
         window.innerWidth = 600;
         const user = userEvent.setup();
         const { container, getByRole } = render(
-            <ReduxProvider>
+            <ReduxProvider initialState={{ ...mockContext, photos: mockphotos }}>
                 <TestComponent />
             </ReduxProvider>
         );

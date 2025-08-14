@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext, mockGroupOptions } from './mockContext';
@@ -9,8 +8,7 @@ describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
     });
 
@@ -22,7 +20,7 @@ describe('App', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <App />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
     });

@@ -1,17 +1,11 @@
 import React from 'react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import GroupModal, { openGroupModal } from '../GroupModal';
 import { ReduxProvider } from '../store';
 import { mockContext, mockGroupOptions } from './mockContext';
 import { waitFor } from '@testing-library/react';
 
 describe('GroupModal', () => {
-    beforeAll(() => {
-        // Create mock state objects (used by ReduxProvider)
-        bulkCreateMockContext(mockContext);
-    });
-
     beforeEach(() => {
         // Allow fast forwarding
         jest.useFakeTimers({ doNotFake: ['Date'] });
@@ -35,7 +29,7 @@ describe('GroupModal', () => {
 
         // Render modal
         const component = render(
-            <ReduxProvider>
+            <ReduxProvider initialState={mockContext}>
                 <GroupModal />
             </ReduxProvider>
         );
@@ -64,7 +58,7 @@ describe('GroupModal', () => {
 
         // Render modal
         const component = render(
-            <ReduxProvider>
+            <ReduxProvider initialState={mockContext}>
                 <GroupModal />
             </ReduxProvider>
         );
@@ -84,7 +78,7 @@ describe('GroupModal', () => {
 
         // Render modal
         const component = render(
-            <ReduxProvider>
+            <ReduxProvider initialState={mockContext}>
                 <GroupModal />
             </ReduxProvider>
         );
@@ -112,7 +106,7 @@ describe('GroupModal', () => {
 
         // Render modal
         const component = render(
-            <ReduxProvider>
+            <ReduxProvider initialState={mockContext}>
                 <GroupModal />
             </ReduxProvider>
         );
