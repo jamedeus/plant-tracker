@@ -167,13 +167,9 @@ class PasswordChangeView(views.PasswordChangeView):
 
     success_url = "/"
 
+    @method_decorator(disable_in_single_user_mode)
     def dispatch(self, *args, **kwargs):
         '''Changes password unless SINGLE_USER_MODE is enabled.'''
-        if settings.SINGLE_USER_MODE:
-            return JsonResponse(
-                {"error": "user accounts are disabled"},
-                status=400
-            )
         if self.request.user.username == settings.DEFAULT_USERNAME:
             return JsonResponse(
                 {"error": "cannot change default user password"},
@@ -230,8 +226,7 @@ class PasswordResetView(views.PasswordResetView):
 
     def get(self, *args, **kwargs):
         '''Reject GET requests (must POST to request password reset).'''
-        # Serve SPA shell so route exists in frontend; page submits POSTs
-        return render_react_app(self.request, title='Password Reset')
+        return JsonResponse({"error": "must post data"}, status=405)
 
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''

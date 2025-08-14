@@ -72,40 +72,35 @@ class AuthenticationPageTests(TestCase):
         self.client.logout()
 
     def test_login_page(self):
-        # Request login page, confirm uses correct JS bundle and title
+        # Request login page, confirm uses correct template and title
         response = self.client.get('/accounts/login/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Login')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['login']['js']
-        )
-        self.assertEqual(
-            response.context['css_files'],
-            settings.PAGE_DEPENDENCIES['login']['css']
-        )
 
     def test_user_profile_page(self):
         # Log in with test user
         self.client.login(username='unittest', password='12345')
 
-        # Request profle page, confirm uses correct JS bundle and title
+        # Request profle page, confirm uses correct template and title
         response = self.client.get('/accounts/profile/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'User Profile')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['user_profile']['js']
-        )
 
-        # Confirm context contains current user account details
-        details_context = response.context['state']['user_details']
-        self.assertEqual(details_context['first_name'], 'Bob')
-        self.assertEqual(details_context['last_name'], 'Smith')
-        self.assertEqual(details_context['email'], 'bob.smith@hotmail.com')
-        self.assertFalse(details_context['email_verified'])
+        # Request user details, confirm returns current user account details
+        response = self.client.get('/accounts/get_user_details/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'user_details': {
+                'username': 'unittest',
+                'email': 'bob.smith@hotmail.com',
+                'email_verified': False,
+                'first_name': 'Bob',
+                'last_name': 'Smith',
+                'date_joined': self.test_user.date_joined.isoformat()
+            }
+        })
 
     def test_user_profile_page_not_signed_in(self):
         # Request user profile page without signing in
@@ -567,15 +562,11 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(first.status_code, 302)
         self.assertRegex(first.url, r"^/accounts/reset/[A-Za-z0-9_\-]+/set-password/\Z")
 
-        # Load /set-password/ page, confirm uses correct JS bundle and title
+        # Load /set-password/ page, confirm uses correct template and title
         page = self.client.get(first.url)
         self.assertEqual(page.status_code, 200)
         self.assertTemplateUsed(page, 'plant_tracker/index.html')
         self.assertEqual(page.context['title'], 'Reset Password')
-        self.assertEqual(
-            page.context['js_files'],
-            settings.PAGE_DEPENDENCIES['password_reset']['js']
-        )
 
         # Simulate user submitting form with new password
         post_response = self.client.post(
@@ -706,17 +697,13 @@ class SingleUserModeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Permission Denied')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['permission_denied']['js']
-        )
 
     # pylint: disable-next=invalid-name
     def assertReceivedUserAccountsDisabledError(self, response):
         '''Takes response object, confirms received JSON response with status
-        400 and payload {"error": "user accounts are disabled"}.
+        403 and payload {"error": "user accounts are disabled"}.
         '''
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 403)
         self.assertEqual(
             response.json(),
             {"error": "user accounts are disabled"}
@@ -738,10 +725,7 @@ class SingleUserModeTests(TestCase):
 
         # Confirm returns permission denied page
         self.assertReceivedPermissionDeniedPage(response)
-        self.assertEqual(
-            response.context['state'],
-            {'error': 'User accounts are disabled'}
-        )
+        self.assertEqual(response.context['error'], 'User accounts are disabled')
 
     def test_login_endpoint(self):
         # POST credentials to login endpoint while SINGLE_USER_MODE is enabled
@@ -759,10 +743,7 @@ class SingleUserModeTests(TestCase):
 
         # Confirm returns permission denied page
         self.assertReceivedPermissionDeniedPage(response)
-        self.assertEqual(
-            response.context['state'],
-            {'error': 'User accounts are disabled'}
-        )
+        self.assertEqual(response.context['error'], 'User accounts are disabled')
 
     def test_create_user_endpoint(self):
         # Post new account credentials while SINGLE_USER_MODE is enabled
@@ -795,20 +776,14 @@ class SingleUserModeTests(TestCase):
 
         # Confirm returns permission denied page
         self.assertReceivedPermissionDeniedPage(response)
-        self.assertEqual(
-            response.context['state'],
-            {'error': 'User accounts are disabled'}
-        )
+        self.assertEqual(response.context['error'], 'User accounts are disabled')
 
     def test_verify_email_page_single_user_mode(self):
         # Request verify page while SINGLE_USER_MODE is enabled
         response = self.client.get('/accounts/verify/abc/def/')
         # Confirm returns permission denied page
         self.assertReceivedPermissionDeniedPage(response)
-        self.assertEqual(
-            response.context['state'],
-            {'error': 'User accounts are disabled'}
-        )
+        self.assertEqual(response.context['error'], 'User accounts are disabled')
 
     def test_resend_verification_email_endpoint(self):
         # Request resend_verification_email endpoint while SINGLE_USER_MODE is enabled
@@ -816,10 +791,7 @@ class SingleUserModeTests(TestCase):
 
         # Confirm returns permission denied page
         self.assertReceivedPermissionDeniedPage(response)
-        self.assertEqual(
-            response.context['state'],
-            {'error': 'User accounts are disabled'}
-        )
+        self.assertEqual(response.context['error'], 'User accounts are disabled')
 
     def test_edit_user_details_endpoint(self):
         # Submit new user details while SINGLE_USER_MODE is enabled
@@ -859,17 +831,6 @@ class SingleUserModeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Plant Overview')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['overview']['js']
-        )
-
-        # Confirm only contains default user's plant
-        self.assertEqual(len(response.context['state']['plants']), 1)
-        self.assertEqual(
-            response.context['state']['plants'][str(plant.uuid)]['name'],
-            'default user plant'
-        )
 
     def test_manage_plant_page_user_owns_plant(self):
         # Create plant owned by default user
@@ -881,11 +842,13 @@ class SingleUserModeTests(TestCase):
         # Confirm rendered manage plant page
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage Plant')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_plant']['js']
-        )
+        self.assertEqual(response.context['title'], 'Manage')
+
+        # Request state object, confirm contains plant details
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['state']['plant_details'], plant.get_details())
+        self.assertEqual(response.json()['title'], 'Manage Plant')
 
     def test_manage_plant_page_user_does_not_own_plant(self):
         # Create second user (in addition to default user) + plant for user
@@ -898,13 +861,16 @@ class SingleUserModeTests(TestCase):
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
         response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertEqual(response.status_code, 200)
 
-        # Confirm rendered permission denied page, not manage plant
-        self.assertReceivedPermissionDeniedPage(response)
+        # Request state object, confirm returns permission denied
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
+        self.assertEqual(response.status_code, 403)
         self.assertEqual(
-            response.context['state']['error'],
+            response.json()['state']['error'],
             'You do not have permission to view this plant'
         )
+        self.assertEqual(response.json()['title'], 'Permission Denied')
 
     def test_get_plant_state_user_owns_plant(self):
         # Create plant owned by default user
@@ -947,11 +913,13 @@ class SingleUserModeTests(TestCase):
         # Confirm rendered manage group page
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage Group')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_group']['js']
-        )
+        self.assertEqual(response.context['title'], 'Manage')
+
+        # Request state object, confirm contains group details
+        response = self.client.get(f'/resolve_manage/{group.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['state']['group_details'], group.get_details())
+        self.assertEqual(response.json()['title'], 'Manage Group')
 
     def test_manage_group_page_user_does_not_own_group(self):
         # Create second user (in addition to default user) + group for user
@@ -964,13 +932,16 @@ class SingleUserModeTests(TestCase):
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
         response = self.client.get(f'/manage/{group.uuid}')
+        self.assertEqual(response.status_code, 200)
 
-        # Confirm rendered permission denied page, not manage group
-        self.assertReceivedPermissionDeniedPage(response)
+        # Request state object, confirm returns permission denied
+        response = self.client.get(f'/resolve_manage/{group.uuid}')
+        self.assertEqual(response.status_code, 403)
         self.assertEqual(
-            response.context['state']['error'],
+            response.json()['state']['error'],
             'You do not have permission to view this group'
         )
+        self.assertEqual(response.json()['title'], 'Permission Denied')
 
     def test_get_group_state_user_owns_group(self):
         # Create group owned by default user
@@ -1128,9 +1099,6 @@ class MultiUserModeTests(TestCase):
         self.assertEqual(response.context['title'], "Bob's Plants")
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
-        # Confirm user_accounts_enabled context is true
-        self.assertTrue(response.context['user_accounts_enabled'])
-
     def test_overview_page_not_signed_in(self):
         # Request overview page while not signed in
         self.assertFalse(auth.get_user(self.client).is_authenticated)
@@ -1151,11 +1119,13 @@ class MultiUserModeTests(TestCase):
         # Confirm rendered manage plant page
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage Plant')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_plant']['js']
-        )
+        self.assertEqual(response.context['title'], 'Manage')
+
+        # Request state object, confirm contains plant details
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['state']['plant_details'], plant.get_details())
+        self.assertEqual(response.json()['title'], 'Manage Plant')
 
     def test_manage_plant_page_not_signed_in(self):
         # Create plant owned by test user
@@ -1180,11 +1150,13 @@ class MultiUserModeTests(TestCase):
         # Confirm rendered manage group page
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage Group')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_group']['js']
-        )
+        self.assertEqual(response.context['title'], 'Manage')
+
+        # Request state object, confirm contains group details
+        response = self.client.get(f'/resolve_manage/{group.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['state']['group_details'], group.get_details())
+        self.assertEqual(response.json()['title'], 'Manage Group')
 
     def test_manage_group_page_not_signed_in(self):
         # Create group owned by test user

@@ -213,14 +213,14 @@ class ModelRegressionTests(TestCase):
         Plant.objects.create(uuid=uuid4(), user=user1)
         plant2 = Plant.objects.create(uuid=uuid4(), user=user2)
 
-        # Sign in as user2, request manage_plant page
+        # Sign in as user2, request manage_plant state
         client = Client()
         client.login(username='user2', password='123')
-        response = client.get(f'/manage/{plant2.uuid}')
+        response = client.get(f'/resolve_manage/{plant2.uuid}')
 
         # Confirm plant name is "Unnamed plant 1", not 2
         self.assertEqual(
-            response.context['state']['plant_details']['display_name'],
+            response.json()['state']['plant_details']['display_name'],
             'Unnamed plant 1'
         )
 
@@ -506,18 +506,12 @@ class ViewRegressionTests(TestCase):
         plant.delete()
 
         # Simulate user scanning QR code with UUID that is not in database
-        response = self.client.get(f'/manage/{uuid4()}')
-
-        # Confirm request succeeded and rendered registration page
+        response = self.client.get(f'/resolve_manage/{uuid4()}')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['register']['js']
-        )
-        # Confirm context does NOT contain changing_qr_code key (causes register
+
+        # Confirm response does NOT contain changing_qr_code key (causes register
         # to show confirm QR prompt since merged with confirm_new_qr_code page)
-        self.assertNotIn('changing_qr_code', response.context['state'])
+        self.assertNotIn('changing_qr_code', response.json()['state'])
 
         # Confirm cache was cleared
         self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
@@ -808,13 +802,13 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         photo = Photo.objects.all()[0]
 
-        # Request overview page, should not raise exception
-        response = self.client.get('/')
+        # Request overview page state, should not raise exception
+        response = self.client.get('/get_overview_state')
         self.assertEqual(response.status_code, 200)
 
         # Confirm state contains plant details and correct thumbnail
         self.assertEqual(
-            response.context['state'],
+            response.json(),
             {
                 'plants': {
                     str(plant.uuid): {
@@ -1009,9 +1003,9 @@ class CachedStateRegressionTests(TestCase):
         plant1 = Plant.objects.create(uuid=uuid4(), name=None, user=get_default_user())
         plant2 = Plant.objects.create(uuid=uuid4(), name=None, user=get_default_user())
 
-        # Request manage_plant page for second plant
-        response = self.client.get(f'/manage/{plant2.uuid}')
-        state = response.context['state']
+        # Request manage_plant state for second plant
+        response = self.client.get(f'/resolve_manage/{plant2.uuid}')
+        state = response.json()['state']
 
         # Confirm display_name in context is "Unnamed plant 2"
         self.assertEqual(state['plant_details']['display_name'], 'Unnamed plant 2')
@@ -1020,12 +1014,12 @@ class CachedStateRegressionTests(TestCase):
         plant1.name = 'My plant'
         plant1.save()
 
-        # Request manage_plant for second plant again
-        response = self.client.get(f'/manage/{plant2.uuid}')
+        # Request manage_plant state for second plant again
+        response = self.client.get(f'/resolve_manage/{plant2.uuid}')
 
         # Confirm display_name in context updated to "Unnamed plant 1"
         self.assertEqual(
-            response.context['state']['plant_details']['display_name'],
+            response.json()['state']['plant_details']['display_name'],
             'Unnamed plant 1'
         )
 
@@ -1043,18 +1037,18 @@ class CachedStateRegressionTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
         plant = Plant.objects.create(uuid=uuid4(), group=group, user=get_default_user())
 
-        # Request manage_plant page, confirm group name is "Unnamed group 1"
-        response = self.client.get(f'/manage/{plant.uuid}')
-        state = response.context['state']
+        # Request manage_plant state, confirm group name is "Unnamed group 1"
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
+        state = response.json()['state']
         self.assertEqual(state['plant_details']['group']['name'], 'Unnamed group 1')
 
         # Give group a name
         group.name = 'Living room'
         group.save()
 
-        # Request manage_plant page again, confirm group name was updated
-        response = self.client.get(f'/manage/{plant.uuid}')
-        state = response.context['state']
+        # Request manage_plant state again, confirm group name was updated
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
+        state = response.json()['state']
         self.assertEqual(state['plant_details']['group']['name'], 'Living room')
 
     def test_archived_plants_added_to_main_overview_state_when_saved(self):
@@ -1093,11 +1087,11 @@ class CachedStateRegressionTests(TestCase):
         # Create test plant
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
-        # Request page, confirm state has no default_photo
-        response = self.client.get(f'/manage/{plant.uuid}')
-        self.assertIsNone(response.context['state']['plant_details']['thumbnail'])
+        # Request state, confirm state has no default_photo
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
+        self.assertIsNone(response.json()['state']['plant_details']['thumbnail'])
         self.assertEqual(
-            response.context['state']['default_photo'],
+            response.json()['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': None,
@@ -1120,14 +1114,14 @@ class CachedStateRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         photo = Photo.objects.all()[0]
 
-        # Request page again, confirm default_photo updated
-        response = self.client.get(f'/manage/{plant.uuid}')
+        # Request state again, confirm default_photo updated
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
         self.assertEqual(
-            response.context['state']['plant_details']['thumbnail'],
+            response.json()['state']['plant_details']['thumbnail'],
             '/media/user_1/thumbnails/photo1_thumb.webp'
         )
         self.assertEqual(
-            response.context['state']['default_photo'],
+            response.json()['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': '2024-02-21T10:52:03+00:00',
@@ -1146,11 +1140,11 @@ class CachedStateRegressionTests(TestCase):
             ]
         })
 
-        # Request page again, confirm default_photo updated
-        response = self.client.get(f'/manage/{plant.uuid}')
-        self.assertIsNone(response.context['state']['plant_details']['thumbnail'])
+        # Request state again, confirm default_photo updated
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
+        self.assertIsNone(response.json()['state']['plant_details']['thumbnail'])
         self.assertEqual(
-            response.context['state']['default_photo'],
+            response.json()['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': None,
@@ -1180,11 +1174,11 @@ class CachedStateRegressionTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=default_user)
         plant = Plant.objects.create(uuid=uuid4(), group=group, user=default_user)
 
-        # Request manage plant page, confirm context contains group details
-        response = self.client.get(f'/manage/{plant.uuid}')
+        # Request manage plant state, confirm context contains group details
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.context['state']['plant_details']['group'],
+            response.json()['state']['plant_details']['group'],
             plant.get_group_details()
         )
 
@@ -1196,11 +1190,11 @@ class CachedStateRegressionTests(TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
-        # Request manage plant page again, confirm group details not removed
-        response = self.client.get(f'/manage/{plant.uuid}')
+        # Request manage plant state again, confirm group details not removed
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.context['state']['plant_details']['group'],
+            response.json()['state']['plant_details']['group'],
             plant.get_group_details()
         )
 
@@ -1220,11 +1214,11 @@ class CachedStateRegressionTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=default_user)
         plant = Plant.objects.create(uuid=uuid4(), group=group, user=default_user)
 
-        # Request manage plant page, confirm context contains correct group uuid
-        response = self.client.get(f'/manage/{plant.uuid}')
+        # Request manage plant state, confirm context contains correct group uuid
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.context['state']['plant_details']['group']['uuid'],
+            response.json()['state']['plant_details']['group']['uuid'],
             str(group.uuid)
         )
 
@@ -1240,11 +1234,11 @@ class CachedStateRegressionTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-        # Request manage plant page again, confirm group uuid updated
-        response = self.client.get(f'/manage/{plant.uuid}')
+        # Request manage plant state again, confirm group uuid updated
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.context['state']['plant_details']['group']['uuid'],
+            response.json()['state']['plant_details']['group']['uuid'],
             str(new_uuid)
         )
 
@@ -1336,10 +1330,10 @@ class CachedStateRegressionTests(TestCase):
             timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
         )
 
-        # Request manage page, confirm water events are sorted chronologically
-        response = self.client.get(f'/manage/{plant.uuid}')
+        # Request manage plant state, confirm water events are sorted chronologically
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
         self.assertEqual(
-            response.context['state']['events']['water'],
+            response.json()['state']['events']['water'],
             [
                 '2024-03-06T03:06:26+00:00',
                 '2024-01-06T03:06:26+00:00'
@@ -1352,10 +1346,10 @@ class CachedStateRegressionTests(TestCase):
             timestamp=datetime.fromisoformat('2024-02-06T03:06:26.000Z')
         )
 
-        # Request manage page, confirm new event is sorted chronologically
-        response = self.client.get(f'/manage/{plant.uuid}')
+        # Request manage plant state, confirm new event is sorted chronologically
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
         self.assertEqual(
-            response.context['state']['events']['water'],
+            response.json()['state']['events']['water'],
             [
                 '2024-03-06T03:06:26+00:00',
                 '2024-02-06T03:06:26+00:00',
