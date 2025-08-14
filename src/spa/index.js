@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import Routes from './routes';
+import TransitionRouter from './TransitionRouter';
 import { PageWrapper } from 'src/index';
 import { parseDomContext } from 'src/util';
 
@@ -20,7 +20,7 @@ function bootstrapSpa() {
                     {initialError ? (
                         <PermissionDeniedApp errorMessage={initialError} />
                     ) : (
-                        <Routes />
+                        <TransitionRouter />
                     )}
                 </Suspense>
             </BrowserRouter>

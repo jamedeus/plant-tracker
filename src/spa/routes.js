@@ -1,5 +1,6 @@
 import React, { lazy } from 'react';
-import { Routes as RouterRoutes, Route, Navigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Routes as RouterRoutes, Route, Navigate, useLocation } from 'react-router-dom';
 
 // Lightweight placeholders (will be swapped with real adapters in Phase 3)
 const Overview = lazy(() => import(/* webpackChunkName: "overview_adapter" */ './adapters/Overview'));
@@ -11,9 +12,10 @@ const PasswordReset = lazy(() => import(/* webpackChunkName: "password_reset_ada
 const PasswordResetConfirm = lazy(() => import(/* webpackChunkName: "password_reset_confirm_adapter" */ './adapters/PasswordResetConfirm'));
 const PermissionDenied = lazy(() => import(/* webpackChunkName: "permission_denied_adapter" */ './adapters/PermissionDenied'));
 
-export default function Routes() {
+export default function Routes({ location }) {
+    const routerLocation = location || useLocation();
     return (
-        <RouterRoutes>
+        <RouterRoutes location={routerLocation}>
             <Route path="/" element={<Overview />} />
             <Route path="/archived" element={<Archived />} />
             <Route path="/manage/:uuid" element={<Manage />} />
@@ -31,4 +33,6 @@ export default function Routes() {
     );
 }
 
-
+Routes.propTypes = {
+    location: PropTypes.object.isRequired,
+};
