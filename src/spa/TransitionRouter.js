@@ -154,6 +154,8 @@ export default function TransitionRouter() {
         }
         const result = await fetchForRoute(route);
         if (result?.denied) {
+            // Override template title
+            document.title = 'Permission Denied';
             setPermissionDeniedMessage(result.error || 'You do not have permission to view this page');
             return;
         }
@@ -164,6 +166,10 @@ export default function TransitionRouter() {
             // Show generic error using permission denied view for now
             setPermissionDeniedMessage(result.error);
             return;
+        }
+        // Manage: set title from response ("Manage Plant", "Manage Group", etc)
+        if (route.key === 'manage' && result?.data?.title) {
+            document.title = result.data.title;
         }
         prefetchedRef.current.set(pathname, { route, ...result });
         setDisplayLocation(nextLocation);

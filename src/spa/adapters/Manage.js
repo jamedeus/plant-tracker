@@ -24,9 +24,6 @@ export default function ManageAdapter() {
     }, [data.page]);
 
     if (!AppComponent) return null;
-    if (data.title) {
-        document.title = data.title;
-    }
     return <AppComponent initialState={data.state || {}} />;
 }
 
