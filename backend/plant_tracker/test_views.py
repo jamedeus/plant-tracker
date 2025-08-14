@@ -123,6 +123,7 @@ class OverviewTests(TestCase):
         cache.set(f'overview_state_{get_default_user().pk}', {'state': 'cached'})
 
         # Mock build_overview_state to return a different string
+        # pylint: disable-next=line-too-long
         with patch('plant_tracker.build_states.build_overview_state', return_value={'state': 'built'}):
             # Request overview state, confirm state was loaded from cache
             response = self.client.get('/get_overview_state')
@@ -132,6 +133,7 @@ class OverviewTests(TestCase):
         cache.delete(f'overview_state_{get_default_user().pk}')
 
         # Mock build_overview_state to return a different string
+        # pylint: disable-next=line-too-long
         with patch('plant_tracker.build_states.build_overview_state', return_value={'state': 'built'}):
             # Request overview state, confirm was built by calling mocked
             # function (failed to load from cache)

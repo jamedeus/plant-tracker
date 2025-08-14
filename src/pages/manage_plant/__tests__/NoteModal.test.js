@@ -1,8 +1,6 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import NoteModal, { openNoteModal } from '../NoteModal';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';

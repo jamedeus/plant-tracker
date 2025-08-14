@@ -1,6 +1,4 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
-import { mockContext } from './mockContext';
 import App from '../App';
 
 jest.mock('print-js');
@@ -9,12 +7,7 @@ describe('App with empty database', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext({ ...mockContext,
-            plants: {},
-            groups: {},
-            show_archived: false
-        });
+        // Create mock state object
         createMockContext('user_accounts_enabled', true);
     });
 

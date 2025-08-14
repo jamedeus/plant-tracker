@@ -812,7 +812,7 @@ class SingleUserModeTests(TestCase):
         )
 
         # Create 1 plant owned by default user, 1 plant owned by test user
-        plant = Plant.objects.create(
+        Plant.objects.create(
             uuid=uuid4(),
             name='default user plant',
             user=get_default_user()
