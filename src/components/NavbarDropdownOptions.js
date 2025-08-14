@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { parseDomContext } from 'src/util';
 import ToggleThemeOption from './ToggleThemeOption';
 
 const NavbarDropdownOptions = ({ children }) => {
-    // Fetch user accounts enabled bool from backend
-    const userAccountsEnabled = useMemo(async () => {
-        const response = await fetch('/get_app_config');
-        if (!response.ok) return false;
-        const config = await response.json();
-        return Boolean(config.user_accounts_enabled);
-    });
+    const userAccountsEnabled = useMemo(() => (
+        parseDomContext("user_accounts_enabled")
+    ), []);
 
     return (
         <>

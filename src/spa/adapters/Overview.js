@@ -11,24 +11,16 @@ export default function OverviewAdapter() {
         let isMounted = true;
         (async () => {
             try {
-                const [state, config] = await Promise.all([
-                    fetchState('/get_overview_state', (msg) => setDeniedMessage(msg)),
-                    fetchState('/get_app_config')
-                ]);
+                const { ok, data, error } = await fetchState('/get_overview_state', (msg) => setDeniedMessage(msg));
                 if (!isMounted) return;
-                if (!state.ok) {
-                    setDeniedMessage(state.error || 'Unable to load page');
-                    return;
-                }
-                if (!config.ok) {
-                    setDeniedMessage(config.error || 'Unable to load page');
+                if (!ok) {
+                    setDeniedMessage(error || 'Unable to load page');
                     return;
                 }
                 setReady({
-                    plants: state.data.plants,
-                    groups: state.data.groups,
-                    show_archive: state.data.show_archive,
-                    user_accounts_enabled: config.data.user_accounts_enabled
+                    plants: data.plants,
+                    groups: data.groups,
+                    show_archive: data.show_archive,
                 });
             } catch (e) {
                 if (!isMounted) return;
@@ -57,7 +49,6 @@ export default function OverviewAdapter() {
             initialPlants={ready.plants}
             initialGroups={ready.groups}
             initialShowArchive={ready.show_archive}
-            initialUserAccountsEnabled={ready.user_accounts_enabled}
         />
     );
 }

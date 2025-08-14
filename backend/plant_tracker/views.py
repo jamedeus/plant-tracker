@@ -108,13 +108,6 @@ def get_overview_page_state(_, user):
     )
 
 
-def get_app_config(_):
-    '''Returns global, page-agnostic config used by the SPA shell.'''
-    return JsonResponse({
-        'user_accounts_enabled': not settings.SINGLE_USER_MODE
-    }, status=200)
-
-
 @get_user_token
 def archived_overview(request, user):
     '''Renders overview page for the requesting user showing only their

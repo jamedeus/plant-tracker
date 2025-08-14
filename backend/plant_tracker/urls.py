@@ -22,7 +22,6 @@ urlpatterns = [
     path('archived', views.archived_overview, name='archived'),
     path('get_archived_overview_state', views.get_archived_overview_state, name='get_archived_overview_state'),
     path('get_overview_state', views.get_overview_page_state, name='get_overview_state'),
-    path('get_app_config', views.get_app_config, name='get_app_config'),
     path('get_qr_codes', views.get_qr_codes, name='get_qr_codes'),
     path('register_plant', views.register_plant, name='register_plant'),
     path('register_group', views.register_group, name='register_group'),

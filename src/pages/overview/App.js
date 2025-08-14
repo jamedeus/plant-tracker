@@ -3,19 +3,22 @@ import PropTypes from 'prop-types';
 import Navbar from 'src/components/Navbar';
 import DropdownMenu from 'src/components/DropdownMenu';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
+import { parseDomContext } from 'src/util';
 import PrintModal, { openPrintModal } from './PrintModal';
 import { useBackButton } from 'src/useBackButton';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 import QrScannerButton from 'src/components/QrScannerButton';
 
-function App({ initialPlants, initialGroups, initialShowArchive, initialUserAccountsEnabled }) {
+function App({ initialPlants, initialGroups, initialShowArchive }) {
     // Initialize entirely from SPA-provided state
     const [plants, setPlants] = useState(initialPlants);
     const [groups, setGroups] = useState(initialGroups);
     const [showArchive, setShowArchive] = useState(initialShowArchive);
     // Controls whether dropdown contains user profile link
-    const userAccountsEnabled = useMemo(() => initialUserAccountsEnabled, [initialUserAccountsEnabled]);
+    const userAccountsEnabled = useMemo(() => (
+        parseDomContext("user_accounts_enabled")
+    ), []);
 
     // True if desktop layout, false if mobile
     const desktop = useIsBreakpointActive('md');
@@ -144,7 +147,6 @@ App.propTypes = {
     initialPlants: PropTypes.object.isRequired,
     initialGroups: PropTypes.object.isRequired,
     initialShowArchive: PropTypes.bool.isRequired,
-    initialUserAccountsEnabled: PropTypes.bool.isRequired
 };
 
 export default App;
