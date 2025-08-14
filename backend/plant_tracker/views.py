@@ -89,12 +89,7 @@ def overview(request, user):
         title=f"{user.first_name}'s Plants"
 
     # Serve SPA shell; the frontend fetches overview state via /get_overview_state
-    return render_react_app(
-        request,
-        title=title,
-        bundle='spa',
-        state={}
-    )
+    return render_react_app(request, title=title)
 
 
 @get_user_token
@@ -115,12 +110,7 @@ def archived_overview(request, user):
     '''
 
     # Serve SPA shell; the frontend fetches archived state via /get_archived_overview_state
-    return render_react_app(
-        request,
-        title='Archived',
-        bundle='spa',
-        state={}
-    )
+    return render_react_app(request, title='Archived')
 
 
 @get_user_token
@@ -143,12 +133,7 @@ def manage(request, uuid, user):
       - register: rendered if the QR code UUID does not match an existing Plant/Group
     '''
     # Serve SPA shell; the frontend resolves type and state via /resolve_manage/<uuid>
-    return render_react_app(
-        request,
-        title='Manage',
-        bundle='spa',
-        state={}
-    )
+    return render_react_app(request, title='Manage')
 
 
 @get_user_token

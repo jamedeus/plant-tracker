@@ -8,18 +8,15 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 @ensure_csrf_cookie
-def render_react_app(request, title, bundle, state):
-    '''Helper function to render react app in boilerplate HTML template.
-    Takes request object, page title, react bundle name, and react state object.
-    Builds context with all JS + CSS bundles for page (read from manifest.json).
-    Context object is printed to console in debug mode.
+def render_react_app(request, title, error=None):
+    '''Helper function to render SPA template. Initial request only includes
+    SPA bundles, page bundles will be lazy loaded basaed on route. If error is
+    given it will be saved as a hidden JSON object (used by permission denied).
     '''
     context = {
         'title': title,
-        'js_files': settings.PAGE_DEPENDENCIES[bundle]['js'],
-        'css_files': settings.PAGE_DEPENDENCIES[bundle]['css'],
-        'state': state,
-        'user_accounts_enabled': not settings.SINGLE_USER_MODE
+        'user_accounts_enabled': not settings.SINGLE_USER_MODE,
+        'error': error,
     }
 
     # Print full context object to console in debug mode
@@ -33,9 +30,4 @@ def render_permission_denied_page(request, error_string):
     '''Helper function to render permission denied page with custom error.
     Takes request object and error string to display to user.
     '''
-    return render_react_app(
-        request,
-        title='Permission Denied',
-        bundle='spa',
-        state={'error': error_string}
-    )
+    return render_react_app(request, title='Permission Denied', error=error_string)
