@@ -312,7 +312,7 @@ def register_plant(user, data, **kwargs):
                 )
 
         # Redirect to manage page
-        return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+        return JsonResponse({'redirect_to': f'/manage/{data["uuid"]}'}, status=200)
 
     except IntegrityError:
         return JsonResponse(
@@ -344,7 +344,7 @@ def register_group(user, data, **kwargs):
             add_instance_to_cached_overview_state(group)
 
         # Redirect to manage page
-        return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+        return JsonResponse({'redirect_to': f'/manage/{data["uuid"]}'}, status=200)
 
     except IntegrityError:
         return JsonResponse(

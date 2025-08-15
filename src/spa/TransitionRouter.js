@@ -17,6 +17,7 @@ const PermissionDeniedApp = React.lazy(() => import('src/pages/permission_denied
 
 const PrefetchContext = createContext({
     getPrefetched: () => null,
+    refresh: async () => null,
 });
 
 export function usePrefetchedState() {
@@ -139,6 +140,9 @@ export default function TransitionRouter() {
     const [permissionDeniedMessage, setPermissionDeniedMessage] = useState(null);
     const prefetchedRef = useRef(new Map());
 
+    // Force re-render so adapters see new data
+    const [version, setVersion] = useState(0);
+
     const getPrefetched = useCallback((pathname) => {
         return prefetchedRef.current.get(pathname) || null;
     }, []);
@@ -175,6 +179,25 @@ export default function TransitionRouter() {
         setDisplayLocation(nextLocation);
     }, []);
 
+    const refresh = useCallback(async (pathname) => {
+        const targetPath = pathname || location.pathname;
+        const route = matchRoute(targetPath);
+        if (!route.key) return { ok: false, reason: 'not-prefetchable' };
+
+        const result = await fetchForRoute(route);
+        if (result?.denied || result?.redirected || result?.error) {
+            return { ok: false, result };
+        }
+        // Manage: set title from response ("Manage Plant", "Manage Group", etc)
+        if (route.key === 'manage' && result?.data?.title) {
+            document.title = result.data.title;
+        }
+        // Update prefetched state, bump version to force re-render
+        prefetchedRef.current.set(targetPath, { route, ...result });
+        setVersion((v) => v + 1);
+        return { ok: true, result };
+    }, [location.pathname]);
+
     // First paint: prefetch current route and render nothing until ready
     useEffect(() => {
         if (displayLocation !== null) return;
@@ -190,7 +213,9 @@ export default function TransitionRouter() {
         prefetchAndCommit(location);
     }, [location, displayLocation, prefetchAndCommit]);
 
-    const contextValue = useMemo(() => ({ getPrefetched }), [getPrefetched]);
+    const contextValue = useMemo(() => (
+        { getPrefetched, refresh, version }
+    ), [getPrefetched, refresh, version]);
 
     // Render nothing on first load until ready, unless permission denied
     if (displayLocation === null) {

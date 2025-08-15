@@ -73,8 +73,8 @@ class EndpointStateUpdateTests(TestCase):
             'description': '300 feet and a few thousand years old',
             'pot_size': '4'
         })
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{new_plant_uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{new_plant_uuid}'})
 
         # Confirm new plant was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()
@@ -125,8 +125,8 @@ class EndpointStateUpdateTests(TestCase):
             'divided_from_id': str(self.plant1.pk),
             'divided_from_event_id': str(division_event.pk)
         })
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{new_plant_uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{new_plant_uuid}'})
 
         # Confirm new plant was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()
@@ -166,8 +166,8 @@ class EndpointStateUpdateTests(TestCase):
             'location': 'outside',
             'description': ''
         })
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{new_group_uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{new_group_uuid}'})
 
         # Confirm new group was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()

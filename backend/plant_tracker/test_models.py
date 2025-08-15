@@ -639,7 +639,7 @@ class UniqueUUIDTests(TransactionTestCase):
         # Register plant, confirm success (redirected to manage page)
         uuid = uuid4()
         response = self.register_plant(uuid)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         # Register group with same UUID, confirm rejected
         response = self.register_group(uuid)
@@ -673,11 +673,10 @@ class UniqueUUIDTests(TransactionTestCase):
             responses = [pool.submit(worker_plant), pool.submit(worker_group)]
             wait(responses)
 
-        # Confirm 1 request succeeded (302 redirect to management page), other
-        # was rejected (409 UUID already exists error)
+        # Confirm 1 request succeeded, other was rejected (409 UUID already exists)
         self.assertEqual(
             sorted(response.result().status_code for response in responses),
-            [302, 409]
+            [200, 409]
         )
 
         # Confirm only 1 UUID entry was added to database

@@ -573,8 +573,8 @@ class ViewRegressionTests(TestCase):
             'description': '300 feet and a few thousand years old',
             'pot_size': '4'
         })
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{test_id}'})
 
         # Attempt to register the same UUID again, confirm expected error
         response = JSONClient().post('/register_plant', {
@@ -615,8 +615,8 @@ class ViewRegressionTests(TestCase):
             'location': 'outside',
             'description': ''
         })
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{test_id}'})
 
         # Attempt to register the same UUID again, confirm expected error
         response = JSONClient().post('/register_group', {

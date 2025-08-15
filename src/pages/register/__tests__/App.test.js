@@ -71,8 +71,10 @@ describe('App', () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            status: 200,
+            json: () => Promise.resolve({
+                redirect_to: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            })
         }));
 
         // Fill in form fields
@@ -102,8 +104,10 @@ describe('App', () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            status: 200,
+            json: () => Promise.resolve({
+                redirect_to: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            })
         }));
 
         // Click Group button
@@ -146,24 +150,6 @@ describe('App', () => {
         // Click Save button, confirm error modal appears
         await user.click(app.getByText('Save'));
         expect(app.getByText('Failed to register plant')).toBeInTheDocument();
-    });
-
-    it('shows unexpected API response in error modal', async () => {
-        // Mock fetch function to return unexpected response (not error or redirect)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            redirected: false,
-            json: () => Promise.resolve({
-                error: "Unexpected, should return redirect or error"
-            })
-        }));
-
-        // Confirm error text is not in document
-        expect(app.queryByText(/Unexpected, should return redirect or error/)).toBeNull();
-
-        // Click Save button, confirm error modal appears
-        await user.click(app.getByText('Save'));
-        expect(app.getByText(/Unexpected, should return redirect or error/)).toBeInTheDocument();
     });
 
     it('disables the save button when plant fields exceed max length', async () => {

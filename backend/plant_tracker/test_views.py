@@ -524,8 +524,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm response redirects to management page for new plant
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{test_id}'})
 
         # Confirm new plant exists in database, confirm no group was created
         self.assertEqual(len(Plant.objects.all()), 1)
@@ -579,8 +579,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm response redirects to management page for new plant
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{test_id}'})
 
         # Confirm new plant was created, has reverse relation to original plant
         # and DivisionEvent
@@ -625,8 +625,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm response redirects to management page for new plant
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{test_id}'})
 
         # Confirm new plant was created, does NOT have reverse relation to
         # original plant or DivisionEvent
@@ -652,8 +652,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm response redirects to management page for new group
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'redirect_to': f'/manage/{test_id}'})
 
         # Confirm new group exists in database, confirm no plant was created
         self.assertEqual(len(Group.objects.all()), 1)

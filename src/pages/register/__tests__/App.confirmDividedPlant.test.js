@@ -116,8 +116,10 @@ describe('Register page while plant division in progress', () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            status: 200,
+            json: () => Promise.resolve({
+                redirect_to: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            })
         }));
 
         // Click Save button
@@ -153,8 +155,10 @@ describe('Register page while plant division in progress', () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            status: 200,
+            json: () => Promise.resolve({
+                redirect_to: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            })
         }));
 
         // Click Save button

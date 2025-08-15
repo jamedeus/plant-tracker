@@ -463,7 +463,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
                 'description': '300 feet and a few thousand years old',
                 'pot_size': '4'
             })
-            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.status_code, 200)
 
     def test_register_group_endpoint(self):
         '''/register_group should make 2 database queries.'''
@@ -474,7 +474,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
                 'location': 'top shelf    ',
                 'description': 'This group is used for propagation'
             })
-            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.status_code, 200)
 
     def test_change_qr_code_endpoint_plant(self):
         '''/change_qr_code should make 3 database queries when target is Plant.'''
