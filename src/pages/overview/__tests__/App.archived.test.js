@@ -233,7 +233,7 @@ describe('App', () => {
     // useEffect containing handleBackButton was not modified, so the archived
     // overview would request main overview state and turn into non-archived
     // overview when the back button was pressed.
-    it('does NOT fetch new state when user navigates to archive with back button', async () => {
+    it('does NOT fetch main overview state when user navigates to archive with back button', async () => {
         // Mock fetch function to return /get_overview_state response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -248,7 +248,8 @@ describe('App', () => {
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
         window.dispatchEvent(pageshowEvent);
 
-        // Confirm did NOT fetch new state
-        expect(global.fetch).not.toHaveBeenCalled();
+        // Confirm fetched archived overview state, not main overview state
+        expect(global.fetch).toHaveBeenCalledWith('/get_archived_overview_state');
+        expect(global.fetch).not.toHaveBeenCalledWith('/get_overview_state');
     });
 });

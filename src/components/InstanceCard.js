@@ -1,5 +1,6 @@
-import React, { useId, memo } from 'react';
+import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 
@@ -18,12 +19,19 @@ const InstanceCard = memo(function InstanceCard({
     thumbnail,
     archived
 }) {
-    // ID for hidden checkbox that controls details collapse open/close state
-    const checkboxId = useId();
+    // Ref for hidden checkbox that controls details collapse open/close state
+    const checkboxRef = useRef(null);
+
+    // Toggle open/close state (prevent click propagating to <Link>)
+    const onToggleClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        checkboxRef.current.checked = !checkboxRef.current.checked;
+    };
 
     return (
-        <a
-            href={`/manage/${uuid}`}
+        <Link
+            to={`/manage/${uuid}`}
             className={clsx(
                 'collapse cursor-pointer group rounded-2xl',
                 'bg-neutral text-neutral-content',
@@ -33,9 +41,9 @@ const InstanceCard = memo(function InstanceCard({
         >
             {/* Hidden checkbox controls open/close state */}
             <input
-                id={checkboxId}
                 type="checkbox"
                 className="hidden pointer-events-none"
+                ref={checkboxRef}
             />
 
             <div className='collapse-title min-size-0'>
@@ -67,18 +75,17 @@ const InstanceCard = memo(function InstanceCard({
                     </div>
 
                     {/* Button opens/closes collapse with details */}
-                    <label
+                    <button
                         tabIndex={-1}
-                        htmlFor={checkboxId}
                         className="btn-close absolute right-2 top-8 z-40"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={onToggleClick}
                         aria-label="Show or hide details"
                     >
                         <ChevronDownIcon className={clsx(
                             "min-size-8 transition-transform duration-200",
                             "rotate-0 group-has-checked:rotate-180"
                         )} />
-                    </label>
+                    </button>
                 </div>
             </div>
             {/* Details collapse, closed until button clicked */}
@@ -87,7 +94,7 @@ const InstanceCard = memo(function InstanceCard({
                     {details}
                 </div>
             </div>
-        </a>
+        </Link>
     );
 });
 

@@ -4,9 +4,16 @@ import { act, waitFor } from '@testing-library/react';
 import * as matchers from 'jest-extended';
 import '@testing-library/jest-dom';
 import 'src/testUtils/dateMock';
+import { BrowserRouter } from 'react-router-dom';
 
 // Add jest-extended matchers (toEndWith etc)
 expect.extend(matchers);
+
+// Custom render function that wraps children in BrowserRouter (fix <Link>s)
+const renderWithRouter = (ui, { route = '/' } = {}) => {
+    window.history.pushState({}, 'Test page', route);
+    return render(ui, { wrapper: BrowserRouter });
+};
 
 beforeAll(() => {
     // Mock navigator.userAgent to simulate iOS Safari (most common client)
@@ -92,7 +99,7 @@ beforeAll(() => {
     });
 
     // Make available in all tests
-    global.render = render;
+    global.render = renderWithRouter;
     global.within = within;
     global.userEvent = userEvent;
     global.act = act;

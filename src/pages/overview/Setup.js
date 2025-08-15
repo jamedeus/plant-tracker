@@ -1,5 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Link } from 'react-router-dom';
 import { openPrintModal } from './PrintModal';
 
 // Rendered when both state objects are empty, shows setup instructions
@@ -20,9 +21,9 @@ const Setup = () => {
             </button>
             <p className="text-2xl mt-8 mb-2">No printer?</p>
             <span className="mb-4">You can add a QR code later.</span>
-            <a className="btn btn-accent text-lg" href={`/manage/${uuidv4()}`}>
+            <Link className="btn btn-accent text-lg" to={`/manage/${uuidv4()}`}>
                 Register plant
-            </a>
+            </Link>
         </div>
     );
 };

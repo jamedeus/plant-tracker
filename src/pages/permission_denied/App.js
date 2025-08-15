@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 
@@ -16,9 +17,9 @@ function App({ errorMessage }) {
                 {errorMessage}
             </div>
 
-            <a href="/" className='btn btn-accent'>
+            <Link to="/" className='btn btn-accent'>
                 Go to Overview
-            </a>
+            </Link>
         </div>
     );
 }

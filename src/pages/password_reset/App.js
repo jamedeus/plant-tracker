@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import Navbar from 'src/components/Navbar';
 import clsx from 'clsx';
@@ -59,9 +60,9 @@ function App() {
 
     const DropdownMenuOptions = useMemo(() => (
         <>
-            <li><a href='/'>
+            <li><Link to='/'>
                 Overview
-            </a></li>
+            </Link></li>
             <ToggleThemeOption />
         </>
     ), [ToggleThemeOption]);

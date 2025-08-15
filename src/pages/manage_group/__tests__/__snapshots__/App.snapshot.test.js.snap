@@ -378,7 +378,6 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     class="hidden pointer-events-none"
-                    id=":r3:"
                     type="checkbox"
                   />
                   <div
@@ -416,10 +415,9 @@ exports[`App matches snapshot 1`] = `
                           Yesterday
                         </span>
                       </div>
-                      <label
+                      <button
                         aria-label="Show or hide details"
                         class="btn-close absolute right-2 top-8 z-40"
-                        for=":r3:"
                         tabindex="-1"
                       >
                         <svg
@@ -436,7 +434,7 @@ exports[`App matches snapshot 1`] = `
                             fill-rule="evenodd"
                           />
                         </svg>
-                      </label>
+                      </button>
                     </div>
                   </div>
                   <div
@@ -521,7 +519,6 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     class="hidden pointer-events-none"
-                    id=":r4:"
                     type="checkbox"
                   />
                   <div
@@ -570,10 +567,9 @@ exports[`App matches snapshot 1`] = `
                           Yesterday
                         </span>
                       </div>
-                      <label
+                      <button
                         aria-label="Show or hide details"
                         class="btn-close absolute right-2 top-8 z-40"
-                        for=":r4:"
                         tabindex="-1"
                       >
                         <svg
@@ -590,7 +586,7 @@ exports[`App matches snapshot 1`] = `
                             fill-rule="evenodd"
                           />
                         </svg>
-                      </label>
+                      </button>
                     </div>
                   </div>
                   <div
@@ -661,7 +657,6 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     class="hidden pointer-events-none"
-                    id=":r5:"
                     type="checkbox"
                   />
                   <div
@@ -682,10 +677,9 @@ exports[`App matches snapshot 1`] = `
                           Never watered
                         </span>
                       </div>
-                      <label
+                      <button
                         aria-label="Show or hide details"
                         class="btn-close absolute right-2 top-8 z-40"
-                        for=":r5:"
                         tabindex="-1"
                       >
                         <svg
@@ -702,7 +696,7 @@ exports[`App matches snapshot 1`] = `
                             fill-rule="evenodd"
                           />
                         </svg>
-                      </label>
+                      </button>
                     </div>
                   </div>
                   <div
@@ -1149,7 +1143,7 @@ exports[`App matches snapshot when no plants 1`] = `
           aria-selected="true"
           class="tab-option whitespace-nowrap tab-option-selected"
           data-headlessui-state="selected"
-          id="headlessui-tabs-tab-:r6:"
+          id="headlessui-tabs-tab-:r3:"
           role="tab"
           tabindex="0"
           type="button"
@@ -1160,7 +1154,7 @@ exports[`App matches snapshot when no plants 1`] = `
           aria-selected="false"
           class="tab-option whitespace-nowrap"
           data-headlessui-state=""
-          id="headlessui-tabs-tab-:r7:"
+          id="headlessui-tabs-tab-:r4:"
           role="tab"
           tabindex="-1"
           type="button"

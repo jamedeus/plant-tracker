@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Navbar from 'src/components/Navbar';
 import DropdownMenu from 'src/components/DropdownMenu';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
@@ -36,18 +37,18 @@ function App({ initialPlants, initialGroups, initialShowArchive }) {
 
     // Request new state from backend if user navigates to overview by pressing
     // back button (last watered/details may be outdated if coming from manage)
-    if (!archivedOverview) {
-        useBackButton(async () => {
-            const response = await fetch('/get_overview_state');
-            if (response.ok) {
-                const data = await response.json();
-                setPlants(data.plants);
-                setGroups(data.groups);
-            } else {
-                alert('Failed to fetch new data, page may be outdated');
-            }
-        });
-    }
+    useBackButton(async () => {
+        const response = await fetch(
+            archivedOverview ? '/get_archived_overview_state' : '/get_overview_state'
+        );
+        if (response.ok) {
+            const data = await response.json();
+            setPlants(data.plants);
+            setGroups(data.groups);
+        } else {
+            alert('Failed to fetch new data, page may be outdated');
+        }
+    });
 
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
@@ -59,21 +60,21 @@ function App({ initialPlants, initialGroups, initialShowArchive }) {
             <>
                 {/* Main overview: Link to archive overview if it exists */}
                 {(!archivedOverview && showArchive) && (
-                    <li><a href='/archived'>
+                    <li><Link to='/archived'>
                         Archived plants
-                    </a></li>
+                    </Link></li>
                 )}
                 {/* Archive overview: Link back to main overview */}
                 {archivedOverview && (
-                    <li><a href='/'>
+                    <li><Link to='/'>
                         Main overview
-                    </a></li>
+                    </Link></li>
                 )}
                 {/* Link to user profile unless accounts disabled */}
                 {userAccountsEnabled && (
-                    <li><a href='/accounts/profile/'>
+                    <li><Link to='/accounts/profile/'>
                         User profile
-                    </a></li>
+                    </Link></li>
                 )}
                 {/* Main overview: Show Print QR Codes option */}
                 {!archivedOverview && (

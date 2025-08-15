@@ -1,4 +1,5 @@
 import React, { useMemo, Suspense, lazy } from 'react';
+import { Link } from 'react-router-dom';
 import { sendPostRequest } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
@@ -55,9 +56,9 @@ function Layout() {
             {!plantDetails.archived && (
                 <>
                     {plantDetails.group &&
-                        <li><a href={`/manage/${plantDetails.group.uuid}`}>
+                        <li><Link to={`/manage/${plantDetails.group.uuid}`}>
                             Go to group
-                        </a></li>
+                        </Link></li>
                     }
                     <li><button onClick={openChangeQrModal}>
                         Change QR code
@@ -130,15 +131,15 @@ function Layout() {
                     {/* Group details if in group, add group button if not */}
                     <div className="flex flex-col text-center items-center">
                         {plantDetails.group && (
-                            <a
+                            <Link
                                 className={clsx(
                                     "font-bold text-lg line-clamp-1 rounded-lg",
                                     "focus:outline-2 outline-offset-2"
                                 )}
-                                href={`/manage/${plantDetails.group.uuid}`}
+                                to={`/manage/${plantDetails.group.uuid}`}
                             >
                                 { plantDetails.group.name }
-                            </a>
+                            </Link>
                         )}
                         <div className="flex gap-2 mx-auto mt-2">
                             {plantDetails.group ? (

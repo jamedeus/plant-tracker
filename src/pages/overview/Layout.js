@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Setup from './Setup';
 import EditModeFooter from './EditModeFooter';
 import AddEventsFooter from 'src/components/AddEventsFooter';
@@ -93,13 +94,13 @@ const Layout = ({
                             )}
                         >
                             {!archivedOverview && (
-                                <a
+                                <Link
                                     className="btn btn-accent mx-auto mt-4"
-                                    href={`/manage/${uuidv4()}`}
+                                    to={`/manage/${uuidv4()}`}
                                     aria-label="Register new plant"
                                 >
                                     <FaPlus className="size-5 mr-1" /> Add plant
-                                </a>
+                                </Link>
                             )}
                         </PlantsCol>
                     </div>
@@ -121,13 +122,13 @@ const Layout = ({
                             onOpenTitle={toggleEditing}
                         >
                             {!archivedOverview && (
-                                <a
+                                <Link
                                     className="btn btn-accent mx-auto mt-4"
-                                    href={`/manage/${uuidv4()}?type=group`}
+                                    to={`/manage/${uuidv4()}?type=group`}
                                     aria-label="Register new group"
                                 >
                                     <FaPlus className="size-5 mr-1" /> Add group
-                                </a>
+                                </Link>
                             )}
                         </GroupsCol>
                     </div>

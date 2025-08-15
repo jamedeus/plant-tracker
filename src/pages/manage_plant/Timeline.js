@@ -1,5 +1,6 @@
 import React, { useRef, useState, useLayoutEffect, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import { capitalize, pastTense } from 'src/util';
@@ -318,12 +319,12 @@ const DivisionEventMarker = ({ dividedPlants }) => {
                     className="flex items-center ml-6 md:ml-7"
                 >
                     <span className="bullet-point mr-2"></span>
-                    <a
-                        href={`/manage/${plant.uuid}`}
+                    <Link
+                        to={`/manage/${plant.uuid}`}
                         className="plant-link truncate"
                     >
                         {plant.name}
-                    </a>
+                    </Link>
                 </div>
             ))}
         </div>
@@ -345,12 +346,12 @@ const DividedFromMarker = ({ name, uuid, dateKey }) => {
         <span className="m-2 text-sm md:text-base line-clamp-1">
             <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
             Divided from&nbsp;
-            <a
-                href={`/manage/${uuid}?scrollToDate=${dateKey}`}
+            <Link
+                to={`/manage/${uuid}?scrollToDate=${dateKey}`}
                 className="plant-link"
             >
                 {name}
-            </a>
+            </Link>
         </span>
     );
 };

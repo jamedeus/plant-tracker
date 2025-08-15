@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { parseDomContext } from 'src/util';
 import ToggleThemeOption from './ToggleThemeOption';
 
@@ -10,13 +11,13 @@ const NavbarDropdownOptions = ({ children }) => {
 
     return (
         <>
-            <li><a href='/'>
+            <li><Link to='/'>
                 Overview
-            </a></li>
+            </Link></li>
             {userAccountsEnabled && (
-                <li><a href="/accounts/profile/">
+                <li><Link to="/accounts/profile/">
                     User profile
-                </a></li>
+                </Link></li>
             )}
             {children}
             <ToggleThemeOption />

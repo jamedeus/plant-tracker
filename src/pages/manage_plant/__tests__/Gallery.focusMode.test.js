@@ -4,7 +4,6 @@ import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 import { waitFor } from '@testing-library/react';
-import { render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 describe('Gallery Focus Mode', () => {

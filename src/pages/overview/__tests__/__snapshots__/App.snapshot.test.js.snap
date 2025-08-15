@@ -277,7 +277,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   <input
                     aria-label="Select Test Plant"
                     class="radio my-auto"
-                    id=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
                     type="checkbox"
@@ -293,7 +293,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":rd:"
                       type="checkbox"
                     />
                     <div
@@ -342,10 +341,9 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             5 days ago
                           </span>
                         </div>
-                        <label
+                        <button
                           aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":rd:"
                           tabindex="-1"
                         >
                           <svg
@@ -362,7 +360,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </label>
+                        </button>
                       </div>
                     </div>
                     <div
@@ -405,7 +403,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  for=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
             </form>
@@ -534,7 +532,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   <input
                     aria-label="Select Test group"
                     class="radio my-auto"
-                    id=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    id=":r7:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     tabindex="-1"
                     type="checkbox"
@@ -550,7 +548,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":rf:"
                       type="checkbox"
                     />
                     <div
@@ -573,10 +570,9 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                              plants
                           </p>
                         </div>
-                        <label
+                        <button
                           aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":rf:"
                           tabindex="-1"
                         >
                           <svg
@@ -593,7 +589,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </label>
+                        </button>
                       </div>
                     </div>
                     <div
@@ -622,7 +618,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  for=":r7:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 />
               </div>
             </form>
@@ -1305,7 +1301,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   <input
                     aria-label="Select Test group"
                     class="radio my-auto"
-                    id=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    id=":r5:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     tabindex="-1"
                     type="checkbox"
@@ -1321,7 +1317,6 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":rb:"
                       type="checkbox"
                     />
                     <div
@@ -1344,10 +1339,9 @@ exports[`App matches snapshot when only groups exist 1`] = `
                              plants
                           </p>
                         </div>
-                        <label
+                        <button
                           aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":rb:"
                           tabindex="-1"
                         >
                           <svg
@@ -1364,7 +1358,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </label>
+                        </button>
                       </div>
                     </div>
                     <div
@@ -1393,7 +1387,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  for=":r5:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 />
               </div>
             </form>
@@ -1872,7 +1866,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   <input
                     aria-label="Select Test Plant"
                     class="radio my-auto"
-                    id=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
                     type="checkbox"
@@ -1888,7 +1882,6 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":r9:"
                       type="checkbox"
                     />
                     <div
@@ -1937,10 +1930,9 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             5 days ago
                           </span>
                         </div>
-                        <label
+                        <button
                           aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":r9:"
                           tabindex="-1"
                         >
                           <svg
@@ -1957,7 +1949,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </label>
+                        </button>
                       </div>
                     </div>
                     <div
@@ -2000,7 +1992,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  for=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
             </form>
@@ -2495,7 +2487,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":r1:"
                       type="checkbox"
                     />
                     <div
@@ -2544,10 +2535,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             5 days ago
                           </span>
                         </div>
-                        <label
+                        <button
                           aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":r1:"
                           tabindex="-1"
                         >
                           <svg
@@ -2564,7 +2554,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </label>
+                        </button>
                       </div>
                     </div>
                     <div
@@ -2757,7 +2747,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   <input
                     aria-label="Select Test group"
                     class="radio my-auto"
-                    id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    id=":r1:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     tabindex="-1"
                     type="checkbox"
@@ -2773,7 +2763,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":r3:"
                       type="checkbox"
                     />
                     <div
@@ -2796,10 +2785,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                              plants
                           </p>
                         </div>
-                        <label
+                        <button
                           aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":r3:"
                           tabindex="-1"
                         >
                           <svg
@@ -2816,7 +2804,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </label>
+                        </button>
                       </div>
                     </div>
                     <div
@@ -2845,7 +2833,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  for=":r1:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 />
               </div>
             </form>
@@ -3347,7 +3335,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   <input
                     aria-label="Select Test Plant"
                     class="radio my-auto"
-                    id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
                     type="checkbox"
@@ -3363,7 +3351,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":r5:"
                       type="checkbox"
                     />
                     <div
@@ -3412,10 +3399,9 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             5 days ago
                           </span>
                         </div>
-                        <label
+                        <button
                           aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":r5:"
                           tabindex="-1"
                         >
                           <svg
@@ -3432,7 +3418,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </label>
+                        </button>
                       </div>
                     </div>
                     <div
@@ -3475,7 +3461,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
             </form>
@@ -3625,7 +3611,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   <input
                     aria-label="Select Test group"
                     class="radio my-auto"
-                    id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    id=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     tabindex="-1"
                     type="checkbox"
@@ -3641,7 +3627,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":r7:"
                       type="checkbox"
                     />
                     <div
@@ -3664,10 +3649,9 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                              plants
                           </p>
                         </div>
-                        <label
+                        <button
                           aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":r7:"
                           tabindex="-1"
                         >
                           <svg
@@ -3684,7 +3668,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </label>
+                        </button>
                       </div>
                     </div>
                     <div
@@ -3713,7 +3697,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  for=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 />
               </div>
             </form>

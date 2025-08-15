@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { EMAIL_REGEX } from 'src/regex';
 import { sendPostRequest } from 'src/util';
@@ -304,9 +305,9 @@ Section.propTypes = {
 function App({ initialUserDetails }) {
     const DropdownMenuOptions = useMemo(() => (
         <>
-            <li><a href='/'>
+            <li><Link to='/'>
                 Overview
-            </a></li>
+            </Link></li>
             <ToggleThemeOption />
         </>
     ), [ToggleThemeOption]);
@@ -325,12 +326,12 @@ function App({ initialUserDetails }) {
                 <Section title="Change Password">
                     <ChangePassword />
                 </Section>
-                <a
+                <Link
                     className="btn btn-soft btn-error mx-4 mb-8"
-                    href="/accounts/logout/"
+                    to="/accounts/logout/"
                 >
                     Log Out
-                </a>
+                </Link>
             </div>
         </div>
     );
