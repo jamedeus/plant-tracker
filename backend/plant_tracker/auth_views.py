@@ -19,7 +19,6 @@ from django.views.decorators.debug import sensitive_variables
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
 
-from .views import render_react_app
 from .view_decorators import (
     get_user_token,
     requires_json_post,
@@ -359,14 +358,6 @@ def resend_verification_email(request, user, **kwargs):
     '''
     _generate_and_send_verification_email(user)
     return JsonResponse({"success": "verification email sent"})
-
-
-@get_user_token
-@disable_in_single_user_mode
-def user_profile_page(request, user):
-    '''Renders the user profile page'''
-
-    return render_react_app(request, title='User Profile')
 
 
 @get_user_token

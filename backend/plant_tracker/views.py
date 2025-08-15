@@ -48,6 +48,27 @@ from .build_states import (
 )
 
 
+PAGE_TITLE_MAP = {
+    'overview': 'Plant Overview',
+    'archived': 'Archived Plants',
+    'manage': 'Manage',
+    'user_profile_page': 'User Profile',
+}
+
+
+@get_user_token
+def serve_spa(request, user, **kwargs):
+    '''Renders the SPA shell with correct title for the requested page.'''
+    url_name = request.resolver_match.url_name
+    # Add user's name to overview title
+    if url_name == 'overview' and not settings.SINGLE_USER_MODE and user.first_name:
+        title = f"{user.first_name}'s Plants"
+    # Use mapping dict for all other pages
+    else:
+        title = PAGE_TITLE_MAP[url_name]
+    return render_react_app(request, title=title)
+
+
 @requires_json_post(["qr_per_row"])
 def get_qr_codes(data, **kwargs):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG.
@@ -77,22 +98,6 @@ def get_qr_codes(data, **kwargs):
 
 
 @get_user_token
-def overview(request, user):
-    '''Renders the overview page for the requesting user (shows their existing
-    plants/groups, or setup if none).
-    '''
-
-    # Set generic page title in SINGLE_USER_MODE or if user has no first name
-    if settings.SINGLE_USER_MODE or not user.first_name:
-        title='Plant Overview'
-    else:
-        title=f"{user.first_name}'s Plants"
-
-    # Serve SPA shell; the frontend fetches overview state via /get_overview_state
-    return render_react_app(request, title=title)
-
-
-@get_user_token
 def get_overview_page_state(_, user):
     '''Returns current overview page state for the requesting user, used to
     refresh contents when returning to over view with back button.
@@ -101,16 +106,6 @@ def get_overview_page_state(_, user):
         get_overview_state(user),
         status=200
     )
-
-
-@get_user_token
-def archived_overview(request, user):
-    '''Renders overview page for the requesting user showing only their
-    archived plants and groups.
-    '''
-
-    # Serve SPA shell; the frontend fetches archived state via /get_archived_overview_state
-    return render_react_app(request, title='Archived')
 
 
 @get_user_token
@@ -123,17 +118,6 @@ def get_archived_overview_state(_, user):
         # Mirror server-rendered behavior (redirects to '/') with an indicator
         return JsonResponse({'redirect': '/'}, status=302)
     return JsonResponse(state, status=200)
-
-
-@get_user_token
-def manage(request, uuid, user):
-    '''Renders the correct page when a QR code is scanned:
-      - manage_plant: rendered if QR code UUID matches an existing Plant entry
-      - manage_group: rendered if QR code UUID matches an existing Group entry
-      - register: rendered if the QR code UUID does not match an existing Plant/Group
-    '''
-    # Serve SPA shell; the frontend resolves type and state via /resolve_manage/<uuid>
-    return render_react_app(request, title='Manage')
 
 
 @get_user_token
