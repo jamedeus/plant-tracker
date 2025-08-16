@@ -1,15 +1,14 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Routes from './routes';
-
-// Lazy imports of page-level apps so we can pre-load them
-const importOverviewApp = () => import(/* webpackChunkName: "overview_app" */ 'src/pages/overview/App');
-const importUserProfileApp = () => import(/* webpackChunkName: "user_profile_app" */ 'src/pages/user_profile/App');
-const importManagePlantApp = () => import(/* webpackChunkName: "manage_plant_app" */ 'src/pages/manage_plant/App');
-const importManageGroupApp = () => import(/* webpackChunkName: "manage_group_app" */ 'src/pages/manage_group/App');
-const importRegisterApp = () => import(/* webpackChunkName: "register_app" */ 'src/pages/register/App');
-
-const PermissionDeniedApp = React.lazy(() => import(/* webpackChunkName: "permission_denied_app" */ 'src/pages/permission_denied/App'));
+import {
+    OverviewApp,
+    ManagePlantApp,
+    ManageGroupApp,
+    RegisterApp,
+    UserProfileApp,
+    PermissionDeniedApp,
+} from './bundles';
 
 const PrefetchContext = createContext({
     getPrefetched: () => null,
@@ -43,7 +42,7 @@ function matchRoute(pathname) {
 async function fetchForRoute(route) {
     switch (route.key) {
         case 'overview': {
-            await importOverviewApp();
+            await OverviewApp.preload();
             const response = await fetch('/get_overview_state');
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {
@@ -60,7 +59,7 @@ async function fetchForRoute(route) {
             return { data, status: response.status };
         }
         case 'archived': {
-            await importOverviewApp();
+            await OverviewApp.preload();
             const response = await fetch('/get_archived_overview_state');
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {
@@ -95,13 +94,13 @@ async function fetchForRoute(route) {
                 return { error, status: response.status };
             }
             // Preload the target page bundle to avoid suspense flash
-            if (data.page === 'manage_plant') await importManagePlantApp();
-            else if (data.page === 'manage_group') await importManageGroupApp();
-            else if (data.page === 'register') await importRegisterApp();
+            if (data.page === 'manage_plant') await ManagePlantApp.preload();
+            else if (data.page === 'manage_group') await ManageGroupApp.preload();
+            else if (data.page === 'register') await RegisterApp.preload();
             return { data, status: response.status };
         }
         case 'user_profile': {
-            await importUserProfileApp();
+            await UserProfileApp.preload();
             const response = await fetch('/accounts/get_user_details/');
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {
@@ -239,5 +238,3 @@ export default function TransitionRouter() {
 }
 
 export { PrefetchContext };
-
-
