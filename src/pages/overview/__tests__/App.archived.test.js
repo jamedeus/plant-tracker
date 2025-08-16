@@ -30,19 +30,19 @@ describe('App', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App
-                    initialPlants={Object.fromEntries(
+                <App initialState={{
+                    ...mockContext,
+                    plants: Object.fromEntries(
                         Object.entries(mockContext.plants).map(
                             ([uuid, plant]) => [ uuid, { ...plant, archived: true } ]
                         )
-                    )}
-                    initialGroups={Object.fromEntries(
+                    ),
+                    groups: Object.fromEntries(
                         Object.entries(mockContext.groups).map(
                             ([uuid, group]) => [ uuid, { ...group, archived: true } ]
                         )
-                    )}
-                    initialShowArchive={mockContext.show_archive}
-                />
+                    ),
+                }} />
             </PageWrapper>
         );
     });

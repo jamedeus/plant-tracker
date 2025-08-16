@@ -302,7 +302,7 @@ Section.propTypes = {
     children: PropTypes.node.isRequired
 };
 
-function App({ initialUserDetails }) {
+function App({ initialState }) {
     const DropdownMenuOptions = useMemo(() => (
         <>
             <li><Link to='/'>
@@ -321,7 +321,7 @@ function App({ initialUserDetails }) {
             />
             <div className="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16">
                 <Section title="Details" open={true}>
-                    <UserDetails initialUserDetails={initialUserDetails} />
+                    <UserDetails initialUserDetails={initialState.user_details} />
                 </Section>
                 <Section title="Change Password">
                     <ChangePassword />
@@ -340,12 +340,14 @@ function App({ initialUserDetails }) {
 export default App;
 
 App.propTypes = {
-    initialUserDetails: PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
-        email_verified: PropTypes.bool.isRequired,
-        first_name: PropTypes.string.isRequired,
-        last_name: PropTypes.string.isRequired,
-        date_joined: PropTypes.string.isRequired,
-    }).isRequired
+    initialState: PropTypes.shape({
+        user_details: PropTypes.shape({
+            username: PropTypes.string.isRequired,
+            email: PropTypes.string.isRequired,
+            email_verified: PropTypes.bool.isRequired,
+            first_name: PropTypes.string.isRequired,
+            last_name: PropTypes.string.isRequired,
+            date_joined: PropTypes.string.isRequired,
+        }).isRequired
+    })
 };

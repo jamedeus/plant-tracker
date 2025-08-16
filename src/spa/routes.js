@@ -1,31 +1,49 @@
 import React, { lazy } from 'react';
 import PropTypes from 'prop-types';
 import { Routes as RouterRoutes, Route, Navigate, useLocation } from 'react-router-dom';
+import Prefetched from './Prefetched';
 
-// Lightweight placeholders (will be swapped with real adapters in Phase 3)
-const Overview = lazy(() => import(/* webpackChunkName: "overview_adapter" */ './adapters/Overview'));
-const Archived = lazy(() => import(/* webpackChunkName: "archived_adapter" */ './adapters/Archived'));
-const Manage = lazy(() => import(/* webpackChunkName: "manage_adapter" */ './adapters/Manage'));
-const Login = lazy(() => import(/* webpackChunkName: "login_adapter" */ './adapters/Login'));
-const UserProfile = lazy(() => import(/* webpackChunkName: "user_profile_adapter" */ './adapters/UserProfile'));
-const PasswordReset = lazy(() => import(/* webpackChunkName: "password_reset_adapter" */ './adapters/PasswordReset'));
-const PasswordResetConfirm = lazy(() => import(/* webpackChunkName: "password_reset_confirm_adapter" */ './adapters/PasswordResetConfirm'));
-const PermissionDenied = lazy(() => import(/* webpackChunkName: "permission_denied_adapter" */ './adapters/PermissionDenied'));
+// Page bundles
+const OverviewApp = lazy(() => import(/* webpackChunkName: "overview_app" */ 'src/pages/overview/App'));
+const ManagePlantApp = lazy(() => import(/* webpackChunkName: "manage_plant_app" */'src/pages/manage_plant/App'));
+const ManageGroupApp = lazy(() => import(/* webpackChunkName: "manage_group_app" */ 'src/pages/manage_group/App'));
+const RegisterApp = lazy(() => import(/* webpackChunkName: "register_app" */ 'src/pages/register/App'));
+const LoginApp = lazy(() => import(/* webpackChunkName: "login_app" */ 'src/pages/login/App'));
+const UserProfileApp = lazy(() => import(/* webpackChunkName: "user_profile_app" */ 'src/pages/user_profile/App'));
+const PasswordResetApp = lazy(() => import(/* webpackChunkName: "password_reset_app" */ 'src/pages/password_reset/App'));
+const PermissionDeniedApp = lazy(() => import(/* webpackChunkName: "permission_denied_app" */ 'src/pages/permission_denied/App'));
 
 export default function Routes({ location }) {
     const routerLocation = location || useLocation();
     return (
         <RouterRoutes location={routerLocation}>
-            <Route path="/" element={<Overview />} />
-            <Route path="/archived" element={<Archived />} />
-            <Route path="/manage/:uuid" element={<Manage />} />
+            <Route path="/" element={<Prefetched render={(data) => (
+                <OverviewApp initialState={data} />
+            )} />} />
+            <Route path="/archived" element={<Prefetched render={(data) => (
+                <OverviewApp initialState={data} />
+            )} />} />
+            <Route path="/manage/:uuid" element={<Prefetched render={(data) => {
+                switch (data.page) {
+                    case 'manage_plant':
+                        return <ManagePlantApp initialState={data.state || {}} />;
+                    case 'manage_group':
+                        return <ManageGroupApp initialState={data.state || {}} />;
+                    case 'register':
+                        return <RegisterApp initialState={data.state || {}} />;
+                    default:
+                        return null;
+                }
+            }} />} />
 
-            <Route path="/accounts/login/" element={<Login />} />
-            <Route path="/accounts/profile/" element={<UserProfile />} />
-            <Route path="/accounts/password_reset/" element={<PasswordReset />} />
-            <Route path="/accounts/reset/:uidb64/:token/" element={<PasswordResetConfirm />} />
+            <Route path="/accounts/login/" element={<LoginApp />} />
+            <Route path="/accounts/profile/" element={<Prefetched render={(data) => (
+                <UserProfileApp initialState={data} />
+            )} />} />
+            <Route path="/accounts/password_reset/" element={<PasswordResetApp />} />
+            <Route path="/accounts/reset/:uidb64/:token/" element={<PasswordResetApp />} />
 
-            <Route path="/permission_denied" element={<PermissionDenied />} />
+            <Route path="/permission_denied" element={<PermissionDeniedApp />} />
 
             {/* Fallback to overview */}
             <Route path="*" element={<Navigate to="/" replace />} />

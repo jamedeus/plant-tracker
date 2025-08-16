@@ -26,11 +26,11 @@ describe('App', () => {
         const plantUUID = Object.keys(mockContext.plants)[0];
         const groupUUID = Object.keys(mockContext.groups)[0];
         const { container } = render(
-            <App
-                initialPlants={{ plantUUID: mockContext.plants[plantUUID] }}
-                initialGroups={{ groupUUID: mockContext.groups[groupUUID] }}
-                initialShowArchive={mockContext.show_archive}
-            />
+            <App initialState={{
+                ...mockContext,
+                plants: { plantUUID: mockContext.plants[plantUUID] },
+                groups: { groupUUID: mockContext.groups[groupUUID] },
+            }} />
         );
         expect(container).toMatchSnapshot();
     });
@@ -46,11 +46,11 @@ describe('App', () => {
         const plantUUID = Object.keys(mockContext.plants)[0];
         const groupUUID = Object.keys(mockContext.groups)[0];
         const { container } = render(
-            <App
-                initialPlants={{ plantUUID: mockContext.plants[plantUUID] }}
-                initialGroups={{ groupUUID: mockContext.groups[groupUUID] }}
-                initialShowArchive={mockContext.show_archive}
-            />
+            <App initialState={{
+                ...mockContext,
+                plants: { plantUUID: mockContext.plants[plantUUID] },
+                groups: { groupUUID: mockContext.groups[groupUUID] },
+            }} />
         );
         expect(container).toMatchSnapshot();
     });
@@ -62,11 +62,11 @@ describe('App', () => {
         // Render App with a single plant, confirm matches snapshot
         const plantUUID = Object.keys(mockContext.plants)[0];
         const { container } = render(
-            <App
-                initialPlants={{ plantUUID: mockContext.plants[plantUUID] }}
-                initialGroups={{}}
-                initialShowArchive={mockContext.show_archive}
-            />
+            <App initialState={{
+                ...mockContext,
+                plants: { plantUUID: mockContext.plants[plantUUID] },
+                groups: {},
+            }} />
         );
         expect(container).toMatchSnapshot();
     });
@@ -78,11 +78,11 @@ describe('App', () => {
         // Render App with a single plant, confirm matches snapshot
         const groupUUID = Object.keys(mockContext.groups)[0];
         const { container } = render(
-            <App
-                initialPlants={{}}
-                initialGroups={{ groupUUID: mockContext.groups[groupUUID] }}
-                initialShowArchive={mockContext.show_archive}
-            />
+            <App initialState={{
+                ...mockContext,
+                plants: {},
+                groups: { groupUUID: mockContext.groups[groupUUID] },
+            }} />
         );
         expect(container).toMatchSnapshot();
     });
@@ -93,11 +93,11 @@ describe('App', () => {
 
         // Render App, confirm matches snapshot
         const { container } = render(
-            <App
-                initialPlants={{}}
-                initialGroups={{}}
-                initialShowArchive={false}
-            />
+            <App initialState={{
+                plants: {},
+                groups: {},
+                show_archive: false
+            }} />
         );
         expect(container).toMatchSnapshot();
     });
@@ -120,11 +120,11 @@ describe('App (archived page)', () => {
         const plantUUID = Object.keys(mockContext.plants)[0];
         const groupUUID = Object.keys(mockContext.groups)[0];
         const { container } = render(
-            <App
-                initialPlants={{ plantUUID: { ...mockContext.plants[plantUUID], archived: true } }}
-                initialGroups={{ groupUUID: { ...mockContext.groups[groupUUID], archived: true } }}
-                initialShowArchive={mockContext.show_archive}
-            />
+            <App initialState={{
+                ...mockContext,
+                plants: { plantUUID: { ...mockContext.plants[plantUUID], archived: true } },
+                groups: { groupUUID: { ...mockContext.groups[groupUUID], archived: true } },
+            }} />
         );
         expect(container).toMatchSnapshot();
     });

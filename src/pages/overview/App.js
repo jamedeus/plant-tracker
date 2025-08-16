@@ -11,11 +11,11 @@ import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 import QrScannerButton from 'src/components/QrScannerButton';
 
-function App({ initialPlants, initialGroups, initialShowArchive }) {
-    // Initialize entirely from SPA-provided state
-    const [plants, setPlants] = useState(initialPlants);
-    const [groups, setGroups] = useState(initialGroups);
-    const [showArchive, setShowArchive] = useState(initialShowArchive);
+function App({ initialState }) {
+    // Initialize from SPA-provided state
+    const [plants, setPlants] = useState(initialState.plants);
+    const [groups, setGroups] = useState(initialState.groups);
+    const [showArchive, setShowArchive] = useState(initialState.show_archive);
     // Controls whether dropdown contains user profile link
     const userAccountsEnabled = useMemo(() => (
         parseDomContext("user_accounts_enabled")
@@ -145,9 +145,11 @@ function App({ initialPlants, initialGroups, initialShowArchive }) {
 }
 
 App.propTypes = {
-    initialPlants: PropTypes.object.isRequired,
-    initialGroups: PropTypes.object.isRequired,
-    initialShowArchive: PropTypes.bool.isRequired,
+    initialState: PropTypes.shape({
+        plants: PropTypes.object.isRequired,
+        groups: PropTypes.object.isRequired,
+        show_archive: PropTypes.bool.isRequired,
+    }),
 };
 
 export default App;

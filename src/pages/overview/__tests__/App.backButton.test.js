@@ -22,11 +22,7 @@ describe('App', () => {
         // Render app, confirm /get_overview_state was not called
         const { unmount } = render(
             <PageWrapper>
-                <App
-                    initialPlants={mockContext.plants}
-                    initialGroups={mockContext.groups}
-                    initialShowArchive={mockContext.show_archive}
-                />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
         expect(global.fetch.mock.calls.filter(
@@ -48,11 +44,7 @@ describe('App', () => {
         unmount();
         render(
             <PageWrapper>
-                <App
-                    initialPlants={mockContext.plants}
-                    initialGroups={mockContext.groups}
-                    initialShowArchive={mockContext.show_archive}
-                />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
 

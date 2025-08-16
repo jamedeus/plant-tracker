@@ -14,12 +14,14 @@ describe('App', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <App initialUserDetails={{
-                    username: "cdanger",
-                    email: "totally.not.anthony.weiner@gmail.com",
-                    first_name: "Carlos",
-                    last_name: "Danger",
-                    date_joined: "2025-04-06T00:08:53.392806+00:00"
+                <App initialState={{
+                    user_details: {
+                        username: "cdanger",
+                        email: "totally.not.anthony.weiner@gmail.com",
+                        first_name: "Carlos",
+                        last_name: "Danger",
+                        date_joined: "2025-04-06T00:08:53.392806+00:00"
+                    }
                 }} />
             </PageWrapper>
         );

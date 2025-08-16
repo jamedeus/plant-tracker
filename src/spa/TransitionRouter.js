@@ -2,18 +2,14 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { useLocation } from 'react-router-dom';
 import Routes from './routes';
 
-// Lazy imports of route-level adapters so we can pre-load them
-const importOverview = () => import(/* webpackChunkName: "overview_adapter" */ './adapters/Overview');
-const importArchived = () => import(/* webpackChunkName: "archived_adapter" */ './adapters/Archived');
-const importManage = () => import(/* webpackChunkName: "manage_adapter" */ './adapters/Manage');
-const importUserProfile = () => import(/* webpackChunkName: "user_profile_adapter" */ './adapters/UserProfile');
+// Lazy imports of page-level apps so we can pre-load them
+const importOverviewApp = () => import(/* webpackChunkName: "overview_app" */ 'src/pages/overview/App');
+const importUserProfileApp = () => import(/* webpackChunkName: "user_profile_app" */ 'src/pages/user_profile/App');
+const importManagePlantApp = () => import(/* webpackChunkName: "manage_plant_app" */ 'src/pages/manage_plant/App');
+const importManageGroupApp = () => import(/* webpackChunkName: "manage_group_app" */ 'src/pages/manage_group/App');
+const importRegisterApp = () => import(/* webpackChunkName: "register_app" */ 'src/pages/register/App');
 
-// Page-level apps used by manage; pre-load based on resolver response
-const importManagePlantApp = () => import('src/pages/manage_plant/App');
-const importManageGroupApp = () => import('src/pages/manage_group/App');
-const importRegisterApp = () => import('src/pages/register/App');
-
-const PermissionDeniedApp = React.lazy(() => import('src/pages/permission_denied/App'));
+const PermissionDeniedApp = React.lazy(() => import(/* webpackChunkName: "permission_denied_app" */ 'src/pages/permission_denied/App'));
 
 const PrefetchContext = createContext({
     getPrefetched: () => null,
@@ -47,7 +43,7 @@ function matchRoute(pathname) {
 async function fetchForRoute(route) {
     switch (route.key) {
         case 'overview': {
-            await importOverview();
+            await importOverviewApp();
             const response = await fetch('/get_overview_state');
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {
@@ -64,7 +60,7 @@ async function fetchForRoute(route) {
             return { data, status: response.status };
         }
         case 'archived': {
-            await importArchived();
+            await importOverviewApp();
             const response = await fetch('/get_archived_overview_state');
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {
@@ -81,7 +77,6 @@ async function fetchForRoute(route) {
             return { data, status: response.status };
         }
         case 'manage': {
-            await importManage();
             const response = await fetch(`/resolve_manage/${route.params.uuid}`);
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {
@@ -106,7 +101,7 @@ async function fetchForRoute(route) {
             return { data, status: response.status };
         }
         case 'user_profile': {
-            await importUserProfile();
+            await importUserProfileApp();
             const response = await fetch('/accounts/get_user_details/');
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {

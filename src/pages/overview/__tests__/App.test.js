@@ -24,11 +24,7 @@ describe('App', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App
-                    initialPlants={mockContext.plants}
-                    initialGroups={mockContext.groups}
-                    initialShowArchive={mockContext.show_archive}
-                />
+                <App initialState={mockContext} />
             </PageWrapper>
         );
     });
