@@ -1,6 +1,6 @@
-import React, { useState, useRef, memo, useMemo, useCallback, useContext } from 'react';
+import React, { useState, useRef, memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { PrefetchContext } from 'src/spa/TransitionRouter';
+import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
@@ -196,7 +196,7 @@ function App({ initialState }) {
     // be registered, refresh will replace with manage plant/group page if so)
     useBackButton(window.location.reload);
 
-    const { refresh } = useContext(PrefetchContext);
+    const navigate = useNavigate();
 
     const handleRegister = async () => {
         // Build payload by parsing all fields from visible form
@@ -217,10 +217,10 @@ function App({ initialState }) {
 
         const endpoint = visibleForm === 0 ? '/register_plant' : '/register_group';
         const response = await sendPostRequest(endpoint, payload);
-        // Fetch state and switch to manage page if successful
+        // Reload route (switch to manage page) if successful
         if (response.ok) {
             const data = await response.json();
-            await refresh(data.redirect_to);
+            navigate(data.redirect_to);
         // Show error modal if registration failed
         } else {
             const data = await response.json();

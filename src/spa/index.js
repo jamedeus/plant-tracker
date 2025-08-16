@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import TransitionRouter from './TransitionRouter';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes';
 import { PageWrapper } from 'src/index';
 import { parseDomContext } from 'src/util';
 
@@ -15,19 +15,15 @@ function bootstrapSpa() {
     const initialError = parseDomContext('error');
     root.render(
         <PageWrapper>
-            <BrowserRouter>
-                <Suspense fallback={null}>
-                    {initialError ? (
-                        <PermissionDeniedApp errorMessage={initialError} />
-                    ) : (
-                        <TransitionRouter />
-                    )}
-                </Suspense>
-            </BrowserRouter>
+            <Suspense fallback={null}>
+                {initialError ? (
+                    <PermissionDeniedApp errorMessage={initialError} />
+                ) : (
+                    <RouterProvider router={router} />
+                )}
+            </Suspense>
         </PageWrapper>
     );
 }
 
 bootstrapSpa();
-
-
