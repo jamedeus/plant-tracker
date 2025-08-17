@@ -33,6 +33,8 @@ services:
       - DATABASE_HOST=plant-tracker-db
       - DATABASE_PASSWORD=dbpassword
       - SECRET_KEY=secretkey
+      # Fix print statements not appearing on console
+      - PYTHONUNBUFFERED=1
     depends_on:
       plant-tracker-db:
         condition: service_healthy
