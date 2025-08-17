@@ -6,6 +6,15 @@ import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext, mockChangingPlantQrCode } from './mockContext';
 
+// Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
+jest.mock('src/spa/routes', () => {
+    return {
+        __esModule: true,
+        default: { navigate: jest.fn().mockResolvedValue(true) },
+    };
+});
+import routerMock from 'src/spa/routes';
+
 describe('Register page while changing QR code in progress', () => {
     let app, user;
 
@@ -127,6 +136,6 @@ describe('Register page while changing QR code in progress', () => {
         await user.click(app.getByTitle('Change QR code'));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });

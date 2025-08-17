@@ -5,6 +5,7 @@ import * as matchers from 'jest-extended';
 import '@testing-library/jest-dom';
 import 'src/testUtils/dateMock';
 import { BrowserRouter } from 'react-router-dom';
+import { enableFetchMocks } from 'jest-fetch-mock'
 
 // Add jest-extended matchers (toEndWith etc)
 expect.extend(matchers);
@@ -16,6 +17,9 @@ const renderWithRouter = (ui, { route = '/' } = {}) => {
 };
 
 beforeAll(() => {
+    // Fix "Request is not defined" in components that use react-router-dom
+    enableFetchMocks();
+
     // Mock navigator.userAgent to simulate iOS Safari (most common client)
     Object.defineProperty(navigator, 'userAgent', {
         writable: true,

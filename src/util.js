@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import router from 'src/spa/routes';
 
 // Takes name of context element created with json_script django tag
 // Parses JSON contents if it exists and returns, otherwise returns null
@@ -28,7 +29,13 @@ async function sendPostRequest(url, body) {
 
     // Redirect to login page if  user not signed in/session expired
     if (response.status === 401) {
-        window.location.href = '/accounts/login/';
+        router.navigate('/accounts/login/');
+        // Return mock error that ErrorModal won't show
+        // (prevents exception when caller tries response.json())
+        return new Response(JSON.stringify('spa-redirect'), {
+            ok: false,
+            status: 401
+        });
     }
 
     return response;

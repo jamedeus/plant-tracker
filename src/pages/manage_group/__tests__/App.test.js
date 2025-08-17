@@ -4,6 +4,15 @@ import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext, mockPlantOptions } from './mockContext';
 
+// Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
+jest.mock('src/spa/routes', () => {
+    return {
+        __esModule: true,
+        default: { navigate: jest.fn().mockResolvedValue(true) },
+    };
+});
+import routerMock from 'src/spa/routes';
+
 describe('App', () => {
     let app, user;
 
@@ -170,7 +179,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/login/');
     });
 
     it('shows checkboxes when Select plants tab is clicked', async () => {

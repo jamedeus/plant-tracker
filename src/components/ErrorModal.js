@@ -10,6 +10,11 @@ export const ErrorModal = () => {
 
     // Takes error message to show inside modal
     openErrorModal = (error) => {
+        // Skip mock error returned by sendPostRequest after login redirect
+        if (error === 'spa-redirect' || error === JSON.stringify('spa-redirect')) {
+            return;
+        }
+
         // Stringify if received raw JSON response
         if (typeof(error) === 'object') {
             setMessage(JSON.stringify(error));

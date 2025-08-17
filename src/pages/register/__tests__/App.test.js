@@ -6,6 +6,15 @@ import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
 
+// Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
+jest.mock('src/spa/routes', () => {
+    return {
+        __esModule: true,
+        default: { navigate: jest.fn().mockResolvedValue(true) },
+    };
+});
+import routerMock from 'src/spa/routes';
+
 describe('App', () => {
     let app, user;
 
@@ -245,6 +254,6 @@ describe('App', () => {
         await user.click(app.getByText('Save'));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });
