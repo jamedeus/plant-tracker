@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     createBrowserRouter,
+    redirect,
     Navigate,
     useLoaderData,
     useRouteError,
@@ -17,18 +18,42 @@ import {
     PermissionDeniedApp,
 } from './bundles';
 
-// Helper to fetch JSON with redirect/CT handling (mirrors previous behavior)
-async function fetchJSON(url) {
-    const response = await fetch(url);
+// Helper used by loaders to fetch initial state, returns JSON body
+// If user is not authenticated returns redirect to login page
+// If other error/unexpected response returns redirect to permission denied page
+async function fetchJSON(url, request) {
+    const response = await fetch(url, {
+        headers: { Accept: 'application/json' }
+    });
+
+    // Show error if response is not JSON
     const contentType = response.headers.get('content-type') || '';
     if (!contentType.includes('application/json')) {
-        if (response.redirected) {
-            window.location.href = response.url || url;
-            return { response, body: null, redirected: true };
-        }
+        throw new Response('', {
+            status: 500,
+            statusText: 'Unexpected response'
+        });
     }
-    const body = contentType.includes('application/json') ? await response.json() : null;
-    return { response, body, redirected: false };
+
+    if (!response.ok) {
+        // User not authenticated: redirect to login with requested URL in next
+        // querystring param (will be redirected back after successful login)
+        if (response.status === 401) {
+            const url = new URL(request.url);
+            const next = encodeURIComponent(url.pathname + url.search);
+            return redirect(`/accounts/login/?next=${next}`);
+        }
+        // Permission denied: show error message
+        const error = await response.json();
+        throw new Response('', {
+            status: response.status,
+            statusText: error?.error || `Request failed (${response.status})`,
+        });
+    }
+
+    // Success: return JSON body
+    const data = await response.json();
+    return data;
 }
 
 // Generic adapter: renders App with loader data as `initialState`
@@ -81,55 +106,30 @@ const router = createBrowserRouter([
         path: '/',
         Component: OverviewRoute,
         errorElement: <ErrorBoundaryRoute />,
-        loader: async () => {
+        loader: async ({ request }) => {
             await OverviewApp.preload();
-            const { response, body, redirected } = await fetchJSON('/get_overview_state');
-            if (redirected) return null;
-            if (!response.ok) {
-                throw new Response('', {
-                    status: response.status,
-                    statusText: body?.error || `Request failed (${response.status})`,
-                });
-            }
-            return body;
+            return await fetchJSON('/get_overview_state', request);
         },
     },
     {
         path: '/archived',
         Component: ArchivedRoute,
         errorElement: <ErrorBoundaryRoute />,
-        loader: async () => {
+        loader: async ({ request }) => {
             await OverviewApp.preload();
-            const { response, body, redirected } = await fetchJSON('/get_archived_overview_state');
-            if (redirected) return null;
-            if (!response.ok) {
-                throw new Response('', {
-                    status: response.status,
-                    statusText: body?.error || `Request failed (${response.status})`,
-                });
-            }
-            return body;
+            return await fetchJSON('/get_archived_overview_state', request);
         },
     },
     {
         path: '/manage/:uuid',
         Component: ManageRoute,
         errorElement: <ErrorBoundaryRoute />,
-        loader: async ({ params }) => {
-            const { response, body, redirected } = await fetchJSON(`/resolve_manage/${params.uuid}`);
-            if (redirected) return null;
+        loader: async ({ params, request }) => {
+            const body = await fetchJSON(`/resolve_manage/${params.uuid}`, request);
 
-            if (response.status === 403) {
-                throw new Response('', {
-                    status: 403,
-                    statusText: body?.state?.error || body?.error || 'You do not have permission to view this page',
-                });
-            }
-            if (!response.ok) {
-                throw new Response('', {
-                    status: response.status,
-                    statusText: body?.error || `Request failed (${response.status})`,
-                });
+            // Don't preload bundle if response is a redirect
+            if (body instanceof Response) {
+                return body;
             }
 
             if (body?.title) {
@@ -151,24 +151,9 @@ const router = createBrowserRouter([
         path: '/accounts/profile/',
         Component: UserProfileRoute,
         errorElement: <ErrorBoundaryRoute />,
-        loader: async () => {
+        loader: async ({ request }) => {
             await UserProfileApp.preload();
-            const { response, body, redirected } = await fetchJSON('/accounts/get_user_details/');
-            if (redirected) return null;
-
-            if (response.status === 403) {
-                throw new Response('', {
-                    status: 403,
-                    statusText: body?.error || 'You do not have permission to view this page',
-                });
-            }
-            if (!response.ok) {
-                throw new Response('', {
-                    status: response.status,
-                    statusText: body?.error || `Request failed (${response.status})`,
-                });
-            }
-            return body;
+            return await fetchJSON('/accounts/get_user_details/', request);
         },
     },
     {

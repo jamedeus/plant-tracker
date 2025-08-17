@@ -237,14 +237,20 @@ class SqlQueriesPerPageTests(TestCase):
 
         # Request state, confirm 7 queries
         with self.assertNumQueries(7):
-            response = self.client.get(f'/resolve_manage/{plant.uuid}')
+            response = self.client.get(
+                f'/resolve_manage/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
         plant.name = 'has name'
         plant.save()
 
         with self.assertNumQueries(6):
-            response = self.client.get(f'/resolve_manage/{plant.uuid}')
+            response = self.client.get(
+                f'/resolve_manage/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
         # Add photo, confirm 5 queries (no most-recent query, has annotation)
@@ -252,13 +258,19 @@ class SqlQueriesPerPageTests(TestCase):
             photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
         )
         with self.assertNumQueries(5):
-            response = self.client.get(f'/resolve_manage/{plant.uuid}')
+            response = self.client.get(
+                f'/resolve_manage/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
         # Set default, confirm 5 queries (no most-recent query, has annotation)
         plant.default_photo = photo
         with self.assertNumQueries(5):
-            response = self.client.get(f'/resolve_manage/{plant.uuid}')
+            response = self.client.get(
+                f'/resolve_manage/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
     def test_manage_group_page(self):
@@ -275,14 +287,20 @@ class SqlQueriesPerPageTests(TestCase):
 
         # Request state, confirm 5 queries
         with self.assertNumQueries(5):
-            response = self.client.get(f'/resolve_manage/{group.uuid}')
+            response = self.client.get(
+                f'/resolve_manage/{group.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
         # Set name, request state again, confirm 4 queries
         group.name = 'has name'
         group.save()
         with self.assertNumQueries(4):
-            response = self.client.get(f'/resolve_manage/{group.uuid}')
+            response = self.client.get(
+                f'/resolve_manage/{group.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
     def test_registration_page(self):
@@ -295,7 +313,10 @@ class SqlQueriesPerPageTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
         with self.assertNumQueries(2):
-            response = self.client.get(f'/resolve_manage/{uuid4()}')
+            response = self.client.get(
+                f'/resolve_manage/{uuid4()}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
     def test_registration_page_state_changing_plant_qr_code(self):
@@ -307,7 +328,10 @@ class SqlQueriesPerPageTests(TestCase):
             str(Plant.objects.all()[0].uuid)
         )
         with self.assertNumQueries(5):
-            response = self.client.get(f'/resolve_manage/{uuid4()}')
+            response = self.client.get(
+                f'/resolve_manage/{uuid4()}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
     def test_registration_page_state_changing_group_qr_code(self):
@@ -319,7 +343,10 @@ class SqlQueriesPerPageTests(TestCase):
             str(Group.objects.all()[0].uuid)
         )
         with self.assertNumQueries(4):
-            response = self.client.get(f'/resolve_manage/{uuid4()}')
+            response = self.client.get(
+                f'/resolve_manage/{uuid4()}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
     def test_registration_page_state_dividing_plant(self):
@@ -336,7 +363,10 @@ class SqlQueriesPerPageTests(TestCase):
             'division_event_key': str(event.pk)
         })
         with self.assertNumQueries(4):
-            response = self.client.get(f'/resolve_manage/{uuid4()}')
+            response = self.client.get(
+                f'/resolve_manage/{uuid4()}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
     def test_registration_page_state_dividing_plant_and_changing_qr_code(self):
@@ -354,7 +384,10 @@ class SqlQueriesPerPageTests(TestCase):
         })
         cache.set(f'old_uuid_{get_default_user().pk}', str(plant.uuid))
         with self.assertNumQueries(7):
-            response = self.client.get(f'/resolve_manage/{uuid4()}')
+            response = self.client.get(
+                f'/resolve_manage/{uuid4()}',
+                HTTP_ACCEPT='application/json'
+            )
             self.assertEqual(response.status_code, 200)
 
     def test_get_plant_species_options_endpoint(self):

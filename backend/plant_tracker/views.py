@@ -8,9 +8,9 @@ from itertools import chain
 
 from django.conf import settings
 from django.core.cache import cache
+from django.http import JsonResponse
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse, HttpResponseRedirect
 from PIL import UnidentifiedImageError
 
 from generate_qr_code_grid import generate_layout
