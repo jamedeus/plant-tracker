@@ -867,24 +867,26 @@ class SingleUserModeTests(TestCase):
         response = self.client.get(f'/resolve_manage/{plant.uuid}')
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
-            response.json()['state']['error'],
-            'You do not have permission to view this plant'
+            response.json(),
+            {"error": "plant is owned by a different user"}
         )
-        self.assertEqual(response.json()['title'], 'Permission Denied')
 
-    def test_get_plant_state_user_owns_plant(self):
+    def test_get_new_plant_state_user_owns_plant(self):
         # Create plant owned by default user
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Request plant state (comes from default user since SINGLE_USER_MODE enabled)
-        response = self.client.get(f'/get_plant_state/{plant.uuid}')
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
 
         # Confirm received plant state
         self.assertEqual(response.status_code, 200)
         self.assertTrue(isinstance(response.json(), dict))
-        self.assertEqual(response.json()['plant_details']['uuid'], str(plant.uuid))
+        self.assertEqual(
+            response.json()['state']['plant_details']['uuid'],
+            str(plant.uuid)
+        )
 
-    def test_get_plant_state_user_does_not_own_plant(self):
+    def test_get_new_plant_state_user_does_not_own_plant(self):
         # Create second user (in addition to default user) + plant for user
         test_user = user_model.objects.create_user(
             username='test',
@@ -894,7 +896,7 @@ class SingleUserModeTests(TestCase):
         plant = Plant.objects.create(uuid=uuid4(), user=test_user)
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
-        response = self.client.get(f'/get_plant_state/{plant.uuid}')
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
 
         # Confirm received error response, not plant state
         self.assertEqual(response.status_code, 403)
@@ -938,24 +940,26 @@ class SingleUserModeTests(TestCase):
         response = self.client.get(f'/resolve_manage/{group.uuid}')
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
-            response.json()['state']['error'],
-            'You do not have permission to view this group'
+            response.json(),
+            {"error": "group is owned by a different user"}
         )
-        self.assertEqual(response.json()['title'], 'Permission Denied')
 
-    def test_get_group_state_user_owns_group(self):
+    def test_get_new_group_state_user_owns_group(self):
         # Create group owned by default user
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Request group state (comes from default user since SINGLE_USER_MODE enabled)
-        response = self.client.get(f'/get_group_state/{group.uuid}')
+        response = self.client.get(f'/resolve_manage/{group.uuid}')
 
         # Confirm received group state
         self.assertEqual(response.status_code, 200)
         self.assertTrue(isinstance(response.json(), dict))
-        self.assertEqual(response.json()['group_details']['uuid'], str(group.uuid))
+        self.assertEqual(
+            response.json()['state']['group_details']['uuid'],
+            str(group.uuid)
+        )
 
-    def test_get_group_state_user_does_not_own_group(self):
+    def test_get_new_group_state_user_does_not_own_group(self):
         # Create second user (in addition to default user) + group for user
         test_user = user_model.objects.create_user(
             username='test',
@@ -965,7 +969,7 @@ class SingleUserModeTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=test_user)
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
-        response = self.client.get(f'/get_group_state/{group.uuid}')
+        response = self.client.get(f'/resolve_manage/{group.uuid}')
 
         # Confirm received error response, not group state
         self.assertEqual(response.status_code, 403)
@@ -1170,29 +1174,31 @@ class MultiUserModeTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, f'/accounts/login/?next=/manage/{group.uuid}')
 
-    def test_get_plant_state_not_signed_in(self):
+    def test_get_new_plant_state_not_signed_in(self):
         # Create plant owned by test user
         plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
 
         # Request plant state without signing in
         self.assertFalse(auth.get_user(self.client).is_authenticated)
-        response = self.client.get(f'/get_plant_state/{plant.uuid}')
+        response = self.client.get(f'/resolve_manage/{plant.uuid}')
 
         # Confirm redirected to login page with requested URL in querystring
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/accounts/login/?next=/get_plant_state/{plant.uuid}')
+        # TODO this is a known bug, need a different way to set next= (probably client side)
+        self.assertEqual(response.url, f'/accounts/login/?next=/resolve_manage/{plant.uuid}')
 
-    def test_get_group_state_not_signed_in(self):
+    def test_get_new_group_state_not_signed_in(self):
         # Create group owned by test user
         group = Group.objects.create(uuid=uuid4(), user=self.test_user)
 
         # Request group state without signing in
         self.assertFalse(auth.get_user(self.client).is_authenticated)
-        response = self.client.get(f'/get_group_state/{group.uuid}')
+        response = self.client.get(f'/resolve_manage/{group.uuid}')
 
         # Confirm redirected to login page with requested URL in querystring
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/accounts/login/?next=/get_group_state/{group.uuid}')
+        # TODO this is a known bug, need a different way to set next= (probably client side)
+        self.assertEqual(response.url, f'/accounts/login/?next=/resolve_manage/{group.uuid}')
 
     def test_endpoints_require_authenticated_user(self):
         # Create plant and group owned by test user
@@ -1350,10 +1356,10 @@ class MultiUserModeTests(TestCase):
         self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
         self.assertPlantIsOwnedByADifferentUserError(
-            self.client.get(f'/get_plant_state/{plant.uuid}')
+            self.client.get(f'/resolve_manage/{plant.uuid}')
         )
         self.assertGroupIsOwnedByADifferentUserError(
-            self.client.get(f'/get_group_state/{group.uuid}')
+            self.client.get(f'/resolve_manage/{group.uuid}')
         )
         self.assertInstanceIsOwnedByADifferentUserError(
             self.client.post('/change_uuid', {

@@ -126,16 +126,18 @@ def resolve_manage(request, uuid, user):
     Returns page key (manage_plant, manage_group, or register), page title, and
     the initial state object for that page. Intended for SPA bootstrapping.
     '''
+    try:
+        model_type = find_model_type(uuid)
+    except ValidationError:
+        return JsonResponse({'Error': 'Requires valid UUID'}, status=400)
 
-    model_type = find_model_type(uuid)
     if model_type == 'plant':
         plant = Plant.objects.get_with_manage_plant_annotation(uuid)
         if plant.user != user:
-            return JsonResponse({
-                'page': 'permission_denied',
-                'title': 'Permission Denied',
-                'state': {'error': 'You do not have permission to view this plant'}
-            }, status=403)
+            return JsonResponse(
+                {"error": "plant is owned by a different user"},
+                status=403
+            )
         return JsonResponse({
             'page': 'manage_plant',
             'title': 'Manage Plant',
@@ -145,11 +147,10 @@ def resolve_manage(request, uuid, user):
     if model_type == 'group':
         group = Group.objects.get_with_manage_group_annotation(uuid)
         if group.user != user:
-            return JsonResponse({
-                'page': 'permission_denied',
-                'title': 'Permission Denied',
-                'state': {'error': 'You do not have permission to view this group'}
-            }, status=403)
+            return JsonResponse(
+                {"error": "group is owned by a different user"},
+                status=403
+            )
         return JsonResponse({
             'page': 'manage_group',
             'title': 'Manage Group',
@@ -210,28 +211,6 @@ def resolve_manage(request, uuid, user):
     }, status=200)
 
 
-@get_user_token
-def get_plant_state(request, uuid, user):
-    '''Returns current manage_plant state for the requested plant.
-    Used to refresh contents after user presses back button.
-    '''
-    try:
-        plant = Plant.objects.get_with_manage_plant_annotation(uuid)
-        if not plant:
-            return JsonResponse({'Error': 'Plant not found'}, status=404)
-        if plant.user != user:
-            return JsonResponse(
-                {"error": "plant is owned by a different user"},
-                status=403
-            )
-        return JsonResponse(
-            build_manage_plant_state(plant),
-            status=200
-        )
-    except ValidationError:
-        return JsonResponse({'Error': 'Requires plant UUID'}, status=400)
-
-
 def get_plant_species_options(request):
     '''Returns list used to populate plant species combobox suggestions.'''
     species = Plant.objects.all().values_list('species', flat=True)
@@ -255,28 +234,6 @@ def get_add_to_group_options(request, user):
         {'options': Group.objects.get_add_to_group_modal_options(user)},
         status=200
     )
-
-
-@get_user_token
-def get_group_state(request, uuid, user):
-    '''Returns current manage_group state for the requested group.
-    Used to refresh contents after user presses back button.
-    '''
-    try:
-        group = Group.objects.get_with_manage_group_annotation(uuid)
-        if not group:
-            return JsonResponse({'Error': 'Group not found'}, status=404)
-        if group.user != user:
-            return JsonResponse(
-                {"error": "group is owned by a different user"},
-                status=403
-            )
-        return JsonResponse(
-            build_manage_group_state(group),
-            status=200
-        )
-    except ValidationError:
-        return JsonResponse({'Error': 'Requires group UUID'}, status=400)
 
 
 @get_user_token

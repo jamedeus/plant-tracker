@@ -979,20 +979,20 @@ class ManagePageTests(TestCase):
             'Favorite Plant'
         )
 
-    def test_get_plant_state(self):
+    def test_get_new_plant_state(self):
         # Create water events for test plant in non-chronological order (should
         # be sorted chronologically by database)
         WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 26, 0, 0, 0, 0))
         WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 28, 0, 0, 0, 0))
         WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 27, 0, 0, 0, 0))
 
-        # Call get_plant_state endpoint with UUID of existing plant entry
-        response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
+        # Request new state with UUID of existing plant entry
+        response = self.client.get(f'/resolve_manage/{self.plant1.uuid}')
 
         # Confirm returned full manage_plant state
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.json(),
+            response.json()['state'],
             {
                 'plant_details': {
                     'uuid': str(self.plant1.uuid),
@@ -1033,7 +1033,7 @@ class ManagePageTests(TestCase):
             }
         )
 
-    def test_get_plant_state_plant_has_parent(self):
+    def test_get_new_plant_state_plant_has_parent(self):
         # Simulate division in progress (user called /divide_plant from plant1)
         divide = DivisionEvent.objects.create(plant=self.plant1, timestamp=timezone.now())
         cache.set(f'division_in_progress_{self.plant1.user.pk}', {
@@ -1053,33 +1053,33 @@ class ManagePageTests(TestCase):
             'divided_from_event_id': str(divide.pk)
         })
 
-        # Call get_plant_state endpoint with UUID of new child plant
-        response = self.client.get(f'/get_plant_state/{test_id}')
+        # Request new state with UUID of new child plant
+        response = self.client.get(f'/resolve_manage/{test_id}')
 
         # Confirm returned manage_plant state contains details of plant1 (parent)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['divided_from'], {
+        self.assertEqual(response.json()['state']['divided_from'], {
             'name': self.plant1.get_display_name(),
             'uuid': str(self.plant1.uuid),
             'timestamp': divide.timestamp.isoformat()
         })
         # Confirm no division_events (DivisionEvent associated with parent, not child)
-        self.assertEqual(response.json()['division_events'], {})
+        self.assertEqual(response.json()['state']['division_events'], {})
 
-    def test_get_plant_state_plant_has_child(self):
+    def test_get_new_plant_state_plant_has_child(self):
         # Make plant2 child of plant1
         divide = DivisionEvent.objects.create(plant=self.plant1, timestamp=timezone.now())
         self.plant2.divided_from = self.plant1
         self.plant2.divided_from_event = divide
         self.plant2.save()
 
-        # Call get_plant_state endpoint with UUID of plant1
-        response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
+        # Request new state with UUID of plant1
+        response = self.client.get(f'/resolve_manage/{self.plant1.uuid}')
 
         # Confirm returned manage_plant state contains division_events + details
         # of plant2 (child)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['division_events'], {
+        self.assertEqual(response.json()['state']['division_events'], {
             divide.timestamp.isoformat(): [
                 {
                     'name': self.plant2.get_display_name(),
@@ -1088,22 +1088,15 @@ class ManagePageTests(TestCase):
             ]
         })
         # Confirm no divided_from (parent has no parent)
-        self.assertFalse(response.json()['divided_from'])
+        self.assertFalse(response.json()['state']['divided_from'])
 
-    def test_get_plant_state_invalid(self):
-        # Call get_plant_state endpoint with UUID that doesn't exist in database
-        response = self.client.get(f'/get_plant_state/{uuid4()}')
-
-        # Confirmer returned expected error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'Error': 'Plant not found'})
-
-        # Call get_plant_state endpoint with non-UUID string
-        response = self.client.get('/get_plant_state/plant1')
+    def test_get_new_plant_state_invalid(self):
+        # Request new state with non-UUID string
+        response = self.client.get('/resolve_manage/plant1')
 
         # Confirmer returned expected error
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {'Error': 'Requires plant UUID'})
+        self.assertEqual(response.json(), {'Error': 'Requires valid UUID'})
 
     def test_manage_group_with_no_plants(self):
         # Request management page for test group, confirm status
@@ -1178,20 +1171,20 @@ class ManagePageTests(TestCase):
             }
         )
 
-    def test_get_group_state(self):
+    def test_get_new_group_state(self):
         # Create second group, add plant2
         group2 = Group.objects.create(uuid=uuid4(), user=get_default_user())
         self.plant2.group = group2
         self.plant2.save()
 
-        # Call get_group_state endpoint with UUID of existing group entry
-        response = self.client.get(f'/get_group_state/{self.group1.uuid}')
+        # Request new state with UUID of existing group entry
+        response = self.client.get(f'/resolve_manage/{self.group1.uuid}')
 
         # Confirm returned full manage_group state
         # Confirm options list does NOT contain plant2 (already in a group)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.json(),
+            response.json()['state'],
             {
                 'group_details': {
                     'uuid': str(self.group1.uuid),
@@ -1207,20 +1200,13 @@ class ManagePageTests(TestCase):
             }
         )
 
-    def test_get_group_state_invalid(self):
-        # Call get_group_state endpoint with UUID that doesn't exist in database
-        response = self.client.get(f'/get_group_state/{uuid4()}')
-
-        # Confirmer returned expected error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'Error': 'Group not found'})
-
-        # Call get_group_state endpoint with non-UUID string
-        response = self.client.get('/get_group_state/group1')
+    def test_get_new_group_state_invalid(self):
+        # Request new state with non-UUID string
+        response = self.client.get('/resolve_manage/group1')
 
         # Confirmer returned expected error
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {'Error': 'Requires group UUID'})
+        self.assertEqual(response.json(), {'Error': 'Requires valid UUID'})
 
 
 class ManagePlantEndpointTests(TestCase):
