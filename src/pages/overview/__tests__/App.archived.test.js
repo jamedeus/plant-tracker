@@ -14,7 +14,7 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview
-        mockCurrentURL('https://plants.lan/archived', '/archived');
+        mockCurrentURL('https://plants.lan/archived');
 
         // Mock width to force mobile layout (renders title nav dropdown)
         window.innerWidth = 750;

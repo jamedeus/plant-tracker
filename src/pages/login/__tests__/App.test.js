@@ -3,6 +3,15 @@ import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 
+// Mock router.navigate to check redirect after login (without rendering whole SPA)
+jest.mock('src/spa/routes', () => {
+    return {
+        __esModule: true,
+        default: { navigate: jest.fn().mockResolvedValue(true) },
+    };
+});
+import routerMock from 'src/spa/routes';
+
 describe('App', () => {
     let app, user;
 
@@ -64,7 +73,7 @@ describe('App', () => {
         expect(fetchOptions.body.get('password')).toBe('defnotanthonyweiner');
 
         // Confirm redirected to overview since no querystring in URL
-        expect(window.location.href).toBe('/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/');
     });
 
     it('redirects to URL in querystring after successful login', async () => {
@@ -84,7 +93,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Login"}));
 
         // Confirm redirected to user profile after login
-        expect(window.location.href).toBe('/accounts/profile/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/profile/');
     });
 
     it('shows error if credentials are not accepted', async () => {
@@ -207,7 +216,7 @@ describe('App', () => {
         });
 
         // Confirm redirected to overview page
-        expect(window.location.href).toBe('/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/');
     });
 
     it('shows error text under username when backend rejects username', async () => {

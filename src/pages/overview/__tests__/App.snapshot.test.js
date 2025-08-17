@@ -114,7 +114,7 @@ describe('App (archived page)', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview
-        mockCurrentURL('https://plants.lan/archived', '/archived');
+        mockCurrentURL('https://plants.lan/archived');
 
         // Render App with a single plant and group, confirm matches snapshot
         const plantUUID = Object.keys(mockContext.plants)[0];
