@@ -212,8 +212,7 @@ function App({ initialState }) {
         const response = await sendPostRequest(endpoint, payload);
         // Reload route (switch to manage page) if successful
         if (response.ok) {
-            const data = await response.json();
-            router.navigate(data.redirect_to);
+            router.navigate(window.location.pathname);
         // Show error modal if registration failed
         } else {
             const data = await response.json();

@@ -82,7 +82,7 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                redirect_to: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                success: 'plant registered'
             })
         }));
 
@@ -115,7 +115,7 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                redirect_to: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                success: 'group registered'
             })
         }));
 

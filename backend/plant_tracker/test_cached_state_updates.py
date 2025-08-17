@@ -74,7 +74,7 @@ class EndpointStateUpdateTests(TestCase):
             'pot_size': '4'
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'redirect_to': f'/manage/{new_plant_uuid}'})
+        self.assertEqual(response.json(), {'success': 'plant registered'})
 
         # Confirm new plant was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()
@@ -126,7 +126,7 @@ class EndpointStateUpdateTests(TestCase):
             'divided_from_event_id': str(division_event.pk)
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'redirect_to': f'/manage/{new_plant_uuid}'})
+        self.assertEqual(response.json(), {'success': 'plant registered'})
 
         # Confirm new plant was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()
@@ -167,7 +167,7 @@ class EndpointStateUpdateTests(TestCase):
             'description': ''
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'redirect_to': f'/manage/{new_group_uuid}'})
+        self.assertEqual(response.json(), {'success': 'group registered'})
 
         # Confirm new group was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()
