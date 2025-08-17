@@ -6,6 +6,15 @@ import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
 
+// Mock router.navigate to check redirect to overview (without rendering whole SPA)
+jest.mock('src/spa/routes', () => {
+    return {
+        __esModule: true,
+        default: { navigate: jest.fn().mockResolvedValue(true) },
+    };
+});
+import routerMock from 'src/spa/routes';
+
 describe('App', () => {
     let app, user;
 
@@ -226,6 +235,6 @@ describe('App', () => {
         await user.click(app.getByText('Un-archive'));
 
         // Confirm redirected to overview
-        expect(window.location.href).toBe('/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/');
     });
 });

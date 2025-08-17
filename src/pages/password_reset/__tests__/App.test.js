@@ -2,6 +2,15 @@ import { PageWrapper } from 'src/index';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 
+// Mock router.navigate to check redirect to overview (without rendering whole SPA)
+jest.mock('src/spa/routes', () => {
+    return {
+        __esModule: true,
+        default: { navigate: jest.fn().mockResolvedValue(true) },
+    };
+});
+import routerMock from 'src/spa/routes';
+
 describe('App', () => {
     let app, user;
 
@@ -62,7 +71,7 @@ describe('App', () => {
 
         // Confirm automatically redirects to profile page
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        expect(window.location.href).toBe('/accounts/profile/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/profile/');
     });
 
     it('submits change password form when user presses enter key', async () => {

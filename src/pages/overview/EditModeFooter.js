@@ -5,6 +5,7 @@ import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
 import HoldToConfirm from 'src/components/HoldToConfirm';
+import router from 'src/spa/routes';
 
 const EditModeFooter = memo(function EditModeFooter({
     visible,
@@ -110,7 +111,7 @@ const EditModeFooter = memo(function EditModeFooter({
                 !Object.keys(newPlants).length &&
                 !Object.keys(newGroups).length
             ) {
-                window.location.href = "/";
+                router.navigate('/');
             }
         } else {
             const data = await response.json();

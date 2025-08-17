@@ -6,6 +6,15 @@ import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
+// Mock router.navigate to check login page redirect (without rendering whole SPA)
+jest.mock('src/spa/routes', () => {
+    return {
+        __esModule: true,
+        default: { navigate: jest.fn().mockResolvedValue(true) },
+    };
+});
+import routerMock from 'src/spa/routes';
+
 const TestComponent = () => {
     // Render app
     return (
@@ -267,6 +276,6 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
+        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });

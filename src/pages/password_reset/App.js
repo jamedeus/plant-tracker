@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import Navbar from 'src/components/Navbar';
+import router from 'src/spa/routes';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import 'src/css/checkmark.css';
@@ -39,7 +40,7 @@ function App() {
         // Show checkmark and redirect to profile page if successful
         if (response.ok) {
             setSubmitStatus('success');
-            setTimeout(() => { window.location.href = '/accounts/profile/'; }, 1500);
+            setTimeout(() => { router.navigate('/accounts/profile/'); }, 1500);
         // Show error and highlight fields red if unsuccessful
         } else {
             const errors = await response.json();
