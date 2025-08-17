@@ -110,19 +110,6 @@ beforeAll(() => {
     global.waitFor = waitFor;
     global.fireEvent = fireEvent;
 
-    // Mock method called when window.location.href set
-    Object.defineProperty(window, 'location', {
-        value: {
-            assign: jest.fn(),
-        },
-    });
-
-    // Mock window.location.reload
-    Object.defineProperty(window, 'location', {
-        configurable: true,
-        value: { reload: jest.fn() },
-    });
-
     // Mock DataTransfer and DataTransferItemList objects
     const mockDataTransferItemList = {
         items: [],

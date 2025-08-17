@@ -85,6 +85,9 @@ describe('Register page while changing QR code in progress', () => {
             })
         }));
 
+        // Mock window.location to simulate register new QR code page
+        mockCurrentURL('https://plants.lan/manage/07919189-514d-4ec1-a967-8af553dfa7e8');
+
         // Click confirm button
         await user.click(app.getByTitle('Change QR code'));
 
@@ -98,8 +101,8 @@ describe('Register page while changing QR code in progress', () => {
             headers: postHeaders
         });
 
-        // Confirm window.location.reload was called
-        expect(window.location.reload).toHaveBeenCalled();
+        // Confirm reloaded (switch to manage plant page)
+        expect(routerMock.navigate).toHaveBeenCalledWith('/manage/07919189-514d-4ec1-a967-8af553dfa7e8');
     });
 
     it('shows error modal if error received after confirm button clicked', async() => {

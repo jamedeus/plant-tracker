@@ -1,6 +1,5 @@
 import React, { useState, useRef, memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
@@ -13,6 +12,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
+import router from 'src/spa/routes';
 
 const Form = memo(function Form({
     visibleForm,
@@ -191,8 +191,6 @@ function App({ initialState }) {
         setFormIsValid(true);
     };
 
-    const navigate = useNavigate();
-
     const handleRegister = async () => {
         // Build payload by parsing all fields from visible form
         const payload = {
@@ -215,7 +213,7 @@ function App({ initialState }) {
         // Reload route (switch to manage page) if successful
         if (response.ok) {
             const data = await response.json();
-            navigate(data.redirect_to);
+            router.navigate(data.redirect_to);
         // Show error modal if registration failed
         } else {
             const data = await response.json();
@@ -229,9 +227,9 @@ function App({ initialState }) {
             uuid: changingQrCode.instance.uuid,
             new_id: changingQrCode.new_uuid
         });
-        // Reload page if changed successfully
+        // Reload route (switch to manage page) if successful
         if (response.ok) {
-            window.location.reload();
+            router.navigate(window.location.pathname);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
