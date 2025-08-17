@@ -145,6 +145,14 @@ describe('QrScanner', () => {
         );
         // Confirm instructions div is no longer visible
         expect(component.queryByText('Point the camera at a QR code')).toBeNull();
+
+        // Click link to scanned URL, confirm scanner closes (must close with
+        // onClick in SPA since QrScanner component does not unmount)
+        await user.click(component.getByTestId('scanned-url'));
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(100);
+        });
+        expect(component.queryByTestId('qr-scanner-overlay')).toBeNull();
     });
 
     it('does not show link to scanned URL if QR code domain is not part of app', async () => {
@@ -199,22 +207,5 @@ describe('QrScanner', () => {
         // Confirm QR code detected, confirm link did NOT appear
         expect(FakeBarcodeDetector.prototype.detect).toHaveBeenCalled();
         expect(component.queryByTestId('scanned-url')).toBeNull();
-    });
-
-    it('closes the scanner when user navigates to page with back button', async () => {
-        // Open scanner, confirm overlay appears
-        await user.click(component.getByRole('button'));
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(100);
-        });
-        expect(component.getByTestId('qr-scanner-overlay')).toBeInTheDocument();
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        await act(() => window.dispatchEvent(pageshowEvent));
-
-        // Confirm overlay is no longer visible
-        expect(component.queryByTestId('qr-scanner-overlay')).toBeNull();
     });
 });

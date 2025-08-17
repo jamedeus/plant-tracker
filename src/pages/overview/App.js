@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Navbar from 'src/components/Navbar';
@@ -6,7 +6,6 @@ import DropdownMenu from 'src/components/DropdownMenu';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { parseDomContext } from 'src/util';
 import PrintModal, { openPrintModal } from './PrintModal';
-import { useBackButton } from 'src/useBackButton';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 import QrScannerButton from 'src/components/QrScannerButton';
@@ -16,6 +15,13 @@ function App({ initialState }) {
     const [plants, setPlants] = useState(initialState.plants);
     const [groups, setGroups] = useState(initialState.groups);
     const [showArchive, setShowArchive] = useState(initialState.show_archive);
+
+    useEffect(() => {
+        setPlants(initialState.plants);
+        setGroups(initialState.groups);
+        setShowArchive(initialState.show_archive);
+    }, [initialState]);
+
     // Controls whether dropdown contains user profile link
     const userAccountsEnabled = useMemo(() => (
         parseDomContext("user_accounts_enabled")
@@ -34,21 +40,6 @@ function App({ initialState }) {
 
     // Get page title (used in navbar header)
     const pageTitle = useMemo(() => document.title);
-
-    // Request new state from backend if user navigates to overview by pressing
-    // back button (last watered/details may be outdated if coming from manage)
-    useBackButton(async () => {
-        const response = await fetch(
-            archivedOverview ? '/get_archived_overview_state' : '/get_overview_state'
-        );
-        if (response.ok) {
-            const data = await response.json();
-            setPlants(data.plants);
-            setGroups(data.groups);
-        } else {
-            alert('Failed to fetch new data, page may be outdated');
-        }
-    });
 
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);

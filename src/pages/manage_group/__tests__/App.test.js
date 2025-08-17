@@ -377,52 +377,6 @@ describe('App', () => {
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
     });
 
-    it('fetches new state when user navigates to page with back button', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                group_details: mockContext.group_details,
-                plants: mockContext.plants
-            })
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith(
-                '/get_group_state/0640ec3b-1bed-4b15-a078-d6e7ec66be14'
-            );
-        });
-    });
-
-    it('reloads page if unable to fetch new state when user presses back button', async () => {
-        // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({Error: 'Group not found'})
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith(
-                '/get_group_state/0640ec3b-1bed-4b15-a078-d6e7ec66be14'
-            );
-        });
-
-        // Confirm page was reloaded
-        expect(window.location.reload).toHaveBeenCalled();
-    });
-
     it('does not fetch new state when other pageshow events are triggered', () => {
         // Simulate pageshow event with persisted == false (ie initial load)
         const pageshowEvent = new Event('pageshow');

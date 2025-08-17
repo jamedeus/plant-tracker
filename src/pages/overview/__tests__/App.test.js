@@ -516,60 +516,6 @@ describe('App', () => {
         expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
     });
 
-    it('fetches new state when user navigates to overview with back button', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                plants: mockContext.plants,
-                groups: mockContext.groups
-            })
-        }));
-
-        // Simulate user navigating to overview page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith('/get_overview_state');
-        });
-    });
-
-    it('shows alert if unable to fetch new state when user presses back button', async () => {
-        // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({Error: 'Unexpected'})
-        }));
-        // Mock alert function that will be called when request fails
-        global.alert = jest.fn();
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith('/get_overview_state');
-        });
-
-        // Confirm alert was shown
-        expect(global.alert).toHaveBeenCalled();
-    });
-
-    it('does not fetch new state when other pageshow events are triggered', () => {
-        // Simulate pageshow event with persisted == false (ie initial load)
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: false });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm did not call fetch
-        expect(global.fetch).not.toHaveBeenCalled();
-    });
-
     it('scrolls to plants column when title dropdown is clicked', async () => {
         // Click Plants title dropdown, confirm scrollIntoView was called
         await user.click(app.getByText("Plants"));

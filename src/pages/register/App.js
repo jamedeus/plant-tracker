@@ -10,7 +10,6 @@ import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { useBackButton } from 'src/useBackButton';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
@@ -191,10 +190,6 @@ function App({ initialState }) {
         setVisibleForm(index);
         setFormIsValid(true);
     };
-
-    // Reload if user navigates to page by pressing back button (uuid may now
-    // be registered, refresh will replace with manage plant/group page if so)
-    useBackButton(window.location.reload);
 
     const navigate = useNavigate();
 

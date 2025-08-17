@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, pastTense, getMostRecent } from 'src/util';
@@ -19,7 +19,6 @@ import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { Tab } from '@headlessui/react';
-import { useBackButton } from 'src/useBackButton';
 import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
 
@@ -30,19 +29,10 @@ function App({ initialState }) {
     // Hide event buttons if no plants in group
     const noPlants = Object.keys(plantDetails).length === 0;
 
-    // Request new state from backend if user navigates to page by pressing
-    // back button (may be outdated if user clicked plant and made changes)
-    useBackButton(async () => {
-        const response = await fetch(`/get_group_state/${group.uuid}`);
-        if (response.ok) {
-            const data = await response.json();
-            setGroup(data['group_details']);
-            setPlantDetails(data['plants']);
-        } else {
-            // Reload page if failed to get new state (group deleted)
-            window.location.reload();
-        }
-    });
+    useEffect(() => {
+        setGroup(initialState.group_details);
+        setPlantDetails(initialState.plants);
+    }, [initialState]);
 
     // Buttons add events to all plants if 0, only selected plants if 1
     // Set with tabs above event timestamp input

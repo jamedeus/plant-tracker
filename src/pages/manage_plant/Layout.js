@@ -12,11 +12,10 @@ import { openGroupModal } from './GroupModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { useBackButton } from 'src/useBackButton';
 import Timeline from './Timeline';
 import { FaPlus, FaBan, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
-import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
+import { plantRemovedFromGroup } from './plantSlice';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
 import DeleteModeFooter from './DeleteModeFooter';
 import {
@@ -45,10 +44,6 @@ function Layout() {
 
     // Used to update redux store
     const dispatch = useDispatch();
-
-    // Update redux store with new state fetched from backend if user navigates
-    // to page by pressing back button (contents may be outdated)
-    useBackButton(() => dispatch(backButtonPressed()));
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (

@@ -1,12 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { timestampToDateString } from 'src/timestampUtils';
-import { backButtonPressed } from './plantSlice';
-import {
-    buildTimelineDays,
-    buildCalendarDays,
-    buildNavigationOptions,
-    sortPhotosChronologically
-} from './store';
+import { sortPhotosChronologically } from './store';
 
 // Correct order for event markers within a single timeline day (readability)
 export const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
@@ -319,40 +313,6 @@ export const timelineSlice = createSlice({
         defaultPhotoChanged(state, action) {
             state.defaultPhoto = action.payload;
         },
-    },
-    extraReducers: builder => {
-        // Rebuild all states when user navigates to the page with back button
-        // (fetches new state from backend to replace outdated contents)
-        builder.addCase(backButtonPressed.fulfilled, (state, action) => {
-            // Convert object indexed by photo keys (used for incremental state
-            // updates on backend) to array of objects sorted chronologically
-            const newPhotos = sortPhotosChronologically(
-                Object.values(action.payload.photos)
-            );
-            // Build new timelineDays state from response objects
-            const newTimelineDays = buildTimelineDays(
-                action.payload.events,
-                action.payload.notes,
-                newPhotos,
-                action.payload.divided_from,
-                action.payload.division_events,
-            );
-            // Overwrite states
-            state.photos = newPhotos;
-            state.eventsByType = action.payload.events;
-            state.dividedFrom = action.payload.divided_from;
-            state.divisionEvents = action.payload.division_events;
-            state.defaultPhoto = action.payload.default_photo;
-            state.timelineDays = newTimelineDays;
-            state.calendarDays = buildCalendarDays(newTimelineDays);
-            state.navigationOptions = buildNavigationOptions(newTimelineDays);
-            // Set bool states that control dropdown option visibility
-            state.hasPhotos = newPhotos.length > 0;
-            state.hasEvents = action.payload.events.water.length > 0 ||
-                              action.payload.events.fertilize.length > 0 ||
-                              action.payload.events.prune.length > 0 ||
-                              action.payload.events.repot.length > 0;
-        });
     }
 });
 

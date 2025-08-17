@@ -3,17 +3,20 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes';
 import { PageWrapper } from 'src/index';
+import { useBackButton } from 'src/useBackButton';
 import { parseDomContext } from 'src/util';
 
 const PermissionDeniedApp = React.lazy(() => import('src/pages/permission_denied/App'));
 import 'src/css/index.css';
 
-/* istanbul ignore next */
-function bootstrapSpa() {
-    const container = document.getElementById('root');
-    const root = createRoot(container);
+function AppRoot() {
+    // Get new state for current page when user navigates from external site
+    // back to SPA using browser back/forward buttons
+    useBackButton(() => router.revalidate());
+
     const initialError = parseDomContext('error');
-    root.render(
+
+    return (
         <PageWrapper>
             <Suspense fallback={null}>
                 {initialError ? (
@@ -24,6 +27,13 @@ function bootstrapSpa() {
             </Suspense>
         </PageWrapper>
     );
+}
+
+/* istanbul ignore next */
+function bootstrapSpa() {
+    const container = document.getElementById('root');
+    const root = createRoot(container);
+    root.render(<AppRoot />);
 }
 
 bootstrapSpa();
