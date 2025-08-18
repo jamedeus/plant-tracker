@@ -1,7 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { mockContext } from './mockContext';
 import { waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

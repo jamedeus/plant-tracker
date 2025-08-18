@@ -4,7 +4,7 @@ import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptio
 import { within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { mockContext, mockGroupOptions } from './mockContext';
 
 // Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)

@@ -3,7 +3,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import { mockContext, mockPlantOptions } from './mockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 
 describe('App', () => {
     let app, user;

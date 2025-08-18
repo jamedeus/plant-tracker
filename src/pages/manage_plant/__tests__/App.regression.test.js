@@ -3,7 +3,7 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import createMockContext from 'src/testUtils/createMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { mockContextNoEvents } from './mockContext';
 import { act } from '@testing-library/react';
 

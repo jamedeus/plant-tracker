@@ -1,6 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { mockContext, mockPlantOptions } from './mockContext';
 
 describe('App', () => {

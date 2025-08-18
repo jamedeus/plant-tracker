@@ -1,7 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { mockContext, mockPlantOptions } from './mockContext';
 
 // Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)

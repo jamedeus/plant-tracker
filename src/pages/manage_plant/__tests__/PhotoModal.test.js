@@ -3,7 +3,7 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
 import { ReduxProvider } from '../store';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { mockContext } from './mockContext';
 
 // Mock router.navigate to check login page redirect (without rendering whole SPA)

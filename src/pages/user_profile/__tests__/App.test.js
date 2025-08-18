@@ -1,5 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 

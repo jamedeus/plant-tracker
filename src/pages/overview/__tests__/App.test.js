@@ -1,6 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import App from '../App';
 import { mockContext } from './mockContext';
 

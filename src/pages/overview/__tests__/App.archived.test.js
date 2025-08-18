@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import App from '../App';
 import { mockContext } from './mockContext';
 

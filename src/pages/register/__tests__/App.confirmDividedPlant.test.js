@@ -2,7 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import App from '../App';
 import { mockContext, mockDividingFrom } from './mockContext';
 

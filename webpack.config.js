@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -66,7 +65,7 @@ module.exports = (env, argv) => {
         // Add entry for SPA shell and permission denied page
         // Other pages are built as chunks (named in lazy load imports)
         entry: {
-            spa: './src/spa/index.js',
+            spa: './src/index.js',
             permission_denied: './src/pages/permission_denied/index.js',
         },
         output: {

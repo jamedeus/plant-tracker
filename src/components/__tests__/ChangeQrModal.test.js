@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageWrapper } from 'src/index';
+import { ErrorModal } from 'src/components/ErrorModal';
 import ChangeQrModal, { openChangeQrModal } from '../ChangeQrModal';
 import { postHeaders } from 'src/testUtils/headers';
 
@@ -23,9 +23,10 @@ describe('ChangeQrModal', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <TestComponent />
-            </PageWrapper>
+                <ErrorModal />
+            </>
         );
 
         // Open modal

@@ -1,37 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Toast } from 'src/components/Toast';
-import { ErrorModal } from 'src/components/ErrorModal';
-import UnsupportedBrowserWarning from 'src/components/UnsupportedBrowserWarning';
+import { RouterProvider } from 'react-router-dom';
+import router from 'src/spa/routes';
+import PageWrapper from 'src/PageWrapper';
+import { useBackButton } from 'src/useBackButton';
 import 'src/css/index.css';
 
-// Keeps boilerplate code in one place for maintainability
-export const PageWrapper = ({ children }) => {
+function AppRoot() {
+    // Get new state for current page when user navigates from external site
+    // back to SPA using browser back/forward buttons
+    useBackButton(() => router.revalidate());
+
     return (
-        <>
-            { children }
-            <Toast />
-            <ErrorModal />
-            <UnsupportedBrowserWarning />
-        </>
-    );
-};
-
-PageWrapper.propTypes = {
-    children: PropTypes.node,
-};
-
-// Used by each index.js in subdirs of src/pages/
-/* istanbul ignore next */
-const RenderApp = ({ App }) => {
-    const container = document.getElementById('root');
-    const root = createRoot(container);
-    root.render(
         <PageWrapper>
-            <App />
+            <Suspense fallback={null}>
+                <RouterProvider router={router} />
+            </Suspense>
         </PageWrapper>
     );
-};
+}
 
-export default RenderApp;
+/* istanbul ignore next */
+function bootstrapSpa() {
+    const container = document.getElementById('root');
+    const root = createRoot(container);
+    root.render(<AppRoot />);
+}
+
+bootstrapSpa();

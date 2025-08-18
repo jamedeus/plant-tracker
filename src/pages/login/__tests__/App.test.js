@@ -1,4 +1,4 @@
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';

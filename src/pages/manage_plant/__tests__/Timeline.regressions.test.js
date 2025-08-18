@@ -2,7 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
-import { PageWrapper } from 'src/index';
+import PageWrapper from 'src/PageWrapper';
 import { mockContext } from './mockContext';
 
 describe('Timeline regressions', () => {
