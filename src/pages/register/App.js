@@ -13,6 +13,7 @@ import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
 import router from 'src/spa/routes';
+import 'src/css/index.css';
 
 const Form = memo(function Form({
     visibleForm,

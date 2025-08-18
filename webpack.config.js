@@ -63,10 +63,12 @@ module.exports = (env, argv) => {
                 },
             }
         },
-        // Add entry for each directory in src/pages, plus the SPA shell entry
-        entry: fs.readdirSync(path.resolve('src/pages')).reduce((entryMap, page) => (
-            { ...entryMap, [page]: `./src/pages/${page}/index.js`}
-        ), { spa: './src/spa/index.js' }),
+        // Add entry for SPA shell and permission denied page
+        // Other pages are built as chunks (named in lazy load imports)
+        entry: {
+            spa: './src/spa/index.js',
+            permission_denied: './src/pages/permission_denied/index.js',
+        },
         output: {
             path: path.resolve('backend/plant_tracker/static/plant_tracker/'),
             filename: '[name].js',

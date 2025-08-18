@@ -9,6 +9,7 @@ import PrintModal, { openPrintModal } from './PrintModal';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 import QrScannerButton from 'src/components/QrScannerButton';
+import 'src/css/index.css';
 
 function App({ initialState }) {
     // Initialize from SPA-provided state

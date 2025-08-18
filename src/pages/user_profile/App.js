@@ -11,6 +11,7 @@ import QrScannerButton from 'src/components/QrScannerButton';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import { FaCheck } from 'react-icons/fa6';
+import 'src/css/index.css';
 
 const UserDetails = memo(function UserDetails({ initialUserDetails }) {
     // Initialize from SPA-provided state

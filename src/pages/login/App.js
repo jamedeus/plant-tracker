@@ -7,6 +7,7 @@ import { EMAIL_REGEX } from 'src/regex';
 import router from 'src/spa/routes';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
+import 'src/css/index.css';
 
 // Takes ?next= querystring param, sanitizes to prevent malicious redirects
 // Returns sanitized URL or fallback (overview) if invalid

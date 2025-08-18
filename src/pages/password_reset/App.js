@@ -5,6 +5,7 @@ import Navbar from 'src/components/Navbar';
 import router from 'src/spa/routes';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
+import 'src/css/index.css';
 import 'src/css/checkmark.css';
 
 function App() {

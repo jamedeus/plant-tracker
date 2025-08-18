@@ -21,6 +21,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { Tab } from '@headlessui/react';
 import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
+import 'src/css/index.css';
 
 function App({ initialState }) {
     // Initialize entirely from SPA-provided state
