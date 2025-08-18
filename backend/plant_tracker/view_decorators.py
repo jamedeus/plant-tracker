@@ -12,11 +12,11 @@ from functools import wraps, cache
 
 from django.conf import settings
 from django.db.models import Value
+from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
 
-from .render_react_app import render_permission_denied_page
 from .models import Group, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
@@ -320,9 +320,13 @@ def disable_in_single_user_mode(func):
         if settings.SINGLE_USER_MODE:
             # User requesting disabled page: render permission denied
             if request.method == "GET":
-                return render_permission_denied_page(
+                return render(
                     request,
-                    'User accounts are disabled'
+                    'plant_tracker/permission_denied.html',
+                    {
+                        'user_accounts_enabled': not settings.SINGLE_USER_MODE,
+                        'error': 'User accounts are disabled',
+                    }
                 )
             # User POSTing to disabled endpoint: return error response
             return JsonResponse(

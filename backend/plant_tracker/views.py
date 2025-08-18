@@ -7,14 +7,15 @@ from io import BytesIO
 from itertools import chain
 
 from django.conf import settings
+from django.shortcuts import render
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
+from django.views.decorators.csrf import ensure_csrf_cookie
 from PIL import UnidentifiedImageError
 
 from generate_qr_code_grid import generate_layout
-from .render_react_app import render_react_app
 from .models import (
     Group,
     Plant,
@@ -57,6 +58,7 @@ PAGE_TITLE_MAP = {
 
 
 @get_user_token
+@ensure_csrf_cookie
 def serve_spa(request, user, **kwargs):
     '''Renders the SPA shell with correct title for the requested page.'''
     url_name = request.resolver_match.url_name
@@ -66,7 +68,11 @@ def serve_spa(request, user, **kwargs):
     # Use mapping dict for all other pages
     else:
         title = PAGE_TITLE_MAP[url_name]
-    return render_react_app(request, title=title)
+
+    return render(request, 'plant_tracker/index.html', {
+        'title': title,
+        'user_accounts_enabled': not settings.SINGLE_USER_MODE
+    })
 
 
 @requires_json_post(["qr_per_row"])

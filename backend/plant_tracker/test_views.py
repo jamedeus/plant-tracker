@@ -1,23 +1,19 @@
 # pylint: disable=missing-docstring,too-many-lines,R0801,global-statement
 
 import os
-import io
-import sys
-import json
 import base64
 from uuid import uuid4
 from datetime import datetime
 from unittest.mock import patch
 
 from django.conf import settings
+from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
-from django.test import TestCase, override_settings
-from django.test.client import RequestFactory, MULTIPART_CONTENT
+from django.test.client import MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
 
-from .views import render_react_app
 from .view_decorators import get_default_user
 from .models import (
     Group,
@@ -52,55 +48,6 @@ def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
     cleanup_isolated_media_root(OVERRIDE, MODULE_MEDIA_ROOT)
-
-
-class RenderReactAppTests(TestCase):
-    def setUp(self):
-        # Clear entire cache before each test
-        cache.clear()
-
-        # Create GET request for mock endpoint
-        factory = RequestFactory()
-        self.request = factory.get('/mock')
-
-        # Redirect stdout to variable
-        self.stdout = io.StringIO()
-        sys.stdout = self.stdout
-
-    def tearDown(self):
-        # Reset stdout redirect
-        sys.stdout = sys.__stdout__
-
-    @override_settings(DEBUG=False)
-    def test_render_react_app_without_logging_state(self):
-        # Call function with mock arguments and DEBUG set to False
-        response = render_react_app(
-            request=self.request,
-            title='Mock Title'
-        )
-
-        # Confirm returned status 200, confirm nothing was printed to stdout
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.stdout.getvalue(), '')
-
-    @override_settings(DEBUG=True)
-    def test_render_react_app_and_log_state(self):
-        # Call function with mock arguments and DEBUG set to True
-        response = render_react_app(
-            request=self.request,
-            title='Mock Title'
-        )
-
-        # Confirm returned status 200 and pretty printed context to stdout
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            self.stdout.getvalue(),
-            json.dumps({
-                'title': 'Mock Title',
-                'user_accounts_enabled': False,
-                'error': None
-            }, indent=4) + '\n'
-        )
 
 
 class OverviewTests(TestCase):
