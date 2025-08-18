@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import router from 'src/spa/routes';
+import router from 'src/routes';
 
 // Takes name of context element created with json_script django tag
 // Parses JSON contents if it exists and returns, otherwise returns null

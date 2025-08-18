@@ -8,7 +8,7 @@ import { timelineSlice } from './timelineSlice';
 import { settingsSlice } from './settingsSlice';
 import { interfaceSlice } from './interfaceSlice';
 import { loadUserSettings } from './Settings';
-import { useIsBreakpointActive } from 'src/useBreakpoint';
+import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 
 // Takes events, notes, photos, dividedFrom, and divisionEvents context objects
 // from django backend, returns timelineDays state used by Timeline component

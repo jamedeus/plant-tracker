@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import Navbar from 'src/components/Navbar';
-import router from 'src/spa/routes';
+import router from 'src/routes';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import 'src/css/index.css';

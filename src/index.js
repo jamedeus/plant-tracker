@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import router from 'src/spa/routes';
+import router from 'src/routes';
 import PageWrapper from 'src/PageWrapper';
-import { useBackButton } from 'src/useBackButton';
+import { useBackButton } from 'src/hooks/useBackButton';
 import 'src/css/index.css';
 
 function AppRoot() {

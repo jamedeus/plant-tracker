@@ -4,7 +4,7 @@ import { showToast } from 'src/components/Toast';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest } from 'src/util';
 import { EMAIL_REGEX } from 'src/regex';
-import router from 'src/spa/routes';
+import router from 'src/routes';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import 'src/css/index.css';

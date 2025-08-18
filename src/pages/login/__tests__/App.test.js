@@ -4,13 +4,13 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 
 // Mock router.navigate to check redirect after login (without rendering whole SPA)
-jest.mock('src/spa/routes', () => {
+jest.mock('src/routes', () => {
     return {
         __esModule: true,
         default: { navigate: jest.fn().mockResolvedValue(true) },
     };
 });
-import routerMock from 'src/spa/routes';
+import routerMock from 'src/routes';
 
 describe('App', () => {
     let app, user;

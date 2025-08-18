@@ -5,7 +5,7 @@ import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
 import HoldToConfirm from 'src/components/HoldToConfirm';
-import router from 'src/spa/routes';
+import router from 'src/routes';
 
 const EditModeFooter = memo(function EditModeFooter({
     visible,

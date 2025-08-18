@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { timestampToReadable } from 'src/timestampUtils';
 import { defaultPhotoChanged, photosDeleted } from './timelineSlice';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
-import { useIsBreakpointActive } from 'src/useBreakpoint';
+import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import { showToast } from 'src/components/Toast';
 import DropdownMenu from 'src/components/DropdownMenu';
 import LoadingAnimation from 'src/components/LoadingAnimation';

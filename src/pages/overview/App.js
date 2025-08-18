@@ -6,7 +6,7 @@ import DropdownMenu from 'src/components/DropdownMenu';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { parseDomContext } from 'src/util';
 import PrintModal, { openPrintModal } from './PrintModal';
-import { useIsBreakpointActive } from 'src/useBreakpoint';
+import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import Layout from './Layout';
 import QrScannerButton from 'src/components/QrScannerButton';
 import 'src/css/index.css';

@@ -7,7 +7,7 @@ import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded } from './timelineSlice';
-import router from 'src/spa/routes';
+import router from 'src/routes';
 import 'src/css/photomodal.css';
 
 let modalRef;

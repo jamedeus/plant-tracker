@@ -12,7 +12,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
-import router from 'src/spa/routes';
+import router from 'src/routes';
 import 'src/css/index.css';
 
 const Form = memo(function Form({

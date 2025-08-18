@@ -7,13 +7,13 @@ import PageWrapper from 'src/PageWrapper';
 import { mockContext } from './mockContext';
 
 // Mock router.navigate to check login page redirect (without rendering whole SPA)
-jest.mock('src/spa/routes', () => {
+jest.mock('src/routes', () => {
     return {
         __esModule: true,
         default: { navigate: jest.fn().mockResolvedValue(true) },
     };
 });
-import routerMock from 'src/spa/routes';
+import routerMock from 'src/routes';
 
 const TestComponent = () => {
     // Render app

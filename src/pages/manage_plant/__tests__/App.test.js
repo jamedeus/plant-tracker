@@ -8,13 +8,13 @@ import PageWrapper from 'src/PageWrapper';
 import { mockContext, mockGroupOptions } from './mockContext';
 
 // Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
-jest.mock('src/spa/routes', () => {
+jest.mock('src/routes', () => {
     return {
         __esModule: true,
         default: { navigate: jest.fn().mockResolvedValue(true) },
     };
 });
-import routerMock from 'src/spa/routes';
+import routerMock from 'src/routes';
 
 describe('App', () => {
     let app, user;

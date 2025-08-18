@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useReducer, memo } from 'react';
 import PropTypes from 'prop-types';
-import useDebounce from 'src/useDebounce';
+import useDebounce from 'src/hooks/useDebounce';
 import SectionCol from 'src/components/SectionCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import DropdownMenu from 'src/components/DropdownMenu';
