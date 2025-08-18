@@ -4,9 +4,6 @@ import { RouterProvider } from 'react-router-dom';
 import router from './routes';
 import { PageWrapper } from 'src/index';
 import { useBackButton } from 'src/useBackButton';
-import { parseDomContext } from 'src/util';
-
-const PermissionDeniedApp = React.lazy(() => import('src/pages/permission_denied/App'));
 import 'src/css/index.css';
 
 function AppRoot() {
@@ -14,16 +11,10 @@ function AppRoot() {
     // back to SPA using browser back/forward buttons
     useBackButton(() => router.revalidate());
 
-    const initialError = parseDomContext('error');
-
     return (
         <PageWrapper>
             <Suspense fallback={null}>
-                {initialError ? (
-                    <PermissionDeniedApp errorMessage={initialError} />
-                ) : (
-                    <RouterProvider router={router} />
-                )}
+                <RouterProvider router={router} />
             </Suspense>
         </PageWrapper>
     );

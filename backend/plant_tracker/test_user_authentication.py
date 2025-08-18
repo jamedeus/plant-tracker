@@ -691,12 +691,9 @@ class SingleUserModeTests(TestCase):
 
     # pylint: disable-next=invalid-name
     def assertReceivedPermissionDeniedPage(self, response):
-        '''Takes response object, confirms received status 200 with boilerplate
-        index.html, permission_denied.js, and page title "Permission Denied".
-        '''
+        '''Takes response object, confirms received permission_denied.html.'''
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Permission Denied')
+        self.assertTemplateUsed(response, 'plant_tracker/permission_denied.html')
 
     # pylint: disable-next=invalid-name
     def assertReceivedUserAccountsDisabledError(self, response):

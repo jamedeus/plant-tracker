@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Permission Denied</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'plant_tracker/favicon-96x96.png' %}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{% static 'plant_tracker/favicon.svg' %}" />
+    <link rel="shortcut icon" href="{% static 'plant_tracker/favicon.ico' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'plant_tracker/apple-touch-icon.png' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'plant_tracker/shared.css' %}">
+    {# Prevent visual flash on page load in dark mode #}
+    <style>
+        html[data-theme="dark"] body {
+            background: #1D232A;
+        }
+    </style>
+    <script>
+        // Set theme dataset attribute from localStorage (or default to dark)
+        const initialTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', initialTheme);
+    </script>
+</head>
+
+<body>
+    <div id="root"></div>
+    {# Save bool that controls whether user profile links are rendered #}
+    {{ user_accounts_enabled|json_script:"user_accounts_enabled" }}
+
+    {# Save error message used by permission denied page #}
+    {{ error|json_script:"error" }}
+
+    <script src="{% static 'plant_tracker/libs.js' %}"></script>
+    <script src="{% static 'plant_tracker/icons.js' %}"></script>
+    <script src="{% static 'plant_tracker/react-common.js' %}"></script>
+    <script src="{% static 'plant_tracker/permission_denied.js' %}"></script>
+</body>
+</html>

@@ -1,4 +1,13 @@
 import App from './App';
-import RenderApp from 'src/index';
+import { createRoot } from 'react-dom/client';
+import { parseDomContext } from 'src/util';
+import { PageWrapper } from 'src/index';
 
-RenderApp({ App });
+const container = document.getElementById('root');
+const root = createRoot(container);
+const initialError = parseDomContext('error');
+root.render(
+    <PageWrapper>
+        <App errorMessage={initialError} />
+    </PageWrapper>
+);

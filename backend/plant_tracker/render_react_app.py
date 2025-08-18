@@ -29,5 +29,10 @@ def render_react_app(request, title, error=None):
 def render_permission_denied_page(request, error_string):
     '''Helper function to render permission denied page with custom error.
     Takes request object and error string to display to user.
+    Does NOT render SPA shell (loaded after user navigates to different page).
     '''
-    return render_react_app(request, title='Permission Denied', error=error_string)
+    context = {
+        'user_accounts_enabled': not settings.SINGLE_USER_MODE,
+        'error': error_string,
+    }
+    return render(request, 'plant_tracker/permission_denied.html', context)
