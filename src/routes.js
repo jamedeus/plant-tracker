@@ -135,16 +135,10 @@ const router = createBrowserRouter([
         errorElement: <ErrorBoundaryRoute />,
         loader: async ({ params, request }) => {
             const body = await fetchJSON(`/resolve_manage/${params.uuid}`, request);
-
-            // Don't preload bundle if response is a redirect
-            if (body instanceof Response) {
-                return body;
+            // Preload correct bundle unless response is a redirect
+            if (!(body instanceof Response)) {
+                await ManageComponentMap[body.page].preload();
             }
-
-            if (body?.page === 'manage_plant') await ManagePlantApp.preload();
-            else if (body?.page === 'manage_group') await ManageGroupApp.preload();
-            else if (body?.page === 'register') await RegisterApp.preload();
-
             return body;
         },
     },
