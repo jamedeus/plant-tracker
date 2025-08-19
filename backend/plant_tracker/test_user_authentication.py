@@ -72,21 +72,19 @@ class AuthenticationPageTests(TestCase):
         self.client.logout()
 
     def test_login_page(self):
-        # Request login page, confirm uses correct template and title
+        # Request login page, confirm returns SPA
         response = self.client.get('/accounts/login/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Login')
 
     def test_user_profile_page(self):
         # Log in with test user
         self.client.login(username='unittest', password='12345')
 
-        # Request profle page, confirm uses correct template and title
+        # Request profle page, confirm returns SPA
         response = self.client.get('/accounts/profile/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'User Profile')
 
         # Request user details, confirm returns current user account details
         response = self.client.get('/accounts/get_user_details/')
@@ -562,11 +560,10 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(first.status_code, 302)
         self.assertRegex(first.url, r"^/accounts/reset/[A-Za-z0-9_\-]+/set-password/\Z")
 
-        # Load /set-password/ page, confirm uses correct template and title
+        # Load /set-password/ page, confirm returns SPA
         page = self.client.get(first.url)
         self.assertEqual(page.status_code, 200)
         self.assertTemplateUsed(page, 'plant_tracker/index.html')
-        self.assertEqual(page.context['title'], 'Reset Password')
 
         # Simulate user submitting form with new password
         post_response = self.client.post(
@@ -824,10 +821,9 @@ class SingleUserModeTests(TestCase):
         self.assertFalse(auth.get_user(self.client).is_authenticated)
         response = self.client.get('/')
 
-        # Confirm loaded with no authentication, title does not include name
+        # Confirm loaded with no authentication, returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Plant Overview')
 
     def test_manage_plant_page_user_owns_plant(self):
         # Create plant owned by default user
@@ -836,10 +832,9 @@ class SingleUserModeTests(TestCase):
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
         response = self.client.get(f'/manage/{plant.uuid}')
 
-        # Confirm rendered manage plant page
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state object, confirm contains plant details
         response = self.client.get(
@@ -921,10 +916,9 @@ class SingleUserModeTests(TestCase):
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
         response = self.client.get(f'/manage/{group.uuid}')
 
-        # Confirm rendered manage group page
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state object, confirm contains group details
         response = self.client.get(
@@ -1119,9 +1113,8 @@ class MultiUserModeTests(TestCase):
         self.client.login(username='unittest', password='12345')
         response = self.client.get('/')
 
-        # Confirm page loads, title includes user's first name
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['title'], "Bob's Plants")
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
         # Request state object, confirm title contains user's first name
@@ -1149,10 +1142,9 @@ class MultiUserModeTests(TestCase):
         self.client.login(username='unittest', password='12345')
         response = self.client.get(f'/manage/{plant.uuid}')
 
-        # Confirm rendered manage plant page
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state object, confirm contains plant details
         response = self.client.get(
@@ -1183,10 +1175,9 @@ class MultiUserModeTests(TestCase):
         self.client.login(username='unittest', password='12345')
         response = self.client.get(f'/manage/{group.uuid}')
 
-        # Confirm rendered manage group page
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state object, confirm contains group details
         response = self.client.get(

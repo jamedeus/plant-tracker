@@ -67,6 +67,7 @@ async function fetchJSON(url, request) {
 function makePageRoute(App) {
     return function PageRoute() {
         const payload = useLoaderData();
+        document.title = payload?.title || 'Plant Tracker';
         return <App initialState={payload} />;
     };
 }
@@ -85,6 +86,7 @@ const ManageComponentMap = {
 // Custom route for /manage/<uuid> (load correct component for initial state)
 function ManageRoute() {
     const payload = useLoaderData();
+    document.title = payload?.title || 'Plant Tracker';
     if (!payload || !payload.page) return null;
     const Component = ManageComponentMap[payload.page];
     return <Component initialState={payload.state || {}} />;
@@ -139,9 +141,6 @@ const router = createBrowserRouter([
                 return body;
             }
 
-            if (body?.title) {
-                document.title = body.title;
-            }
             if (body?.page === 'manage_plant') await ManagePlantApp.preload();
             else if (body?.page === 'manage_group') await ManageGroupApp.preload();
             else if (body?.page === 'register') await RegisterApp.preload();
@@ -160,7 +159,8 @@ const router = createBrowserRouter([
         errorElement: <ErrorBoundaryRoute />,
         loader: async ({ request }) => {
             await UserProfileApp.preload();
-            return await fetchJSON('/accounts/get_user_details/', request);
+            const data = await fetchJSON('/accounts/get_user_details/', request);
+            return { ...data, title: 'User Profile' };
         },
     },
     {

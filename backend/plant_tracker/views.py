@@ -49,28 +49,11 @@ from .build_states import (
 )
 
 
-PAGE_TITLE_MAP = {
-    'overview': 'Plant Overview',
-    'archived': 'Archived Plants',
-    'manage': 'Manage',
-    'user_profile_page': 'User Profile',
-}
-
-
 @get_user_token
 @ensure_csrf_cookie
-def serve_spa(request, user, **kwargs):
-    '''Renders the SPA shell with correct title for the requested page.'''
-    url_name = request.resolver_match.url_name
-    # Add user's name to overview title
-    if url_name == 'overview' and not settings.SINGLE_USER_MODE and user.first_name:
-        title = f"{user.first_name}'s Plants"
-    # Use mapping dict for all other pages
-    else:
-        title = PAGE_TITLE_MAP[url_name]
-
+def serve_spa(request, **kwargs):
+    '''Renders the SPA shell.'''
     return render(request, 'plant_tracker/index.html', {
-        'title': title,
         'user_accounts_enabled': not settings.SINGLE_USER_MODE
     })
 

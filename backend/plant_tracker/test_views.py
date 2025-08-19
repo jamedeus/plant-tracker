@@ -59,11 +59,10 @@ class OverviewTests(TestCase):
         self.client = JSONClient()
 
     def test_overview_page(self):
-        # Request overview, confirm returns SPA with correct title
+        # Request overview, confirm returns SPA
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Plant Overview')
 
     def test_overview_page_cached_state(self):
         # Cache arbitrary string as overview_state
@@ -621,10 +620,9 @@ class RegistrationTests(TestCase):
         # Request management page with uuid that doesn't exist in database
         response = self.client.get(f'/manage/{uuid4()}')
 
-        # Confirm used correct template and title
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state
         response = self.client.get(
@@ -652,10 +650,9 @@ class RegistrationTests(TestCase):
         # Request management page with uuid that doesn't exist in database
         response = self.client.get(f'/manage/{uuid4()}')
 
-        # Confirm used correct template and title
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state
         response = self.client.get(
@@ -790,9 +787,8 @@ class ManagePageTests(TestCase):
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
 
-        # Confirm used correct template and title
+        # Confirm returned SPA
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state, confirm state object has correct details
         response = self.client.get(
@@ -1086,9 +1082,8 @@ class ManagePageTests(TestCase):
         response = self.client.get(f'/manage/{self.group1.uuid}')
         self.assertEqual(response.status_code, 200)
 
-        # Confirm used correct template and title
+        # Confirm returned SPA
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state
         response = self.client.get(
@@ -1839,10 +1834,9 @@ class ChangeQrCodeTests(TestCase):
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
 
-        # Confirm status code, correct template and title
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state
         response = self.client.get(
@@ -1893,10 +1887,9 @@ class ChangeQrCodeTests(TestCase):
             HTTP_ACCEPT='application/json'
         )
 
-        # Confirm status code, correct template and title
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Manage')
 
         # Request state
         response = self.client.get(
