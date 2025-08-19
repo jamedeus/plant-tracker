@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Layout from './Layout';
 import { ReduxProvider } from './store';
 import Settings from './Settings';
@@ -22,6 +23,18 @@ const App = ({ initialState = null }) => {
             <EditPlantModal />
         </ReduxProvider>
     );
+};
+
+App.propTypes = {
+    initialState: PropTypes.shape({
+        plant_details: PropTypes.object.isRequired,
+        events: PropTypes.object.isRequired,
+        notes: PropTypes.object.isRequired,
+        photos: PropTypes.object.isRequired,
+        default_photo: PropTypes.object.isRequired,
+        division_events: PropTypes.object.isRequired,
+        divided_from: PropTypes.object,
+    }),
 };
 
 export default App;
