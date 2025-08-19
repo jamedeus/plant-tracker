@@ -153,8 +153,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorBoundaryRoute />,
         loader: async ({ request }) => {
             await UserProfileApp.preload();
-            const data = await fetchJSON('/accounts/get_user_details/', request);
-            return { ...data, title: 'User Profile' };
+            return await fetchJSON('/accounts/get_user_details/', request);
         },
     },
     {

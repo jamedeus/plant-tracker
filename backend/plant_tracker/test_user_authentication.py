@@ -97,7 +97,8 @@ class AuthenticationPageTests(TestCase):
                 'first_name': 'Bob',
                 'last_name': 'Smith',
                 'date_joined': self.test_user.date_joined.isoformat()
-            }
+            },
+            'title': 'User Profile'
         })
 
     def test_user_profile_page_not_signed_in(self):
