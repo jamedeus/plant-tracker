@@ -327,12 +327,12 @@ function App({ initialState }) {
                 <Section title="Change Password">
                     <ChangePassword />
                 </Section>
-                <Link
+                <a
                     className="btn btn-soft btn-error mx-4 mb-8"
-                    to="/accounts/logout/"
+                    href="/accounts/logout/"
                 >
                     Log Out
-                </Link>
+                </a>
             </div>
         </div>
     );
