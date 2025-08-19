@@ -43,6 +43,13 @@ async function fetchJSON(url, request) {
             const next = encodeURIComponent(url.pathname + url.search);
             return redirect(`/accounts/login/?next=${next}`);
         }
+
+        // Server returned redirect: redirect to path in JSON response
+        if (response.status === 302) {
+            const data = await response.json();
+            throw redirect(data.redirect);
+        }
+
         // Permission denied: show error message
         const error = await response.json();
         throw new Response('', {

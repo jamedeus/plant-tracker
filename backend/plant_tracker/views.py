@@ -121,7 +121,6 @@ def get_archived_overview_state(_, user):
     '''
     state = build_overview_state(user, archived=True)
     if not state:
-        # Mirror server-rendered behavior (redirects to '/') with an indicator
         return JsonResponse({'redirect': '/'}, status=302)
     return JsonResponse(state, status=200)
 
