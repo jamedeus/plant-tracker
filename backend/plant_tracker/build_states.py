@@ -9,6 +9,7 @@ take <1ms, so this is much more efficient in most scenarios (especially when
 user goes back to overview after each plant).
 '''
 
+from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Prefetch
 
@@ -119,6 +120,14 @@ def build_overview_state(user, archived=False):
             .prefetch_related(Prefetch('group', queryset=groups))
     )
 
+    # Add title for navbar
+    if archived:
+        title = "Archived"
+    elif not settings.SINGLE_USER_MODE and user.first_name:
+        title = f"{user.first_name}'s Plants"
+    else:
+        title = "Plant Overview"
+
     state = {
         'plants': {
             str(plant.uuid): plant.get_details()
@@ -128,7 +137,8 @@ def build_overview_state(user, archived=False):
             str(group.uuid): group.get_details()
             for group in groups
         },
-        'show_archive': show_archive
+        'show_archive': show_archive,
+        'title': title
     }
 
     # Cache state indefinitely (updates automatically when database changes)

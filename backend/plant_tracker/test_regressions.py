@@ -833,7 +833,8 @@ class ViewRegressionTests(TestCase):
                     }
                 },
                 'groups': {},
-                'show_archive': False
+                'show_archive': False,
+                'title': 'Plant Overview'
             }
         )
 

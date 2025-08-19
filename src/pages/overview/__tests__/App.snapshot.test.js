@@ -96,7 +96,8 @@ describe('App', () => {
             <App initialState={{
                 plants: {},
                 groups: {},
-                show_archive: false
+                show_archive: false,
+                title: "Plant Overview"
             }} />
         );
         expect(container).toMatchSnapshot();
@@ -124,6 +125,7 @@ describe('App (archived page)', () => {
                 ...mockContext,
                 plants: { plantUUID: { ...mockContext.plants[plantUUID], archived: true } },
                 groups: { groupUUID: { ...mockContext.groups[groupUUID], archived: true } },
+                title: "Archived"
             }} />
         );
         expect(container).toMatchSnapshot();

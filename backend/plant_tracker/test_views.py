@@ -96,7 +96,8 @@ class OverviewTests(TestCase):
             {
                 'plants': {},
                 'groups': {},
-                'show_archive': False
+                'show_archive': False,
+                'title': 'Plant Overview'
             }
         )
 
@@ -188,7 +189,8 @@ class OverviewTests(TestCase):
                         'plants': 1
                     }
                 },
-                'show_archive': True
+                'show_archive': True,
+                'title': 'Plant Overview'
             }
         )
 
@@ -441,7 +443,8 @@ class ArchivedOverviewTests(TestCase):
                     'plants': 0
                 }
             },
-            'show_archive': True
+            'show_archive': True,
+            'title': 'Archived'
         })
 
 

@@ -53,5 +53,6 @@ export const mockContext = {
             archived: false
         }
     },
-    show_archive: true
+    show_archive: true,
+    title: "Plant Overview"
 };

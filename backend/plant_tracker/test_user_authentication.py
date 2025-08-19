@@ -1124,6 +1124,14 @@ class MultiUserModeTests(TestCase):
         self.assertEqual(response.context['title'], "Bob's Plants")
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
+        # Request state object, confirm title contains user's first name
+        response = self.client.get(
+            '/get_overview_state',
+            HTTP_ACCEPT='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['title'], "Bob's Plants")
+
     def test_overview_page_not_signed_in(self):
         # Request overview page while not signed in
         self.assertFalse(auth.get_user(self.client).is_authenticated)

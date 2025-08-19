@@ -16,6 +16,7 @@ function App({ initialState }) {
     const [plants, setPlants] = useState(initialState.plants);
     const [groups, setGroups] = useState(initialState.groups);
     const [showArchive, setShowArchive] = useState(initialState.show_archive);
+    const pageTitle = useMemo(() => initialState.title);
 
     useEffect(() => {
         setPlants(initialState.plants);
@@ -38,9 +39,6 @@ function App({ initialState }) {
 
     // Check URL to determine if viewing main overview or archive overview
     const archivedOverview = window.location.pathname === '/archived';
-
-    // Get page title (used in navbar header)
-    const pageTitle = useMemo(() => document.title);
 
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
@@ -141,6 +139,7 @@ App.propTypes = {
         plants: PropTypes.object.isRequired,
         groups: PropTypes.object.isRequired,
         show_archive: PropTypes.bool.isRequired,
+        title: PropTypes.string.isRequired,
     }),
 };
 
