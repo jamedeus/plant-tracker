@@ -92,7 +92,7 @@ const EditModeFooter = memo(function EditModeFooter({
                 archived: archived
             }
         );
-        // Remove deleted UUIDs from state
+        // Remove archived UUIDs from state
         if (response.ok) {
             const data = await response.json();
             const newPlants = { ...plants };

@@ -19,7 +19,7 @@ describe('App', () => {
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
-                <App initialState={mockContext} />
+                <App initialState={{ ...mockContext, show_archive: false }} />
             </PageWrapper>
         );
     });
@@ -163,5 +163,32 @@ describe('App', () => {
 
         // Confirm no request was made (selection cleared after first request)
         expect(global.fetch).not.toHaveBeenCalled();
+    });
+
+    // Original bug: The archived overview link in dropdown was rendered if the
+    // show_archive state was true, but show_archive was not in the memo
+    // dependencies for the DropdownMenuOptions component. This prevented the
+    // dropdown options from updating when the first plant was archived.
+    it('adds archived overview link to dropdown when first plant is archived', async () => {
+        // Confirm archived overview link is not visible
+        expect(app.queryByText('Archived plants')).toBeNull();
+
+        // Mock fetch function to return expected response when plant is archived
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                failed: []
+            })
+        }));
+
+        // Enter edit mode, click first checkbox, click archive button
+        await user.click(app.getByTestId('edit_plants_option'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByText('Archive'));
+
+        // Confirm archived overview link appeared in dropdown
+        expect(app.getByText('Archived plants')).toBeInTheDocument();
+        expect(app.getByText('Archived plants')).toHaveAttribute('href', '/archived');
     });
 });
