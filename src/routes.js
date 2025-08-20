@@ -98,7 +98,7 @@ function ErrorBoundaryRoute() {
     return <PermissionDeniedApp errorMessage={errorMessage} />;
 }
 
-const router = createBrowserRouter([
+export const routes = [
     {
         path: '/',
         Component: OverviewRoute,
@@ -158,6 +158,6 @@ const router = createBrowserRouter([
         path: '*',
         Component: () => <Navigate to="/" replace />,
     },
-]);
+];
 
-export default router;
+export default createBrowserRouter(routes);
