@@ -5,7 +5,6 @@ import {
     Navigate,
     useLoaderData,
     useRouteError,
-    isRouteErrorResponse,
 } from 'react-router-dom';
 import {
     OverviewApp,
@@ -54,7 +53,7 @@ async function fetchJSON(url, request) {
         const error = await response.json();
         throw new Response('', {
             status: response.status,
-            statusText: error?.error || `Request failed (${response.status})`,
+            statusText: error?.error || 'Unexpected response'
         });
     }
 
@@ -87,27 +86,16 @@ const ManageComponentMap = {
 function ManageRoute() {
     const payload = useLoaderData();
     document.title = payload?.title || 'Plant Tracker';
-    if (!payload || !payload.page) return null;
     const Component = ManageComponentMap[payload.page];
-    return <Component initialState={payload.state || {}} />;
+    return <Component initialState={payload.state} />;
 }
 
 // Renders PermissionDeniedApp with error message from response
 function ErrorBoundaryRoute() {
     const error = useRouteError();
-
-    if (isRouteErrorResponse(error)) {
-        if (error.status === 403) {
-            const message = error.statusText || 'You do not have permission to view this page';
-            document.title = 'Permission Denied';
-            return <PermissionDeniedApp errorMessage={message} />;
-        }
-        const message = error.statusText || `Request failed (${error.status})`;
-        return <PermissionDeniedApp errorMessage={message} />;
-    }
-
-    // Non-Response thrown (e.g., unexpected)
-    return <PermissionDeniedApp errorMessage="An unexpected error occurred" />;
+    document.title = 'Permission Denied';
+    const errorMessage = error?.statusText || 'An unexpected error occurred';
+    return <PermissionDeniedApp errorMessage={errorMessage} />;
 }
 
 const router = createBrowserRouter([
