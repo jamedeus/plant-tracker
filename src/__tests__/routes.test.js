@@ -22,6 +22,15 @@ jest.mock('src/bundles', () => {
     };
 });
 
+// Import mocked bundles to access their preload methods
+import {
+    OverviewApp,
+    ManagePlantApp,
+    ManageGroupApp,
+    RegisterApp,
+    LoginApp,
+    UserProfileApp,
+} from 'src/bundles';
 import { routes } from 'src/routes';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
@@ -53,11 +62,12 @@ describe('SPA routes', () => {
             initialEntries: ['/']
         });
 
-        // Confirm rendered overview bundle, fetched overview state
+        // Confirm preloaded + rendered overview bundle, fetched overview state
         await waitFor(() => {
             expect(getByTestId('overview-page')).toBeInTheDocument();
             expect(document.title).toBe('Plant Overview');
         });
+        expect(OverviewApp.preload).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
             '/get_overview_state',
             {headers: {Accept: "application/json"}}
@@ -70,11 +80,12 @@ describe('SPA routes', () => {
         // Simulate user navigating to archived page
         await router.navigate('/archived');
 
-        // Confirm rendered overview bundle, fetched archived overview state
+        // Confirm preloaded + rendered overview bundle, fetched archived overview state
         await waitFor(() => {
             expect(getByTestId('overview-page')).toBeInTheDocument();
             expect(document.title).toBe('Archived');
         });
+        expect(OverviewApp.preload).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
             '/get_archived_overview_state',
             {headers: {Accept: "application/json"}}
@@ -87,11 +98,12 @@ describe('SPA routes', () => {
         // Simulate user navigating to user profile page
         await router.navigate('/accounts/profile/');
 
-        // Confirm rendered user profile bundle, fetched user profile state
+        // Confirm preloaded + rendered user profile bundle, fetched user profile state
         await waitFor(() => {
             expect(getByTestId('user-profile-page')).toBeInTheDocument();
             expect(document.title).toBe('User Profile');
         });
+        expect(UserProfileApp.preload).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
             '/accounts/get_user_details/',
             {headers: {Accept: "application/json"}}
@@ -108,11 +120,12 @@ describe('SPA routes', () => {
             initialEntries: ['/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2']
         });
 
-        // Confirm rendered manage_plant bundle, set title from backend response
+        // Confirm preloaded + rendered manage_plant bundle, set title from backend response
         await waitFor(() => {
             expect(getByTestId('manage-plant-page')).toBeInTheDocument();
             expect(document.title).toBe('Manage Plant');
         });
+        expect(ManagePlantApp.preload).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
             '/resolve_manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
             {headers: {Accept: "application/json"}}
@@ -125,11 +138,12 @@ describe('SPA routes', () => {
         // Simulate user navigating to manage_group page
         await router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b3');
 
-        // Confirm rendered manage_group bundle, set title from backend response
+        // Confirm preloaded + rendered manage_group bundle, set title from backend response
         await waitFor(() => {
             expect(getByTestId('manage-group-page')).toBeInTheDocument();
             expect(document.title).toBe('Manage Group');
         });
+        expect(ManageGroupApp.preload).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
             '/resolve_manage/5c256d96-ec7d-408a-83c7-3f86d63968b3',
             {headers: {Accept: "application/json"}}
@@ -142,11 +156,12 @@ describe('SPA routes', () => {
         // Simulate user navigating to register page
         await router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b4');
 
-        // Confirm rendered register bundle, set title from backend response
+        // Confirm preloaded + rendered register bundle, set title from backend response
         await waitFor(() => {
             expect(getByTestId('register-page')).toBeInTheDocument();
             expect(document.title).toBe('Register New Plant');
         });
+        expect(RegisterApp.preload).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
             '/resolve_manage/5c256d96-ec7d-408a-83c7-3f86d63968b4',
             {headers: {Accept: "application/json"}}
