@@ -3,6 +3,8 @@ import {
     createBrowserRouter,
     redirect,
     Navigate,
+    Outlet,
+    ScrollRestoration,
     useLoaderData,
     useRouteError,
 } from 'react-router-dom';
@@ -98,66 +100,78 @@ function ErrorBoundaryRoute() {
     return <PermissionDeniedApp errorMessage={errorMessage} />;
 }
 
+function RootLayout() {
+    return (
+        <>
+            <Outlet />
+            <ScrollRestoration
+                // Separate scroll position for each /manage/<uuid> page
+                getKey={(location) => location.pathname + location.search}
+            />
+        </>
+    );
+}
+
 export const routes = [
     {
         path: '/',
-        Component: OverviewRoute,
+        element: <RootLayout />,
         errorElement: <ErrorBoundaryRoute />,
-        loader: async ({ request }) => {
-            await OverviewApp.preload();
-            return await fetchJSON('/get_overview_state', request);
-        },
-    },
-    {
-        path: '/archived',
-        Component: ArchivedRoute,
-        errorElement: <ErrorBoundaryRoute />,
-        loader: async ({ request }) => {
-            await OverviewApp.preload();
-            return await fetchJSON('/get_archived_overview_state', request);
-        },
-    },
-    {
-        path: '/manage/:uuid',
-        Component: ManageRoute,
-        errorElement: <ErrorBoundaryRoute />,
-        loader: async ({ params, request }) => {
-            const body = await fetchJSON(`/resolve_manage/${params.uuid}`, request);
-            // Preload correct bundle unless response is a redirect
-            if (!(body instanceof Response)) {
-                await ManageComponentMap[body.page].preload();
-            }
-            return body;
-        },
-    },
-    {
-        path: '/accounts/login/',
-        Component: LoginApp,
-        errorElement: <ErrorBoundaryRoute />,
-    },
-    {
-        path: '/accounts/profile/',
-        Component: UserProfileRoute,
-        errorElement: <ErrorBoundaryRoute />,
-        loader: async ({ request }) => {
-            await UserProfileApp.preload();
-            return await fetchJSON('/accounts/get_user_details/', request);
-        },
-    },
-    {
-        path: '/accounts/password_reset/',
-        Component: PasswordResetApp,
-        errorElement: <ErrorBoundaryRoute />,
-    },
-    {
-        path: '/accounts/reset/:uidb64/:token/',
-        Component: PasswordResetApp,
-        errorElement: <ErrorBoundaryRoute />,
-    },
-    {
-        path: '*',
-        Component: () => <Navigate to="/" replace />,
-    },
+        children: [
+            {
+                index: true,
+                Component: OverviewRoute,
+                loader: async ({ request }) => {
+                    await OverviewApp.preload();
+                    return await fetchJSON('/get_overview_state', request);
+                },
+            },
+            {
+                path: 'archived',
+                Component: ArchivedRoute,
+                loader: async ({ request }) => {
+                    await OverviewApp.preload();
+                    return await fetchJSON('/get_archived_overview_state', request);
+                },
+            },
+            {
+                path: 'manage/:uuid',
+                Component: ManageRoute,
+                loader: async ({ params, request }) => {
+                    const body = await fetchJSON(`/resolve_manage/${params.uuid}`, request);
+                    // Preload correct bundle unless response is a redirect
+                    if (!(body instanceof Response)) {
+                        await ManageComponentMap[body.page].preload();
+                    }
+                    return body;
+                },
+            },
+            {
+                path: 'accounts/login/',
+                Component: LoginApp,
+            },
+            {
+                path: 'accounts/profile/',
+                Component: UserProfileRoute,
+                loader: async ({ request }) => {
+                    await UserProfileApp.preload();
+                    return await fetchJSON('/accounts/get_user_details/', request);
+                },
+            },
+            {
+                path: 'accounts/password_reset/',
+                Component: PasswordResetApp,
+            },
+            {
+                path: 'accounts/reset/:uidb64/:token/',
+                Component: PasswordResetApp,
+            },
+            {
+                path: '*',
+                Component: () => <Navigate to="/" replace />,
+            },
+        ]
+    }
 ];
 
 export default createBrowserRouter(routes);
