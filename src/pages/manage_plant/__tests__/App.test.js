@@ -4,7 +4,8 @@ import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptio
 import { within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockGroupOptions } from './mockContext';
 
 // Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
@@ -34,9 +35,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
+            <>
                 <App initialState={mockContext} />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 

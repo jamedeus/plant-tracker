@@ -1,4 +1,4 @@
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 
@@ -21,9 +21,10 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
+            <>
                 <App />
-            </PageWrapper>
+                <Toast />
+            </>
         );
 
         // Mock window.location to expected URL (parsed after logging in)

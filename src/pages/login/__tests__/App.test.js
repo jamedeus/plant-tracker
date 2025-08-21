@@ -1,4 +1,5 @@
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
@@ -19,9 +20,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <App />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Mock window.location to expected URL (parsed after logging in)

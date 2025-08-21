@@ -3,7 +3,8 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
 import { ReduxProvider } from '../store';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 
 // Mock router.navigate to check login page redirect (without rendering whole SPA)
@@ -37,9 +38,11 @@ describe('PhotoModal', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <TestComponent />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Open modal

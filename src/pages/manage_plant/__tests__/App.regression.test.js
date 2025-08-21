@@ -3,7 +3,8 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import createMockContext from 'src/testUtils/createMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import App from '../App';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContextNoEvents } from './mockContext';
 import { act } from '@testing-library/react';
 
@@ -25,9 +26,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
+            <>
                 <App initialState={mockContextNoEvents} />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 

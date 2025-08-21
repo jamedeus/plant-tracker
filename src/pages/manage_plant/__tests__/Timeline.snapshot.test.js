@@ -2,7 +2,8 @@ import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockEvents, mockphotos, mockContextNoEvents } from './mockContext';
 
 describe('Timeline', () => {
@@ -20,11 +21,13 @@ describe('Timeline', () => {
 
         // Render Timeline with mock context, confirm matches snapshot
         const { container } = render(
-            <PageWrapper>
+            <>
                 <ReduxProvider initialState={initialState}>
                     <Timeline />
                 </ReduxProvider>
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
         expect(container).toMatchSnapshot();
     });
@@ -33,7 +36,7 @@ describe('Timeline', () => {
         // Render Timeline with mock context containing archived=true, confirm
         // matches snapshot
         const { container } = render(
-            <PageWrapper>
+            <>
                 <ReduxProvider initialState={{
                     ...initialState, plant_details: {
                         ...mockContext.plant_details,
@@ -45,7 +48,9 @@ describe('Timeline', () => {
                         archived={true}
                     />
                 </ReduxProvider>
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
         expect(container).toMatchSnapshot();
     });
@@ -54,7 +59,7 @@ describe('Timeline', () => {
         // Render Timeline with mock context containing divided_from (set to
         // another plant), confirm matches snapshot
         const { container } = render(
-            <PageWrapper>
+            <>
                 <ReduxProvider initialState={{
                     ...mockContextNoEvents,
                     divided_from: {
@@ -68,7 +73,9 @@ describe('Timeline', () => {
                         archived={true}
                     />
                 </ReduxProvider>
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
         expect(container).toMatchSnapshot();
     });
@@ -77,7 +84,7 @@ describe('Timeline', () => {
         // Render Timeline with mock context containing division_event that
         // created 2 child plants, confirm matches snapshot
         const { container } = render(
-            <PageWrapper>
+            <>
                 <ReduxProvider initialState={{
                     ...mockContextNoEvents,
                     division_events: {
@@ -98,7 +105,9 @@ describe('Timeline', () => {
                         archived={true}
                     />
                 </ReduxProvider>
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
         expect(container).toMatchSnapshot();
     });
@@ -107,7 +116,7 @@ describe('Timeline', () => {
         // Render Timeline with mock context containing division_event that
         // created 0 child plants (user used division instead of prune)
         const { container } = render(
-            <PageWrapper>
+            <>
                 <ReduxProvider initialState={{
                     ...mockContextNoEvents,
                     division_events: {
@@ -119,7 +128,9 @@ describe('Timeline', () => {
                         archived={true}
                     />
                 </ReduxProvider>
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
         expect(container).toMatchSnapshot();
     });

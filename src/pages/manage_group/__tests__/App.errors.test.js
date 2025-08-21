@@ -1,6 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockPlantOptions } from './mockContext';
 
 describe('App', () => {
@@ -17,9 +18,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <App initialState={mockContext} />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 

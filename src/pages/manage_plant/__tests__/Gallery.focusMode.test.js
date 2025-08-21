@@ -1,7 +1,8 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 import { waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -31,9 +32,11 @@ describe('Gallery Focus Mode', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
+            <>
                 <App initialState={mockContext} />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Click gallery dropdown option, confirm gallery appears

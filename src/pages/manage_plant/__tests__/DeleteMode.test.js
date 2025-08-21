@@ -1,7 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
-import PageWrapper from 'src/PageWrapper';
+import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext } from './mockContext';
 import { fireEvent } from '@testing-library/react';
@@ -24,13 +24,14 @@ describe('Delete mode', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
+            <>
                 <App initialState={{ ...mockContext, events: {
                     ...mockContext.events,
                     prune: ["2024-01-01T15:45:44+00:00"],
                     repot: ["2024-01-01T15:45:44+00:00"],
                 } }} />
-            </PageWrapper>
+                <ErrorModal />
+            </>
         );
     });
 

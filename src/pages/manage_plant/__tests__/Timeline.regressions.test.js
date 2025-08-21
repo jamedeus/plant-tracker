@@ -2,7 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
-import PageWrapper from 'src/PageWrapper';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 
 describe('Timeline regressions', () => {
@@ -55,11 +55,12 @@ describe('Timeline regressions', () => {
 
         // Render, get reference to to 2023 month options in QuickNavigation menu
         const app = render(
-            <PageWrapper>
+            <>
                 <ReduxProvider initialState={initialState}>
                     <Timeline />
                 </ReduxProvider>
-            </PageWrapper>
+                <ErrorModal />
+            </>
         );
         const history = app.getByText(/History/).closest('.dropdown');
         const year = within(history).getByText(/2023/).closest('details');
@@ -88,7 +89,7 @@ describe('Timeline regressions', () => {
         // Render with mock context with multiple DivisionEvents on the same day,
         // confirm "Divided into" text only appears once
         const app = render(
-            <PageWrapper>
+            <>
                 <ReduxProvider initialState={{
                     ...mockContext,
                     division_events: {
@@ -108,7 +109,8 @@ describe('Timeline regressions', () => {
                 }}>
                     <Timeline />
                 </ReduxProvider>
-            </PageWrapper>
+                <ErrorModal />
+            </>
         );
         expect(app.getAllByText('Divided into:').length).toBe(1);
 

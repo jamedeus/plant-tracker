@@ -18,6 +18,9 @@ import {
     PasswordResetApp,
     PermissionDeniedApp,
 } from './bundles';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
+import UnsupportedBrowserWarning from 'src/components/UnsupportedBrowserWarning';
 
 // Helper used by loaders to fetch initial state, returns JSON body
 // If user is not authenticated returns redirect to login page
@@ -104,6 +107,9 @@ function RootLayout() {
     return (
         <>
             <Outlet />
+            <Toast />
+            <ErrorModal />
+            <UnsupportedBrowserWarning />
             <ScrollRestoration
                 // Separate scroll position for each /manage/<uuid> page
                 getKey={(location) => location.pathname + location.search}

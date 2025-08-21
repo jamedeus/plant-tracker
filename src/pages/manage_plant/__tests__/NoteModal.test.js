@@ -3,7 +3,8 @@ import { fireEvent } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import NoteModal, { openNoteModal } from '../NoteModal';
 import { ReduxProvider } from '../store';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { postHeaders } from 'src/testUtils/headers';
 import { mockContext } from './mockContext';
 
@@ -39,9 +40,11 @@ describe('Add new note', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <TestComponent />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Open modal in new note mode
@@ -151,9 +154,11 @@ describe('Edit existing note', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
+            <>
                 <TestComponent />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Open modal in edit mode

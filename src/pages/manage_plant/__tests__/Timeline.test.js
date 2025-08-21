@@ -2,7 +2,8 @@ import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockEvents, mockphotos } from './mockContext';
 
 describe('Timeline', () => {
@@ -20,11 +21,13 @@ describe('Timeline', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <ReduxProvider initialState={{ ...mockContext, events: mockEvents, photos: mockphotos }}>
                     <Timeline />
                 </ReduxProvider>
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 

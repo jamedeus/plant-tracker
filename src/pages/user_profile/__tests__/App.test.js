@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import PageWrapper from 'src/PageWrapper';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 
@@ -13,7 +14,7 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <App initialState={{
                     user_details: {
                         username: "cdanger",
@@ -23,7 +24,9 @@ describe('App', () => {
                         date_joined: "2025-04-06T00:08:53.392806+00:00"
                     }
                 }} />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 

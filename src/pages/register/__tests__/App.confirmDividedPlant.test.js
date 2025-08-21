@@ -2,7 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
-import PageWrapper from 'src/PageWrapper';
+import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext, mockDividingFrom } from './mockContext';
 
@@ -24,9 +24,10 @@ describe('Register page while plant division in progress', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <App initialState={{ ...mockContext, dividing_from: mockDividingFrom }} />
-            </PageWrapper>
+                <ErrorModal />
+            </>
         );
     });
 
