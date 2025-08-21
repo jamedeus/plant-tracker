@@ -124,7 +124,10 @@ class LoginView(views.LoginView):
 
     # Override default django form with SPA shell + bundles
     template_name = "plant_tracker/index.html"
-    extra_context = {"title": "Login"}
+    extra_context = {
+        "title": "Login",
+        "user_accounts_enabled": not settings.SINGLE_USER_MODE
+    }
 
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(disable_in_single_user_mode)
