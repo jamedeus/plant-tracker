@@ -13,13 +13,13 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
     stopRemovingPlants
 }) {
     const dispatch = useDispatch();
-    const group = useSelector((state) => state.group.group);
+    const groupId = useSelector((state) => state.group.group.uuid);
 
     // Handler for remove button in FloatingFooter that appears when remove
     // dropdown option clicked
     const removePlants = async () => {
         const response = await sendPostRequest('/bulk_remove_plants_from_group', {
-            group_id: group.uuid,
+            group_id: groupId,
             plants: getSelectedItems(selectedPlantsRef)
         });
         if (response.ok) {

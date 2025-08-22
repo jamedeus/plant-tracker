@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
@@ -20,7 +20,6 @@ import EventButtons from './EventButtons';
 
 function Layout() {
     const dispatch = useDispatch();
-    const handleAddEvents = (payload) => dispatch(updatePlantLastEventTimes(payload));
     const group = useSelector((state) => state.group.group);
     const plantDetails = useSelector((state) => state.group.plants);
 
@@ -38,19 +37,28 @@ function Layout() {
     const hideEventButtons = addEventsMode || removingPlants || noPlants;
 
     // Show RemovePlantsFooter, hide AddEventsFooter, close dropdown menu
-    const startRemovingPlants = () => {
+    const startRemovingPlants = useCallback(() => {
         setRemovingPlants(true);
         setAddEventsMode(0);
         document.activeElement.blur();
-    };
+    }, []);
 
     // Hide RemovePlantsFooter
-    const stopRemovingPlants = () => {
+    const stopRemovingPlants = useCallback(() => {
         setRemovingPlants(false);
-    };
+    }, []);
+
+    const stopAddingEvents = useCallback(() => {
+        setAddEventsMode(0);
+    }, []);
 
     // FormRef for FilterColumn used to add events to subset of plants in group
     const selectedPlantsRef = useRef(null);
+
+    // Handler for AddEventsFooter buttons
+    const handleAddEvents = useCallback((payload) => {
+        dispatch(updatePlantLastEventTimes(payload));
+    }, [dispatch]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -70,6 +78,25 @@ function Layout() {
             />
         </DetailsCard>
     ), [group]);
+
+    const PlantsColTitleOptions = useMemo(() => (
+        <DropdownMenu>
+            <li><a
+                className="flex justify-center"
+                onClick={openAddPlantsModal}
+                data-testid="add_plants_option"
+            >
+                Add
+            </a></li>
+            <li><a
+                className="flex justify-center"
+                onClick={startRemovingPlants}
+                data-testid="remove_plants_option"
+            >
+                Remove
+            </a></li>
+        </DropdownMenu>
+    ), []);
 
     return (
         <div className="container flex flex-col items-center mx-auto mb-28">
@@ -114,24 +141,7 @@ function Layout() {
                     formRef={selectedPlantsRef}
                     storageKey={`group-${group.uuid}`}
                     // Render dropdown with add/remove options unless no plants
-                    titleOptions={noPlants ? null : (
-                        <DropdownMenu>
-                            <li><a
-                                className="flex justify-center"
-                                onClick={openAddPlantsModal}
-                                data-testid="add_plants_option"
-                            >
-                                Add
-                            </a></li>
-                            <li><a
-                                className="flex justify-center"
-                                onClick={startRemovingPlants}
-                                data-testid="remove_plants_option"
-                            >
-                                Remove
-                            </a></li>
-                        </DropdownMenu>
-                    )}
+                    titleOptions={noPlants ? null : PlantsColTitleOptions}
                 >
                     {/* Render message and add plants button if no plants */}
                     {noPlants && (
@@ -153,7 +163,7 @@ function Layout() {
 
             <AddEventsFooter
                 visible={Boolean(addEventsMode)}
-                onClose={() => setAddEventsMode(0)}
+                onClose={stopAddingEvents}
                 selectedPlantsRef={selectedPlantsRef}
                 plants={plantDetails}
                 updatePlantLastEventTimes={handleAddEvents}
