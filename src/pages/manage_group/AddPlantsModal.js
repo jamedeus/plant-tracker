@@ -9,7 +9,7 @@ import PlantCard from 'src/components/PlantCard';
 import { plantsAdded } from './groupSlice';
 import { openErrorModal } from 'src/components/ErrorModal';
 
-let modalRef, loadOptions;
+let modalRef;
 
 // Request options from backend, open modal
 export const openAddPlantsModal = () => {
@@ -44,47 +44,39 @@ const Options = ({ options }) => {
         }
     };
 
-    if (options) {
-        return (
-            <>
-                <div className="md:max-h-[50vh] max-w-94 w-full mx-auto overflow-y-auto pr-4 my-4">
-                    {Object.keys(options).length > 0 ? (
-                        <EditableNodeList editing={true} formRef={formRef}>
-                            {Object.entries(options).map(([uuid, plant]) => (
-                                <PlantCard key={uuid} { ...plant } />
-                            ))}
-                        </EditableNodeList>
-                    ) : (
-                        <p className="my-4 pl-4">No plants</p>
-                    )}
-                </div>
-
-                <div className="modal-action">
-                    <form method="dialog">
-                        <button className="btn btn-soft w-20">
-                            Cancel
-                        </button>
-                        <button
-                            className="btn btn-accent w-20"
-                            onClick={submit}
-                        >
-                            Add
-                        </button>
-                    </form>
-                </div>
-            </>
-        );
-    } else {
-        return (
-            <div className="flex flex-col items-center">
-                <LoadingAnimation />
+    return (
+        <>
+            <div className="md:max-h-[50vh] max-w-94 w-full mx-auto overflow-y-auto pr-4 my-4">
+                {Object.keys(options).length > 0 ? (
+                    <EditableNodeList editing={true} formRef={formRef}>
+                        {Object.entries(options).map(([uuid, plant]) => (
+                            <PlantCard key={uuid} { ...plant } />
+                        ))}
+                    </EditableNodeList>
+                ) : (
+                    <p className="my-4 pl-4">No plants</p>
+                )}
             </div>
-        );
-    }
+
+            <div className="modal-action">
+                <form method="dialog">
+                    <button className="btn btn-soft w-20">
+                        Cancel
+                    </button>
+                    <button
+                        className="btn btn-accent w-20"
+                        onClick={submit}
+                    >
+                        Add
+                    </button>
+                </form>
+            </div>
+        </>
+    );
 };
 
 Options.propTypes = {
-    options: PropTypes.object
+    options: PropTypes.object.isRequired
 };
 
 const AddPlantsModal = memo(function AddPlantsModal() {
@@ -94,7 +86,7 @@ const AddPlantsModal = memo(function AddPlantsModal() {
     const [options, setOptions] = useState(null);
 
     // Request options from backend, set state (called when modal opens)
-    loadOptions = async () => {
+    const loadOptions = async () => {
         const response = await fetch('/get_plant_options');
         if (response.ok) {
             const data = await response.json();
@@ -118,7 +110,13 @@ const AddPlantsModal = memo(function AddPlantsModal() {
             onOpen={loadOptions}
             onClose={clearOptions}
         >
-            <Options options={options} />
+            {options ? (
+                <Options options={options} />
+            ) : (
+                <div className="flex flex-col items-center">
+                    <LoadingAnimation />
+                </div>
+            )}
         </Modal>
     );
 });
