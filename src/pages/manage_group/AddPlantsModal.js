@@ -1,9 +1,13 @@
 import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { sendPostRequest } from 'src/util';
 import EditableNodeList from 'src/components/EditableNodeList';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import Modal from 'src/components/Modal';
 import PlantCard from 'src/components/PlantCard';
+import { plantsAdded } from './groupSlice';
+import { openErrorModal } from 'src/components/ErrorModal';
 
 let modalRef, loadOptions;
 
@@ -12,7 +16,9 @@ export const openAddPlantsModal = () => {
     modalRef.current.open();
 };
 
-const Options = ({ options, addPlants }) => {
+const Options = ({ options }) => {
+    const dispatch = useDispatch();
+    const group = useSelector((state) => state.group.group);
     // Ref used to read selected items from EditableNodeList form
     const formRef = useRef(null);
 
@@ -20,6 +26,22 @@ const Options = ({ options, addPlants }) => {
     const submit = () => {
         const selected = new FormData(formRef.current);
         addPlants(Array.from(selected.keys()));
+    };
+
+    // Takes array of selected plant UUIDs,posts to backend and updates state
+    const addPlants = async (selected) => {
+        const response = await sendPostRequest('/bulk_add_plants_to_group', {
+            group_id: group.uuid,
+            plants: selected
+        });
+        if (response.ok) {
+            // Add objects in response to plantDetails state
+            const data = await response.json();
+            dispatch(plantsAdded(data.added));
+        } else {
+            const error = await response.json();
+            openErrorModal(JSON.stringify(error));
+        }
     };
 
     if (options) {
@@ -62,11 +84,10 @@ const Options = ({ options, addPlants }) => {
 };
 
 Options.propTypes = {
-    options: PropTypes.object,
-    addPlants: PropTypes.func.isRequired
+    options: PropTypes.object
 };
 
-const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
+const AddPlantsModal = memo(function AddPlantsModal() {
     modalRef = useRef(null);
 
     // Stores options queried from backend
@@ -97,13 +118,9 @@ const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
             onOpen={loadOptions}
             onClose={clearOptions}
         >
-            <Options options={options} addPlants={addPlants} />
+            <Options options={options} />
         </Modal>
     );
 });
-
-AddPlantsModal.propTypes = {
-    addPlants: PropTypes.func.isRequired
-};
 
 export default AddPlantsModal;

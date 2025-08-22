@@ -1,11 +1,14 @@
 import React, { useRef, memo } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { sendPostRequest } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { groupDetailsUpdateed } from './groupSlice';
 
-const EditGroupModal = memo(function EditGroupModal({ group, setGroup }) {
+const EditGroupModal = memo(function EditGroupModal() {
+    const group = useSelector((state) => state.group.group);
+    const dispatch = useDispatch();
     const formRef = useRef(null);
 
     const submit = async () => {
@@ -14,11 +17,9 @@ const EditGroupModal = memo(function EditGroupModal({ group, setGroup }) {
             ...Object.fromEntries(new FormData(formRef.current))
         });
         if (response.ok) {
-            // Update plant state with new values from response
+            // Update group details state with new values from response
             const data = await response.json();
-            setGroup(prevGroup => {
-                return { ...prevGroup, ...data };
-            });
+            dispatch(groupDetailsUpdateed(data));
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -36,15 +37,5 @@ const EditGroupModal = memo(function EditGroupModal({ group, setGroup }) {
         </EditModal>
     );
 });
-
-EditGroupModal.propTypes = {
-    group: PropTypes.shape({
-        name: PropTypes.string,
-        uuid: PropTypes.string.isRequired,
-        location: PropTypes.string,
-        description: PropTypes.string
-    }).isRequired,
-    setGroup: PropTypes.func.isRequired
-};
 
 export default EditGroupModal;

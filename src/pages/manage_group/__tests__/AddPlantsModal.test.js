@@ -1,5 +1,14 @@
 import AddPlantsModal, { openAddPlantsModal } from '../AddPlantsModal';
-import { mockPlantOptions } from './mockContext';
+import { mockContext, mockPlantOptions } from './mockContext';
+import { ReduxProvider } from '../store';
+
+const TestComponent = () => {
+    return (
+        <ReduxProvider initialState={mockContext}>
+            <AddPlantsModal />
+        </ReduxProvider>
+    );
+};
 
 describe('AddPlantsModal', () => {
     beforeEach(() => {
@@ -21,9 +30,7 @@ describe('AddPlantsModal', () => {
         }));
 
         // Render modal
-        const component = render(
-            <AddPlantsModal addPlants={jest.fn()} />
-        );
+        const component = render(<TestComponent />);
 
         // Open modal, confirm options requested
         await act(async () => {
@@ -50,15 +57,10 @@ describe('AddPlantsModal', () => {
         }));
 
         // Render modal
-        const component = render(
-            <AddPlantsModal
-                options={[]}
-                addPlants={jest.fn()}
-            />
-        );
+        const component = render(<TestComponent />);
+        openAddPlantsModal();
 
         // Confirm no cards, confirm expected text
-        openAddPlantsModal();
         await waitFor(() => {
             const titles = component.container.querySelectorAll('.card-title');
             expect(titles.length).toBe(0);
@@ -71,15 +73,10 @@ describe('AddPlantsModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({ ok: false }));
 
         // Render modal
-        const component = render(
-            <AddPlantsModal
-                options={[]}
-                addPlants={jest.fn()}
-            />
-        );
+        const component = render(<TestComponent />);
+        openAddPlantsModal();
 
         // Confirm no cards, confirm expected text
-        openAddPlantsModal();
         await waitFor(() => {
             const titles = component.container.querySelectorAll('.card-title');
             expect(titles.length).toBe(0);
@@ -100,9 +97,7 @@ describe('AddPlantsModal', () => {
         ));
 
         // Render modal
-        const component = render(
-            <AddPlantsModal addPlants={jest.fn()} />
-        );
+        const component = render(<TestComponent />);
         openAddPlantsModal();
 
         // Confirm loading spinner rendered, contents did not
