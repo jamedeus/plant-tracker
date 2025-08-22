@@ -157,6 +157,21 @@ function App({ initialState }) {
         }
     }, [plantDetails]);
 
+    const updatePlantLastEventTimes = async (payload) => {
+        const { eventType, plantIds, timestamp } = payload;
+        if (eventType in eventTypeMap) {
+            let newPlants = { ...plantDetails };
+            const lastEvent = eventTypeMap[eventType];
+            plantIds.forEach(uuid => {
+                newPlants[uuid][lastEvent] = getMostRecent(
+                    newPlants[uuid][lastEvent],
+                    timestamp
+                );
+            });
+            setPlantDetails(newPlants);
+        }
+    };
+
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
         <NavbarDropdownOptions>
@@ -274,6 +289,7 @@ function App({ initialState }) {
                 visible={Boolean(addEventsMode)}
                 onClose={() => setAddEventsMode(0)}
                 selectedPlantsRef={selectedPlantsRef}
+                updatePlantLastEventTimes={updatePlantLastEventTimes}
                 plants={plantDetails}
                 setPlants={setPlantDetails}
             />

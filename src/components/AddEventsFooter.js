@@ -1,7 +1,7 @@
 import React, { memo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest, pastTense, getMostRecent } from 'src/util';
+import { sendPostRequest, pastTense } from 'src/util';
 import { getSelectedItems, filterSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { openErrorModal } from 'src/components/ErrorModal';
@@ -12,7 +12,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
     onClose,
     selectedPlantsRef,
     plants,
-    setPlants,
+    updatePlantLastEventTimes
 }) {
     const [successMessage, setSuccessMessage] = useState(null);
     const successMessageTimerRef = useRef(null);
@@ -24,13 +24,6 @@ const AddEventsFooter = memo(function AddEventsFooter({
         successMessageTimerRef.current = setTimeout(() => {
             setSuccessMessage(null);
         }, 3000);
-    };
-
-    // Map eventType taken by bulk_add_plant_events to the plantDetails state
-    // key that should be updated when an event is successfully created
-    const eventTypeMap = {
-        water: "last_watered",
-        fertilize: "last_fertilized"
     };
 
     const handleAddEvents = async (eventType) => {
@@ -55,19 +48,12 @@ const AddEventsFooter = memo(function AddEventsFooter({
         });
         if (response.ok) {
             const data = await response.json();
-
             // Update last_watered/last_fertilized times for selected plants
-            if (eventType in eventTypeMap) {
-                let newPlants = { ...plants };
-                const lastEvent = eventTypeMap[eventType];
-                data.plants.forEach(uuid => {
-                    newPlants[uuid][lastEvent] = getMostRecent(
-                        newPlants[uuid][lastEvent],
-                        timestamp
-                    );
-                });
-                setPlants(newPlants);
-            }
+            updatePlantLastEventTimes({
+                eventType: eventType,
+                plantIds: data.plants,
+                timestamp: data.timestamp
+            });
             // Show success message in footer
             showSuccessMessage(`Plants ${pastTense(eventType)}!`);
         } else {
@@ -122,7 +108,7 @@ AddEventsFooter.propTypes = {
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     plants: PropTypes.object.isRequired,
-    setPlants: PropTypes.func.isRequired,
+    updatePlantLastEventTimes: PropTypes.func.isRequired,
 };
 
 export default AddEventsFooter;
