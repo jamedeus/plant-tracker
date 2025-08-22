@@ -1,27 +1,22 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest, pastTense } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import DropdownMenu from 'src/components/DropdownMenu';
-import DatetimeInput from 'src/components/DatetimeInput';
-import { showToast } from 'src/components/Toast';
 import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
 import RemovePlantsFooter from './RemovePlantsFooter';
 import AddEventsFooter from 'src/components/AddEventsFooter';
-import { filterSelectedItems } from 'src/components/EditableNodeList';
 import { openAddPlantsModal } from './AddPlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import QrScannerButton from 'src/components/QrScannerButton';
-import { openErrorModal } from 'src/components/ErrorModal';
 import { Tab } from '@headlessui/react';
 import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
 import 'src/css/index.css';
 import { updatePlantLastEventTimes } from './groupSlice';
+import EventButtons from './EventButtons';
 
 function Layout() {
     const dispatch = useDispatch();
@@ -56,46 +51,6 @@ function Layout() {
 
     // FormRef for FilterColumn used to add events to subset of plants in group
     const selectedPlantsRef = useRef(null);
-
-    // Ref to access timestamp input used by water/fertilize buttons
-    const addEventTimeInput = useRef(null);
-
-    // Handler for water and fertilize buttons
-    const addEvents = async (eventType) => {
-        // Get all plants in group that are not archived
-        const selected = filterSelectedItems(
-            Object.keys(plantDetails),
-            plantDetails,
-            { archived: false }
-        );
-        // Add events to all non-archived plants
-        await bulkAddPlantEvents(eventType, selected);
-    };
-
-    // Creates event with specified type and timestamp from addEventTimeInput
-    // for every plant in selectedIds (array of UUIDs)
-    const bulkAddPlantEvents = async (eventType, selectedIds) => {
-        const timestamp = localToUTC(addEventTimeInput.current.value);
-        const response = await sendPostRequest('/bulk_add_plant_events', {
-            plants: selectedIds,
-            event_type: eventType,
-            timestamp: timestamp
-        });
-        if (response.ok) {
-            // Show toast with success message
-            showToast(`All plants ${pastTense(eventType)}!`, 'blue', 5000);
-            // Update last watered/fertilized times for all plants in response
-            const data = await response.json();
-            dispatch(updatePlantLastEventTimes({
-                eventType: data.action,
-                plantIds: data.plants,
-                timestamp: data.timestamp
-            }));
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
-    };
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -149,21 +104,7 @@ function Layout() {
                     </Tab.List>
                 </Tab.Group>
 
-                <DatetimeInput inputRef={addEventTimeInput} />
-                <div className="flex mb-8">
-                    <button
-                        className="btn btn-info m-2"
-                        onClick={() => addEvents('water')}
-                    >
-                        Water
-                    </button>
-                    <button
-                        className="btn btn-success m-2"
-                        onClick={() => addEvents('fertilize')}
-                    >
-                        Fertilize
-                    </button>
-                </div>
+                <EventButtons />
             </div>
 
             <div className="px-4 relative">
