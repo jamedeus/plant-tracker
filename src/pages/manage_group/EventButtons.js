@@ -10,7 +10,7 @@ import { updatePlantLastEventTimes } from './groupSlice';
 
 const EventButtons = memo(function EventButtons() {
     // Get state from redux store
-    const plantDetails = useSelector((state) => state.group.plants);
+    const plantDetails = useSelector((state) => state.group.plantDetails);
 
     // Used to update redux store
     const dispatch = useDispatch();

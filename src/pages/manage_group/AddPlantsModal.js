@@ -18,7 +18,7 @@ export const openAddPlantsModal = () => {
 
 const Options = ({ options }) => {
     const dispatch = useDispatch();
-    const group = useSelector((state) => state.group.group);
+    const groupId = useSelector((state) => state.group.groupDetails.uuid);
     // Ref used to read selected items from EditableNodeList form
     const formRef = useRef(null);
 
@@ -31,7 +31,7 @@ const Options = ({ options }) => {
     // Takes array of selected plant UUIDs,posts to backend and updates state
     const addPlants = async (selected) => {
         const response = await sendPostRequest('/bulk_add_plants_to_group', {
-            group_id: group.uuid,
+            group_id: groupId,
             plants: selected
         });
         if (response.ok) {

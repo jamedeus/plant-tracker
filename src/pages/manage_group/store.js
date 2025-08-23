@@ -15,13 +15,12 @@ function createReduxStore(preloadedState) {
 }
 
 export function ReduxProvider({ children, initialState }) {
-    // Parses SPA-provided context elements containing plants and groups
     const init = () => {
         // Return object with keys expected by groupSlice
         return {
             group: {
-                group: initialState.group_details,
-                plants: initialState.plants
+                groupDetails: initialState.group_details,
+                plantDetails: initialState.plants
             },
         };
     };

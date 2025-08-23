@@ -13,7 +13,7 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
     stopRemovingPlants
 }) {
     const dispatch = useDispatch();
-    const groupId = useSelector((state) => state.group.group.uuid);
+    const groupId = useSelector((state) => state.group.groupDetails.uuid);
 
     // Handler for remove button in FloatingFooter that appears when remove
     // dropdown option clicked

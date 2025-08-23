@@ -7,13 +7,13 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { groupDetailsUpdateed } from './groupSlice';
 
 const EditGroupModal = memo(function EditGroupModal() {
-    const group = useSelector((state) => state.group.group);
+    const groupDetails = useSelector((state) => state.group.groupDetails);
     const dispatch = useDispatch();
     const formRef = useRef(null);
 
     const submit = async () => {
         const response = await sendPostRequest('/edit_group_details', {
-            group_id: group.uuid,
+            group_id: groupDetails.uuid,
             ...Object.fromEntries(new FormData(formRef.current))
         });
         if (response.ok) {
@@ -30,9 +30,9 @@ const EditGroupModal = memo(function EditGroupModal() {
         <EditModal title="Edit Details" formRef={formRef} onSubmit={submit}>
             <GroupDetailsForm
                 formRef={formRef}
-                name={group.name}
-                location={group.location}
-                description={group.description}
+                name={groupDetails.name}
+                location={groupDetails.location}
+                description={groupDetails.description}
             />
         </EditModal>
     );

@@ -20,8 +20,8 @@ import EventButtons from './EventButtons';
 
 function Layout() {
     const dispatch = useDispatch();
-    const group = useSelector((state) => state.group.group);
-    const plantDetails = useSelector((state) => state.group.plants);
+    const groupDetails = useSelector((state) => state.group.groupDetails);
+    const plantDetails = useSelector((state) => state.group.plantDetails);
 
     // Hide event buttons if no plants in group
     const noPlants = Object.keys(plantDetails).length === 0;
@@ -73,11 +73,11 @@ function Layout() {
     const GroupDetailsDropdown = useMemo(() => (
         <DetailsCard>
             <GroupDetails
-                location={group.location}
-                description={group.description}
+                location={groupDetails.location}
+                description={groupDetails.description}
             />
         </DetailsCard>
-    ), [group]);
+    ), [groupDetails]);
 
     const PlantsColTitleOptions = useMemo(() => (
         <DropdownMenu>
@@ -102,7 +102,7 @@ function Layout() {
         <div className="container flex flex-col items-center mx-auto mb-28">
             <Navbar
                 menuOptions={DropdownMenuOptions}
-                title={group.display_name}
+                title={groupDetails.display_name}
                 titleOptions={GroupDetailsDropdown}
                 topRightButton={<QrScannerButton />}
             />
@@ -139,7 +139,7 @@ function Layout() {
                     plants={plantDetails}
                     editing={Boolean(addEventsMode) || removingPlants}
                     formRef={selectedPlantsRef}
-                    storageKey={`group-${group.uuid}`}
+                    storageKey={`group-${groupDetails.uuid}`}
                     // Render dropdown with add/remove options unless no plants
                     titleOptions={noPlants ? null : PlantsColTitleOptions}
                 >
@@ -176,7 +176,7 @@ function Layout() {
             />
 
             <ChangeQrModal
-                uuid={group.uuid}
+                uuid={groupDetails.uuid}
             />
         </div>
     );

@@ -13,31 +13,33 @@ export const groupSlice = createSlice({
     name: 'group',
     initialState: {
         // Contains details about the group itself
-        group: {},
+        groupDetails: {},
         // Contains details about each plant in the group
-        plants: {},
+        plantDetails: {},
     },
     reducers: {
-        // Takes updated group details
+        // Takes updated group details, merges with state
         groupDetailsUpdateed(state, action) {
-            state.group = { ...state.group, ...action.payload };
+            state.groupDetails = { ...state.groupDetails, ...action.payload };
         },
-        // Takes array of plant objects for each new plant added to the group
+        // Takes array of objects with details of each plant added to  group
         plantsAdded(state, action) {
-            action.payload.forEach(plant => state.plants[plant.uuid] = plant);
+            action.payload.forEach(plant => state.plantDetails[plant.uuid] = plant);
         },
-        // Takes array of plant details objects of removed plants
+        // Takes array of objects with details of each plant removed from group
         plantsRemoved(state, action) {
-            action.payload.forEach(plant => delete state.plants[plant.uuid]);
+            action.payload.forEach(plant => delete state.plantDetails[plant.uuid]);
         },
         // Takes object with eventType, plantIds, and timestamp keys
+        // Updates last_watered/last_fertilized times for each plant in plantIds
+        // if the timestamp is newer than the current value
         updatePlantLastEventTimes(state, action) {
             const { eventType, plantIds, timestamp } = action.payload;
             if (eventType in eventTypeMap) {
                 const lastEvent = eventTypeMap[eventType];
                 plantIds.forEach(uuid => {
-                    state.plants[uuid][lastEvent] = getMostRecent(
-                        state.plants[uuid][lastEvent],
+                    state.plantDetails[uuid][lastEvent] = getMostRecent(
+                        state.plantDetails[uuid][lastEvent],
                         timestamp
                     );
                 });
