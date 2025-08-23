@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
-import { stringMatchesPattern } from 'src/util';
+import isoTimestampPropType from 'src/types/isoTimestampPropType';
 
 const DatetimeInput = ({ inputRef, value=null, ariaLabel="Timestamp input" }) => {
     return (
@@ -23,7 +23,7 @@ DatetimeInput.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]),
-    value: stringMatchesPattern(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/),
+    value: isoTimestampPropType,
     ariaLabel: PropTypes.string
 };
 

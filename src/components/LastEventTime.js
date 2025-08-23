@@ -7,6 +7,7 @@ import {
     timestampToRelativeCalendar,
     timestampIsLessThanOneMinuteOld
 } from 'src/timestampUtils';
+import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 // Return relative sec/min/hours if timestamp on current date in user timezone.
 // Return number of days since timestamp if not on current date.
@@ -36,7 +37,7 @@ const LastEventTime = ({ text, timestamp }) => {
 
 LastEventTime.propTypes = {
     text: PropTypes.string.isRequired,
-    timestamp: PropTypes.string
+    timestamp: isoTimestampTzPropType
 };
 
 export default LastEventTime;

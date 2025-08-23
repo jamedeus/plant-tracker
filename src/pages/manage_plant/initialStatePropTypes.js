@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 import photoDetailsProptypes from 'src/types/photoDetailsPropTypes';
 import defaultPhotoProptypes from 'src/types/defaultPhotoPropTypes';
+import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 export default PropTypes.exact({
     plant_details: plantDetailsProptypes.isRequired,
@@ -17,7 +18,7 @@ export default PropTypes.exact({
     divided_from: PropTypes.exact({
         name: PropTypes.string.isRequired,
         uuid: PropTypes.string.isRequired,
-        timestamp: PropTypes.string.isRequired
+        timestamp: isoTimestampTzPropType.isRequired
     }),
     division_events: PropTypes.objectOf(
         PropTypes.arrayOf(

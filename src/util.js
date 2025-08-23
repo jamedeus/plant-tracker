@@ -58,15 +58,6 @@ function pastTense(text) {
     }
 }
 
-// Custom PropTypes string regex validator
-function stringMatchesPattern(regex) {
-    return function(props, propName, componentName) {
-        if (props[propName] && !regex.test(props[propName])) {
-            throw new Error(`${componentName}.${propName} must match ${regex}`);
-        }
-    };
-}
-
 // Takes 2 ISO 8601 timestamps, returns most recent
 const getMostRecent = (oldTime, newTime) => {
     // Return new if old is null (ie plant had no water events before)
@@ -84,6 +75,5 @@ export {
     sendPostRequest,
     capitalize,
     pastTense,
-    stringMatchesPattern,
     getMostRecent
 };

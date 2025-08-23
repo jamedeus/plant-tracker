@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import isoTimestampTzPropType from './isoTimestampTzPropType';
 
 export default PropTypes.exact({
     set: PropTypes.bool.isRequired,
@@ -6,5 +7,5 @@ export default PropTypes.exact({
     photo: PropTypes.string,
     preview: PropTypes.string,
     thumbnail: PropTypes.string,
-    timestamp: PropTypes.string,
+    timestamp: isoTimestampTzPropType
 });

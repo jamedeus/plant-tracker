@@ -1,6 +1,5 @@
 import React, { useState, useRef, memo } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
@@ -11,6 +10,7 @@ import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 import { DateTime } from 'luxon';
 import { noteAdded, noteEdited, noteDeleted } from './timelineSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 let modalRef;
 
@@ -28,7 +28,7 @@ const ExistingNoteTimestamp = memo(function ExistingNoteTimestamp({ noteTime }) 
 });
 
 ExistingNoteTimestamp.propTypes = {
-    noteTime: PropTypes.string.isRequired
+    noteTime: isoTimestampTzPropType.isRequired
 };
 
 const NoteModal = () => {

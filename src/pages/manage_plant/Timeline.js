@@ -27,6 +27,8 @@ import {
     photoSelected,
     noteSelected,
 } from './interfaceSlice';
+import dateKeyPropType from 'src/types/dateKeyPropType';
+import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {
@@ -226,7 +228,7 @@ const TimelineTimestamp = memo(function TimelineTimestamp({ dateKey }) {
 });
 
 TimelineTimestamp.propTypes = {
-    dateKey: PropTypes.string.isRequired
+    dateKey: dateKeyPropType.isRequired
 };
 
 // Takes YYYY-MM-DD string, renders horizontal divider with month name that
@@ -242,7 +244,7 @@ const MonthDivider = memo(function MonthDivider({ dateKey }) {
 });
 
 MonthDivider.propTypes = {
-    dateKey: PropTypes.string.isRequired
+    dateKey: dateKeyPropType.isRequired
 };
 
 // Map event type strings to icon components
@@ -292,7 +294,7 @@ const EventMarker = memo(function EventMarker({ eventType, timestamps }) {
 
 EventMarker.propTypes = {
     eventType: PropTypes.oneOf(Object.keys(eventIconMap)).isRequired,
-    timestamps: PropTypes.array.isRequired
+    timestamps: PropTypes.arrayOf(isoTimestampTzPropType).isRequired
 };
 
 // Takes array of plant objects (name and uuid keys) that were divided from this
@@ -359,7 +361,7 @@ const DividedFromMarker = ({ name, uuid, dateKey }) => {
 DividedFromMarker.propTypes = {
     name: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
-    dateKey: PropTypes.string.isRequired
+    dateKey: dateKeyPropType.isRequired
 };
 
 // Takes photo thumbnail URL, creation timestamp, and database key
@@ -410,7 +412,7 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, i
 
 PhotoThumbnail.propTypes = {
     thumbnailUrl: PropTypes.string.isRequired,
-    timestamp: PropTypes.string.isRequired,
+    timestamp: isoTimestampTzPropType.isRequired,
     index: PropTypes.number.isRequired,
     photoKey: PropTypes.number.isRequired
 };
@@ -583,7 +585,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
 NoteCollapse.propTypes = {
     note: PropTypes.shape({
         text: PropTypes.string.isRequired,
-        timestamp: PropTypes.string.isRequired
+        timestamp: isoTimestampTzPropType.isRequired
     }).isRequired
 };
 
@@ -675,7 +677,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
 });
 
 TimelineDay.propTypes = {
-    dateKey: PropTypes.string.isRequired,
+    dateKey: dateKeyPropType.isRequired,
     monthDivider: PropTypes.bool
 };
 
