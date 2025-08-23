@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { groupSlice } from './groupSlice';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 // Takes initial groupSlice state, returns redux store
 function createReduxStore(preloadedState) {
@@ -40,7 +42,7 @@ export function ReduxProvider({ children, initialState }) {
 ReduxProvider.propTypes = {
     children: PropTypes.node,
     initialState: PropTypes.shape({
-        group_details: PropTypes.object.isRequired,
-        plants: PropTypes.object.isRequired,
+        group_details: groupDetailsProptypes.isRequired,
+        plants: PropTypes.objectOf(plantDetailsProptypes).isRequired,
     }).isRequired
 };

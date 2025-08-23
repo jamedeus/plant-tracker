@@ -14,6 +14,8 @@ import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
 import router from 'src/routes';
 import 'src/css/index.css';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 const Form = memo(function Form({
     visibleForm,
@@ -77,7 +79,12 @@ Form.propTypes = {
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     showTabs: PropTypes.bool.isRequired,
-    defaultValues: PropTypes.object.isRequired
+    defaultValues: PropTypes.shape({
+        name: PropTypes.string,
+        species: PropTypes.string,
+        pot_size: PropTypes.number,
+        description: PropTypes.string
+    })
 };
 
 const ConfirmPrompt = ({
@@ -132,7 +139,10 @@ ConfirmPrompt.propTypes = {
         "plant",
         "group"
     ]).isRequired,
-    detailsParams: PropTypes.object.isRequired,
+    detailsParams: PropTypes.oneOfType([
+        plantDetailsProptypes,
+        groupDetailsProptypes
+    ]).isRequired,
     handleConfirm: PropTypes.func.isRequired,
     handleReject: PropTypes.func.isRequired,
     confirmButtonTitle: PropTypes.string.isRequired,
@@ -324,7 +334,27 @@ function App({ initialState }) {
 }
 
 App.propTypes = {
-    initialState: PropTypes.object
+    initialState: PropTypes.shape({
+        new_id: PropTypes.string.isRequired,
+        changing_qr_code: PropTypes.shape({
+            instance: PropTypes.oneOfType([
+                plantDetailsProptypes,
+                groupDetailsProptypes
+            ]).isRequired,
+            new_uuid: PropTypes.string.isRequired,
+            preview: PropTypes.string,
+            type: PropTypes.oneOf([
+                "plant",
+                "group"
+            ]).isRequired
+        }),
+        dividing_from: PropTypes.shape({
+            plant_details: plantDetailsProptypes.isRequired,
+            default_photo: PropTypes.object.isRequired,
+            event_key: PropTypes.string.isRequired,
+            plant_key: PropTypes.string.isRequired,
+        })
+    }).isRequired
 };
 
 export default App;

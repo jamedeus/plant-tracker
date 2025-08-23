@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import PlantCard from 'src/components/PlantCard';
 import FilterColumn from 'src/components/FilterColumn';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 
 // Populates sort dropdown options
 const SORT_BY_KEYS = [
@@ -41,25 +42,7 @@ const PlantsCol = ({ plants, editing, formRef, storageKey, titleOptions, onOpenT
 };
 
 PlantsCol.propTypes = {
-    plants: PropTypes.objectOf(
-        PropTypes.exact({
-            name: PropTypes.string,
-            display_name: PropTypes.string.isRequired,
-            uuid: PropTypes.string.isRequired,
-            created: PropTypes.string.isRequired,
-            species: PropTypes.string,
-            description: PropTypes.string,
-            pot_size: PropTypes.number,
-            last_watered: PropTypes.string,
-            last_fertilized: PropTypes.string,
-            thumbnail: PropTypes.string,
-            archived: PropTypes.bool.isRequired,
-            group: PropTypes.exact({
-                name: PropTypes.string.isRequired,
-                uuid: PropTypes.string.isRequired
-            })
-        })
-    ).isRequired,
+    plants: PropTypes.objectOf(plantDetailsProptypes).isRequired,
     editing: PropTypes.bool.isRequired,
     formRef: PropTypes.oneOfType([
         PropTypes.func,

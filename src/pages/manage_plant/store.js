@@ -9,6 +9,7 @@ import { settingsSlice } from './settingsSlice';
 import { interfaceSlice } from './interfaceSlice';
 import { loadUserSettings } from './Settings';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 
 // Takes events, notes, photos, dividedFrom, and divisionEvents context objects
 // from django backend, returns timelineDays state used by Timeline component
@@ -214,7 +215,7 @@ export function ReduxProvider({ children, initialState }) {
 ReduxProvider.propTypes = {
     children: PropTypes.node,
     initialState: PropTypes.shape({
-        plant_details: PropTypes.object.isRequired,
+        plant_details: plantDetailsProptypes.isRequired,
         events: PropTypes.object.isRequired,
         divided_from: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null])]),
         division_events: PropTypes.object.isRequired,

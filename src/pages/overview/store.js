@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { overviewSlice } from './overviewSlice';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 // Takes initial plantSlice and timelineSlice states, returns redux store
 function createReduxStore(preloadedState) {
@@ -46,8 +48,8 @@ export function ReduxProvider({ children, initialState }) {
 ReduxProvider.propTypes = {
     children: PropTypes.node,
     initialState: PropTypes.shape({
-        plants: PropTypes.object.isRequired,
-        groups: PropTypes.object.isRequired,
+        plants: PropTypes.objectOf(plantDetailsProptypes).isRequired,
+        groups: PropTypes.objectOf(groupDetailsProptypes).isRequired,
         show_archive: PropTypes.bool.isRequired,
         title: PropTypes.string.isRequired
     }).isRequired

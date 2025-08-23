@@ -7,6 +7,7 @@ import GroupCard from 'src/components/GroupCard';
 import { openErrorModal } from 'src/components/ErrorModal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import { plantAddedToGroup } from './plantSlice';
+import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 let modalRef, loadOptions;
 
@@ -66,7 +67,7 @@ const Options = ({ options }) => {
 };
 
 Options.propTypes = {
-    options: PropTypes.object
+    options: PropTypes.objectOf(groupDetailsProptypes)
 };
 
 const GroupModal = () => {

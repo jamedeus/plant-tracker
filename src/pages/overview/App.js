@@ -4,6 +4,8 @@ import Layout from './Layout';
 import PrintModal from './PrintModal';
 import { ReduxProvider } from './store';
 import 'src/css/index.css';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 function App({ initialState }) {
     return (
@@ -16,8 +18,8 @@ function App({ initialState }) {
 
 App.propTypes = {
     initialState: PropTypes.shape({
-        plants: PropTypes.object.isRequired,
-        groups: PropTypes.object.isRequired,
+        plants: PropTypes.objectOf(plantDetailsProptypes).isRequired,
+        groups: PropTypes.objectOf(groupDetailsProptypes).isRequired,
         show_archive: PropTypes.bool.isRequired,
         title: PropTypes.string.isRequired,
     }),

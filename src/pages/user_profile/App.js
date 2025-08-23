@@ -11,6 +11,7 @@ import QrScannerButton from 'src/components/QrScannerButton';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import { FaCheck } from 'react-icons/fa6';
+import userDetailsProptypes from 'src/types/userDetailsPropTypes';
 import 'src/css/index.css';
 
 const UserDetails = memo(function UserDetails({ initialUserDetails }) {
@@ -148,14 +149,7 @@ const UserDetails = memo(function UserDetails({ initialUserDetails }) {
 });
 
 UserDetails.propTypes = {
-    initialUserDetails: PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
-        email_verified: PropTypes.bool.isRequired,
-        first_name: PropTypes.string.isRequired,
-        last_name: PropTypes.string.isRequired,
-        date_joined: PropTypes.string.isRequired,
-    }).isRequired
+    initialUserDetails: userDetailsProptypes.isRequired
 };
 
 const ChangePassword = memo(function ChangePassword() {
@@ -342,13 +336,6 @@ export default App;
 
 App.propTypes = {
     initialState: PropTypes.shape({
-        user_details: PropTypes.shape({
-            username: PropTypes.string.isRequired,
-            email: PropTypes.string.isRequired,
-            email_verified: PropTypes.bool.isRequired,
-            first_name: PropTypes.string.isRequired,
-            last_name: PropTypes.string.isRequired,
-            date_joined: PropTypes.string.isRequired,
-        }).isRequired
+        user_details: userDetailsProptypes.isRequired
     })
 };

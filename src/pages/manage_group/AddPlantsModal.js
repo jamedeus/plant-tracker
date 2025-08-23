@@ -8,6 +8,7 @@ import Modal from 'src/components/Modal';
 import PlantCard from 'src/components/PlantCard';
 import { plantsAdded } from './groupSlice';
 import { openErrorModal } from 'src/components/ErrorModal';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 
 let modalRef;
 
@@ -76,7 +77,7 @@ const Options = ({ options }) => {
 };
 
 Options.propTypes = {
-    options: PropTypes.object.isRequired
+    options: PropTypes.objectOf(plantDetailsProptypes).isRequired,
 };
 
 const AddPlantsModal = memo(function AddPlantsModal() {

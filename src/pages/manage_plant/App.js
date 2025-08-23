@@ -9,6 +9,7 @@ import RepotModal from './RepotModal';
 import DivisionModal from './DivisionModal';
 import EditPlantModal from './EditPlantModal';
 import 'src/css/index.css';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 
 const App = ({ initialState = null }) => {
     return (
@@ -27,7 +28,7 @@ const App = ({ initialState = null }) => {
 
 App.propTypes = {
     initialState: PropTypes.shape({
-        plant_details: PropTypes.object.isRequired,
+        plant_details: plantDetailsProptypes.isRequired,
         events: PropTypes.object.isRequired,
         notes: PropTypes.object.isRequired,
         photos: PropTypes.object.isRequired,

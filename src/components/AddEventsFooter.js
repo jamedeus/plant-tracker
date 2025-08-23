@@ -6,6 +6,7 @@ import { getSelectedItems, filterSelectedItems } from 'src/components/EditableNo
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 
 const AddEventsFooter = memo(function AddEventsFooter({
     visible,
@@ -107,7 +108,7 @@ AddEventsFooter.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
-    plants: PropTypes.object.isRequired,
+    plants: PropTypes.objectOf(plantDetailsProptypes).isRequired,
     updatePlantLastEventTimes: PropTypes.func.isRequired,
 };
 
