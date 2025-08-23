@@ -14,6 +14,7 @@ import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
 import router from 'src/routes';
 import 'src/css/index.css';
+import uuidPropType from 'src/types/uuidPropType';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
@@ -335,13 +336,13 @@ function App({ initialState }) {
 
 App.propTypes = {
     initialState: PropTypes.shape({
-        new_id: PropTypes.string.isRequired,
+        new_id: uuidPropType.isRequired,
         changing_qr_code: PropTypes.shape({
             instance: PropTypes.oneOfType([
                 plantDetailsProptypes,
                 groupDetailsProptypes
             ]).isRequired,
-            new_uuid: PropTypes.string.isRequired,
+            new_uuid: uuidPropType.isRequired,
             preview: PropTypes.string,
             type: PropTypes.oneOf([
                 "plant",

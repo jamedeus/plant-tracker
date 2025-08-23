@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import uuidPropType from 'src/types/uuidPropType';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 import photoDetailsProptypes from 'src/types/photoDetailsPropTypes';
 import defaultPhotoProptypes from 'src/types/defaultPhotoPropTypes';
@@ -17,14 +18,14 @@ export default PropTypes.exact({
     default_photo: defaultPhotoProptypes.isRequired,
     divided_from: PropTypes.exact({
         name: PropTypes.string.isRequired,
-        uuid: PropTypes.string.isRequired,
+        uuid: uuidPropType.isRequired,
         timestamp: isoTimestampTzPropType.isRequired
     }),
     division_events: PropTypes.objectOf(
         PropTypes.arrayOf(
             PropTypes.exact({
                 name: PropTypes.string.isRequired,
-                uuid: PropTypes.string.isRequired,
+                uuid: uuidPropType.isRequired,
             })
         )
     )

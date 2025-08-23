@@ -27,6 +27,7 @@ import {
     photoSelected,
     noteSelected,
 } from './interfaceSlice';
+import uuidPropType from 'src/types/uuidPropType';
 import dateKeyPropType from 'src/types/dateKeyPropType';
 import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
@@ -337,7 +338,7 @@ DivisionEventMarker.propTypes = {
     dividedPlants: PropTypes.arrayOf(
         PropTypes.exact({
             name: PropTypes.string.isRequired,
-            uuid: PropTypes.string.isRequired,
+            uuid: uuidPropType.isRequired,
         })
     ).isRequired,
 };
@@ -360,7 +361,7 @@ const DividedFromMarker = ({ name, uuid, dateKey }) => {
 
 DividedFromMarker.propTypes = {
     name: PropTypes.string.isRequired,
-    uuid: PropTypes.string.isRequired,
+    uuid: uuidPropType.isRequired,
     dateKey: dateKeyPropType.isRequired
 };
 

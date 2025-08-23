@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
+import uuidPropType from 'src/types/uuidPropType';
 
 // Renders card representing a Plant or Group entry
 // - uuid: Plant or Group uuid (used for manage page link)
@@ -99,7 +100,7 @@ const InstanceCard = memo(function InstanceCard({
 });
 
 InstanceCard.propTypes = {
-    uuid: PropTypes.string.isRequired,
+    uuid: uuidPropType.isRequired,
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.node.isRequired,
     details: PropTypes.node.isRequired,

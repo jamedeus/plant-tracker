@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
+import uuidPropType from 'src/types/uuidPropType';
 
 export default PropTypes.exact({
     name: PropTypes.string,
     display_name: PropTypes.string.isRequired,
-    uuid: PropTypes.string.isRequired,
+    uuid: uuidPropType.isRequired,
     created: PropTypes.string.isRequired,
     species: PropTypes.string,
     description: PropTypes.string,
@@ -14,6 +15,6 @@ export default PropTypes.exact({
     archived: PropTypes.bool.isRequired,
     group: PropTypes.exact({
         name: PropTypes.string.isRequired,
-        uuid: PropTypes.string.isRequired
+        uuid: uuidPropType.isRequired
     })
 });

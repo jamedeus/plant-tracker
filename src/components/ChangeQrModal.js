@@ -1,8 +1,8 @@
 import React, { useRef, memo } from 'react';
-import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
+import uuidPropType from 'src/types/uuidPropType';
 
 let modalRef;
 
@@ -47,7 +47,7 @@ const ChangeQrModal = memo(function ChangeQrModal({ uuid }) {
 });
 
 ChangeQrModal.propTypes = {
-    uuid: PropTypes.string.isRequired
+    uuid: uuidPropType.isRequired
 };
 
 export default ChangeQrModal;
