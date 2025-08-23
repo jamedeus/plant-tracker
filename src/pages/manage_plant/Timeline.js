@@ -333,7 +333,7 @@ const DivisionEventMarker = ({ dividedPlants }) => {
 
 DivisionEventMarker.propTypes = {
     dividedPlants: PropTypes.arrayOf(
-        PropTypes.shape({
+        PropTypes.exact({
             name: PropTypes.string.isRequired,
             uuid: PropTypes.string.isRequired,
         })

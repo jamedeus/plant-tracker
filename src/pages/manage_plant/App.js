@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import Layout from './Layout';
 import { ReduxProvider } from './store';
 import Settings from './Settings';
@@ -9,7 +8,7 @@ import RepotModal from './RepotModal';
 import DivisionModal from './DivisionModal';
 import EditPlantModal from './EditPlantModal';
 import 'src/css/index.css';
-import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import initialStatePropTypes from './initialStatePropTypes';
 
 const App = ({ initialState = null }) => {
     return (
@@ -27,15 +26,7 @@ const App = ({ initialState = null }) => {
 };
 
 App.propTypes = {
-    initialState: PropTypes.shape({
-        plant_details: plantDetailsProptypes.isRequired,
-        events: PropTypes.object.isRequired,
-        notes: PropTypes.object.isRequired,
-        photos: PropTypes.object.isRequired,
-        default_photo: PropTypes.object.isRequired,
-        division_events: PropTypes.object.isRequired,
-        divided_from: PropTypes.object,
-    }),
+    initialState: initialStatePropTypes.isRequired
 };
 
 export default App;

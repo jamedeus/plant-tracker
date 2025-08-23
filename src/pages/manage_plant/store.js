@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { timestampToDateString } from 'src/timestampUtils';
@@ -9,7 +8,7 @@ import { settingsSlice } from './settingsSlice';
 import { interfaceSlice } from './interfaceSlice';
 import { loadUserSettings } from './Settings';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
-import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import initialStatePropTypes from './initialStatePropTypes';
 
 // Takes events, notes, photos, dividedFrom, and divisionEvents context objects
 // from django backend, returns timelineDays state used by Timeline component
@@ -213,14 +212,5 @@ export function ReduxProvider({ children, initialState }) {
 }
 
 ReduxProvider.propTypes = {
-    children: PropTypes.node,
-    initialState: PropTypes.shape({
-        plant_details: plantDetailsProptypes.isRequired,
-        events: PropTypes.object.isRequired,
-        divided_from: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null])]),
-        division_events: PropTypes.object.isRequired,
-        photos: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-        notes: PropTypes.object.isRequired,
-        default_photo: PropTypes.object.isRequired,
-    }).isRequired
+    initialState: initialStatePropTypes.isRequired
 };
