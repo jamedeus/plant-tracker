@@ -9,7 +9,7 @@ import LoadingAnimation from 'src/components/LoadingAnimation';
 import { plantAddedToGroup } from './plantSlice';
 import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
-let modalRef, loadOptions;
+let modalRef;
 
 export const openGroupModal = () => {
     modalRef.current.open();
@@ -38,36 +38,32 @@ const Options = ({ options }) => {
         modalRef.current.close();
     };
 
-    if (options) {
-        return (
-            <>
-                {Object.entries(options).map(([uuid, group]) => (
+    return (
+        <>
+            {Object.entries(options).map(([uuid, group]) => (
+                <div
+                    key={uuid}
+                    className="flex relative w-full max-w-80 mx-auto mb-4"
+                >
+                    <GroupCard key={uuid} {...group} />
+                    {/* Cover card with transparent div with listener */}
                     <div
-                        key={uuid}
-                        className="flex relative w-full max-w-80 mx-auto mb-4"
-                    >
-                        <GroupCard key={uuid} {...group} />
-                        {/* Cover card with transparent div with listener */}
-                        <div
-                            className="absolute h-full w-full cursor-pointer"
-                            onClick={() => submit(uuid)}
-                        ></div>
-                    </div>
-                ))}
-                {!Object.keys(options).length && (
-                    <span className="my-16">
-                        No groups
-                    </span>
-                )}
-            </>
-        );
-    } else {
-        return <LoadingAnimation />;
-    }
+                        className="absolute h-full w-full cursor-pointer"
+                        onClick={() => submit(uuid)}
+                    ></div>
+                </div>
+            ))}
+            {!Object.keys(options).length && (
+                <span className="my-16">
+                    No groups
+                </span>
+            )}
+        </>
+    );
 };
 
 Options.propTypes = {
-    options: PropTypes.objectOf(groupDetailsProptypes)
+    options: PropTypes.objectOf(groupDetailsProptypes).isRequired
 };
 
 const GroupModal = () => {
@@ -77,7 +73,7 @@ const GroupModal = () => {
     const [options, setOptions] = useState(null);
 
     // Request options from backend, set state (called when modal opens)
-    loadOptions = async () => {
+    const loadOptions = async () => {
         const response = await fetch('/get_add_to_group_options');
         if (response.ok) {
             const data = await response.json();
@@ -102,7 +98,11 @@ const GroupModal = () => {
             onClose={clearOptions}
         >
             <div className="flex flex-col items-center px-4 overflow-y-auto">
-                <Options options={options} />
+                {options ? (
+                    <Options options={options} />
+                ) : (
+                    <LoadingAnimation />
+                )}
             </div>
         </Modal>
     );
