@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { overviewSlice } from './overviewSlice';
-import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 
 // Takes initial plantSlice and timelineSlice states, returns redux store
 function createReduxStore(preloadedState) {
@@ -16,10 +15,6 @@ function createReduxStore(preloadedState) {
 }
 
 export function ReduxProvider({ children, initialState }) {
-    // Get layout string used to look up default settings for current breakpoint
-    const layout = useIsBreakpointActive("md") ? 'desktop' : 'mobile';
-
-    // Parses SPA-provided context elements containing plants and groups
     const init = () => {
         // Check URL to determine if viewing main overview or archive overview
         const archivedOverview = window.location.pathname === '/archived';
@@ -39,7 +34,7 @@ export function ReduxProvider({ children, initialState }) {
     // Create redux store
     const store = useMemo(() => createReduxStore(
         init()
-    ), [initialState, layout]);
+    ), [initialState]);
 
     return (
         <Provider store={store}>

@@ -22,7 +22,6 @@ import { FaPlus } from 'react-icons/fa6';
 // Render correct components for current state objects
 const Layout = () => {
     const dispatch = useDispatch();
-    const handleAddEvents = (payload) => dispatch(updatePlantLastEventTimes(payload));
 
     // Controls whether dropdown contains user profile link
     const userAccountsEnabled = useMemo(() => (
@@ -73,6 +72,15 @@ const Layout = () => {
         document.activeElement.blur();
     }, [addingEvents]);
 
+    const stopAddingEvents = useCallback(() => {
+        setAddingEvents(false);
+    }, []);
+
+    // Handler for AddEventsFooter buttons
+    const handleAddEvents = useCallback((payload) => {
+        dispatch(updatePlantLastEventTimes(payload));
+    }, [dispatch]);
+
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
         return (
@@ -110,21 +118,15 @@ const Layout = () => {
     // Dropdown with links to jump to plant or group columns
     // Only rendered on mobile layout (both columns always visible on desktop)
     const TitleQuickNavigation = useMemo(() => {
-        const jumpToPlants = () => {
-            plantsColRef.current.scrollIntoView({
+        const jumpTo = (ref) => {
+            ref.current.scrollIntoView({
                 behavior: "smooth",
                 block: "start"
             });
             document.activeElement.blur();
         };
-
-        const jumpToGroups = () => {
-            groupsColRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-            document.activeElement.blur();
-        };
+        const jumpToPlants = () => jumpTo(plantsColRef);
+        const jumpToGroups = () => jumpTo(groupsColRef);
 
         return (
             <DropdownMenu className="mt-3 w-24">
@@ -244,7 +246,7 @@ const Layout = () => {
             {!archivedOverview &&
                 <AddEventsFooter
                     visible={addingEvents}
-                    onClose={() => setAddingEvents(false)}
+                    onClose={stopAddingEvents}
                     selectedPlantsRef={selectedPlantsRef}
                     plants={plants}
                     updatePlantLastEventTimes={handleAddEvents}

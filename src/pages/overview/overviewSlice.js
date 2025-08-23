@@ -15,7 +15,9 @@ export const overviewSlice = createSlice({
     initialState: {
         plants: {},
         groups: {},
+        // True if archived overview, false if main overview
         archivedOverview: false,
+        // Controls visibility of archived overview link in top left dropdown
         showArchive: false,
         title: "Plant Overview"
     },
