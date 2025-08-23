@@ -33,9 +33,8 @@ const DropdownButton = memo(function DropdownButton() {
 // Renders navbar with dropdown on left and dynamically-sized title in center
 // Optional titleOptions param will be shown in dropdown when title is clicked
 // Both option params must be list of <li> elements
-// Optional onOpenMenu and onOpenTitle params are functions called when opening
 // the top-left dropdown and title dropdown respectively
-const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptions, onOpenTitle, topRightButton }) {
+const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, topRightButton }) {
     // Create refs for navbar and title text (used to read widths)
     const navbarRef = useRef(null);
     const titleRef = useRef(null);
@@ -95,10 +94,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
             className="navbar bg-base-100 fixed top-0 z-99"
         >
             {/* Top left dropdown button */}
-            <div
-                className="dropdown justify-start min-w-12"
-                onClick={onOpenMenu}
-            >
+            <div className="dropdown justify-start min-w-12">
                 <DropdownButton />
                 <DropdownMenu className="mt-3">
                     {menuOptions}
@@ -111,10 +107,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
                 onClick={titleOptions ? null : jumpToTop}
                 title={titleOptions ? null : "Scroll to top"}
             >
-                <div
-                    className="dropdown dropdown-center w-full"
-                    onClick={onOpenTitle}
-                >
+                <div className="dropdown dropdown-center w-full">
                     {/* Button if dropdown options exist, otherwise text */}
                     <a
                         tabIndex={titleOptions ? 0 : -1}
@@ -150,10 +143,8 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
 
 Navbar.propTypes = {
     menuOptions: PropTypes.node,
-    onOpenMenu: PropTypes.func,
     title: PropTypes.string.isRequired,
     titleOptions: PropTypes.node,
-    onOpenTitle: PropTypes.func,
     topRightButton: PropTypes.node
 };
 
