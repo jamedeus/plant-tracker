@@ -108,7 +108,7 @@ To use HTTPS you'll also need to create a `certs/` directory for the reverse pro
 
 Once that's done start the server with:
 ```
-docker compose --file development-docker-compose.yaml up
+docker compose --file development-docker-compose.yaml up --abort-on-container-exit
 ```
 
 The app can now be accessed at [`http://localhost:8456`](http://localhost:8456) or at your `VIRTUAL_HOST` if using SSL.
@@ -117,6 +117,34 @@ The app can now be accessed at [`http://localhost:8456`](http://localhost:8456) 
 - To switch from silk to django-debug-toolbar change the `DEBUG_TOOL` env var to `toolbar` and restart the container.
 
 For baremetal development setup instructions see [here](docs/development.md).
+
+### Troubleshooting
+
+The development docker compose uses volumes to store python dependencies so they aren't reinstalled every time it starts up. It should still pick up new dependencies when they are added to Pipfile, since it generates the requirements.txt file every time it starts. However it will not uninstall dependencies that are removed from Pipfile, which can mask failures (eg if the removed dependency is still imported somewhere it will still work in the development container, but a production build would fail). To clear all the dependency volumes run these commands:
+```
+docker compose -f development-docker-compose.yaml rm -fsv
+docker volume rm plant-tracker_pipcache
+docker volume rm plant-tracker_pydeps
+docker volume rm plant-tracker_pybin
+```
+
+The development setup also uses a volume to store the postgres database so data persists between runs. To clear this run:
+```
+docker compose -f development-docker-compose.yaml rm -fsv
+docker volume rm plant-tracker_plant-tracker-database-dev
+```
+
+There is also a volume for the redis cache, which can contain outdated cached overview states in some cases. To fix this you can remove the volume with:
+```
+docker compose -f development-docker-compose.yaml rm -fsv
+docker volume rm plant-tracker_plant-tracker-redis-data-dev
+```
+
+Or clear the cache in a running container with:
+```
+docker exec -it redis-dev /bin/bash
+redis-cli flushall
+```
 
 ### Unit tests
 
