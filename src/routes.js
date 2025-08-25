@@ -67,6 +67,15 @@ async function fetchJSON(url, request) {
     return data;
 }
 
+// Preloads component and initial state in parallel (faster page load)
+const loadPage = async (component, endpoint, request) => {
+    const [, initialState] = await Promise.all([
+        component.preload(),
+        fetchJSON(endpoint, request)
+    ]);
+    return initialState;
+};
+
 // Generic adapter: renders App with loader data as `initialState`
 function makePageRoute(App) {
     return function PageRoute() {
@@ -127,29 +136,22 @@ export const routes = [
             {
                 index: true,
                 Component: OverviewRoute,
-                loader: async ({ request }) => {
-                    await OverviewApp.preload();
-                    return await fetchJSON('/get_overview_state', request);
-                },
+                loader: async ({ request }) => (
+                    loadPage(OverviewApp, '/get_overview_state', request)
+                ),
             },
             {
                 path: 'archived',
                 Component: ArchivedRoute,
-                loader: async ({ request }) => {
-                    await OverviewApp.preload();
-                    return await fetchJSON('/get_archived_overview_state', request);
-                },
+                loader: async ({ request }) => (
+                    loadPage(OverviewApp, '/get_archived_overview_state', request)
+                ),
             },
             {
                 path: 'manage/:uuid',
                 Component: ManageRoute,
                 loader: async ({ params, request }) => {
-                    const body = await fetchJSON(`/resolve_manage/${params.uuid}`, request);
-                    // Preload correct bundle unless response is a redirect
-                    if (!(body instanceof Response)) {
-                        await ManageComponentMap[body.page].preload();
-                    }
-                    return body;
+                    return await fetchJSON(`/resolve_manage/${params.uuid}`, request);
                 },
             },
             {
@@ -159,10 +161,9 @@ export const routes = [
             {
                 path: 'accounts/profile/',
                 Component: UserProfileRoute,
-                loader: async ({ request }) => {
-                    await UserProfileApp.preload();
-                    return await fetchJSON('/accounts/get_user_details/', request);
-                },
+                loader: async ({ request }) => (
+                    loadPage(UserProfileApp, '/accounts/get_user_details/', request)
+                ),
             },
             {
                 path: 'accounts/reset/:uidb64/:token/',
