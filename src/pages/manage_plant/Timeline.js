@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import { capitalize, pastTense } from 'src/utils/stringUtils';
-import { timestampToReadable, timestampToRelativeDays } from 'src/timestampUtils';
+import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
 import { openNoteModal } from './NoteModal';
 import { openRepotModal } from './RepotModal';
 import { openPhotoModal } from './PhotoModal';

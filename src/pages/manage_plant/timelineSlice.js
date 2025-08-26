@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { timestampToDateString } from 'src/timestampUtils';
+import { timestampToDateString } from 'src/utils/timestampUtils';
 import { sortPhotosChronologically } from './store';
 
 // Correct order for event markers within a single timeline day (readability)

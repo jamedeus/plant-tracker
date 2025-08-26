@@ -6,7 +6,7 @@ import { showToast } from 'src/components/Toast';
 import HoldToConfirm from 'src/components/HoldToConfirm';
 import { openErrorModal } from 'src/components/ErrorModal';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import { localToUTC, timestampToReadable } from 'src/timestampUtils';
+import { localToUTC, timestampToReadable } from 'src/utils/timestampUtils';
 import { DateTime } from 'luxon';
 import { noteAdded, noteEdited, noteDeleted } from './timelineSlice';
 import { useDispatch, useSelector } from 'react-redux';

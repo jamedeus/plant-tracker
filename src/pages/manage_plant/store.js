@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { timestampToDateString } from 'src/timestampUtils';
+import { timestampToDateString } from 'src/utils/timestampUtils';
 import { plantSlice } from './plantSlice';
 import { timelineSlice } from './timelineSlice';
 import { settingsSlice } from './settingsSlice';

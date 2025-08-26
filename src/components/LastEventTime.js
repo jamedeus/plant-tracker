@@ -6,7 +6,7 @@ import {
     timestampToRelative,
     timestampToRelativeCalendar,
     timestampIsLessThanOneMinuteOld
-} from 'src/timestampUtils';
+} from 'src/utils/timestampUtils';
 import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 // Return relative sec/min/hours if timestamp on current date in user timezone.

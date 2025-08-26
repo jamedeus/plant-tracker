@@ -1,5 +1,5 @@
 import React, { useRef,  memo } from 'react';
-import { localToUTC } from 'src/timestampUtils';
+import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';

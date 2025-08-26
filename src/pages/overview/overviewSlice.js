@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getMostRecent } from 'src/timestampUtils';
+import { getMostRecent } from 'src/utils/timestampUtils';
 import router from 'src/routes';
 
 // Map eventType taken by bulk_add_plant_events to the plantDetails state

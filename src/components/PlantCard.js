@@ -7,7 +7,7 @@ import { capitalize } from 'src/utils/stringUtils';
 import {
     timestampToRelativeCalendar,
     timestampToReadable
-} from 'src/timestampUtils';
+} from 'src/utils/timestampUtils';
 import uuidPropType from 'src/types/uuidPropType';
 
 const LastWateredSpan = ({ last_watered }) => {

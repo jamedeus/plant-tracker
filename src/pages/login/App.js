@@ -3,7 +3,7 @@ import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { showToast } from 'src/components/Toast';
 import Navbar from 'src/components/Navbar';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import { EMAIL_REGEX } from 'src/regex';
+import { EMAIL_REGEX } from 'src/utils/regex';
 import router from 'src/routes';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';

@@ -2,7 +2,7 @@ import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { localToUTC } from 'src/timestampUtils';
+import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { openChangeQrModal } from 'src/components/ChangeQrModal';

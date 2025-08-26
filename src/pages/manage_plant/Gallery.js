@@ -12,7 +12,7 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "src/css/gallery.css";
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { useSelector, useDispatch } from 'react-redux';
-import { timestampToReadable } from 'src/timestampUtils';
+import { timestampToReadable } from 'src/utils/timestampUtils';
 import { defaultPhotoChanged, photosDeleted } from './timelineSlice';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { localToUTC } from 'src/timestampUtils';
+import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, } from 'react-redux';

@@ -1,7 +1,7 @@
 import React, { memo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { localToUTC } from 'src/timestampUtils';
 import { pastTense } from 'src/utils/stringUtils';
+import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { getSelectedItems, filterSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getMostRecent } from 'src/timestampUtils';
+import { getMostRecent } from 'src/utils/timestampUtils';
 
 // Map eventType taken by bulk_add_plant_events to the plantDetails state
 // key that should be updated when an event is successfully created
