@@ -838,10 +838,7 @@ class SingleUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
         # Request state object, confirm contains plant details
-        response = self.client.get(
-            f'/get_manage_state/{plant.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{plant.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['state']['plant_details'], plant.get_details())
         self.assertEqual(response.json()['title'], 'Manage Plant')
@@ -860,10 +857,7 @@ class SingleUserModeTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Request state object, confirm returns permission denied
-        response = self.client.get(
-            f'/get_manage_state/{plant.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{plant.uuid}')
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
             response.json(),
@@ -875,10 +869,7 @@ class SingleUserModeTests(TestCase):
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Request plant state (comes from default user since SINGLE_USER_MODE enabled)
-        response = self.client.get(
-            f'/get_manage_state/{plant.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{plant.uuid}')
 
         # Confirm received plant state
         self.assertEqual(response.status_code, 200)
@@ -898,10 +889,7 @@ class SingleUserModeTests(TestCase):
         plant = Plant.objects.create(uuid=uuid4(), user=test_user)
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
-        response = self.client.get(
-            f'/get_manage_state/{plant.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{plant.uuid}')
 
         # Confirm received error response, not plant state
         self.assertEqual(response.status_code, 403)
@@ -922,10 +910,7 @@ class SingleUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
         # Request state object, confirm contains group details
-        response = self.client.get(
-            f'/get_manage_state/{group.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{group.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['state']['group_details'], group.get_details())
         self.assertEqual(response.json()['title'], 'Manage Group')
@@ -944,10 +929,7 @@ class SingleUserModeTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Request state object, confirm returns permission denied
-        response = self.client.get(
-            f'/get_manage_state/{group.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{group.uuid}')
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
             response.json(),
@@ -959,10 +941,7 @@ class SingleUserModeTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Request group state (comes from default user since SINGLE_USER_MODE enabled)
-        response = self.client.get(
-            f'/get_manage_state/{group.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{group.uuid}')
 
         # Confirm received group state
         self.assertEqual(response.status_code, 200)
@@ -982,10 +961,7 @@ class SingleUserModeTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=test_user)
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
-        response = self.client.get(
-            f'/get_manage_state/{group.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{group.uuid}')
 
         # Confirm received error response, not group state
         self.assertEqual(response.status_code, 403)
@@ -1119,10 +1095,7 @@ class MultiUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
         # Request state object, confirm title contains user's first name
-        response = self.client.get(
-            '/get_overview_state',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json('/get_overview_state')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['title'], "Bob's Plants")
 
@@ -1148,10 +1121,7 @@ class MultiUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
         # Request state object, confirm contains plant details
-        response = self.client.get(
-            f'/get_manage_state/{plant.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{plant.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['state']['plant_details'], plant.get_details())
         self.assertEqual(response.json()['title'], 'Manage Plant')
@@ -1181,10 +1151,7 @@ class MultiUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
         # Request state object, confirm contains group details
-        response = self.client.get(
-            f'/get_manage_state/{group.uuid}',
-            HTTP_ACCEPT='application/json'
-        )
+        response = self.client.get_json(f'/get_manage_state/{group.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['state']['group_details'], group.get_details())
         self.assertEqual(response.json()['title'], 'Manage Group')
@@ -1208,9 +1175,8 @@ class MultiUserModeTests(TestCase):
         # Request plant state without signing in
         # Accept header is sent by SPA loader when requesting state
         self.assertFalse(auth.get_user(self.client).is_authenticated)
-        self.assertAuthenticationRequiredError(self.client.get(
-            f'/get_manage_state/{plant.uuid}',
-            HTTP_ACCEPT='application/json'
+        self.assertAuthenticationRequiredError(self.client.get_json(
+            f'/get_manage_state/{plant.uuid}'
         ))
 
 
@@ -1221,9 +1187,8 @@ class MultiUserModeTests(TestCase):
         # Request group state without signing in
         # Accept header is sent by SPA loader when requesting state
         self.assertFalse(auth.get_user(self.client).is_authenticated)
-        self.assertAuthenticationRequiredError(self.client.get(
-            f'/get_manage_state/{group.uuid}',
-            HTTP_ACCEPT='application/json'
+        self.assertAuthenticationRequiredError(self.client.get_json(
+            f'/get_manage_state/{group.uuid}'
         ))
 
     def test_endpoints_require_authenticated_user(self):
@@ -1382,16 +1347,10 @@ class MultiUserModeTests(TestCase):
         self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
         self.assertPlantIsOwnedByADifferentUserError(
-            self.client.get(
-                f'/get_manage_state/{plant.uuid}',
-                HTTP_ACCEPT='application/json'
-            )
+            self.client.get_json(f'/get_manage_state/{plant.uuid}')
         )
         self.assertGroupIsOwnedByADifferentUserError(
-            self.client.get(
-                f'/get_manage_state/{group.uuid}',
-                HTTP_ACCEPT='application/json'
-            )
+            self.client.get_json(f'/get_manage_state/{group.uuid}')
         )
         self.assertInstanceIsOwnedByADifferentUserError(
             self.client.post('/change_uuid', {
