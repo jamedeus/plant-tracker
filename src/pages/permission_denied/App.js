@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SmartLink from 'src/components/SmartLink';
+import { Link } from 'react-router-dom';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 
@@ -17,9 +17,9 @@ function App({ errorMessage }) {
                 {errorMessage}
             </div>
 
-            <SmartLink to="/" className='btn btn-accent'>
+            <Link to="/" className='btn btn-accent'>
                 Go to Overview
-            </SmartLink>
+            </Link>
         </div>
     );
 }

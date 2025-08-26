@@ -323,10 +323,7 @@ def disable_in_single_user_mode(func):
                 return render(
                     request,
                     'plant_tracker/permission_denied.html',
-                    {
-                        'user_accounts_enabled': not settings.SINGLE_USER_MODE,
-                        'error': 'User accounts are disabled',
-                    }
+                    { 'error': 'User accounts are disabled' }
                 )
             # User POSTing to disabled endpoint: return error response
             return JsonResponse(

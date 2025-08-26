@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import SmartLink from './SmartLink';
+import { Link } from 'react-router-dom';
 import { parseDomContext } from 'src/util';
 import ToggleThemeOption from './ToggleThemeOption';
 
@@ -11,13 +11,13 @@ const NavbarDropdownOptions = ({ children }) => {
 
     return (
         <>
-            <li><SmartLink to='/'>
+            <li><Link to='/'>
                 Overview
-            </SmartLink></li>
+            </Link></li>
             {userAccountsEnabled && (
-                <li><SmartLink to="/accounts/profile/">
+                <li><Link to="/accounts/profile/">
                     User profile
-                </SmartLink></li>
+                </Link></li>
             )}
             {children}
             <ToggleThemeOption />
