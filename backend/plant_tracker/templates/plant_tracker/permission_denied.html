@@ -10,7 +10,7 @@
     <link rel="icon" type="image/svg+xml" href="{% static 'plant_tracker/favicon.svg' %}" />
     <link rel="shortcut icon" href="{% static 'plant_tracker/favicon.ico' %}" />
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'plant_tracker/apple-touch-icon.png' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'plant_tracker/shared.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plant_tracker/spa.css' %}">
     {# Prevent visual flash on page load in dark mode #}
     <style>
         html[data-theme="dark"] body {
@@ -67,7 +67,7 @@
         </a>
     </div>
     <script>
-        // Set iniitial toggle theme button text
+        // Set initial toggle theme button text
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('theme-toggle');
             if (!button) return;

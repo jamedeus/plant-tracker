@@ -50,23 +50,13 @@ module.exports = (env, argv) => {
                         chunks: 'all',
                         enforce: true,
                     },
-                    // Extract CSS shared by 2 or more pages to separate shared.css
-                    sharedStyles: {
-                        type: 'css/mini-extract',
-                        name: 'shared',
-                        chunks: 'all',
-                        enforce: true,
-                        minChunks: 2,
-                        reuseExistingChunk: true,
-                    }
                 },
             }
         },
-        // Add entry for SPA shell and permission denied page
-        // Other pages are built as chunks (named in lazy load imports)
+        // Single entry for SPA shell
+        // Other pages are built as lazy load chunks (see src/bundles.js)
         entry: {
             spa: './src/index.js',
-            permission_denied: './src/pages/permission_denied/index.js',
         },
         output: {
             path: path.resolve('backend/plant_tracker/static/plant_tracker/'),
