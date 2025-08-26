@@ -2,7 +2,6 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = (env, argv) => {
@@ -71,10 +70,6 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new MiniCssExtractPlugin({ filename: '[name].css' }),
-            // Save manifest.json (maps page names to list of bundle dependencies)
-            new WebpackManifestPlugin({
-                generate(_, __, entrypoints) { return entrypoints; },
-            }),
             ...(env.analyze ? [new BundleAnalyzerPlugin()] : []),
         ],
         module: {
