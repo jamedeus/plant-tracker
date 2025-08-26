@@ -27,21 +27,15 @@ from .models import (
 from .view_decorators import (
     events_map,
     get_user_token,
-    find_model_type,
     requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
-    get_plant_or_group_by_uuid,
     get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
     clean_payload_data
 )
 from .build_states import (
-    build_overview_state,
-    get_overview_state,
-    build_manage_plant_state,
-    build_manage_group_state,
     update_cached_overview_details_keys,
     add_instance_to_cached_overview_state,
     remove_instance_from_cached_overview_state,
@@ -84,119 +78,6 @@ def get_qr_codes(data, **kwargs):
             {'error': 'failed to generate, try a shorter URL_PREFIX'},
             status=500
         )
-
-
-@get_user_token
-def get_overview_page_state(_, user):
-    '''Returns current overview page state for the requesting user, used to
-    refresh contents when returning to over view with back button.
-    '''
-    return JsonResponse(
-        get_overview_state(user),
-        status=200
-    )
-
-
-@get_user_token
-def get_archived_overview_state(_, user):
-    '''Returns archived overview page state for the requesting user as JSON.
-    Used by SPA to bootstrap the archived overview route.
-    '''
-    state = build_overview_state(user, archived=True)
-    if not state:
-        return JsonResponse({'redirect': '/'}, status=302)
-    return JsonResponse(state, status=200)
-
-
-@get_user_token
-def get_manage_state(request, uuid, user):
-    '''Resolves a UUID to the correct page and returns initial state as JSON.
-    Returns page key (manage_plant, manage_group, or register), page title, and
-    the initial state object for that page. Intended for SPA bootstrapping.
-    '''
-    try:
-        model_type = find_model_type(uuid)
-    except ValidationError:
-        return JsonResponse({'Error': 'Requires valid UUID'}, status=400)
-
-    if model_type == 'plant':
-        plant = Plant.objects.get_with_manage_plant_annotation(uuid)
-        if plant.user != user:
-            return JsonResponse(
-                {"error": "plant is owned by a different user"},
-                status=403
-            )
-        return JsonResponse({
-            'page': 'manage_plant',
-            'title': 'Manage Plant',
-            'state': build_manage_plant_state(plant)
-        }, status=200)
-
-    if model_type == 'group':
-        group = Group.objects.get_with_manage_group_annotation(uuid)
-        if group.user != user:
-            return JsonResponse(
-                {"error": "group is owned by a different user"},
-                status=403
-            )
-        return JsonResponse({
-            'page': 'manage_group',
-            'title': 'Manage Group',
-            'state': build_manage_group_state(group)
-        }, status=200)
-
-    # UUID not found: return registration page state
-    def _build_register_state(new_uuid):
-        '''Returns initial state for register page.
-
-        If the old_uuid cache is set (see /change_qr_code endpoint) context includes
-        information used by frontend to show change QR prompt (calls /change_uuid
-        and redirects if confirmed, shows normal registration form if rejected).
-
-        If the dividing_from cache is set (see /divide_plant endpoint) context
-        includes information used by frontend to show confirm dividing prompt (shows
-        plant form with pre-filled details if confirmed, shows normal registration
-        form if rejected).
-        '''
-        state = { 'new_id': new_uuid }
-
-        # Include context for changing QR code if present
-        old_uuid = cache.get(f'old_uuid_{user.pk}')
-        if old_uuid:
-            instance = get_plant_or_group_by_uuid(old_uuid, annotate=True)
-            if instance:
-                state['changing_qr_code'] = {
-                    'type': instance._meta.model_name,
-                    'instance': instance.get_details(),
-                    'new_uuid': new_uuid
-                }
-                if state['changing_qr_code']['type'] == 'plant':
-                    preview_url = instance.get_default_photo_details()['preview']
-                    state['changing_qr_code']['preview'] = preview_url
-            else:
-                cache.delete(f'old_uuid_{user.pk}')
-
-        # Include context for dividing plant if present
-        division_in_progress = cache.get(f'division_in_progress_{user.pk}')
-        if division_in_progress:
-            plant = Plant.objects.get_with_overview_annotation(
-                uuid=division_in_progress['divided_from_plant_uuid']
-            )
-            if plant:
-                state['dividing_from'] = {
-                    'plant_details': plant.get_details(),
-                    'default_photo': plant.get_default_photo_details(),
-                    'plant_key': str(plant.pk),
-                    'event_key': division_in_progress['division_event_key']
-                }
-
-        return state
-
-    return JsonResponse({
-        'page': 'register',
-        'title': 'Register New Plant',
-        'state': _build_register_state(uuid)
-    }, status=200)
 
 
 def get_plant_species_options(request):

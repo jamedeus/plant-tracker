@@ -11,9 +11,12 @@ user goes back to overview after each plant).
 
 from django.conf import settings
 from django.core.cache import cache
+from django.http import JsonResponse
 from django.db.models import Prefetch
+from django.core.exceptions import ValidationError
 
 from .models import Plant, Group
+from .view_decorators import get_user_token, find_model_type, get_plant_or_group_by_uuid
 
 
 def build_manage_plant_state(plant):
@@ -72,6 +75,53 @@ def build_manage_group_state(group):
             str(plant.uuid): plant.get_details() for plant in plants
         }
     }
+
+
+def build_register_state(new_uuid, user):
+    '''Returns initial state for register page.
+
+    If the old_uuid cache is set (see /change_qr_code endpoint) context includes
+    information used by frontend to show change QR prompt (calls /change_uuid
+    and redirects if confirmed, shows normal registration form if rejected).
+
+    If the dividing_from cache is set (see /divide_plant endpoint) context
+    includes information used by frontend to show confirm dividing prompt (shows
+    plant form with pre-filled details if confirmed, shows normal registration
+    form if rejected).
+    '''
+    state = { 'new_id': new_uuid }
+
+    # Include context for changing QR code if present
+    old_uuid = cache.get(f'old_uuid_{user.pk}')
+    if old_uuid:
+        instance = get_plant_or_group_by_uuid(old_uuid, annotate=True)
+        if instance:
+            state['changing_qr_code'] = {
+                'type': instance._meta.model_name,
+                'instance': instance.get_details(),
+                'new_uuid': new_uuid
+            }
+            if state['changing_qr_code']['type'] == 'plant':
+                preview_url = instance.get_default_photo_details()['preview']
+                state['changing_qr_code']['preview'] = preview_url
+        else:
+            cache.delete(f'old_uuid_{user.pk}')
+
+    # Include context for dividing plant if present
+    division_in_progress = cache.get(f'division_in_progress_{user.pk}')
+    if division_in_progress:
+        plant = Plant.objects.get_with_overview_annotation(
+            uuid=division_in_progress['divided_from_plant_uuid']
+        )
+        if plant:
+            state['dividing_from'] = {
+                'plant_details': plant.get_details(),
+                'default_photo': plant.get_default_photo_details(),
+                'plant_key': str(plant.pk),
+                'event_key': division_in_progress['division_event_key']
+            }
+
+    return state
 
 
 def has_archived_entries(user):
@@ -205,3 +255,70 @@ def update_cached_overview_state_show_archive_bool(user):
     state = get_overview_state(user)
     state['show_archive'] = has_archived_entries(user)
     cache.set(f'overview_state_{user.pk}', state, None)
+
+
+@get_user_token
+def get_overview_page_state(_, user):
+    '''Returns current overview page state for the requesting user, used to
+    refresh contents when returning to over view with back button.
+    '''
+    return JsonResponse(
+        get_overview_state(user),
+        status=200
+    )
+
+
+@get_user_token
+def get_archived_overview_state(_, user):
+    '''Returns archived overview page state for the requesting user as JSON.
+    Used by SPA to bootstrap the archived overview route.
+    '''
+    state = build_overview_state(user, archived=True)
+    if not state:
+        return JsonResponse({'redirect': '/'}, status=302)
+    return JsonResponse(state, status=200)
+
+
+@get_user_token
+def get_manage_state(request, uuid, user):
+    '''Resolves a UUID to the correct page and returns initial state as JSON.
+    Returns page key (manage_plant, manage_group, or register), page title, and
+    the initial state object for that page. Intended for SPA bootstrapping.
+    '''
+    try:
+        model_type = find_model_type(uuid)
+    except ValidationError:
+        return JsonResponse({'Error': 'Requires valid UUID'}, status=400)
+
+    if model_type == 'plant':
+        plant = Plant.objects.get_with_manage_plant_annotation(uuid)
+        if plant.user != user:
+            return JsonResponse(
+                {"error": "plant is owned by a different user"},
+                status=403
+            )
+        return JsonResponse({
+            'page': 'manage_plant',
+            'title': 'Manage Plant',
+            'state': build_manage_plant_state(plant)
+        }, status=200)
+
+    if model_type == 'group':
+        group = Group.objects.get_with_manage_group_annotation(uuid)
+        if group.user != user:
+            return JsonResponse(
+                {"error": "group is owned by a different user"},
+                status=403
+            )
+        return JsonResponse({
+            'page': 'manage_group',
+            'title': 'Manage Group',
+            'state': build_manage_group_state(group)
+        }, status=200)
+
+    # UUID not found: return registration page state
+    return JsonResponse({
+        'page': 'register',
+        'title': 'Register New Plant',
+        'state': build_register_state(uuid, user)
+    }, status=200)
