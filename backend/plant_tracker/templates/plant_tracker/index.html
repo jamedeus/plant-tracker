@@ -21,8 +21,8 @@
             background: #1D232A;
         }
     </style>
+    {# Set theme dataset attribute from localStorage (or default to dark) #}
     <script>
-        // Set theme dataset attribute from localStorage (or default to dark)
         const initialTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', initialTheme);
     </script>
@@ -32,10 +32,5 @@
     <div id="root"></div>
     {# Save bool that controls whether user profile links are rendered #}
     {{ user_accounts_enabled|json_script:"user_accounts_enabled" }}
-
-    {# Save error message used by permission denied page if present #}
-    {% if error %}
-        {{ error|json_script:"error" }}
-    {% endif %}
 </body>
 </html>
