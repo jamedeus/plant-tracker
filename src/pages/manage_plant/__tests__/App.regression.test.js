@@ -130,14 +130,14 @@ describe('App', () => {
                 failed: [],
                 urls: [
                     {
-                        timestamp: "2024-03-21T10:52:03",
+                        timestamp: "2024-03-21T10:52:03.123+00:00",
                         image: "/media/images/photo1.jpg",
                         thumbnail: "/media/images/photo1_thumb.webp",
                         preview: "/media/images/photo1_preview.webp",
                         key: 1
                     },
                     {
-                        timestamp: "2024-03-22T10:52:04",
+                        timestamp: "2024-03-22T10:52:04.123+00:00",
                         image: "/media/images/photo2.jpg",
                         thumbnail: "/media/images/photo2_thumb.webp",
                         preview: "/media/images/photo2_preview.webp",

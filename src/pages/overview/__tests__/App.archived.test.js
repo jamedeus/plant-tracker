@@ -219,7 +219,7 @@ describe('App', () => {
             json: () => Promise.resolve({
                 archived: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-fb15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
                     "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
                 ],

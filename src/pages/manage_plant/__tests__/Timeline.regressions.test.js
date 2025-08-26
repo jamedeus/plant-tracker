@@ -38,15 +38,15 @@ describe('Timeline regressions', () => {
                 prune: [],
                 repot: []
             },
-            photos: [
-                {
+            photos: {
+                1: {
                     timestamp: "2023-12-21T11:57:26+00:00",
-                    image: "/media/images/IMG_5866.jpeg",
+                    photo: "/media/images/IMG_5866.jpeg",
                     thumbnail: "/media/thumbnails/IMG_5866_thumb.webp",
                     preview: "/media/previews/IMG_5866_preview.webp",
                     key: 46
                 },
-            ],
+            },
             notes: {
                 "2023-05-25T15:28:39+00:00": "Fertilized with a balanced 10-10-10 fertilizer."
             }

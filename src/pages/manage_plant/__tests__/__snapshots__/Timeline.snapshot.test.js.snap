@@ -427,7 +427,7 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
             />
             <a
               class="plant-link truncate"
-              href="/manage/dfafcb4d-220e-2543-f187-fb6b5be589ba"
+              href="/manage/dfafcb4d-1bed-4b15-a078-d6e7ec66be14"
             >
               Child plant 2
             </a>

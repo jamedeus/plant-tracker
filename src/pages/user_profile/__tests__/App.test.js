@@ -21,7 +21,8 @@ describe('App', () => {
                         email: "totally.not.anthony.weiner@gmail.com",
                         first_name: "Carlos",
                         last_name: "Danger",
-                        date_joined: "2025-04-06T00:08:53.392806+00:00"
+                        date_joined: "2025-04-06T00:08:53.392806+00:00",
+                        email_verified: false
                     }
                 }} />
                 <Toast />

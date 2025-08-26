@@ -15,10 +15,10 @@ export const mockContext = {
             archived: false,
             group: null
         },
-        "0640ec3b-1bed-fb15-a078-d6e7ec66be12": {
+        "0640ec3b-1bed-4b16-a078-d6e7ec66be12": {
             name: "Second Test Plant",
             display_name: "Second Test Plant",
-            uuid: "0640ec3b-1bed-fb15-a078-d6e7ec66be12",
+            uuid: "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
             created: "2023-12-28T01:25:12+00:00",
             species: "Fittonia",
             description: "",

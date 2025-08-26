@@ -9,8 +9,8 @@ import { postHeaders } from 'src/testUtils/headers';
 import { mockContext } from './mockContext';
 
 const mockNotes = {
-    '2024-02-13T12:00:00': 'this is an existing note',
-    '2024-02-12T12:00:00': 'another existing note'
+    '2024-02-13T12:00:00+00:00': 'this is an existing note',
+    '2024-02-12T12:00:00+00:00': 'another existing note'
 };
 
 const TestComponent = () => {
@@ -194,7 +194,7 @@ describe('Edit existing note', () => {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
-                timestamps: ['2024-02-13T12:00:00']
+                timestamps: ['2024-02-13T12:00:00+00:00']
             }),
             headers: postHeaders
         });
@@ -222,7 +222,7 @@ describe('Edit existing note', () => {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
-                timestamp: '2024-02-13T12:00:00',
+                timestamp: '2024-02-13T12:00:00+00:00',
                 note_text: 'this is an existing note some more details'
             }),
             headers: postHeaders

@@ -95,7 +95,7 @@ describe('Timeline', () => {
                             },
                             {
                                 name: "Child plant 2",
-                                uuid: "dfafcb4d-220e-2543-f187-fb6b5be589ba"
+                                uuid: "dfafcb4d-1bed-4b15-a078-d6e7ec66be14"
                             },
                         ]
                     }

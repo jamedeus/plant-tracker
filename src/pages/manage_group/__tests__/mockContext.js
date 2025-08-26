@@ -7,6 +7,7 @@ export const mockContext = {
         display_name: "Test group",
         location: "Middle shelf",
         description: null,
+        archived: false,
         plants: 3
     },
     plants: {

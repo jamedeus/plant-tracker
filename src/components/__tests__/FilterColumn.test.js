@@ -330,7 +330,7 @@ describe('FilterColumn', () => {
             created: "",
             species: "",
             description: "",
-            pot_size: "",
+            pot_size: null,
             last_watered: "",
             last_fertilized: "",
             thumbnail: ""

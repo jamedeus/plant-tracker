@@ -14,7 +14,7 @@ describe('Plant with no photos (no default photo set)', () => {
         default_photo: { ...mockContext.default_photo,
             set: false,
             timestamp: null,
-            image: null,
+            photo: null,
             thumbnail: null,
             key: null
         }
@@ -62,14 +62,14 @@ describe('Plant with no photos (no default photo set)', () => {
                 urls: [
                     {
                         timestamp: "2024-03-21T10:52:03+00:00",
-                        image: "/media/images/photo1.jpg",
+                        photo: "/media/images/photo1.jpg",
                         thumbnail: "/media/images/photo1_thumb.webp",
                         preview: "/media/images/photo1_preview.webp",
                         key: 1774
                     },
                     {
                         timestamp: "2024-03-22T10:52:03+00:00",
-                        image: "/media/images/photo2.jpg",
+                        photo: "/media/images/photo2.jpg",
                         thumbnail: "/media/images/photo2_thumb.webp",
                         preview: "/media/images/photo2_preview.webp",
                         key: 1775
@@ -149,7 +149,7 @@ describe('Plant with photos but no configured default photo', () => {
                 urls: [
                     {
                         timestamp: "2025-03-21T10:52:03+00:00",
-                        image: "/media/images/photo_new.jpg",
+                        photo: "/media/images/photo_new.jpg",
                         thumbnail: "/media/images/photo_new_thumb.webp",
                         preview: "/media/images/photo_new_preview.webp",
                         key: 1774
@@ -283,7 +283,7 @@ describe('Plant with default photo configured', () => {
                 urls: [
                     {
                         timestamp: "2025-03-21T10:52:03+00:00",
-                        image: "/media/images/photo_new.jpg",
+                        photo: "/media/images/photo_new.jpg",
                         thumbnail: "/media/images/photo_new_thumb.webp",
                         preview: "/media/images/photo_new_preview.webp",
                         key: 1774

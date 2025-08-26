@@ -19,7 +19,8 @@ describe('App with empty database', () => {
         app = render(<App initialState={{
             plants: {},
             groups: {},
-            show_archive: false
+            show_archive: false,
+            title: 'Plant Overview'
         }} />);
     });
 
