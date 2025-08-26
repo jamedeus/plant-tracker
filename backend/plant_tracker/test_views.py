@@ -626,7 +626,7 @@ class RegistrationTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{uuid4()}',
+            f'/get_manage_state/{uuid4()}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -656,7 +656,7 @@ class RegistrationTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{uuid4()}',
+            f'/get_manage_state/{uuid4()}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -792,7 +792,7 @@ class ManagePageTests(TestCase):
 
         # Request state, confirm state object has correct details
         response = self.client.get(
-            f'/resolve_manage/{self.plant1.uuid}',
+            f'/get_manage_state/{self.plant1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -837,7 +837,7 @@ class ManagePageTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{self.plant1.uuid}',
+            f'/get_manage_state/{self.plant1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -890,7 +890,7 @@ class ManagePageTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{self.plant1.uuid}',
+            f'/get_manage_state/{self.plant1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -916,7 +916,7 @@ class ManagePageTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{self.plant1.uuid}',
+            f'/get_manage_state/{self.plant1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -938,7 +938,7 @@ class ManagePageTests(TestCase):
 
         # Request manage page state, confirm display_name matches name attribute
         response = self.client.get(
-            f'/resolve_manage/{self.plant1.uuid}',
+            f'/get_manage_state/{self.plant1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(
@@ -955,7 +955,7 @@ class ManagePageTests(TestCase):
 
         # Request new state with UUID of existing plant entry
         response = self.client.get(
-            f'/resolve_manage/{self.plant1.uuid}',
+            f'/get_manage_state/{self.plant1.uuid}',
             HTTP_ACCEPT='application/json'
         )
 
@@ -1025,7 +1025,7 @@ class ManagePageTests(TestCase):
 
         # Request new state with UUID of new child plant
         response = self.client.get(
-            f'/resolve_manage/{test_id}',
+            f'/get_manage_state/{test_id}',
             HTTP_ACCEPT='application/json'
         )
 
@@ -1048,7 +1048,7 @@ class ManagePageTests(TestCase):
 
         # Request new state with UUID of plant1
         response = self.client.get(
-            f'/resolve_manage/{self.plant1.uuid}',
+            f'/get_manage_state/{self.plant1.uuid}',
             HTTP_ACCEPT='application/json'
         )
 
@@ -1069,7 +1069,7 @@ class ManagePageTests(TestCase):
     def test_get_new_plant_state_invalid(self):
         # Request new state with non-UUID string
         response = self.client.get(
-            '/resolve_manage/plant1',
+            '/get_manage_state/plant1',
             HTTP_ACCEPT='application/json'
         )
 
@@ -1087,7 +1087,7 @@ class ManagePageTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{self.group1.uuid}',
+            f'/get_manage_state/{self.group1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1122,7 +1122,7 @@ class ManagePageTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{self.group1.uuid}',
+            f'/get_manage_state/{self.group1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1163,7 +1163,7 @@ class ManagePageTests(TestCase):
 
         # Request new state with UUID of existing group entry
         response = self.client.get(
-            f'/resolve_manage/{self.group1.uuid}',
+            f'/get_manage_state/{self.group1.uuid}',
             HTTP_ACCEPT='application/json'
         )
 
@@ -1190,7 +1190,7 @@ class ManagePageTests(TestCase):
     def test_get_new_group_state_invalid(self):
         # Request new state with non-UUID string
         response = self.client.get(
-            '/resolve_manage/group1',
+            '/get_manage_state/group1',
             HTTP_ACCEPT='application/json'
         )
 
@@ -1840,7 +1840,7 @@ class ChangeQrCodeTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{self.fake_id}',
+            f'/get_manage_state/{self.fake_id}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1893,7 +1893,7 @@ class ChangeQrCodeTests(TestCase):
 
         # Request state
         response = self.client.get(
-            f'/resolve_manage/{self.fake_id}',
+            f'/get_manage_state/{self.fake_id}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1936,7 +1936,7 @@ class ChangeQrCodeTests(TestCase):
 
         # Request management page state with new UUID (should return confirmation page)
         response = self.client.get(
-            f'/resolve_manage/{self.fake_id}',
+            f'/get_manage_state/{self.fake_id}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1944,7 +1944,7 @@ class ChangeQrCodeTests(TestCase):
 
         # Request management page state with existing plant UUID (should return manage_plant)
         response = self.client.get(
-            f'/resolve_manage/{self.plant2.uuid}',
+            f'/get_manage_state/{self.plant2.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1952,7 +1952,7 @@ class ChangeQrCodeTests(TestCase):
 
         # Request management page state with existing group UUID (should return manage_group)
         response = self.client.get(
-            f'/resolve_manage/{self.group1.uuid}',
+            f'/get_manage_state/{self.group1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1961,7 +1961,7 @@ class ChangeQrCodeTests(TestCase):
         # Request management page state with UUID of plant waiting for new QR code,
         # should return manage_plant page like normal
         response = self.client.get(
-            f'/resolve_manage/{self.plant1.uuid}',
+            f'/get_manage_state/{self.plant1.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1976,7 +1976,7 @@ class ChangeQrCodeTests(TestCase):
 
         # Request register state with new UUID (simulate user scanning new QR)
         response = self.client.get(
-            f'/resolve_manage/{self.fake_id}',
+            f'/get_manage_state/{self.fake_id}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)

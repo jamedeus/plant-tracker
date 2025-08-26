@@ -238,7 +238,7 @@ class SqlQueriesPerPageTests(TestCase):
         # Request state, confirm 7 queries
         with self.assertNumQueries(7):
             response = self.client.get(
-                f'/resolve_manage/{plant.uuid}',
+                f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -248,7 +248,7 @@ class SqlQueriesPerPageTests(TestCase):
 
         with self.assertNumQueries(6):
             response = self.client.get(
-                f'/resolve_manage/{plant.uuid}',
+                f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -259,7 +259,7 @@ class SqlQueriesPerPageTests(TestCase):
         )
         with self.assertNumQueries(5):
             response = self.client.get(
-                f'/resolve_manage/{plant.uuid}',
+                f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -268,7 +268,7 @@ class SqlQueriesPerPageTests(TestCase):
         plant.default_photo = photo
         with self.assertNumQueries(5):
             response = self.client.get(
-                f'/resolve_manage/{plant.uuid}',
+                f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -288,7 +288,7 @@ class SqlQueriesPerPageTests(TestCase):
         # Request state, confirm 5 queries
         with self.assertNumQueries(5):
             response = self.client.get(
-                f'/resolve_manage/{group.uuid}',
+                f'/get_manage_state/{group.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -298,7 +298,7 @@ class SqlQueriesPerPageTests(TestCase):
         group.save()
         with self.assertNumQueries(4):
             response = self.client.get(
-                f'/resolve_manage/{group.uuid}',
+                f'/get_manage_state/{group.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -314,7 +314,7 @@ class SqlQueriesPerPageTests(TestCase):
 
         with self.assertNumQueries(2):
             response = self.client.get(
-                f'/resolve_manage/{uuid4()}',
+                f'/get_manage_state/{uuid4()}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -329,7 +329,7 @@ class SqlQueriesPerPageTests(TestCase):
         )
         with self.assertNumQueries(5):
             response = self.client.get(
-                f'/resolve_manage/{uuid4()}',
+                f'/get_manage_state/{uuid4()}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -344,7 +344,7 @@ class SqlQueriesPerPageTests(TestCase):
         )
         with self.assertNumQueries(4):
             response = self.client.get(
-                f'/resolve_manage/{uuid4()}',
+                f'/get_manage_state/{uuid4()}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -364,7 +364,7 @@ class SqlQueriesPerPageTests(TestCase):
         })
         with self.assertNumQueries(4):
             response = self.client.get(
-                f'/resolve_manage/{uuid4()}',
+                f'/get_manage_state/{uuid4()}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
@@ -385,7 +385,7 @@ class SqlQueriesPerPageTests(TestCase):
         cache.set(f'old_uuid_{get_default_user().pk}', str(plant.uuid))
         with self.assertNumQueries(7):
             response = self.client.get(
-                f'/resolve_manage/{uuid4()}',
+                f'/get_manage_state/{uuid4()}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)

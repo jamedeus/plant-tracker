@@ -151,7 +151,7 @@ export const routes = [
                 path: 'manage/:uuid',
                 Component: ManageRoute,
                 loader: async ({ params, request }) => {
-                    return await fetchJSON(`/resolve_manage/${params.uuid}`, request);
+                    return await fetchJSON(`/get_manage_state/${params.uuid}`, request);
                 },
             },
             {

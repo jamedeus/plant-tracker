@@ -839,7 +839,7 @@ class SingleUserModeTests(TestCase):
 
         # Request state object, confirm contains plant details
         response = self.client.get(
-            f'/resolve_manage/{plant.uuid}',
+            f'/get_manage_state/{plant.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -861,7 +861,7 @@ class SingleUserModeTests(TestCase):
 
         # Request state object, confirm returns permission denied
         response = self.client.get(
-            f'/resolve_manage/{plant.uuid}',
+            f'/get_manage_state/{plant.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 403)
@@ -876,7 +876,7 @@ class SingleUserModeTests(TestCase):
 
         # Request plant state (comes from default user since SINGLE_USER_MODE enabled)
         response = self.client.get(
-            f'/resolve_manage/{plant.uuid}',
+            f'/get_manage_state/{plant.uuid}',
             HTTP_ACCEPT='application/json'
         )
 
@@ -899,7 +899,7 @@ class SingleUserModeTests(TestCase):
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
         response = self.client.get(
-            f'/resolve_manage/{plant.uuid}',
+            f'/get_manage_state/{plant.uuid}',
             HTTP_ACCEPT='application/json'
         )
 
@@ -923,7 +923,7 @@ class SingleUserModeTests(TestCase):
 
         # Request state object, confirm contains group details
         response = self.client.get(
-            f'/resolve_manage/{group.uuid}',
+            f'/get_manage_state/{group.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -945,7 +945,7 @@ class SingleUserModeTests(TestCase):
 
         # Request state object, confirm returns permission denied
         response = self.client.get(
-            f'/resolve_manage/{group.uuid}',
+            f'/get_manage_state/{group.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 403)
@@ -960,7 +960,7 @@ class SingleUserModeTests(TestCase):
 
         # Request group state (comes from default user since SINGLE_USER_MODE enabled)
         response = self.client.get(
-            f'/resolve_manage/{group.uuid}',
+            f'/get_manage_state/{group.uuid}',
             HTTP_ACCEPT='application/json'
         )
 
@@ -983,7 +983,7 @@ class SingleUserModeTests(TestCase):
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
         response = self.client.get(
-            f'/resolve_manage/{group.uuid}',
+            f'/get_manage_state/{group.uuid}',
             HTTP_ACCEPT='application/json'
         )
 
@@ -1149,7 +1149,7 @@ class MultiUserModeTests(TestCase):
 
         # Request state object, confirm contains plant details
         response = self.client.get(
-            f'/resolve_manage/{plant.uuid}',
+            f'/get_manage_state/{plant.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1182,7 +1182,7 @@ class MultiUserModeTests(TestCase):
 
         # Request state object, confirm contains group details
         response = self.client.get(
-            f'/resolve_manage/{group.uuid}',
+            f'/get_manage_state/{group.uuid}',
             HTTP_ACCEPT='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -1209,7 +1209,7 @@ class MultiUserModeTests(TestCase):
         # Accept header is sent by SPA loader when requesting state
         self.assertFalse(auth.get_user(self.client).is_authenticated)
         self.assertAuthenticationRequiredError(self.client.get(
-            f'/resolve_manage/{plant.uuid}',
+            f'/get_manage_state/{plant.uuid}',
             HTTP_ACCEPT='application/json'
         ))
 
@@ -1222,7 +1222,7 @@ class MultiUserModeTests(TestCase):
         # Accept header is sent by SPA loader when requesting state
         self.assertFalse(auth.get_user(self.client).is_authenticated)
         self.assertAuthenticationRequiredError(self.client.get(
-            f'/resolve_manage/{group.uuid}',
+            f'/get_manage_state/{group.uuid}',
             HTTP_ACCEPT='application/json'
         ))
 
@@ -1383,13 +1383,13 @@ class MultiUserModeTests(TestCase):
 
         self.assertPlantIsOwnedByADifferentUserError(
             self.client.get(
-                f'/resolve_manage/{plant.uuid}',
+                f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
         )
         self.assertGroupIsOwnedByADifferentUserError(
             self.client.get(
-                f'/resolve_manage/{group.uuid}',
+                f'/get_manage_state/{group.uuid}',
                 HTTP_ACCEPT='application/json'
             )
         )

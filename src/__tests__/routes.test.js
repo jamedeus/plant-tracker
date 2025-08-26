@@ -126,7 +126,7 @@ describe('SPA routes', () => {
             expect(document.title).toBe('Manage Plant');
         });
         expect(global.fetch).toHaveBeenCalledWith(
-            '/resolve_manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
+            '/get_manage_state/5c256d96-ec7d-408a-83c7-3f86d63968b2',
             {headers: {Accept: "application/json"}}
         );
 
@@ -143,7 +143,7 @@ describe('SPA routes', () => {
             expect(document.title).toBe('Manage Group');
         });
         expect(global.fetch).toHaveBeenCalledWith(
-            '/resolve_manage/5c256d96-ec7d-408a-83c7-3f86d63968b3',
+            '/get_manage_state/5c256d96-ec7d-408a-83c7-3f86d63968b3',
             {headers: {Accept: "application/json"}}
         );
 
@@ -160,7 +160,7 @@ describe('SPA routes', () => {
             expect(document.title).toBe('Register New Plant');
         });
         expect(global.fetch).toHaveBeenCalledWith(
-            '/resolve_manage/5c256d96-ec7d-408a-83c7-3f86d63968b4',
+            '/get_manage_state/5c256d96-ec7d-408a-83c7-3f86d63968b4',
             {headers: {Accept: "application/json"}}
         );
     });
@@ -188,7 +188,7 @@ describe('SPA routes', () => {
         // Confirm router redirected to login page after requesting plant state
         await waitFor(() => expect(getByTestId('login-page')).toBeInTheDocument());
         expect(global.fetch).toHaveBeenCalledWith(
-            '/resolve_manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
+            '/get_manage_state/5c256d96-ec7d-408a-83c7-3f86d63968b2',
             {headers: {Accept: "application/json"}}
         );
         // Confirm URL contains ?next= querystring with requested URL (manage_plant)

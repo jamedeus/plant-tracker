@@ -109,7 +109,7 @@ def get_archived_overview_state(_, user):
 
 
 @get_user_token
-def resolve_manage(request, uuid, user):
+def get_manage_state(request, uuid, user):
     '''Resolves a UUID to the correct page and returns initial state as JSON.
     Returns page key (manage_plant, manage_group, or register), page title, and
     the initial state object for that page. Intended for SPA bootstrapping.
