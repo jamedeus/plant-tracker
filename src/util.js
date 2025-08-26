@@ -27,7 +27,7 @@ async function sendPostRequest(url, body) {
         }
     });
 
-    // Redirect to login page if  user not signed in/session expired
+    // Redirect to login page if user not signed in/session expired
     if (response.status === 401) {
         router.navigate('/accounts/login/');
         // Return mock error that ErrorModal won't show

@@ -16,6 +16,7 @@ jest.mock('src/bundles', () => {
         LoginApp: createMockBundle('login'),
         UserProfileApp: createMockBundle('user-profile'),
         PasswordResetApp: createMockBundle('password-reset'),
+        /* eslint-disable react/prop-types */
         PermissionDeniedApp: ({ errorMessage }) => (
             <div data-testid="permission-denied">{errorMessage}</div>
         ),
@@ -23,14 +24,7 @@ jest.mock('src/bundles', () => {
 });
 
 // Import mocked bundles to access their preload methods
-import {
-    OverviewApp,
-    ManagePlantApp,
-    ManageGroupApp,
-    RegisterApp,
-    LoginApp,
-    UserProfileApp,
-} from 'src/bundles';
+import { OverviewApp, UserProfileApp, } from 'src/bundles';
 import { routes } from 'src/routes';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';

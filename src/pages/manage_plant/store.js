@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { timestampToDateString } from 'src/timestampUtils';
@@ -212,5 +213,6 @@ export function ReduxProvider({ children, initialState }) {
 }
 
 ReduxProvider.propTypes = {
+    children: PropTypes.node,
     initialState: initialStatePropTypes.isRequired
 };
