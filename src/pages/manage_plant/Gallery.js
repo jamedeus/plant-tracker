@@ -10,7 +10,7 @@ import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "src/css/gallery.css";
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { useSelector, useDispatch } from 'react-redux';
 import { timestampToReadable } from 'src/timestampUtils';
 import { defaultPhotoChanged, photosDeleted } from './timelineSlice';

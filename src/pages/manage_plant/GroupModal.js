@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import Modal from 'src/components/Modal';
 import GroupCard from 'src/components/GroupCard';
 import { openErrorModal } from 'src/components/ErrorModal';

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { parseDomContext } from 'src/util';
+import parseDomContext from 'src/utils/parseDomContext';
 import ToggleThemeOption from './ToggleThemeOption';
 
 const NavbarDropdownOptions = ({ children }) => {

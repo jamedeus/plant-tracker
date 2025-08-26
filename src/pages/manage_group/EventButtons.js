@@ -1,6 +1,7 @@
 import React, { useRef,  memo } from 'react';
 import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest, pastTense } from 'src/util';
+import { pastTense } from 'src/utils/stringUtils';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
 import { openErrorModal } from 'src/components/ErrorModal';

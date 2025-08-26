@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { useSelector, useDispatch } from 'react-redux';

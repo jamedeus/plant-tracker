@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import WaterIcon from 'src/components/WaterIcon';
 import PlantDetails from 'src/components/PlantDetails';
 import InstanceCard from 'src/components/InstanceCard';
-import { capitalize } from 'src/util';
+import { capitalize } from 'src/utils/stringUtils';
 import {
     timestampToRelativeCalendar,
     timestampToReadable

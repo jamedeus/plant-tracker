@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { getSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import HoldToConfirm from 'src/components/HoldToConfirm';
 import { plantsRemoved, groupsRemoved, showArchiveChanged } from './overviewSlice';

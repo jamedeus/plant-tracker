@@ -1,7 +1,7 @@
 import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import EditableNodeList from 'src/components/EditableNodeList';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import Modal from 'src/components/Modal';

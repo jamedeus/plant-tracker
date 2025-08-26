@@ -1,6 +1,6 @@
 import React, { useRef, memo } from 'react';
 import Modal from 'src/components/Modal';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import uuidPropType from 'src/types/uuidPropType';
 

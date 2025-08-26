@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { capitalize, pastTense } from 'src/util';
+import { capitalize, pastTense } from 'src/utils/stringUtils';
 import {
     timestampIsToday,
     timestampToReadable,

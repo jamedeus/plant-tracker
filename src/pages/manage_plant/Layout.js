@@ -1,6 +1,6 @@
 import React, { useMemo, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import DetailsCard from 'src/components/DetailsCard';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { EMAIL_REGEX } from 'src/regex';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { timestampToRelative, timestampToReadable } from 'src/timestampUtils';
 import Navbar from 'src/components/Navbar';
 import { showToast } from 'src/components/Toast';

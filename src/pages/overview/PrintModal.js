@@ -5,7 +5,7 @@ import { Tab } from '@headlessui/react';
 import print from 'print-js';
 import Modal from 'src/components/Modal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 
 let modalRef;
 

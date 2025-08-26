@@ -1,6 +1,6 @@
 import React, { useRef, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import EditModal from 'src/components/EditModal';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import QrScannerButton from 'src/components/QrScannerButton';

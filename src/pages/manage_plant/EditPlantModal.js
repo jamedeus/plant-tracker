@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';

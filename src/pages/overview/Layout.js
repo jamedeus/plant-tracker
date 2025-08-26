@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import parseDomContext from 'src/utils/parseDomContext';
 import { Link } from 'react-router-dom';
 import Setup from './Setup';
 import EditModeFooter from './EditModeFooter';
@@ -13,7 +14,6 @@ import QrScannerButton from 'src/components/QrScannerButton';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import { openPrintModal } from './PrintModal';
-import { parseDomContext } from 'src/util';
 import { updatePlantLastEventTimes } from './overviewSlice';
 import clsx from 'clsx';
 import { v4 as uuidv4 } from 'uuid';

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { plantsRemoved } from './groupSlice';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { getSelectedItems } from 'src/components/EditableNodeList';

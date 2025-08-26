@@ -5,7 +5,7 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
 import HoldToConfirm from 'src/components/HoldToConfirm';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 import { DateTime } from 'luxon';
 import { noteAdded, noteEdited, noteDeleted } from './timelineSlice';
