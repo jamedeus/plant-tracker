@@ -247,7 +247,7 @@ describe('SPA integration tests', () => {
             expect(queryByTestId('overview-layout')).toBeNull();
             expect(queryByTestId('manage-plant-layout')).toBeNull();
             expect(getByTestId('login-page')).toBeInTheDocument();
-            // expect(document.title).toBe('Login');
+            expect(document.title).toBe('Login');
         });
     });
 
@@ -276,7 +276,7 @@ describe('SPA integration tests', () => {
             expect(queryByTestId('overview-layout')).toBeNull();
             expect(queryByTestId('manage-plant-layout')).toBeNull();
             expect(getByTestId('login-page')).toBeInTheDocument();
-            // expect(document.title).toBe('Login');
+            expect(document.title).toBe('Login');
         });
     });
 

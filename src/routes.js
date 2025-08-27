@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     createBrowserRouter,
     redirect,
     Navigate,
     Outlet,
     ScrollRestoration,
+    useMatches,
     useLoaderData,
     useRouteError,
     useRevalidator,
@@ -82,7 +83,6 @@ const loadPage = async (component, endpoint, request) => {
 function makePageRoute(App) {
     return function PageRoute() {
         const payload = useLoaderData();
-        document.title = payload?.title || 'Plant Tracker';
         return <App initialState={payload} />;
     };
 }
@@ -101,7 +101,6 @@ const ManageComponentMap = {
 // Custom route for /manage/<uuid> (load correct component for initial state)
 function ManageRoute() {
     const payload = useLoaderData();
-    document.title = payload?.title || 'Plant Tracker';
     const Component = ManageComponentMap[payload.page];
     return <Component initialState={payload.state} />;
 }
@@ -119,6 +118,17 @@ function RootLayout() {
     // back to SPA using browser back/forward buttons
     const { revalidate } = useRevalidator();
     useBackButton(() => revalidate());
+
+    // Update title when route changes
+    const matches = useMatches();
+    useEffect(() => {
+        const last = matches[matches.length - 1];
+        const title =
+            last?.loaderData?.title ??
+            last?.handle?.title ??
+            'Plant Tracker';
+        document.title = title;
+    }, [matches]);
 
     return (
         <>
@@ -165,6 +175,7 @@ export const routes = [
             {
                 path: 'accounts/login/',
                 Component: LoginApp,
+                handle: { title: 'Login' },
             },
             {
                 path: 'accounts/profile/',
