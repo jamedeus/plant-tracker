@@ -72,7 +72,7 @@ describe('SPA routes', () => {
         mockFetchJSONResponse({ title: 'Archived' });
 
         // Simulate user navigating to archived page
-        await router.navigate('/archived');
+        await act(() => router.navigate('/archived'));
 
         // Confirm preloaded + rendered overview bundle, fetched archived overview state
         await waitFor(() => {
@@ -90,7 +90,7 @@ describe('SPA routes', () => {
         mockFetchJSONResponse({ title: 'User Profile' });
 
         // Simulate user navigating to user profile page
-        await router.navigate('/accounts/profile/');
+        await act(() => router.navigate('/accounts/profile/'));
 
         // Confirm preloaded + rendered user profile bundle, fetched user profile state
         await waitFor(() => {
@@ -129,7 +129,7 @@ describe('SPA routes', () => {
         mockFetchJSONResponse({ title: 'Manage Group', page: 'manage_group', state: {} });
 
         // Simulate user navigating to manage_group page
-        await router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b3');
+        await act(() => router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b3'));
 
         // Confirm rendered manage_group bundle, set title from backend response
         await waitFor(() => {
@@ -146,7 +146,7 @@ describe('SPA routes', () => {
         mockFetchJSONResponse({ title: 'Register New Plant', page: 'register', state: {} });
 
         // Simulate user navigating to register page
-        await router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b4');
+        await act(() => router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b4'));
 
         // Confirm rendered register bundle, set title from backend response
         await waitFor(() => {
@@ -178,7 +178,7 @@ describe('SPA routes', () => {
         expect(router.state.location.search).toBe('?next=%2Faccounts%2Fprofile%2F');
 
         // Simulate user navigating to manage_plant page
-        await router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        await act(() => router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'));
         // Confirm router redirected to login page after requesting plant state
         await waitFor(() => expect(getByTestId('login-page')).toBeInTheDocument());
         expect(global.fetch).toHaveBeenCalledWith(
@@ -244,7 +244,7 @@ describe('SPA routes', () => {
         mockFetchJSONResponse({ denied: 'user accounts are disabled' }, 403);
 
         // Navigate to overview page
-        await router.navigate('/');
+        await act(() => router.navigate('/'));
         // Confirm rendered permission-denied bundle with fallback error message
         await waitFor(() => {
             expect(getByTestId('permission-denied')).toHaveTextContent(
@@ -280,7 +280,7 @@ describe('SPA routes', () => {
             headers: new Map(),
         });
         // Navigate to overview page
-        await router.navigate('/');
+        await act(() => router.navigate('/'));
         // Confirm rendered permission-denied bundle with fallback error message
         await waitFor(() => {
             expect(getByTestId('permission-denied')).toHaveTextContent  (
@@ -333,7 +333,7 @@ describe('SPA routes', () => {
 
         // Simulate user loading unknown route
         jest.clearAllMocks();
-        await router.navigate('/unknown');
+        await act(() => router.navigate('/unknown'));
         // Confirm router rendered overview page, requested overview state again
         await waitFor(() => {
             expect(getByTestId('overview-page')).toBeInTheDocument();
@@ -360,7 +360,7 @@ describe('SPA routes', () => {
 
         // Navigate to manage_plant page with mock fetchJSON response missing title
         mockFetchJSONResponse({ page: 'manage_plant' });
-        await router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        await act(() => router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'));
         // Confirm fell back to generic title
         await waitFor(() => {
             expect(getByTestId('manage-plant-page')).toBeInTheDocument();
