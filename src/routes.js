@@ -7,6 +7,7 @@ import {
     ScrollRestoration,
     useLoaderData,
     useRouteError,
+    useRevalidator,
 } from 'react-router-dom';
 import {
     OverviewApp,
@@ -20,6 +21,7 @@ import {
 } from './bundles';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
+import { useBackButton } from 'src/hooks/useBackButton';
 import UnsupportedBrowserWarning from 'src/components/UnsupportedBrowserWarning';
 
 // Helper used by loaders to fetch initial state, returns JSON body
@@ -113,6 +115,11 @@ function ErrorBoundaryRoute() {
 }
 
 function RootLayout() {
+    // Get new state for current page when user navigates from external site
+    // back to SPA using browser back/forward buttons
+    const { revalidate } = useRevalidator();
+    useBackButton(() => revalidate());
+
     return (
         <>
             <Outlet />

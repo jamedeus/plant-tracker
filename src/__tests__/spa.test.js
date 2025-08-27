@@ -1,5 +1,6 @@
+import AppRoot from 'src/AppRoot';
 import { routes } from 'src/routes';
-import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { createMemoryRouter } from 'react-router-dom';
 import { render, waitFor } from '@testing-library/react';
 import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
@@ -7,12 +8,6 @@ import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import 'jest-canvas-mock';
 import { mockContext as mockOverviewContext } from 'src/pages/overview/__tests__/mockContext';
 import { mockContext as mockPlantContext } from 'src/pages/manage_plant/__tests__/mockContext';
-
-export function renderRouter({ routes, initialEntries = ['/'] }) {
-    const router = createMemoryRouter(routes, { initialEntries });
-    const utils = render(<RouterProvider router={router} />);
-    return { router, ...utils };
-}
 
 // Takes JSON response and status code, mocks global fetch function
 const mockFetchJSONResponse = (json, status=200) => {
@@ -47,10 +42,10 @@ describe('SPA integration tests', () => {
 
         // Render SPA on overview page
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        const { getByTitle, getByTestId, queryByTestId } = renderRouter({
-            routes: routes,
-            initialEntries: ['/']
-        });
+        const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+        const { getByTitle, getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
 
         // Confirm rendered overview page, did not render manage_plant or scanner
         await waitFor(() => {
