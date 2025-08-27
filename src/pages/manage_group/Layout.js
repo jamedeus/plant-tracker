@@ -99,7 +99,10 @@ function Layout() {
     ), []);
 
     return (
-        <div className="container flex flex-col items-center mx-auto mb-28">
+        <div
+            className="container flex flex-col items-center mx-auto mb-28"
+            data-testid="manage-group-layout"
+        >
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={groupDetails.display_name}

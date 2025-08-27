@@ -298,7 +298,10 @@ function App({ initialState }) {
     const DropdownMenuOptions = useMemo(() => <NavbarDropdownOptions />, []);
 
     return (
-        <div className="container flex flex-col mx-auto items-center">
+        <div
+            className="container flex flex-col mx-auto items-center"
+            data-testid="register-layout"
+        >
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title='Registration'

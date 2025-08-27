@@ -4,6 +4,7 @@ exports[`App matches snapshot 1`] = `
 <div>
   <div
     class="container flex flex-col items-center mx-auto mb-28"
+    data-testid="manage-group-layout"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
@@ -977,6 +978,7 @@ exports[`App matches snapshot when no plants 1`] = `
 <div>
   <div
     class="container flex flex-col items-center mx-auto mb-28"
+    data-testid="manage-group-layout"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
