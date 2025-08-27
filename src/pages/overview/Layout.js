@@ -141,7 +141,10 @@ const Layout = () => {
     }, []);
 
     return (
-        <div className="container flex flex-col items-center mx-auto pb-28">
+        <div
+            className="container flex flex-col items-center mx-auto pb-28"
+            data-testid="overview-layout"
+        >
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={pageTitle}

@@ -1,69 +1,15 @@
 import QrScannerButton from 'src/components/QrScannerButton';
 import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import 'jest-canvas-mock';
 
 describe('QrScanner', () => {
     let user, component;
 
     beforeAll(() => {
-        // Mock HTTPS (required for camera access)
-        Object.defineProperty(window, 'isSecureContext', {
-            get: () => true,
-        });
-
-        // Mock functions used for video stream
-        window.URL.createObjectURL = jest.fn(() => 'blob:mock-stream');
-        HTMLMediaElement.prototype.play = () => Promise.resolve();
-
-        // Mock mediaDevices to simulate mobile browser (front + back cameras)
-        Object.defineProperty(navigator, 'mediaDevices', {
-            value: {
-                getSupportedConstraints: () => ({ facingMode: true }),
-                enumerateDevices: jest.fn().mockResolvedValue([
-                    {
-                        deviceId: 'front-id',
-                        kind: 'videoinput',
-                        label: 'Front Camera',
-                        groupId: 'grp1'
-                    },
-                    {
-                        deviceId: 'back-id',
-                        kind: 'videoinput',
-                        label: 'Back Camera',
-                        groupId: 'grp1'
-                    }
-                ]),
-                getUserMedia: jest.fn()
-            },
-        });
-
-        // Mock video ready as soon as overlay opens
-        Object.defineProperty(HTMLMediaElement.prototype, 'readyState', {
-            get: () => 4,
-        });
-
-        // Mock methods used to draw bounding box around QR code
-        window.DOMRectReadOnly = class DOMRectReadOnly {
-            constructor(x = 0, y = 0, width = 0, height = 0) {
-                this.x      = x;
-                this.y      = y;
-                this.width  = width;
-                this.height = height;
-                this.top    = y;
-                this.left   = x;
-                this.right  = x + width;
-                this.bottom = y + height;
-            }
-        };
-        window.DOMRect = window.DOMRectReadOnly;
-        window.DOMRectReadOnly.fromRect = function(rect) {
-            return new window.DOMRectReadOnly(
-                rect.x, rect.y,
-                rect.width, rect.height
-            );
-        };
-        window.DOMRect.fromRect = window.DOMRectReadOnly.fromRect;
+        // Mock all browser APIs used by QrScanner
+        applyQrScannerMocks();
     });
 
     beforeEach(() => {
@@ -73,6 +19,12 @@ describe('QrScanner', () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         component = render(<QrScannerButton />);
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.clearAllTimers();
+        jest.useRealTimers();
     });
 
     it('toggles QR scanner overlay when button is clicked', async () => {
