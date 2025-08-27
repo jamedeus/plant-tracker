@@ -300,7 +300,7 @@ Section.propTypes = {
 function App({ initialState }) {
     const DropdownMenuOptions = useMemo(() => (
         <>
-            <li><Link to='/'>
+            <li><Link to='/' discover="none">
                 Overview
             </Link></li>
             <ToggleThemeOption />

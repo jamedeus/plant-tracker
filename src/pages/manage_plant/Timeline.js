@@ -325,6 +325,7 @@ const DivisionEventMarker = ({ dividedPlants }) => {
                     <Link
                         to={`/manage/${plant.uuid}`}
                         className="plant-link truncate"
+                        discover="none"
                     >
                         {plant.name}
                     </Link>
@@ -352,6 +353,7 @@ const DividedFromMarker = ({ name, uuid, dateKey }) => {
             <Link
                 to={`/manage/${uuid}?scrollToDate=${dateKey}`}
                 className="plant-link"
+                discover="none"
             >
                 {name}
             </Link>

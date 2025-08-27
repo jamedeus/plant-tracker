@@ -11,6 +11,7 @@ const IconButton = ({ onClick=null, href=null, title, children }) => {
                 onClick={onClick}
                 title={title}
                 tabIndex={0}
+                discover="none"
             >
                 {children}
             </Link>

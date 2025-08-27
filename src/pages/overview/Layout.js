@@ -87,19 +87,19 @@ const Layout = () => {
             <>
                 {/* Main overview: Link to archive overview if it exists */}
                 {(!archivedOverview && showArchive) && (
-                    <li><Link to='/archived'>
+                    <li><Link to='/archived' discover="none">
                         Archived plants
                     </Link></li>
                 )}
                 {/* Archive overview: Link back to main overview */}
                 {archivedOverview && (
-                    <li><Link to='/'>
+                    <li><Link to='/' discover="none">
                         Main overview
                     </Link></li>
                 )}
                 {/* Link to user profile unless accounts disabled */}
                 {userAccountsEnabled && (
-                    <li><Link to='/accounts/profile/'>
+                    <li><Link to='/accounts/profile/' discover="none">
                         User profile
                     </Link></li>
                 )}
@@ -194,6 +194,7 @@ const Layout = () => {
                                     className="btn btn-accent mx-auto mt-4"
                                     to={`/manage/${uuidv4()}`}
                                     aria-label="Register new plant"
+                                    discover="none"
                                 >
                                     <FaPlus className="size-5 mr-1" /> Add plant
                                 </Link>
@@ -222,6 +223,7 @@ const Layout = () => {
                                     className="btn btn-accent mx-auto mt-4"
                                     to={`/manage/${uuidv4()}?type=group`}
                                     aria-label="Register new group"
+                                    discover="none"
                                 >
                                     <FaPlus className="size-5 mr-1" /> Add group
                                 </Link>

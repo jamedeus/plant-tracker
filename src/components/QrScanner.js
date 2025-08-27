@@ -105,6 +105,7 @@ const QrScanner = ({ onExit }) => {
                     data-testid="scanned-url"
                     key={scannedUrl}
                     onClick={onExit}
+                    discover="none"
                 >
                     Open
                 </Link>

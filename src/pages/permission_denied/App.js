@@ -17,7 +17,7 @@ function App({ errorMessage }) {
                 {errorMessage}
             </div>
 
-            <Link to="/" className='btn btn-accent'>
+            <Link to="/" className='btn btn-accent' discover="none">
                 Go to Overview
             </Link>
         </div>

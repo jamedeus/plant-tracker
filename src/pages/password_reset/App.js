@@ -62,7 +62,7 @@ function App() {
 
     const DropdownMenuOptions = useMemo(() => (
         <>
-            <li><Link to='/'>
+            <li><Link to='/' discover="none">
                 Overview
             </Link></li>
             <ToggleThemeOption />

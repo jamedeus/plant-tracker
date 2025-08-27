@@ -51,7 +51,7 @@ function Layout() {
             {!plantDetails.archived && (
                 <>
                     {plantDetails.group &&
-                        <li><Link to={`/manage/${plantDetails.group.uuid}`}>
+                        <li><Link to={`/manage/${plantDetails.group.uuid}`} discover="none">
                             Go to group
                         </Link></li>
                     }
@@ -132,6 +132,7 @@ function Layout() {
                                     "focus:outline-2 outline-offset-2"
                                 )}
                                 to={`/manage/${plantDetails.group.uuid}`}
+                                discover="none"
                             >
                                 { plantDetails.group.name }
                             </Link>

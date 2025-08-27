@@ -11,11 +11,11 @@ const NavbarDropdownOptions = ({ children }) => {
 
     return (
         <>
-            <li><Link to='/'>
+            <li><Link to='/' discover="none">
                 Overview
             </Link></li>
             {userAccountsEnabled && (
-                <li><Link to="/accounts/profile/">
+                <li><Link to="/accounts/profile/" discover="none">
                     User profile
                 </Link></li>
             )}

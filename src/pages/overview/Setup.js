@@ -21,7 +21,11 @@ const Setup = () => {
             </button>
             <p className="text-2xl mt-8 mb-2">No printer?</p>
             <span className="mb-4">You can add a QR code later.</span>
-            <Link className="btn btn-accent text-lg" to={`/manage/${uuidv4()}`}>
+            <Link
+                className="btn btn-accent text-lg"
+                to={`/manage/${uuidv4()}`}
+                discover="none"
+            >
                 Register plant
             </Link>
         </div>

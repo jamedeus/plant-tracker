@@ -132,6 +132,7 @@ export const routes = [
         path: '/',
         element: <RootLayout />,
         errorElement: <ErrorBoundaryRoute />,
+        HydrateFallback: () => null,
         children: [
             {
                 index: true,
