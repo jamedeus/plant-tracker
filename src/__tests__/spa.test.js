@@ -231,4 +231,105 @@ describe('SPA integration tests', () => {
             '/get_plant_species_options'
         );
     });
+
+    it('follows redirects on initial page load', async () => {
+        // Simulate redirect to login page when loader requests page state
+        mockFetchJSONResponse({ 'redirect': '/accounts/login' }, 302);
+
+        // Render SPA on overview page
+        const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+        const { getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+
+        // Confirm rendered login page, NOT overview page
+        await waitFor(() => {
+            expect(queryByTestId('overview-layout')).toBeNull();
+            expect(queryByTestId('manage-plant-layout')).toBeNull();
+            expect(getByTestId('login-page')).toBeInTheDocument();
+            // expect(document.title).toBe('Login');
+        });
+    });
+
+    it('redirects to login page if user session expired', async () => {
+        // Render SPA on overview page
+        mockFetchJSONResponse(mockOverviewContext);
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+        const { getByLabelText, getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+        await waitFor(() => {
+            expect(document.title).toBe('Plant Overview');
+            expect(getByTestId('overview-layout')).toBeInTheDocument();
+        });
+
+        // Simulate response when user is not authenticated
+        mockFetchJSONResponse({ error: 'authentication required' }, 401);
+
+        // Simulate user clicking plant link
+        await user.click(getByLabelText('Go to Test Plant page'));
+
+        // Confirm unrendered overview page, rendered login page, did NOT render
+        // manage_plant page
+        await waitFor(() => {
+            expect(queryByTestId('overview-layout')).toBeNull();
+            expect(queryByTestId('manage-plant-layout')).toBeNull();
+            expect(getByTestId('login-page')).toBeInTheDocument();
+            // expect(document.title).toBe('Login');
+        });
+    });
+
+    it('redirects to permission denied page if loader receives 403', async () => {
+        // Render SPA on overview page
+        mockFetchJSONResponse(mockOverviewContext);
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+        const { getByText, getByLabelText, getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+        await waitFor(() => {
+            expect(document.title).toBe('Plant Overview');
+            expect(getByTestId('overview-layout')).toBeInTheDocument();
+        });
+
+        // Simulate /get_manage_state response when user does not own plant
+        mockFetchJSONResponse({"error": "plant is owned by a different user"}, 403);
+
+        // Simulate user clicking plant link
+        await user.click(getByLabelText('Go to Test Plant page'));
+
+        // Confirm unrendered overview page, rendered permission denied page,
+        // did NOT render manage_plant page
+        await waitFor(() => {
+            expect(queryByTestId('overview-layout')).toBeNull();
+            expect(queryByTestId('manage-plant-layout')).toBeNull();
+            expect(getByTestId('permission-denied')).toBeInTheDocument();
+            expect(getByText('plant is owned by a different user')).toBeInTheDocument();
+            expect(document.title).toBe('Permission Denied');
+        });
+    });
+
+    it('redirects to permission denied page if loader receives non-JSON response', async () => {
+        // Simulate returning HTML when SPA expects JSON
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            status: 200,
+            headers: new Map([['content-type', 'text/html']]),
+        });
+
+        // Render SPA on overview page
+        const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+        const { getByText, getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+
+        // Confirm redirected to permission denied page, did NOT render overview
+        await waitFor(() => {
+            expect(queryByTestId('overview-layout')).toBeNull();
+            expect(getByTestId('permission-denied')).toBeInTheDocument();
+            expect(getByText('Unexpected response')).toBeInTheDocument();
+            expect(document.title).toBe('Permission Denied');
+        });
+    });
 });

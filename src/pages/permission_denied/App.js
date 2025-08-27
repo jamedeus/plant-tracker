@@ -6,7 +6,10 @@ import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 
 function App({ errorMessage }) {
     return (
-        <div className="container flex flex-col full-screen mx-auto items-center gap-16">
+        <div
+            className="container flex flex-col full-screen mx-auto items-center gap-16"
+            data-testid="permission-denied"
+        >
             <Navbar
                 menuOptions={<NavbarDropdownOptions />}
                 title="Permission Denied"

@@ -302,7 +302,10 @@ function App() {
     const toggleForm = () => setShowLoginForm(!showLoginForm);
 
     return (
-        <div className="container flex flex-col full-screen mx-auto items-center">
+        <div
+            className="container flex flex-col full-screen mx-auto items-center"
+            data-testid="login-page"
+        >
             <Navbar
                 menuOptions={<ToggleThemeOption />}
                 title={showLoginForm ? "Login" : "Create Account"}

@@ -4,6 +4,7 @@ exports[`App matches snapshot 1`] = `
 <div>
   <div
     class="container flex flex-col full-screen mx-auto items-center"
+    data-testid="login-page"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
