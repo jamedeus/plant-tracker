@@ -3,6 +3,7 @@ import { routes } from 'src/routes';
 import { createMemoryRouter } from 'react-router-dom';
 import { render, waitFor } from '@testing-library/react';
 import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
+import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import 'jest-canvas-mock';
@@ -118,7 +119,208 @@ describe('SPA integration tests', () => {
         );
     });
 
-    it('handles automatic navigation when password change form is submitted', async () => {
+    it('navigates from register page to manage_plant when registration is complete', async () => {
+        // Mock fetch function to return register page state on first request,
+        // and /get_plant_species_options response on second
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                page: 'register',
+                title: 'Register New Plant',
+                state: mockRegisterContext
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        }).mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                options: [
+                    "Parlor Palm",
+                    "Spider Plant",
+                    "Calathea"
+                ]
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        });
+
+        // Render SPA on registration pages (makes both requests above on load)
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        mockCurrentURL('https://plants.lan/manage/102d1a8c-07e6-4ece-bac7-60ed6a95f462');
+        const router = createMemoryRouter(routes, { initialEntries: [
+            '/manage/102d1a8c-07e6-4ece-bac7-60ed6a95f462'
+        ] });
+        const { getByRole, getByLabelText, getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+        // Confirm rendered register page, did not render manage_plant
+        await waitFor(() => {
+            expect(document.title).toBe('Register New Plant');
+            expect(getByTestId('register-layout')).toBeInTheDocument();
+            expect(queryByTestId('manage-plant-layout')).toBeNull();
+        });
+        // Confirm requested both states
+        expect(global.fetch).toHaveBeenNthCalledWith(
+            1,
+            '/get_manage_state/102d1a8c-07e6-4ece-bac7-60ed6a95f462',
+            {headers: {Accept: "application/json"}}
+        );
+        expect(global.fetch).toHaveBeenNthCalledWith(
+            2,
+            '/get_plant_species_options'
+        );
+        jest.clearAllMocks();
+
+        // Mock fetch function to return /register_plant response on first
+        // request, manage plant state on second request
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                success: 'plant registered'
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        }).mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                page: 'manage_plant',
+                title: 'Manage Plant',
+                state: mockPlantContext
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        });
+
+        // Simulate user filling in form fields and clicking Save button
+        await user.type(getByRole('textbox', {name: 'Plant name'}), 'Test plant');
+        await user.type(getByRole('combobox', {name: 'Plant species'}), 'Fittonia');
+        await user.type(getByRole('textbox', {name: 'Description'}), 'Clay pot');
+        await user.type(getByLabelText('Pot size'), '6');
+        await user.click(getByRole('button', {name: 'Save'}));
+
+        // Confirm changed to manage_plant page, register no longer rendered
+        await waitFor(() => {
+            expect(document.title).toBe('Manage Plant');
+            expect(getByTestId('manage-plant-layout')).toBeInTheDocument();
+            expect(queryByTestId('register-layout')).toBeNull();
+        });
+
+        // Confirm POSTed data to /register_plant endpoint, then requested state
+        expect(global.fetch).toHaveBeenNthCalledWith(
+            1,
+            '/register_plant',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    name: "Test plant",
+                    species: "Fittonia",
+                    pot_size: "6",
+                    description: "Clay pot",
+                }),
+                headers: postHeaders
+            }
+        );
+        expect(global.fetch).toHaveBeenNthCalledWith(
+            2,
+            '/get_manage_state/102d1a8c-07e6-4ece-bac7-60ed6a95f462',
+            {headers: {Accept: "application/json"}}
+        );
+    });
+
+    it('navigates from archived overview page to main overview when last plant/group is un-archived', async () => {
+        // Mock fetch function to return archived overview page state
+        mockFetchJSONResponse({
+            ...mockOverviewContext,
+            plants: Object.fromEntries(
+                Object.entries(mockOverviewContext.plants).map(
+                    ([uuid, plant]) => [ uuid, { ...plant, archived: true } ]
+                )
+            ),
+            groups: Object.fromEntries(
+                Object.entries(mockOverviewContext.groups).map(
+                    ([uuid, group]) => [ uuid, { ...group, archived: true } ]
+                )
+            ),
+            title: 'Archived'
+        });
+
+        // Render SPA on archived overview page
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        mockCurrentURL('https://plants.lan/archived');
+        const router = createMemoryRouter(routes, { initialEntries: ['/archived'] });
+        const { getByText, getByLabelText, getByTestId } = render(
+            <AppRoot router={router} />
+        );
+        // Confirm rendered overview page, set correct title
+        await waitFor(() => {
+            expect(document.title).toBe('Archived');
+            expect(getByTestId('overview-layout')).toBeInTheDocument();
+        });
+
+        // Mock fetch to simulate successfully un-archiving all plants and
+        // groups on first request, return overview state on second request
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                archived: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+                ],
+                failed: []
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        }).mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve(mockOverviewContext),
+            headers: new Map([['content-type', 'application/json']]),
+        });
+        jest.clearAllMocks();
+
+        // Simulate user unarchiving all plants and groups
+        await user.click(getByText('Groups (2)'));
+        await user.click(getByLabelText('Select Test Plant'));
+        await user.click(getByLabelText('Select Second Test Plant'));
+        await user.click(getByLabelText('Select Test group'));
+        await user.click(getByLabelText('Select Second Test group'));
+        // Click un-archive button in floating div
+        await user.click(getByText('Un-archive'));
+
+        // Confirm updated title, still rendered overview page (shared bundle)
+        await waitFor(() => {
+            expect(document.title).toBe('Plant Overview');
+            expect(getByTestId('overview-layout')).toBeInTheDocument();
+        });
+
+        // Confirm POSTed data to, then requested overview state
+        expect(global.fetch).toHaveBeenNthCalledWith(
+            1,
+            '/bulk_archive_plants_and_groups', {
+                method: 'POST',
+                body: JSON.stringify({
+                    uuids: [
+                        "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                        "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
+                        "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                        "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+                    ],
+                    archived: false
+                }),
+                headers: postHeaders
+            }
+        );
+        expect(global.fetch).toHaveBeenNthCalledWith(
+            2,
+            '/get_overview_state',
+            {headers: {Accept: "application/json"}}
+        );
+    });
+
+    it('navigates from password reset page to user profile when form is submitted', async () => {
         // Render SPA on password reset page
         mockCurrentURL('https://plants.lan/accounts/reset/OA/set-password/');
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
