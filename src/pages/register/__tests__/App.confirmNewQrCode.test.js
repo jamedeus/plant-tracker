@@ -6,6 +6,16 @@ import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext, mockChangingPlantQrCode } from './mockContext';
 
+// Mock useNavigate to return a mock (confirm redirected to correct page)
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    };
+});
+
 // Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
 jest.mock('src/routes', () => {
     return {
@@ -103,7 +113,7 @@ describe('Register page while changing QR code in progress', () => {
         });
 
         // Confirm reloaded (switch to manage plant page)
-        expect(routerMock.navigate).toHaveBeenCalledWith('/manage/07919189-514d-4ec1-a967-8af553dfa7e8');
+        expect(mockNavigate).toHaveBeenCalledWith('/manage/07919189-514d-4ec1-a967-8af553dfa7e8');
     });
 
     it('shows error modal if error received after confirm button clicked', async() => {

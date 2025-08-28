@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { showToast } from 'src/components/Toast';
 import Navbar from 'src/components/Navbar';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { EMAIL_REGEX } from 'src/utils/regex';
-import router from 'src/routes';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import 'src/css/index.css';
@@ -36,6 +36,7 @@ function sanitizeNext(next, fallback = '/') {
 }
 
 const LoginForm = () => {
+    const navigate = useNavigate();
     const formRef = useRef(null);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -60,7 +61,7 @@ const LoginForm = () => {
         if (response.ok) {
             // Redirect to url in querystring if present (or overview if not)
             const params = new URL(window.location.href).searchParams;
-            router.navigate(sanitizeNext(params.get('next')));
+            navigate(sanitizeNext(params.get('next')));
         // Show error text if login failed
         } else {
             setShowError(true);
@@ -150,6 +151,7 @@ const LoginForm = () => {
 };
 
 const RegisterForm = () => {
+    const navigate = useNavigate();
     const formRef = useRef(null);
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -179,7 +181,7 @@ const RegisterForm = () => {
         );
         // Redirect to overview if logged in successfully
         if (response.ok) {
-            router.navigate('/');
+            navigate('/');
         // Show correct error if account creation failed
         } else {
             const data = await response.json();

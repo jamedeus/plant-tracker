@@ -4,14 +4,15 @@ import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 
-// Mock router.navigate to check redirect after login (without rendering whole SPA)
-jest.mock('src/routes', () => {
+// Mock useNavigate to return a mock (confirm redirected to correct page)
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
     return {
-        __esModule: true,
-        default: { navigate: jest.fn().mockResolvedValue(true) },
+        ...actual,
+        useNavigate: () => mockNavigate,
     };
 });
-import routerMock from 'src/routes';
 
 describe('App', () => {
     let app, user;
@@ -29,6 +30,7 @@ describe('App', () => {
 
         // Mock window.location to expected URL (parsed after logging in)
         mockCurrentURL('https://plants.lan/accounts/login/');
+        mockNavigate.mockReset();
     });
 
     it('shows registration form when Create account clicked', async () => {
@@ -76,7 +78,7 @@ describe('App', () => {
         expect(fetchOptions.body.get('password')).toBe('defnotanthonyweiner');
 
         // Confirm redirected to overview since no querystring in URL
-        expect(routerMock.navigate).toHaveBeenCalledWith('/');
+        expect(mockNavigate).toHaveBeenCalledWith('/');
     });
 
     it('redirects to URL in querystring after successful login', async () => {
@@ -96,7 +98,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Login"}));
 
         // Confirm redirected to user profile after login
-        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/profile/');
+        expect(mockNavigate).toHaveBeenCalledWith('/accounts/profile/');
     });
 
     it('shows error if credentials are not accepted', async () => {
@@ -219,7 +221,7 @@ describe('App', () => {
         });
 
         // Confirm redirected to overview page
-        expect(routerMock.navigate).toHaveBeenCalledWith('/');
+        expect(mockNavigate).toHaveBeenCalledWith('/');
     });
 
     it('shows error text under username when backend rejects username', async () => {

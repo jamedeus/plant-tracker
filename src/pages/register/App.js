@@ -1,4 +1,5 @@
 import React, { useState, useRef, memo, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
@@ -12,7 +13,6 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
-import router from 'src/routes';
 import 'src/css/index.css';
 import uuidPropType from 'src/types/uuidPropType';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
@@ -203,6 +203,9 @@ function App({ initialState }) {
         setFormIsValid(true);
     };
 
+    // Used to change page after successful registration
+    const navigate = useNavigate();
+
     const handleRegister = async () => {
         // Build payload by parsing all fields from visible form
         const payload = {
@@ -224,7 +227,7 @@ function App({ initialState }) {
         const response = await sendPostRequest(endpoint, payload);
         // Reload route (switch to manage page) if successful
         if (response.ok) {
-            router.navigate(window.location.pathname);
+            navigate(window.location.pathname);
         // Show error modal if registration failed
         } else {
             const data = await response.json();
@@ -240,7 +243,7 @@ function App({ initialState }) {
         });
         // Reload route (switch to manage page) if successful
         if (response.ok) {
-            router.navigate(window.location.pathname);
+            navigate(window.location.pathname);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));

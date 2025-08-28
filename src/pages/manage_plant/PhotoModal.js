@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
@@ -7,7 +8,6 @@ import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded } from './timelineSlice';
-import router from 'src/routes';
 import 'src/css/photomodal.css';
 
 let modalRef;
@@ -42,6 +42,7 @@ Row.propTypes = {
 };
 
 const PhotoModal = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
@@ -118,9 +119,9 @@ const PhotoModal = () => {
         } else {
             setUploading(false);
             resetSelection();
-            // Redirect to login page if  user not signed in/session expired
+            // Redirect to login page if user not signed in/session expired
             if (response.status === 401) {
-                router.navigate('/accounts/login/');
+                navigate('/accounts/login/');
             // Show error if proxy client_max_body_size exceeded
             } else if (response.status === 413) {
                 openErrorModal(

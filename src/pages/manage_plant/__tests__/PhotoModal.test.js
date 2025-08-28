@@ -7,14 +7,15 @@ import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 
-// Mock router.navigate to check login page redirect (without rendering whole SPA)
-jest.mock('src/routes', () => {
+// Mock useNavigate to return a mock (confirm redirected to correct page)
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
     return {
-        __esModule: true,
-        default: { navigate: jest.fn().mockResolvedValue(true) },
+        ...actual,
+        useNavigate: () => mockNavigate,
     };
 });
-import routerMock from 'src/routes';
 
 const TestComponent = () => {
     // Render app
@@ -34,6 +35,7 @@ describe('PhotoModal', () => {
     beforeEach(async () => {
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+        mockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
@@ -279,6 +281,6 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm redirected
-        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/login/');
+        expect(mockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });
