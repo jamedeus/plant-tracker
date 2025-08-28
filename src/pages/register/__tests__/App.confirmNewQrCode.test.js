@@ -16,14 +16,12 @@ jest.mock('react-router-dom', () => {
     };
 });
 
-// Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
-jest.mock('src/routes', () => {
-    return {
-        __esModule: true,
-        default: { navigate: jest.fn().mockResolvedValue(true) },
-    };
-});
-import routerMock from 'src/routes';
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
 
 describe('Register page while changing QR code in progress', () => {
     let app, user;
@@ -36,6 +34,8 @@ describe('Register page while changing QR code in progress', () => {
     beforeEach(() => {
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+        mockNavigate.mockReset();
+        globalMockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
@@ -150,6 +150,6 @@ describe('Register page while changing QR code in progress', () => {
         await user.click(app.getByTitle('Change QR code'));
 
         // Confirm redirected
-        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/login/');
+        expect(globalMockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });

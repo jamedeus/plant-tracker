@@ -7,14 +7,12 @@ import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext } from './mockContext';
 
-// Mock router.navigate to check redirect to overview (without rendering whole SPA)
-jest.mock('src/routes', () => {
-    return {
-        __esModule: true,
-        default: { navigate: jest.fn().mockResolvedValue(true) },
-    };
-});
-import routerMock from 'src/routes';
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
 
 describe('App', () => {
     let app, user;
@@ -238,6 +236,6 @@ describe('App', () => {
         await user.click(app.getByText('Un-archive'));
 
         // Confirm redirected to overview
-        expect(routerMock.navigate).toHaveBeenCalledWith('/');
+        expect(globalMockNavigate).toHaveBeenCalledWith('/');
     });
 });

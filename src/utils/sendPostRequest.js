@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import router from 'src/routes';
+import { navigate } from 'src/navigate';
 
 // Takes endpoint and POST body, makes backend request, returns response
 export default async function sendPostRequest(url, body) {
@@ -17,7 +17,7 @@ export default async function sendPostRequest(url, body) {
 
     // Redirect to login page if user not signed in/session expired
     if (response.status === 401) {
-        router.navigate('/accounts/login/');
+        navigate('/accounts/login/');
         // Return mock error that ErrorModal won't show
         // (prevents exception when caller tries response.json())
         return new Response(JSON.stringify('spa-redirect'), {

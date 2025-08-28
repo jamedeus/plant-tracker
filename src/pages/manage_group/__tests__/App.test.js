@@ -5,14 +5,12 @@ import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockPlantOptions } from './mockContext';
 
-// Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
-jest.mock('src/routes', () => {
-    return {
-        __esModule: true,
-        default: { navigate: jest.fn().mockResolvedValue(true) },
-    };
-});
-import routerMock from 'src/routes';
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
 
 describe('App', () => {
     let app, user;
@@ -182,7 +180,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm redirected
-        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/login/');
+        expect(globalMockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 
     it('shows checkboxes when Select plants tab is clicked', async () => {

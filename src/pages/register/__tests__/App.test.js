@@ -7,14 +7,12 @@ import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext } from './mockContext';
 
-// Mock router.navigate to check sendPostRequest redirect (without rendering whole SPA)
-jest.mock('src/routes', () => {
-    return {
-        __esModule: true,
-        default: { navigate: jest.fn().mockResolvedValue(true) },
-    };
-});
-import routerMock from 'src/routes';
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
 
 describe('App', () => {
     let app, user;
@@ -30,6 +28,7 @@ describe('App', () => {
 
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+        globalMockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
@@ -257,6 +256,6 @@ describe('App', () => {
         await user.click(app.getByText('Save'));
 
         // Confirm redirected
-        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/login/');
+        expect(globalMockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });

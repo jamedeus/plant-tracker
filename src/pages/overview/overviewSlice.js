@@ -1,6 +1,6 @@
+import { navigate } from 'src/navigate';
 import { createSlice } from '@reduxjs/toolkit';
 import { getMostRecent } from 'src/utils/timestampUtils';
-import router from 'src/routes';
 
 // Map eventType taken by bulk_add_plant_events to the plantDetails state
 // key that should be updated when an event is successfully created
@@ -32,7 +32,7 @@ export const overviewSlice = createSlice({
                 !Object.keys(state.plants).length &&
                 !Object.keys(state.groups).length
             ) {
-                router.navigate('/');
+                navigate('/');
             }
         },
         // Takes array of UUIDs of deleted or archived groups
@@ -45,7 +45,7 @@ export const overviewSlice = createSlice({
                 !Object.keys(state.plants).length &&
                 !Object.keys(state.groups).length
             ) {
-                router.navigate('/');
+                navigate('/');
             }
         },
         // Takes object with eventType, plantIds, and timestamp keys

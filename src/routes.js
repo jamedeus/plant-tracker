@@ -6,6 +6,7 @@ import {
     Outlet,
     ScrollRestoration,
     useMatches,
+    useNavigate,
     useLoaderData,
     useRouteError,
     useRevalidator,
@@ -20,6 +21,7 @@ import {
     PasswordResetApp,
     PermissionDeniedApp,
 } from './bundles';
+import { setNavigate } from 'src/navigate';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { useBackButton } from 'src/hooks/useBackButton';
@@ -118,6 +120,10 @@ function RootLayout() {
     // back to SPA using browser back/forward buttons
     const { revalidate } = useRevalidator();
     useBackButton(() => revalidate());
+
+    // Expose navigate to functions (can't call useNavigate outside component)
+    const navigate = useNavigate();
+    useEffect(() => { setNavigate(navigate); }, [navigate]);
 
     // Update title when route changes
     const matches = useMatches();
