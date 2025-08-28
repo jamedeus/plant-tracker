@@ -504,6 +504,31 @@ describe('SPA integration tests', () => {
         });
     });
 
+    it('renders login page if initial state request receives 401', async () => {
+        // Simulate get state response when user is not authenticated
+        mockFetchJSONResponse({ error: 'authentication required' }, 401);
+
+        // Render SPA on overview page
+        const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+        const { getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+
+        // Confirm rendered login page, NOT overview page
+        await waitFor(() => {
+            expect(document.title).toBe('Login');
+            expect(queryByTestId('overview-layout')).toBeNull();
+            expect(getByTestId('login-page')).toBeInTheDocument();
+        });
+
+        // Confirm requested overview state
+        expect(global.fetch).toHaveBeenCalledOnce();
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_overview_state',
+            {headers: {Accept: "application/json"}}
+        );
+    });
+
     it('redirects to login page if user session expired', async () => {
         // Render SPA on overview page
         mockFetchJSONResponse(mockOverviewContext);
@@ -527,6 +552,49 @@ describe('SPA integration tests', () => {
         // manage_plant page
         await waitFor(() => {
             expect(queryByTestId('overview-layout')).toBeNull();
+            expect(queryByTestId('manage-plant-layout')).toBeNull();
+            expect(getByTestId('login-page')).toBeInTheDocument();
+            expect(document.title).toBe('Login');
+        });
+    });
+
+    it('redirects to login page if user with expired session sends POST request', async () => {
+        // Render SPA on manage_plant page
+        mockFetchJSONResponse({
+            page: 'manage_plant',
+            title: 'Manage Plant',
+            state: mockPlantContext
+        });
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const router = createMemoryRouter(routes, { initialEntries: [
+            '/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca'
+        ] });
+        const { getByRole, getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+        await waitFor(() => {
+            expect(document.title).toBe('Manage Plant');
+            expect(getByTestId('manage-plant-layout')).toBeInTheDocument();
+        });
+
+        // Simulate response when user is not authenticated
+        mockFetchJSONResponse({ error: 'authentication required' }, 401);
+
+        // Simulate user clicking water button
+        await user.click(getByRole('button', {name: 'Water'}));
+
+        expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                event_type: "water",
+                timestamp: "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+
+        // Confirm unrendered manage_plant page, rendered login page
+        await waitFor(() => {
             expect(queryByTestId('manage-plant-layout')).toBeNull();
             expect(getByTestId('login-page')).toBeInTheDocument();
             expect(document.title).toBe('Login');
