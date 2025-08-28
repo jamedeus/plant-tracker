@@ -17,8 +17,8 @@ jest.mock('src/bundles', () => {
         UserProfileApp: createMockBundle('user-profile'),
         PasswordResetApp: createMockBundle('password-reset'),
         /* eslint-disable react/prop-types */
-        PermissionDeniedApp: ({ errorMessage }) => (
-            <div data-testid="permission-denied">{errorMessage}</div>
+        ErrorPageApp: ({ errorMessage }) => (
+            <div data-testid="error-page">{errorMessage}</div>
         ),
     };
 });
@@ -224,7 +224,7 @@ describe('SPA routes', () => {
         expect(router.state.location.pathname).toBe('/');
     });
 
-    it('shows permission denied page when loader receives 403', async () => {
+    it('shows error page when loader receives 403', async () => {
         // Simulate login page response when user accounts are disabled
         mockFetchJSONResponse({ error: 'user accounts are disabled' }, 403);
         // Simulate user loading profile page
@@ -232,12 +232,12 @@ describe('SPA routes', () => {
             routes: routes,
             initialEntries: ['/accounts/profile/']
         });
-        // Confirm rendered permission-denied bundle with error from response
+        // Confirm rendered error-page bundle with error from response
         await waitFor(() => {
-            expect(getByTestId('permission-denied')).toHaveTextContent(
+            expect(getByTestId('error-page')).toHaveTextContent(
                 'user accounts are disabled'
             );
-            expect(document.title).toBe('Permission Denied');
+            expect(document.title).toBe('Error');
         });
 
         // Simulate 403 response missing error parameter
@@ -245,15 +245,15 @@ describe('SPA routes', () => {
 
         // Navigate to overview page
         await act(() => router.navigate('/'));
-        // Confirm rendered permission-denied bundle with fallback error message
+        // Confirm rendered error-page bundle with fallback error message
         await waitFor(() => {
-            expect(getByTestId('permission-denied')).toHaveTextContent(
+            expect(getByTestId('error-page')).toHaveTextContent(
                 'Unexpected response'
             );
         });
     });
 
-    it('shows permission denied page when loader receives non-JSON response', async () => {
+    it('shows error page when loader receives non-JSON response', async () => {
         // Simulate returning HTML when SPA expects JSON
         global.fetch = jest.fn().mockResolvedValue({
             ok: true,
@@ -265,12 +265,12 @@ describe('SPA routes', () => {
             routes: routes,
             initialEntries: ['/']
         });
-        // Confirm rendered permission-denied bundle (not overview)
+        // Confirm rendered error-page bundle (not overview)
         await waitFor(() => {
-            expect(getByTestId('permission-denied')).toBeInTheDocument();
-            expect(document.title).toBe('Permission Denied');
+            expect(getByTestId('error-page')).toBeInTheDocument();
+            expect(document.title).toBe('Error');
         });
-        // Confirm URL did not change when permission denied was rendered
+        // Confirm URL did not change when error page was rendered
         expect(router.state.location.pathname).toBe('/');
 
         // Simulate missing content-type header
@@ -281,9 +281,9 @@ describe('SPA routes', () => {
         });
         // Navigate to overview page
         await act(() => router.navigate('/'));
-        // Confirm rendered permission-denied bundle with fallback error message
+        // Confirm rendered error-page bundle with fallback error message
         await waitFor(() => {
-            expect(getByTestId('permission-denied')).toHaveTextContent  (
+            expect(getByTestId('error-page')).toHaveTextContent  (
                 'Unexpected response'
             );
         });
@@ -302,12 +302,12 @@ describe('SPA routes', () => {
             routes: routes,
             initialEntries: ['/'],
         });
-        // Confirm rendered permission-denied bundle with fallback error message
+        // Confirm rendered error-page bundle with fallback error message
         await waitFor(() => {
-            expect(getByTestId('permission-denied')).toHaveTextContent(
+            expect(getByTestId('error-page')).toHaveTextContent(
                 'An unexpected error occurred'
             );
-            expect(document.title).toBe('Permission Denied');
+            expect(document.title).toBe('Error');
         });
     });
 

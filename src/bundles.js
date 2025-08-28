@@ -23,4 +23,4 @@ export const UserProfileApp = lazyWithPreload(() => import(/* webpackChunkName: 
 
 export const PasswordResetApp = lazyWithPreload(() => import(/* webpackChunkName: "password_reset_app" */ 'src/pages/password_reset/App'));
 
-export const PermissionDeniedApp = lazyWithPreload(() => import(/* webpackChunkName: "permission_denied_app" */ 'src/pages/permission_denied/App'));
+export const ErrorPageApp = lazyWithPreload(() => import(/* webpackChunkName: "error_page_app" */ 'src/pages/error_page/App'));

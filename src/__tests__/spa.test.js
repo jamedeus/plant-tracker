@@ -603,7 +603,7 @@ describe('SPA integration tests', () => {
         });
     });
 
-    it('redirects to permission denied page if loader receives 403', async () => {
+    it('redirects to error page if loader receives 403', async () => {
         // Render SPA on overview page
         mockFetchJSONResponse(mockOverviewContext);
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
@@ -622,18 +622,17 @@ describe('SPA integration tests', () => {
         // Simulate user clicking plant link
         await user.click(getByLabelText('Go to Test Plant page'));
 
-        // Confirm unrendered overview page, rendered permission denied page,
-        // did NOT render manage_plant page
+        // Confirm unrendered overview, rendered error page, did NOT render manage_plant
         await waitFor(() => {
             expect(queryByTestId('overview-layout')).toBeNull();
             expect(queryByTestId('manage-plant-layout')).toBeNull();
-            expect(getByTestId('permission-denied')).toBeInTheDocument();
+            expect(getByTestId('error-page')).toBeInTheDocument();
             expect(getByText('plant is owned by a different user')).toBeInTheDocument();
-            expect(document.title).toBe('Permission Denied');
+            expect(document.title).toBe('Error');
         });
     });
 
-    it('redirects to permission denied page if loader receives non-JSON response', async () => {
+    it('redirects to error page if loader receives non-JSON response', async () => {
         // Simulate returning HTML when SPA expects JSON
         global.fetch = jest.fn().mockResolvedValue({
             ok: true,
@@ -647,12 +646,12 @@ describe('SPA integration tests', () => {
             <AppRoot router={router} />
         );
 
-        // Confirm redirected to permission denied page, did NOT render overview
+        // Confirm redirected to error page, did NOT render overview
         await waitFor(() => {
             expect(queryByTestId('overview-layout')).toBeNull();
-            expect(getByTestId('permission-denied')).toBeInTheDocument();
+            expect(getByTestId('error-page')).toBeInTheDocument();
             expect(getByText('Unexpected response')).toBeInTheDocument();
-            expect(document.title).toBe('Permission Denied');
+            expect(document.title).toBe('Error');
         });
     });
 });

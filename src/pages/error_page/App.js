@@ -8,11 +8,11 @@ function App({ errorMessage }) {
     return (
         <div
             className="container flex flex-col full-screen mx-auto items-center gap-16"
-            data-testid="permission-denied"
+            data-testid="error-page"
         >
             <Navbar
                 menuOptions={<NavbarDropdownOptions />}
-                title="Permission Denied"
+                title="Error"
                 showScanButton={false}
             />
 

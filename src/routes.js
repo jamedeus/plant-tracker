@@ -19,7 +19,7 @@ import {
     LoginApp,
     UserProfileApp,
     PasswordResetApp,
-    PermissionDeniedApp,
+    ErrorPageApp,
 } from './bundles';
 import { setNavigate } from 'src/navigate';
 import { Toast } from 'src/components/Toast';
@@ -29,7 +29,7 @@ import UnsupportedBrowserWarning from 'src/components/UnsupportedBrowserWarning'
 
 // Helper used by loaders to fetch initial state, returns JSON body
 // If user is not authenticated returns redirect to login page
-// If other error/unexpected response returns redirect to permission denied page
+// If other error/unexpected response returns redirect to error page
 async function fetchJSON(url, request) {
     const response = await fetch(url, {
         headers: { Accept: 'application/json' }
@@ -59,7 +59,7 @@ async function fetchJSON(url, request) {
             throw redirect(data.redirect);
         }
 
-        // Permission denied: show error message
+        // Received error: show on error page
         const error = await response.json();
         throw new Response('', {
             status: response.status,
@@ -107,12 +107,12 @@ function ManageRoute() {
     return <Component initialState={payload.state} />;
 }
 
-// Renders PermissionDeniedApp with error message from response
+// Renders ErrorPageApp with error message from response
 function ErrorBoundaryRoute() {
     const error = useRouteError();
-    document.title = 'Permission Denied';
+    document.title = 'Error';
     const errorMessage = error?.statusText || 'An unexpected error occurred';
-    return <PermissionDeniedApp errorMessage={errorMessage} />;
+    return <ErrorPageApp errorMessage={errorMessage} />;
 }
 
 function RootLayout() {
