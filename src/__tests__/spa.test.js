@@ -118,6 +118,57 @@ describe('SPA integration tests', () => {
         );
     });
 
+    it('handles automatic navigation when password change form is submitted', async () => {
+        // Render SPA on password reset page
+        mockCurrentURL('https://plants.lan/accounts/reset/OA/set-password/');
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const router = createMemoryRouter(routes, { initialEntries: [
+            '/accounts/reset/OA/set-password/'
+        ] });
+        const { getByRole, getByLabelText, getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+        // Confirm rendered correct page
+        await waitFor(() => {
+            expect(document.title).toBe('Reset Password');
+            expect(getByTestId('password-reset-page')).toBeInTheDocument();
+        });
+
+        // Mock fetch function to return expected response when password is changed
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({success: "password_changed"})
+        }));
+
+        // Simulate user entering new password twice and clicking change password
+        await user.type(getByLabelText('New password'), 'thispasswordisbetter');
+        await user.type(getByLabelText('Confirm new password'), 'thispasswordisbetter');
+        await user.click(getByRole("button", {name: "Change Password"}));
+        expect(global.fetch).toHaveBeenCalled();
+
+        // Mock fetch function to return user profile page state
+        mockFetchJSONResponse({
+            user_details: {
+                username: "cdanger",
+                email: "totally.not.anthony.weiner@gmail.com",
+                first_name: "Carlos",
+                last_name: "Danger",
+                date_joined: "2025-04-06T00:08:53.392806+00:00",
+                email_verified: false
+            },
+            title: "User Profile"
+        });
+
+        // Confirm SPA automatically navigates to profile page after animation
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        await waitFor(() => {
+            // expect(document.title).toBe('User Profile');
+            expect(getByTestId('user-profile-page')).toBeInTheDocument();
+            expect(queryByTestId('password-reset-page')).toBeNull();
+        });
+    });
+
     it('fetches new state for current route when user navigates to SPA with back button', async () => {
         // Mock fetch function to return overview page state
         mockFetchJSONResponse(mockOverviewContext);

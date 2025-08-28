@@ -187,6 +187,7 @@ export const routes = [
             {
                 path: 'accounts/reset/:uidb64/:token/',
                 Component: PasswordResetApp,
+                handle: { title: 'Reset Password' },
             },
             {
                 path: '*',

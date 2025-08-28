@@ -308,7 +308,10 @@ function App({ initialState }) {
     ), [ToggleThemeOption]);
 
     return (
-        <div className="container flex flex-col full-screen mx-auto items-center">
+        <div
+            className="container flex flex-col full-screen mx-auto items-center"
+            data-testid="user-profile-page"
+        >
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title="User Profile"

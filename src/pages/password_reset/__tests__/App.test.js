@@ -2,14 +2,15 @@ import { Toast } from 'src/components/Toast';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 
-// Mock router.navigate to check redirect to overview (without rendering whole SPA)
-jest.mock('src/routes', () => {
+// Mock useNavigate to return a mock (confirm redirected to correct page)
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
     return {
-        __esModule: true,
-        default: { navigate: jest.fn().mockResolvedValue(true) },
+        ...actual,
+        useNavigate: () => mockNavigate,
     };
 });
-import routerMock from 'src/routes';
 
 describe('App', () => {
     let app, user;
@@ -28,16 +29,14 @@ describe('App', () => {
         );
 
         // Mock window.location to expected URL (parsed after logging in)
-        mockCurrentURL(
-            'https://plants.lan/accounts/reset/OA/set-password/',
-            '/accounts/reset/OA/set-password/'
-        );
+        mockCurrentURL('https://plants.lan/accounts/reset/OA/set-password/');
     });
 
     // Clean up pending timers after each test
     afterEach(() => {
         act(() => jest.runAllTimers());
         jest.useRealTimers();
+        mockNavigate.mockReset();
     });
 
     it('sends expected payload when password is changed', async () => {
@@ -72,7 +71,7 @@ describe('App', () => {
 
         // Confirm automatically redirects to profile page
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        expect(routerMock.navigate).toHaveBeenCalledWith('/accounts/profile/');
+        expect(mockNavigate).toHaveBeenCalledWith('/accounts/profile/');
     });
 
     it('submits change password form when user presses enter key', async () => {
