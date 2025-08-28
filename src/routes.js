@@ -50,7 +50,7 @@ async function fetchJSON(url, request) {
         if (response.status === 401) {
             const url = new URL(request.url);
             const next = encodeURIComponent(url.pathname + url.search);
-            return redirect(`/accounts/login/?next=${next}`);
+            throw redirect(`/accounts/login/?next=${next}`);
         }
 
         // Server returned redirect: redirect to path in JSON response
