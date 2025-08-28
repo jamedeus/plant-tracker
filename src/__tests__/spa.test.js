@@ -1,7 +1,7 @@
 import AppRoot from 'src/AppRoot';
 import { routes } from 'src/routes';
 import { createMemoryRouter } from 'react-router-dom';
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, cleanup } from '@testing-library/react';
 import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
@@ -33,10 +33,12 @@ describe('SPA integration tests', () => {
         jest.useFakeTimers({ doNotFake: ['Date'] });
     });
 
-    // Clean up pending timers after each test
-    afterEach(() => {
+    // Clean up pending timers and unmount react tree after each test
+    afterEach(async () => {
+        await act(async () => jest.runOnlyPendingTimers());
         jest.clearAllTimers();
         jest.useRealTimers();
+        cleanup();
     });
 
     it('replaces current page when user scans a QR code', async () => {
