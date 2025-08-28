@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import views, auth_views, build_states
+from . import views, auth_views, get_state_views
 from .view_decorators import disable_in_single_user_mode
 
 app_name = "api"
@@ -16,13 +16,13 @@ urlpatterns = [
     path("accounts/profile/", disable_in_single_user_mode(views.serve_spa), name="user_profile_page"),
 
     # SPA state endpoints
-    path('get_overview_state', build_states.get_overview_page_state, name='get_overview_state'),
-    path('get_archived_overview_state', build_states.get_archived_overview_state, name='get_archived_overview_state'),
+    path('get_overview_state', get_state_views.get_overview_page_state, name='get_overview_state'),
+    path('get_archived_overview_state', get_state_views.get_archived_overview_state, name='get_archived_overview_state'),
     path('get_user_details', auth_views.get_user_details, name='get_user_details'),
-    path('get_manage_state/<str:uuid>', build_states.get_manage_state, name='get_manage_state'),
-    path('get_plant_options', views.get_plant_options, name='get_plant_options'),
-    path('get_plant_species_options', views.get_plant_species_options, name='get_plant_species_options'),
-    path('get_add_to_group_options', views.get_add_to_group_options, name='get_add_to_group_options'),
+    path('get_manage_state/<str:uuid>', get_state_views.get_manage_state, name='get_manage_state'),
+    path('get_plant_options', get_state_views.get_plant_options, name='get_plant_options'),
+    path('get_plant_species_options', get_state_views.get_plant_species_options, name='get_plant_species_options'),
+    path('get_add_to_group_options', get_state_views.get_add_to_group_options, name='get_add_to_group_options'),
 
     # Auth and user account management views
     path("accounts/login/", auth_views.LoginView.as_view(), name="login"),

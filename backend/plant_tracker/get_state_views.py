@@ -1,7 +1,7 @@
-'''Functions that build states used by frontend react apps.
+'''Views that return initial states for frontend react apps.
 
-Contains extra functions to get cached overview state and incrementally update
-cached overview state.
+Contains functions that build states and extra functions to get cached overview
+state and incrementally update it (called by API views that update database).
 
 Building the overview state on each request can add >50ms to page load, but
 loading from cache is practically instant and incremental updates typically
@@ -78,7 +78,8 @@ def build_manage_group_state(group):
 
 
 def build_register_state(new_uuid, user):
-    '''Returns initial state for register page.
+    '''Returns initial state for register page. Called by /get_manage_state
+    endpoint if UUID does not exist in database.
 
     If the old_uuid cache is set (see /change_qr_code endpoint) context includes
     information used by frontend to show change QR prompt (calls /change_uuid
@@ -259,8 +260,8 @@ def update_cached_overview_state_show_archive_bool(user):
 
 @get_user_token
 def get_overview_page_state(_, user):
-    '''Returns current overview page state for the requesting user, used to
-    refresh contents when returning to over view with back button.
+    '''Returns current overview page state for the requesting user.
+    Called by SPA to get initial state for overview bundle.
     '''
     return JsonResponse(
         get_overview_state(user),
@@ -270,8 +271,8 @@ def get_overview_page_state(_, user):
 
 @get_user_token
 def get_archived_overview_state(_, user):
-    '''Returns archived overview page state for the requesting user as JSON.
-    Used by SPA to bootstrap the archived overview route.
+    '''Returns archived overview page state for the requesting user.
+    Called by SPA to get initial state for overview bundle (archived route).
     '''
     state = build_overview_state(user, archived=True)
     if not state:
@@ -281,10 +282,13 @@ def get_archived_overview_state(_, user):
 
 @get_user_token
 def get_manage_state(request, uuid, user):
-    '''Resolves a UUID to the correct page and returns initial state as JSON.
-    Returns page key (manage_plant, manage_group, or register), page title, and
-    the initial state object for that page. Intended for SPA bootstrapping.
+    '''Returns state, title, and bundle name for the requested UUID.
+    If UUID is an existing plant returns manage_plant bundle initial state.
+    If UUID is an existing group returns manage_group bundle initial state.
+    If UUID does not exist in database returns register bundle initial state.
+    Frontend react-router uses page key to determine which bundle to load.
     '''
+
     try:
         model_type = find_model_type(uuid)
     except ValidationError:
@@ -322,3 +326,28 @@ def get_manage_state(request, uuid, user):
         'title': 'Register New Plant',
         'state': build_register_state(uuid, user)
     }, status=200)
+
+
+def get_plant_species_options(request):
+    '''Returns list used to populate plant species combobox suggestions.'''
+    species = Plant.objects.all().values_list('species', flat=True)
+    options = sorted(list(set(i for i in species if i is not None)))
+    return JsonResponse({'options': options}, status=200)
+
+
+@get_user_token
+def get_plant_options(request, user):
+    '''Returns dict of plants with no group (populates group add plants modal).'''
+    return JsonResponse(
+        {'options': Plant.objects.get_add_plants_to_group_modal_options(user)},
+        status=200
+    )
+
+
+@get_user_token
+def get_add_to_group_options(request, user):
+    '''Returns dict of groups (populates plant add to group modal).'''
+    return JsonResponse(
+        {'options': Group.objects.get_add_to_group_modal_options(user)},
+        status=200
+    )

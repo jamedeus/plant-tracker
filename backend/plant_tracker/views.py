@@ -1,7 +1,5 @@
 '''Django API endpoint functions'''
 
-# pylint: disable=too-many-lines
-
 import base64
 from io import BytesIO
 from itertools import chain
@@ -35,7 +33,7 @@ from .view_decorators import (
     get_event_type_from_post_body,
     clean_payload_data
 )
-from .build_states import (
+from .get_state_views import (
     update_cached_overview_details_keys,
     add_instance_to_cached_overview_state,
     remove_instance_from_cached_overview_state,
@@ -78,31 +76,6 @@ def get_qr_codes(data, **kwargs):
             {'error': 'failed to generate, try a shorter URL_PREFIX'},
             status=500
         )
-
-
-def get_plant_species_options(request):
-    '''Returns list used to populate plant species combobox suggestions.'''
-    species = Plant.objects.all().values_list('species', flat=True)
-    options = sorted(list(set(i for i in species if i is not None)))
-    return JsonResponse({'options': options}, status=200)
-
-
-@get_user_token
-def get_plant_options(request, user):
-    '''Returns dict of plants with no group (populates group add plants modal).'''
-    return JsonResponse(
-        {'options': Plant.objects.get_add_plants_to_group_modal_options(user)},
-        status=200
-    )
-
-
-@get_user_token
-def get_add_to_group_options(request, user):
-    '''Returns dict of groups (populates plant add to group modal).'''
-    return JsonResponse(
-        {'options': Group.objects.get_add_to_group_modal_options(user)},
-        status=200
-    )
 
 
 @get_user_token

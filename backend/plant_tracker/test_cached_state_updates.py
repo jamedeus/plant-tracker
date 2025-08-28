@@ -8,7 +8,7 @@ from django.core.cache import cache
 from django.test.client import MULTIPART_CONTENT
 
 from .view_decorators import get_default_user
-from .build_states import build_overview_state
+from .get_state_views import build_overview_state
 from .models import Group, Plant, DivisionEvent, Photo
 from .unit_test_helpers import (
     JSONClient,

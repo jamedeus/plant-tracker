@@ -34,7 +34,7 @@ from .models import (
     NoteEvent,
     UserEmailVerification
 )
-from .build_states import build_overview_state
+from .get_state_views import build_overview_state
 from .view_decorators import get_default_user, events_map
 from .auth_views import email_verification_token_generator
 from .unit_test_helpers import (

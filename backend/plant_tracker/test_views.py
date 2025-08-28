@@ -70,7 +70,7 @@ class OverviewTests(TestCase):
 
         # Mock build_overview_state to return a different string
         # pylint: disable-next=line-too-long
-        with patch('plant_tracker.build_states.build_overview_state', return_value={'state': 'built'}):
+        with patch('plant_tracker.get_state_views.build_overview_state', return_value={'state': 'built'}):
             # Request overview state, confirm state was loaded from cache
             response = self.client.get('/get_overview_state')
             self.assertEqual(response.json(), {'state': 'cached'})
@@ -80,7 +80,7 @@ class OverviewTests(TestCase):
 
         # Mock build_overview_state to return a different string
         # pylint: disable-next=line-too-long
-        with patch('plant_tracker.build_states.build_overview_state', return_value={'state': 'built'}):
+        with patch('plant_tracker.get_state_views.build_overview_state', return_value={'state': 'built'}):
             # Request overview state, confirm was built by calling mocked
             # function (failed to load from cache)
             response = self.client.get('/get_overview_state')

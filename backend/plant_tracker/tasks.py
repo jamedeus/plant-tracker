@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
-from .build_states import build_overview_state
+from .get_state_views import build_overview_state
 
 
 @shared_task
