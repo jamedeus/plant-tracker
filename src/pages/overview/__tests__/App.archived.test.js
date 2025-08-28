@@ -1,5 +1,4 @@
 import { fireEvent } from '@testing-library/react';
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
 import { Toast } from 'src/components/Toast';
@@ -19,7 +18,7 @@ describe('App', () => {
 
     beforeAll(() => {
         // Minimal DOM context needed
-        createMockContext('user_accounts_enabled', true);
+        globalThis.USER_ACCOUNTS_ENABLED = true;
 
         // Mock window.location to simulate archived overview
         mockCurrentURL('https://plants.lan/archived');

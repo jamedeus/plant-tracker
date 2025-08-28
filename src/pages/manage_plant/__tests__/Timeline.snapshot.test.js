@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
@@ -12,7 +11,7 @@ describe('Timeline', () => {
     };
 
     beforeAll(() => {
-        createMockContext('user_accounts_enabled', true);
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     it('matches snapshot when plant is not archived', () => {

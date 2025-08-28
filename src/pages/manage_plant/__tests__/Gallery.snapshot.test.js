@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { mockContext, mockphotos } from './mockContext';
 import { ReduxProvider } from '../store';
@@ -21,8 +20,8 @@ const TestComponent = () => {
 
 describe('Gallery', () => {
     beforeAll(() => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
     });

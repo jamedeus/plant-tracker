@@ -1,6 +1,5 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import parseDomContext from 'src/utils/parseDomContext';
 import { Link } from 'react-router-dom';
 import Setup from './Setup';
 import EditModeFooter from './EditModeFooter';
@@ -22,11 +21,6 @@ import { FaPlus } from 'react-icons/fa6';
 // Render correct components for current state objects
 const Layout = () => {
     const dispatch = useDispatch();
-
-    // Controls whether dropdown contains user profile link
-    const userAccountsEnabled = useMemo(() => (
-        parseDomContext("user_accounts_enabled")
-    ), []);
 
     const plants = useSelector((state) => state.overview.plants);
     const groups = useSelector((state) => state.overview.groups);
@@ -98,7 +92,7 @@ const Layout = () => {
                     </Link></li>
                 )}
                 {/* Link to user profile unless accounts disabled */}
-                {userAccountsEnabled && (
+                {globalThis.USER_ACCOUNTS_ENABLED && (
                     <li><Link to='/accounts/profile/' discover="none">
                         User profile
                     </Link></li>

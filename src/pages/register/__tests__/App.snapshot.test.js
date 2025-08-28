@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
@@ -20,7 +19,7 @@ describe('App', () => {
 
     it('matches snapshot', async () => {
         // Render App, wait for species options to be fetched
-        createMockContext('user_accounts_enabled', true);
+        globalThis.USER_ACCOUNTS_ENABLED = true;
         const { container } = render(<App initialState={mockContext} />);
         await waitFor(() => {
             expect(global.fetch).toHaveBeenCalled();
@@ -37,14 +36,14 @@ describe('App', () => {
         );
 
         // Render App, confirm matches snapshot
-        createMockContext('user_accounts_enabled', true);
+        globalThis.USER_ACCOUNTS_ENABLED = true;
         const { container } = render(<App initialState={mockContext} />);
         expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when plant division in progress', () => {
         // Render App, confirm matches snapshot
-        createMockContext('user_accounts_enabled', true);
+        globalThis.USER_ACCOUNTS_ENABLED = true;
         const { container } = render(
             <App initialState={{ ...mockContext, dividing_from: mockDividingFrom }} />
         );
@@ -53,7 +52,7 @@ describe('App', () => {
 
     it('matches snapshot when changing plant QR code', () => {
         // Render App, confirm matches snapshot
-        createMockContext('user_accounts_enabled', true);
+        globalThis.USER_ACCOUNTS_ENABLED = true;
         const { container } = render(
             <App initialState={{ ...mockContext, ...mockChangingPlantQrCode }} />
         );
@@ -62,7 +61,7 @@ describe('App', () => {
 
     it('matches snapshot when changing group QR code', () => {
         // Render App, confirm matches snapshot
-        createMockContext('user_accounts_enabled', true);
+        globalThis.USER_ACCOUNTS_ENABLED = true;
         const { container } = render(
             <App initialState={{ ...mockContext, ...mockChangingGroupQrCode }} />
         );

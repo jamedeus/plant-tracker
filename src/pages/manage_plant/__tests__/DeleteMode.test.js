@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -10,8 +9,8 @@ describe('Delete mode', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {

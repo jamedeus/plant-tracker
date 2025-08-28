@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
@@ -51,7 +50,7 @@ describe('Timeline regressions', () => {
                 "2023-05-25T15:28:39+00:00": "Fertilized with a balanced 10-10-10 fertilizer."
             }
         };
-        createMockContext('user_accounts_enabled', true);
+        globalThis.USER_ACCOUNTS_ENABLED = true;
 
         // Render, get reference to to 2023 month options in QuickNavigation menu
         const app = render(

@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
@@ -27,8 +26,8 @@ describe('Register page while changing QR code in progress', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {

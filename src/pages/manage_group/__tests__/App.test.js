@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
@@ -16,8 +15,8 @@ describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {

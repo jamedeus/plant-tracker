@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import Layout from '../Layout';
 import { ReduxProvider } from '../store';
@@ -12,8 +11,8 @@ jest.mock('../Gallery', () => {
 
 describe('Gallery suspense overlay', () => {
     beforeAll(() => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {

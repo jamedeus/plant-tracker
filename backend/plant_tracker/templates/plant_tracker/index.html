@@ -31,6 +31,8 @@
 <body>
     <div id="root"></div>
     {# Save bool that controls whether user profile links are rendered #}
-    {{ user_accounts_enabled|json_script:"user_accounts_enabled" }}
+    <script>
+        window.USER_ACCOUNTS_ENABLED = {{ user_accounts_enabled|yesno:"true,false" }};
+    </script>
 </body>
 </html>

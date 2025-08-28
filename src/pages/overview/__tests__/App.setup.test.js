@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 
 jest.mock('print-js');
@@ -7,8 +6,8 @@ describe('App with empty database', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {

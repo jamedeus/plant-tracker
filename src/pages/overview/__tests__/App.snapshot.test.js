@@ -1,4 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 
 // Mock consistent UUID (prevent changing each time tests run)
@@ -13,12 +12,11 @@ describe('App', () => {
     beforeAll(() => {
         // Mock page title (set by django template in prod)
         document.title = 'Plant Overview';
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     it('matches snapshot when plants and groups exist (desktop layout)', () => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
-
         // Set width greater than tailwind md breakpoint
         window.innerWidth = 800;
 
@@ -36,9 +34,6 @@ describe('App', () => {
     });
 
     it('matches snapshot when plants and groups exist (mobile layout)', () => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
-
         // Set width less than tailwind md breakpoint
         window.innerWidth = 600;
 
@@ -56,9 +51,6 @@ describe('App', () => {
     });
 
     it('matches snapshot when only plants exist', () => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
-
         // Render App with a single plant, confirm matches snapshot
         const plantUUID = Object.keys(mockContext.plants)[0];
         const { container } = render(
@@ -72,9 +64,6 @@ describe('App', () => {
     });
 
     it('matches snapshot when only groups exist', () => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
-
         // Render App with a single plant, confirm matches snapshot
         const groupUUID = Object.keys(mockContext.groups)[0];
         const { container } = render(
@@ -88,9 +77,6 @@ describe('App', () => {
     });
 
     it('matches snapshot when no models exist (setup)', () => {
-        // Provide state as props (setup page)
-        createMockContext('user_accounts_enabled', true);
-
         // Render App, confirm matches snapshot
         const { container } = render(
             <App initialState={{
@@ -108,12 +94,11 @@ describe('App (archived page)', () => {
     beforeAll(() => {
         // Mock page title (set by django template in prod)
         document.title = 'Archived';
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     it('matches snapshot when plants and groups exist', () => {
-        // Create mock state object
-        createMockContext('user_accounts_enabled', true);
-
         // Mock window.location to simulate archived overview
         mockCurrentURL('https://plants.lan/archived');
 
