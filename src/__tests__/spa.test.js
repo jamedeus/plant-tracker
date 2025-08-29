@@ -93,7 +93,7 @@ describe('SPA integration tests', () => {
         expect(getByTestId('scanned-url')).toBeInTheDocument();
         expect(getByTestId('scanned-url')).toHaveAttribute(
             'href',
-            'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'
+            '/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'
         );
 
         // Mock fetch function to return manage_plant page state

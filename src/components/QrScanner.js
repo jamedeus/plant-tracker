@@ -63,7 +63,7 @@ const QrScanner = ({ onExit }) => {
         result.forEach(code => {
             if (urlIsSupported(code.rawValue)) {
                 // Show button to open scanned URL
-                setScannedUrl(code.rawValue);
+                setScannedUrl(new URL(code.rawValue).pathname);
                 // Play sound first time valid QR code is scanned
                 if (!matchedUrls.current.includes(code.rawValue)) {
                     playMatch();
