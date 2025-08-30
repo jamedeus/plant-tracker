@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, memo, useEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect, memo, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
@@ -6,9 +6,8 @@ import { DateTime } from 'luxon';
 import { capitalize, pastTense } from 'src/utils/stringUtils';
 import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
 import { openNoteModal } from './NoteModal';
-import { openPhotoModal } from './PhotoModal';
-import { openDivisionModal } from './DivisionModal';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
+import LazyModal, { useModal } from 'src/components/LazyModal';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
@@ -60,6 +59,18 @@ const Title = memo(function Title({ openRepotModal }) {
         dispatch(deleteModeChanged({editing: true}));
         document.activeElement.blur();
     };
+
+    const photoModal = useModal();
+    const openPhotoModal = useCallback(() => {
+        photoModal.open();
+        document.activeElement.blur();
+    }, [photoModal]);
+
+    const divisionModal = useModal();
+    const openDivisionModal = useCallback(() => {
+        divisionModal.open();
+        document.activeElement.blur();
+    }, [divisionModal]);
 
     return (
         <div className="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1">
@@ -136,6 +147,19 @@ const Title = memo(function Title({ openRepotModal }) {
                     </>
                 }
             </div>
+
+            <LazyModal
+                ref={photoModal.ref}
+                ariaLabel="Upload plant photos"
+                load={() => import(/* webpackChunkName: "photo-modal" */ "./PhotoModal")}
+            />
+
+            <LazyModal
+                ref={divisionModal.ref}
+                title="Divide Plant"
+                ariaLabel="Divide plant"
+                load={() => import(/* webpackChunkName: "division-modal" */ "./DivisionModal")}
+            />
         </div>
     );
 });

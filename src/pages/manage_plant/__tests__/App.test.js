@@ -456,7 +456,6 @@ describe('App', () => {
 
         // Click button, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add photos'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         await waitFor(() => {
             expect(app.queryByTestId('photo-input')).not.toBeNull();
         });

@@ -7,6 +7,8 @@ import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 
+/* eslint react/prop-types: 0 */
+
 // Mock useNavigate to return a mock (confirm redirected to correct page)
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
@@ -17,11 +19,11 @@ jest.mock('react-router-dom', () => {
     };
 });
 
-const TestComponent = () => {
+const TestComponent = ({ close }) => {
     // Render app
     return (
         <ReduxProvider initialState={mockContext}>
-            <PhotoModal />
+            <PhotoModal close={close} />
             <button onClick={openPhotoModal}>
                 Open photo modal
             </button>
@@ -31,6 +33,7 @@ const TestComponent = () => {
 
 describe('PhotoModal', () => {
     let app, user;
+    const mockClose = jest.fn();
 
     beforeEach(async () => {
         // Mock window.location (querystring parsed when page loads)
@@ -41,7 +44,7 @@ describe('PhotoModal', () => {
         user = userEvent.setup();
         app = render(
             <>
-                <TestComponent />
+                <TestComponent close={mockClose} />
                 <Toast />
                 <ErrorModal />
             </>

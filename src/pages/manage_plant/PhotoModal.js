@@ -2,19 +2,12 @@ import React, { useState, useRef, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
-import Modal from 'src/components/Modal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded } from './timelineSlice';
 import 'src/css/photomodal.css';
-
-let modalRef;
-
-export const openPhotoModal = () => {
-    modalRef.current.open();
-};
 
 // Grid row with delete button next to filename
 const Row = memo(function Row({ filename, removeFile }) {
@@ -41,12 +34,11 @@ Row.propTypes = {
     removeFile: PropTypes.func.isRequired
 };
 
-const PhotoModal = () => {
+const PhotoModal = ({ close }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
-    modalRef = useRef(null);
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
 
@@ -104,7 +96,7 @@ const PhotoModal = () => {
 
             // Close modal, wait for close animation to complete then stop
             // loading animation and remove selected files from input/state
-            modalRef.current.close();
+            close();
             setTimeout(() => {
                 setUploading(false);
                 resetSelection();
@@ -160,10 +152,12 @@ const PhotoModal = () => {
     }, []);
 
     return (
-        <Modal
-            title={uploading ? "Uploading..." : "Upload Photos"}
-            ref={modalRef}
-        >
+        <>
+            {/* Title */}
+            <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
+                {uploading ? "Uploading..." : "Upload Photos"}
+            </h3>
+
             {/* Photo select/unselect input, shown until user clicks submit */}
             <div className={uploading ? "hidden" : "flex flex-col"}>
                 <div className={
@@ -204,8 +198,12 @@ const PhotoModal = () => {
             <div className={uploading ? "flex flex-col" : "hidden"}>
                 <LoadingAnimation className="mx-auto" />
             </div>
-        </Modal>
+        </>
     );
+};
+
+PhotoModal.propTypes = {
+    close: PropTypes.func.isRequired,
 };
 
 export default PhotoModal;

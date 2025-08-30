@@ -280,6 +280,7 @@ describe('App', () => {
 
         // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
+        await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
 
         // Mock fetch function to return expected response when submitted
         global.fetch = jest.fn(() => Promise.resolve({

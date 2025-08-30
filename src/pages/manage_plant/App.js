@@ -2,8 +2,6 @@ import Layout from './Layout';
 import { ReduxProvider } from './store';
 import Settings from './Settings';
 import NoteModal from './NoteModal';
-import PhotoModal from './PhotoModal';
-import DivisionModal from './DivisionModal';
 import 'src/css/index.css';
 import initialStatePropTypes from './initialStatePropTypes';
 
@@ -13,8 +11,6 @@ const App = ({ initialState = null }) => {
             <Layout />
             <Settings />
             <NoteModal />
-            <PhotoModal />
-            <DivisionModal />
         </ReduxProvider>
     );
 };

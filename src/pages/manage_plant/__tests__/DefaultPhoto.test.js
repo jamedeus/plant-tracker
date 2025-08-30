@@ -79,6 +79,7 @@ describe('Plant with no photos (no default photo set)', () => {
 
         // Simulate user uploading 2 photos with PhotoModal
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
@@ -159,6 +160,7 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Simulate user uploading newer photo with PhotoModal
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
@@ -293,6 +295,7 @@ describe('Plant with default photo configured', () => {
 
         // Simulate user uploading newer photo with PhotoModal
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
