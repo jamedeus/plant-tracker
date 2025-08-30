@@ -292,6 +292,7 @@ describe('App', () => {
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Select 8 inch pot
         await user.click(app.getByTitle('8 inch pot'));
@@ -325,6 +326,7 @@ describe('App', () => {
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click custom pot size option, enter "5"
         await user.click(app.getByPlaceholderText('custom'));
@@ -353,6 +355,7 @@ describe('App', () => {
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click custom pot size option, click submit without entering value
         await user.click(app.getByPlaceholderText('custom'));
@@ -468,7 +471,6 @@ describe('App', () => {
 
         // Click button, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Change QR code'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         await waitFor(() => {
             expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
         });

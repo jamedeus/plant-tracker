@@ -109,6 +109,7 @@ describe('App', () => {
 
         // Open Repot Modal
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click Repot Modal submit button
         await user.click(app.getByRole('button', {name: 'Repot'}));
@@ -328,6 +329,7 @@ describe('App', () => {
         // Simulate user opening repot modal and clicking submit without
         // changing pot size (defaults to 6, next size up)
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm pot size field in EditModal changed to '6'

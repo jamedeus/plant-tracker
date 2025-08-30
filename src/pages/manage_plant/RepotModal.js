@@ -1,11 +1,9 @@
 import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { eventAdded } from './timelineSlice';
 import { plantRepotted } from './plantSlice';
@@ -14,12 +12,6 @@ import clsx from 'clsx';
 
 // Pot size options (inches)
 const POT_SIZES = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
-
-let modalRef;
-
-export const openRepotModal = () => {
-    modalRef.current.open();
-};
 
 const PotSizeOption = memo(function PotSizeOption({ option, isSelected, setSelected }) {
     return (
@@ -42,9 +34,7 @@ PotSizeOption.propTypes = {
     setSelected: PropTypes.func.isRequired
 };
 
-const RepotModal = () => {
-    modalRef = useRef(null);
-
+const RepotModal = ({ openChangeQrModal, close }) => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const currentPotSize = useSelector((state) => state.plant.plantDetails.pot_size);
@@ -86,7 +76,7 @@ const RepotModal = () => {
             dispatch(plantRepotted(data.pot_size));
             dispatch(eventAdded({timestamp: data.timestamp, type: 'repot'}));
             // Close repot modal, open modal with instructions to change QR code
-            modalRef.current.close();
+            close();
             openChangeQrModal();
         } else {
             const error = await response.json();
@@ -95,7 +85,7 @@ const RepotModal = () => {
     };
 
     return (
-        <Modal title='Repot Plant' ref={modalRef}>
+        <>
             <div className="mt-4">
                 <p>Repot time</p>
                 <DatetimeInput inputRef={repotTimeRef} />
@@ -136,8 +126,13 @@ const RepotModal = () => {
                     Repot
                 </button>
             </div>
-        </Modal>
+        </>
     );
+};
+
+RepotModal.propTypes = {
+    openChangeQrModal: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired
 };
 
 export default RepotModal;

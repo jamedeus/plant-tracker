@@ -4,7 +4,6 @@ import Settings from './Settings';
 import NoteModal from './NoteModal';
 import GroupModal from './GroupModal';
 import PhotoModal from './PhotoModal';
-import RepotModal from './RepotModal';
 import DivisionModal from './DivisionModal';
 import EditPlantModal from './EditPlantModal';
 import 'src/css/index.css';
@@ -18,7 +17,6 @@ const App = ({ initialState = null }) => {
             <NoteModal />
             <GroupModal />
             <PhotoModal />
-            <RepotModal />
             <DivisionModal />
             <EditPlantModal />
         </ReduxProvider>

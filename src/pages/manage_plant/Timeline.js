@@ -6,7 +6,6 @@ import { DateTime } from 'luxon';
 import { capitalize, pastTense } from 'src/utils/stringUtils';
 import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
 import { openNoteModal } from './NoteModal';
-import { openRepotModal } from './RepotModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDivisionModal } from './DivisionModal';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
@@ -45,7 +44,7 @@ const getRelativeTimeString = (timestamp) => {
 };
 
 // History title with dropdown menu to jump to a specific month in timeline
-const Title = memo(function Title() {
+const Title = memo(function Title({ openRepotModal }) {
     const archived = useSelector((state) => state.plant.plantDetails.archived);
     const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
     const hasEvents = useSelector((state) => state.timeline.hasEvents);
@@ -140,6 +139,10 @@ const Title = memo(function Title() {
         </div>
     );
 });
+
+Title.propTypes = {
+    openRepotModal: PropTypes.func.isRequired,
+};
 
 // Dropdown menu with expandable section for each year in timeline containing
 // month links that scroll to the correct timeline section when clicked
@@ -684,7 +687,7 @@ TimelineDay.propTypes = {
     monthDivider: PropTypes.bool
 };
 
-const Timeline = memo(function Timeline() {
+const Timeline = memo(function Timeline({ openRepotModal }) {
     const timelineDays = useSelector((state) => state.timeline.timelineDays);
 
     // Get array of yyyy-mm-dd keys sorted chronologically (recent first)
@@ -710,7 +713,7 @@ const Timeline = memo(function Timeline() {
 
     return (
         <div className='section max-w-full'>
-            <Title />
+            <Title openRepotModal={openRepotModal} />
             {dayKeys.length > 0 ? (
                 <div className='timeline-layout'>
                     {dayKeys.map((dateKey, index) => {
@@ -743,5 +746,9 @@ const Timeline = memo(function Timeline() {
         </div>
     );
 });
+
+Timeline.propTypes = {
+    openRepotModal: PropTypes.func.isRequired,
+};
 
 export default Timeline;

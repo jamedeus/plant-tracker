@@ -22,7 +22,7 @@ describe('Timeline', () => {
         const { container } = render(
             <>
                 <ReduxProvider initialState={initialState}>
-                    <Timeline />
+                    <Timeline openRepotModal={jest.fn()} />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />

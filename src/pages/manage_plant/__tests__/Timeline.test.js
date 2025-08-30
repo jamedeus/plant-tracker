@@ -22,7 +22,7 @@ describe('Timeline', () => {
         app = render(
             <>
                 <ReduxProvider initialState={{ ...mockContext, events: mockEvents, photos: mockphotos }}>
-                    <Timeline />
+                    <Timeline openRepotModal={jest.fn()} />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />

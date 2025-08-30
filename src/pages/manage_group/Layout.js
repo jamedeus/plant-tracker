@@ -9,7 +9,7 @@ import PlantsCol from 'src/components/PlantsCol';
 import RemovePlantsFooter from './RemovePlantsFooter';
 import AddEventsFooter from 'src/components/AddEventsFooter';
 import { openAddPlantsModal } from './AddPlantsModal';
-import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
+import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { Tab } from '@headlessui/react';
 import { FaPlus } from 'react-icons/fa6';
@@ -59,6 +59,12 @@ function Layout() {
     const handleAddEvents = useCallback((payload) => {
         dispatch(updatePlantLastEventTimes(payload));
     }, [dispatch]);
+
+    const changeQrModal = useModal();
+    const openChangeQrModal = useCallback(() => {
+        changeQrModal.open({uuid: groupDetails.uuid});
+        document.activeElement.blur();
+    }, [changeQrModal]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -178,8 +184,11 @@ function Layout() {
                 stopRemovingPlants={stopRemovingPlants}
             />
 
-            <ChangeQrModal
-                uuid={groupDetails.uuid}
+            <LazyModal
+                ref={changeQrModal.ref}
+                title="Change QR Code"
+                ariaLabel="Change group QR code"
+                load={() => import(/* webpackChunkName: "change-qr-modal" */ "src/components/ChangeQrModal")}
             />
         </div>
     );

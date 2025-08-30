@@ -1,4 +1,4 @@
-import React, { useMemo, Suspense, lazy } from 'react';
+import React, { useMemo, Suspense, useCallback, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import Navbar from 'src/components/Navbar';
@@ -9,7 +9,7 @@ import IconButton from 'src/components/IconButton';
 import EventButtons from './EventButtons';
 import EventCalendar from './EventCalendar';
 import { openGroupModal } from './GroupModal';
-import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
+import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
@@ -44,6 +44,18 @@ function Layout() {
 
     // Used to update redux store
     const dispatch = useDispatch();
+
+    const changeQrModal = useModal();
+    const openChangeQrModal = useCallback(() => {
+        changeQrModal.open({uuid: plantDetails.uuid});
+        document.activeElement.blur();
+    }, [changeQrModal]);
+
+    const repotModal = useModal();
+    const openRepotModal = useCallback(() => {
+        repotModal.open({openChangeQrModal: openChangeQrModal});
+        document.activeElement.blur();
+    }, [repotModal]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -200,10 +212,23 @@ function Layout() {
             </div>
 
             <div className="w-full max-w-(--breakpoint-md) mt-2 px-4">
-                <Timeline />
+                <Timeline openRepotModal={openRepotModal} />
             </div>
 
-            <ChangeQrModal uuid={plantDetails.uuid} />
+            <LazyModal
+                ref={changeQrModal.ref}
+                title="Change QR Code"
+                ariaLabel="Change plant QR code"
+                load={() => import(/* webpackChunkName: "change-qr-modal" */ "src/components/ChangeQrModal")}
+            />
+
+            <LazyModal
+                ref={repotModal.ref}
+                title="Repot Plant"
+                ariaLabel="Repot plant"
+                load={() => import(/* webpackChunkName: "change-qr-modal" */ "./RepotModal")}
+            />
+
             {/* Don't render until user opens gallery */}
             {galleryOpen && (
                 <Suspense fallback={
