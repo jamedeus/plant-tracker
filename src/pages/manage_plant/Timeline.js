@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import { capitalize, pastTense } from 'src/utils/stringUtils';
 import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
-import { openNoteModal } from './modals';
+import { openNoteModal, openRepotModal } from './modals';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import DropdownMenu from 'src/components/DropdownMenu';
@@ -43,7 +43,7 @@ const getRelativeTimeString = (timestamp) => {
 };
 
 // History title with dropdown menu to jump to a specific month in timeline
-const Title = memo(function Title({ openRepotModal }) {
+const Title = memo(function Title() {
     const archived = useSelector((state) => state.plant.plantDetails.archived);
     const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
     const hasEvents = useSelector((state) => state.timeline.hasEvents);
@@ -163,10 +163,6 @@ const Title = memo(function Title({ openRepotModal }) {
         </div>
     );
 });
-
-Title.propTypes = {
-    openRepotModal: PropTypes.func.isRequired,
-};
 
 // Dropdown menu with expandable section for each year in timeline containing
 // month links that scroll to the correct timeline section when clicked
@@ -711,7 +707,7 @@ TimelineDay.propTypes = {
     monthDivider: PropTypes.bool
 };
 
-const Timeline = memo(function Timeline({ openRepotModal }) {
+const Timeline = memo(function Timeline() {
     const timelineDays = useSelector((state) => state.timeline.timelineDays);
 
     // Get array of yyyy-mm-dd keys sorted chronologically (recent first)
@@ -737,7 +733,7 @@ const Timeline = memo(function Timeline({ openRepotModal }) {
 
     return (
         <div className='section max-w-full'>
-            <Title openRepotModal={openRepotModal} />
+            <Title />
             {dayKeys.length > 0 ? (
                 <div className='timeline-layout'>
                     {dayKeys.map((dateKey, index) => {
@@ -770,9 +766,5 @@ const Timeline = memo(function Timeline({ openRepotModal }) {
         </div>
     );
 });
-
-Timeline.propTypes = {
-    openRepotModal: PropTypes.func.isRequired,
-};
 
 export default Timeline;

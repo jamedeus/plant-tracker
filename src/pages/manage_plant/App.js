@@ -3,12 +3,15 @@ import { ReduxProvider } from './store';
 import Settings from './Settings';
 import 'src/css/index.css';
 import LazyModal, { useModal } from 'src/components/LazyModal';
-import { setNoteModalHandle } from './modals';
+import { setNoteModalHandle, setRepotModalHandle } from './modals';
 import initialStatePropTypes from './initialStatePropTypes';
 
 const App = ({ initialState = null }) => {
     const noteModal = useModal();
     setNoteModalHandle(noteModal);
+
+    const repotModal = useModal();
+    setRepotModalHandle(repotModal);
 
     return (
         <ReduxProvider initialState={initialState}>
@@ -18,6 +21,13 @@ const App = ({ initialState = null }) => {
                 ref={noteModal.ref}
                 ariaLabel="Add/edit note"
                 load={() => import(/* webpackChunkName: "note-modal" */ "./NoteModal")}
+            />
+
+            <LazyModal
+                ref={repotModal.ref}
+                title="Repot Plant"
+                ariaLabel="Repot plant"
+                load={() => import(/* webpackChunkName: "change-qr-modal" */ "./RepotModal")}
             />
         </ReduxProvider>
     );

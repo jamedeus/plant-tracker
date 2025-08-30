@@ -11,6 +11,7 @@ import EventCalendar from './EventCalendar';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { setChangeQrModalHandle } from './modals';
 import Timeline from './Timeline';
 import { FaPlus, FaBan, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
@@ -55,16 +56,11 @@ function Layout() {
         changeQrModal.open({uuid: plantDetails.uuid});
         document.activeElement.blur();
     }, [changeQrModal]);
-
-    const repotModal = useModal();
-    const openRepotModal = useCallback(() => {
-        repotModal.open({openChangeQrModal: openChangeQrModal});
-        document.activeElement.blur();
-    }, [repotModal]);
+    setChangeQrModalHandle(changeQrModal);
 
     const groupModal = useModal();
     const openGroupModal = useCallback(() => {
-        groupModal.open({openChangeQrModal: openChangeQrModal});
+        groupModal.open();
         document.activeElement.blur();
     }, [groupModal]);
 
@@ -223,7 +219,7 @@ function Layout() {
             </div>
 
             <div className="w-full max-w-(--breakpoint-md) mt-2 px-4">
-                <Timeline openRepotModal={openRepotModal} />
+                <Timeline />
             </div>
 
             <LazyModal
@@ -239,13 +235,6 @@ function Layout() {
                 title="Change QR Code"
                 ariaLabel="Change plant QR code"
                 load={() => import(/* webpackChunkName: "change-qr-modal" */ "src/components/ChangeQrModal")}
-            />
-
-            <LazyModal
-                ref={repotModal.ref}
-                title="Repot Plant"
-                ariaLabel="Repot plant"
-                load={() => import(/* webpackChunkName: "change-qr-modal" */ "./RepotModal")}
             />
 
             <LazyModal

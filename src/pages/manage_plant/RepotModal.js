@@ -7,6 +7,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { eventAdded } from './timelineSlice';
 import { plantRepotted } from './plantSlice';
+import { openChangeQrModal } from './modals';
 import 'src/css/repot_modal.css';
 import clsx from 'clsx';
 
@@ -34,7 +35,7 @@ PotSizeOption.propTypes = {
     setSelected: PropTypes.func.isRequired
 };
 
-const RepotModal = ({ openChangeQrModal, close }) => {
+const RepotModal = ({ close }) => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const currentPotSize = useSelector((state) => state.plant.plantDetails.pot_size);
@@ -77,7 +78,7 @@ const RepotModal = ({ openChangeQrModal, close }) => {
             dispatch(eventAdded({timestamp: data.timestamp, type: 'repot'}));
             // Close repot modal, open modal with instructions to change QR code
             close();
-            openChangeQrModal();
+            openChangeQrModal(plantID);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -131,7 +132,6 @@ const RepotModal = ({ openChangeQrModal, close }) => {
 };
 
 RepotModal.propTypes = {
-    openChangeQrModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired
 };
 
