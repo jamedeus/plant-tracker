@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
-import { openPrintModal } from './PrintModal';
 
 // Rendered when both state objects are empty, shows setup instructions
-const Setup = () => {
+const Setup = ({ openPrintModal }) => {
     return (
         <div className="flex flex-col text-center my-auto px-8">
             <p className="text-2xl">No plants found!</p>
@@ -30,6 +30,10 @@ const Setup = () => {
             </Link>
         </div>
     );
+};
+
+Setup.propTypes = {
+    openPrintModal: PropTypes.func.isRequired,
 };
 
 export default Setup;

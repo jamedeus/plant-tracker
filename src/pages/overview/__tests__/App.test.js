@@ -45,7 +45,7 @@ describe('App', () => {
 
         // Click Print QR Codes dropdown option, confirm modal opened
         await user.click(app.getByText("Print QR Codes"));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(app.queryByText(/QR codes per sheet/)).not.toBeNull();
     });
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Layout from './Layout';
-import PrintModal from './PrintModal';
 import { ReduxProvider } from './store';
 import 'src/css/index.css';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
@@ -11,7 +10,6 @@ function App({ initialState }) {
     return (
         <ReduxProvider initialState={initialState}>
             <Layout />
-            <PrintModal />
         </ReduxProvider>
     );
 }

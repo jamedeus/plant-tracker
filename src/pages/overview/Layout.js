@@ -12,7 +12,7 @@ import DropdownMenu from 'src/components/DropdownMenu';
 import QrScannerButton from 'src/components/QrScannerButton';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
-import { openPrintModal } from './PrintModal';
+import LazyModal, { useModal } from 'src/components/LazyModal';
 import { updatePlantLastEventTimes } from './overviewSlice';
 import clsx from 'clsx';
 import { v4 as uuidv4 } from 'uuid';
@@ -74,6 +74,13 @@ const Layout = () => {
     const handleAddEvents = useCallback((payload) => {
         dispatch(updatePlantLastEventTimes(payload));
     }, [dispatch]);
+
+    // Get ref for PrintModal, create callback that opens + closes dropdown
+    const printModal = useModal();
+    const openPrintModal = useCallback(() => {
+        printModal.open();
+        document.activeElement.blur();
+    }, [printModal]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
@@ -230,7 +237,7 @@ const Layout = () => {
                 )}
                 {/* Render setup instructions if database is empty */}
                 {!hasPlants && !hasGroups && (
-                    <Setup />
+                    <Setup openPrintModal={openPrintModal} />
                 )}
             </div>
 
@@ -251,6 +258,12 @@ const Layout = () => {
                     updatePlantLastEventTimes={handleAddEvents}
                 />
             }
+
+            <LazyModal
+                ref={printModal.ref}
+                ariaLabel="Print QR Codes"
+                load={() => import(/* webpackChunkName: "print-modal" */ "./PrintModal")}
+            />
         </div>
     );
 };

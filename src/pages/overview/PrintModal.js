@@ -1,17 +1,10 @@
-import React, { useState, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import print from 'print-js';
-import Modal from 'src/components/Modal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import sendPostRequest from 'src/utils/sendPostRequest';
-
-let modalRef;
-
-export const openPrintModal = () => {
-    modalRef.current.open();
-};
 
 // QR code size options + description text shown when selected
 const sizeOptions = {
@@ -60,7 +53,7 @@ ErrorMessage.propTypes = {
     error: PropTypes.string.isRequired
 };
 
-const PrintModal = memo(function PrintModal() {
+const PrintModal = memo(function PrintModal({ close, setOnClose }) {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
 
@@ -74,22 +67,16 @@ const PrintModal = memo(function PrintModal() {
     // Set to true when request starts, response only processed if still true
     const cancelPrinting = useRef(false);
 
-    modalRef = useRef(null);
-
     // Cancel button handler, aborts printing and resets modal contents
     const cancel = () => {
         cancelPrinting.current = true;
         setModalContents("options");
     };
 
-    // Called by listener when modal is closed - aborts printing immediately,
-    // waits for close animation to complete then resets modal contents
-    const resetModal = () => {
-        cancelPrinting.current = true;
-        setTimeout(() => {
-            setModalContents("options");
-        }, 150);
-    };
+    // Abort printing immediately when modal is closed
+    useEffect(() => {
+        setOnClose(() => cancelPrinting.current = true);
+    }, [setOnClose]);
 
     // Request QR codes from backend, open print dialog if user did not cancel
     const fetchQrCodes = async (size) => {
@@ -172,7 +159,7 @@ const PrintModal = memo(function PrintModal() {
                 footer: null
             });
         }
-        modalRef.current.close();
+        close();
     };
 
     const generate = () => {
@@ -198,25 +185,24 @@ const PrintModal = memo(function PrintModal() {
     switch(modalContents) {
         case("loading"):
             return (
-                <Modal
-                    title='Fetching QR Codes'
-                    ref={modalRef}
-                    onClose={resetModal}
-                >
+                <>
+                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
+                        Fetching QR Codes
+                    </h3>
                     <LoadingAnimation className="mt-2 mx-auto" />
                     <div className="modal-action">
                         <button className="btn btn-soft" onClick={cancel}>
                             Cancel
                         </button>
                     </div>
-                </Modal>
+                </>
             );
         case("options"):
             return (
-                <Modal
-                    title='Select QR Code Size'
-                    ref={modalRef}
-                >
+                <>
+                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
+                        Select QR Code Size
+                    </h3>
                     <div className="h-36 mt-2 flex flex-col justify-center">
                         <Tab.Group
                             onChange={(index) => {
@@ -254,24 +240,28 @@ const PrintModal = memo(function PrintModal() {
                             Generate
                         </button>
                     </div>
-                </Modal>
+                </>
             );
         default:
             return (
-                <Modal
-                    title='Error'
-                    ref={modalRef}
-                    onClose={resetModal}
-                >
+                <>
+                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
+                        Error
+                    </h3>
                     <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
                         <ErrorMessage error={error} />
                     </div>
                     <div className="modal-action">
                         <button className="btn" onClick={cancel}>OK</button>
                     </div>
-                </Modal>
+                </>
             );
     }
 });
+
+PrintModal.propTypes = {
+    close: PropTypes.func.isRequired,
+    setOnClose: PropTypes.func.isRequired
+};
 
 export default PrintModal;
