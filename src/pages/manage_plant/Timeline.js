@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import { capitalize, pastTense } from 'src/utils/stringUtils';
 import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
-import { openNoteModal } from './NoteModal';
+import { openNoteModal } from './modals';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import DropdownMenu from 'src/components/DropdownMenu';

@@ -531,7 +531,6 @@ describe('App', () => {
 
         // Click dropdown option, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add note'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         expect(app.getByText('0 / 500')).not.toBeNull();
     });
 

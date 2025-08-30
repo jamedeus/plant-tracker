@@ -1,7 +1,9 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import NoteModal, { openNoteModal } from '../NoteModal';
+import NoteModal from '../NoteModal';
+import LazyModal, { useModal } from 'src/components/LazyModal';
+import { setNoteModalHandle, openNoteModal } from '../modals';
 import { ReduxProvider } from '../store';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -13,10 +15,17 @@ const mockNotes = {
     '2024-02-12T12:00:00+00:00': 'another existing note'
 };
 
+// Renders LazyModal with NoteModal loader that resolves immediately (no lazy load)
 const TestComponent = () => {
+    const noteModal = useModal();
+    setNoteModalHandle(noteModal);
+
     return (
         <ReduxProvider initialState={{ ...mockContext, notes: mockNotes }}>
-            <NoteModal />
+            <LazyModal
+                ref={noteModal.ref}
+                load={() => Promise.resolve({ default: NoteModal })}
+            />
             <button onClick={() => openNoteModal()}>
                 Add New Note
             </button>
