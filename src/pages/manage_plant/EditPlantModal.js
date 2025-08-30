@@ -1,42 +1,22 @@
-import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import sendPostRequest from 'src/utils/sendPostRequest';
-import EditModal from 'src/components/EditModal';
+import FormModal from 'src/components/FormModal';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
-import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { plantDetailsUpdated } from './plantSlice';
 
 const EditPlantModal = ({ close }) => {
-    const formRef = useRef(null);
     const dispatch = useDispatch();
     const plantDetails = useSelector((state) => state.plant.plantDetails);
 
-    const submit = async () => {
-        const response = await sendPostRequest('/edit_plant_details', {
-            plant_id: plantDetails.uuid,
-            ...Object.fromEntries(new FormData(formRef.current))
-        });
-        if (response.ok) {
-            // Update plant state with new values from response
-            const data = await response.json();
-            dispatch(plantDetailsUpdated(data));
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
-    };
-
     return (
-        <EditModal formRef={formRef} onSubmit={submit} close={close}>
-            <PlantDetailsForm
-                formRef={formRef}
-                name={plantDetails.name}
-                species={plantDetails.species}
-                pot_size={plantDetails.pot_size}
-                description={plantDetails.description}
-            />
-        </EditModal>
+        <FormModal
+            close={close}
+            FormComponent={PlantDetailsForm}
+            endpoint='/edit_plant_details'
+            initialValues={plantDetails}
+            payload={{plant_id: plantDetails.uuid}}
+            onSuccess={data => dispatch(plantDetailsUpdated(data))}
+        />
     );
 };
 
