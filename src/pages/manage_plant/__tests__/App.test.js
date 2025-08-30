@@ -252,34 +252,6 @@ describe('App', () => {
         });
     });
 
-    it('sends the correct payload when "Add to group" modal submitted', async () => {
-        // Click remove from group button (re-renders with add to group option)
-        await user.click(app.getByTitle(/Remove plant from group/));
-
-        // Mock fetch to return group options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockGroupOptions })
-        }));
-
-        // Click "Add to group" button in details dropdown
-        await user.click(app.getByTitle(/Add plant to group/));
-
-        // Simulate user clicking group option (nextSibling targets transparent
-        // absolute-positioned div with click listener that covers group card)
-        await user.click(app.getByLabelText('Go to Test group page').nextSibling);
-
-        // Confirm correct data posted to /add_plant_to_group
-        expect(global.fetch).toHaveBeenCalledWith('/add_plant_to_group', {
-            method: 'POST',
-            body: JSON.stringify({
-                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-            }),
-            headers: postHeaders
-        });
-    });
-
     it('sends correct payload when RepotModal is submitted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -488,6 +460,26 @@ describe('App', () => {
         await waitFor(() => {
             expect(app.queryByTestId('photo-input')).not.toBeNull();
         });
+    });
+
+    it('opens group modal when details dropdown button clicked', async () => {
+        // Confirm modal is not rendered
+        expect(app.queryByText('Add plant to group')).toBeNull();
+
+        // Click remove from group button (re-renders with add to group option)
+        await user.click(app.getByTitle(/Remove plant from group/));
+
+        // Mock fetch to return group options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockGroupOptions })
+        }));
+
+        // Click "Add to group" button in details dropdown
+        await user.click(app.getByTitle(/Add plant to group/));
+
+        // Confirm modal is rendered
+        expect(app.getByText('Add plant to group')).toBeInTheDocument();
     });
 
     it('removes event markers from timeline when events are deleted', async () => {

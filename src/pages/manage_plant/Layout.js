@@ -8,7 +8,6 @@ import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
 import EventButtons from './EventButtons';
 import EventCalendar from './EventCalendar';
-import { openGroupModal } from './GroupModal';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
@@ -62,6 +61,12 @@ function Layout() {
         repotModal.open({openChangeQrModal: openChangeQrModal});
         document.activeElement.blur();
     }, [repotModal]);
+
+    const groupModal = useModal();
+    const openGroupModal = useCallback(() => {
+        groupModal.open({openChangeQrModal: openChangeQrModal});
+        document.activeElement.blur();
+    }, [groupModal]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -241,6 +246,13 @@ function Layout() {
                 title="Repot Plant"
                 ariaLabel="Repot plant"
                 load={() => import(/* webpackChunkName: "change-qr-modal" */ "./RepotModal")}
+            />
+
+            <LazyModal
+                ref={groupModal.ref}
+                title="Add plant to group"
+                ariaLabel="Add plant to group"
+                load={() => import(/* webpackChunkName: "add-to-group-modal" */ "./GroupModal")}
             />
 
             {/* Don't render until user opens gallery */}

@@ -2,7 +2,6 @@ import Layout from './Layout';
 import { ReduxProvider } from './store';
 import Settings from './Settings';
 import NoteModal from './NoteModal';
-import GroupModal from './GroupModal';
 import PhotoModal from './PhotoModal';
 import DivisionModal from './DivisionModal';
 import 'src/css/index.css';
@@ -14,7 +13,6 @@ const App = ({ initialState = null }) => {
             <Layout />
             <Settings />
             <NoteModal />
-            <GroupModal />
             <PhotoModal />
             <DivisionModal />
         </ReduxProvider>

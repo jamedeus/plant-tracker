@@ -2,15 +2,19 @@ import AddPlantsModal from '../AddPlantsModal';
 import { mockContext, mockPlantOptions } from './mockContext';
 import { ReduxProvider } from '../store';
 
-const TestComponent = () => {
+/* eslint react/prop-types: 0 */
+
+const TestComponent = ({ mockClose }) => {
     return (
         <ReduxProvider initialState={mockContext}>
-            <AddPlantsModal />
+            <AddPlantsModal close={mockClose} />
         </ReduxProvider>
     );
 };
 
 describe('AddPlantsModal', () => {
+    const mockClose = jest.fn();
+
     beforeEach(() => {
         // Allow fast forwarding
         jest.useFakeTimers({ doNotFake: ['Date'] });
@@ -30,7 +34,7 @@ describe('AddPlantsModal', () => {
         }));
 
         // Render modal
-        const component = render(<TestComponent />);
+        const component = render(<TestComponent mockClose={mockClose} />);
 
         // Confirm options requested
         await act(async () => await jest.advanceTimersByTimeAsync(0));
@@ -54,7 +58,7 @@ describe('AddPlantsModal', () => {
         }));
 
         // Render modal
-        const component = render(<TestComponent />);
+        const component = render(<TestComponent mockClose={mockClose} />);
 
         // Confirm no cards, confirm expected text
         await waitFor(() => {
@@ -69,7 +73,7 @@ describe('AddPlantsModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({ ok: false }));
 
         // Render modal
-        const component = render(<TestComponent />);
+        const component = render(<TestComponent mockClose={mockClose} />);
 
         // Confirm no cards, confirm expected text
         await waitFor(() => {
@@ -92,7 +96,7 @@ describe('AddPlantsModal', () => {
         ));
 
         // Render modal
-        const component = render(<TestComponent />);
+        const component = render(<TestComponent mockClose={mockClose} />);
 
         // Confirm loading spinner rendered, contents did not
         await waitFor(() => {

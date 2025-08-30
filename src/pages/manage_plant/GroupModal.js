@@ -1,21 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import Modal from 'src/components/Modal';
 import GroupCard from 'src/components/GroupCard';
 import { openErrorModal } from 'src/components/ErrorModal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import { plantAddedToGroup } from './plantSlice';
 import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
-let modalRef;
-
-export const openGroupModal = () => {
-    modalRef.current.open();
-};
-
-const Options = ({ options }) => {
+const Options = ({ options, close }) => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
@@ -35,7 +28,7 @@ const Options = ({ options }) => {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
-        modalRef.current.close();
+        close();
     };
 
     return (
@@ -63,12 +56,11 @@ const Options = ({ options }) => {
 };
 
 Options.propTypes = {
-    options: PropTypes.objectOf(groupDetailsProptypes).isRequired
+    options: PropTypes.objectOf(groupDetailsProptypes).isRequired,
+    close: PropTypes.func.isRequired
 };
 
-const GroupModal = () => {
-    modalRef = useRef(null);
-
+const GroupModal = ({ close }) => {
     // Stores options queried from backend
     const [options, setOptions] = useState(null);
 
@@ -83,29 +75,26 @@ const GroupModal = () => {
         }
     };
 
-    // Clear options after close animation completes
-    const clearOptions = () => {
-        setTimeout(() => {
-            setOptions(null);
-        }, 200);
-    };
+    // Get options from backend on first load
+    useEffect(() => {
+        loadOptions();
+    }, []);
 
     return (
-        <Modal
-            title='Add plant to group'
-            ref={modalRef}
-            onOpen={loadOptions}
-            onClose={clearOptions}
-        >
+        <>
             <div className="flex flex-col items-center px-4 overflow-y-auto">
                 {options ? (
-                    <Options options={options} />
+                    <Options options={options} close={close} />
                 ) : (
                     <LoadingAnimation />
                 )}
             </div>
-        </Modal>
+        </>
     );
+};
+
+GroupModal.propTypes = {
+    close: PropTypes.func.isRequired
 };
 
 export default GroupModal;
