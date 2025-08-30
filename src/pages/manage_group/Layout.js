@@ -60,6 +60,12 @@ function Layout() {
         dispatch(updatePlantLastEventTimes(payload));
     }, [dispatch]);
 
+    const editModal = useModal();
+    const openEditModal = useCallback(() => {
+        editModal.open();
+        document.activeElement.blur();
+    }, [editModal]);
+
     const changeQrModal = useModal();
     const openChangeQrModal = useCallback(() => {
         changeQrModal.open({uuid: groupDetails.uuid});
@@ -77,7 +83,7 @@ function Layout() {
 
     // Group details card shown when title is clicked
     const GroupDetailsDropdown = useMemo(() => (
-        <DetailsCard>
+        <DetailsCard openEditModal={openEditModal}>
             <GroupDetails
                 location={groupDetails.location}
                 description={groupDetails.description}
@@ -182,6 +188,14 @@ function Layout() {
                 visible={removingPlants}
                 selectedPlantsRef={selectedPlantsRef}
                 stopRemovingPlants={stopRemovingPlants}
+            />
+
+            <LazyModal
+                ref={editModal.ref}
+                title="Edit Details"
+                ariaLabel="Edit group details"
+                className="max-w-[25rem]"
+                load={() => import(/* webpackChunkName: "edit-group-modal" */ "./EditGroupModal")}
             />
 
             <LazyModal

@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'src/components/Modal';
 
 let modalRef;
 
@@ -10,7 +9,7 @@ export const openEditModal = () => {
 
 // Takes modal title, submit handler, and details form
 // Modal has centered title, can be closed with button, esc, or outside click
-const EditModal = ({ title, formRef, onSubmit, children }) => {
+const EditModal = ({ formRef, onSubmit, close, children }) => {
     modalRef = useRef(null);
 
     // Disable edit button if form is invalid (field exceeded length limit)
@@ -20,13 +19,13 @@ const EditModal = ({ title, formRef, onSubmit, children }) => {
     };
 
     return (
-        <Modal title={title} ref={modalRef} className="max-w-[25rem]">
+        <>
             <div onInput={onInput}>
                 {children}
             </div>
 
             <div className="modal-action">
-                <form method="dialog">
+                <form method="dialog" onSubmit={close}>
                     <button className="btn btn-soft w-20">
                         Cancel
                     </button>
@@ -39,17 +38,17 @@ const EditModal = ({ title, formRef, onSubmit, children }) => {
                     </button>
                 </form>
             </div>
-        </Modal>
+        </>
     );
 };
 
 EditModal.propTypes = {
-    title: PropTypes.string.isRequired,
     formRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     onSubmit: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 };
 

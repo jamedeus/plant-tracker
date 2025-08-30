@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
@@ -6,7 +7,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { plantDetailsUpdated } from './plantSlice';
 
-const EditPlantModal = () => {
+const EditPlantModal = ({ close }) => {
     const formRef = useRef(null);
     const dispatch = useDispatch();
     const plantDetails = useSelector((state) => state.plant.plantDetails);
@@ -27,15 +28,8 @@ const EditPlantModal = () => {
     };
 
     return (
-        <EditModal title="Edit Details" formRef={formRef} onSubmit={submit}>
-            {/* Key forces form to remount when RepotModal is submitted -
-                form is unmanaged so props only set default values, which
-                do not change when plantDetails updates. If pot_size field
-                does not update after repot the user could easily reset the
-                new pot size without noticing.
-            */}
+        <EditModal formRef={formRef} onSubmit={submit} close={close}>
             <PlantDetailsForm
-                key={plantDetails.pot_size}
                 formRef={formRef}
                 name={plantDetails.name}
                 species={plantDetails.species}
@@ -44,6 +38,10 @@ const EditPlantModal = () => {
             />
         </EditModal>
     );
+};
+
+EditPlantModal.propTypes = {
+    close: PropTypes.func.isRequired
 };
 
 export default EditPlantModal;

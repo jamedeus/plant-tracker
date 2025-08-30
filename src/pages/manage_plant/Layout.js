@@ -45,6 +45,12 @@ function Layout() {
     // Used to update redux store
     const dispatch = useDispatch();
 
+    const editModal = useModal();
+    const openEditModal = useCallback(() => {
+        editModal.open();
+        document.activeElement.blur();
+    }, [editModal]);
+
     const changeQrModal = useModal();
     const openChangeQrModal = useCallback(() => {
         changeQrModal.open({uuid: plantDetails.uuid});
@@ -109,7 +115,7 @@ function Layout() {
         };
 
         return (
-            <DetailsCard>
+            <DetailsCard openEditModal={openEditModal}>
                 <div className="flex flex-col">
                     {defaultPhoto.thumbnail && (
                         <>
@@ -214,6 +220,14 @@ function Layout() {
             <div className="w-full max-w-(--breakpoint-md) mt-2 px-4">
                 <Timeline openRepotModal={openRepotModal} />
             </div>
+
+            <LazyModal
+                ref={editModal.ref}
+                title="Edit Details"
+                ariaLabel="Edit plant details"
+                className="max-w-[25rem]"
+                load={() => import(/* webpackChunkName: "edit-plant-modal" */ "./EditPlantModal")}
+            />
 
             <LazyModal
                 ref={changeQrModal.ref}

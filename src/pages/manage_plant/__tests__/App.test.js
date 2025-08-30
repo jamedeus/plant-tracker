@@ -52,6 +52,7 @@ describe('App', () => {
 
         // Open edit modal, confirm fetched species options
         await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(global.fetch).toHaveBeenCalledWith('/get_plant_species_options');
 
         // Mock fetch function to return expected response
@@ -90,6 +91,7 @@ describe('App', () => {
 
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Get fields with length limits + edit button
         const modal = app.getByText("Edit Details").closest(".modal-box");

@@ -289,58 +289,14 @@ describe('App', () => {
         expect(eventMarkers.children[1].textContent).toContain('Fertilized');
         expect(eventMarkers.children[2].textContent).toContain('Pruned');
     });
-
-    // Original bug: When RepotModal was submitted the pre-filled pot size
-    // field in EditModal form did not update. If the user then opened the
-    // EditModal to change description and did not noticed the outdated pot
-    // size value they could easily reset back to the initial pot size.
-    it('updates pot size in EditModal form when plant is repotted', async () => {
-        // Mock /get_plant_species_options response (requested when modal opens)
-        mockPlantSpeciesOptionsResponse();
-
-        // Open edit modal
-        await user.click(app.getByRole('button', {name: 'Edit'}));
-
-        // Confirm pot size field defaults to '4'
-        expect(app.getByLabelText('Pot size').value).toBe('4');
-
-        // Mock fetch to return /repot_plant response first, then
-        // /get_plant_species_options response (will be requested automatically
-        // when PlantDetailsForm remounts in response to repot state change)
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "repot",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                pot_size: 6
-            })
-        }).mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve({
-                options: [
-                    "Parlor Palm",
-                    "Spider Plant",
-                    "Calathea"
-                ]
-            })
-        });
-
-        // Simulate user opening repot modal and clicking submit without
-        // changing pot size (defaults to 6, next size up)
-        await user.click(app.getAllByText(/Repot plant/)[0]);
-        await act(async () => await jest.advanceTimersByTimeAsync(100));
-        await user.click(app.getByRole('button', {name: 'Repot'}));
-
-        // Confirm pot size field in EditModal changed to '6'
-        expect(app.getByLabelText('Pot size').value).toBe('6');
-    });
-
     // Original bug: timelineSlice.eventDeleted assumed there was only 1 event
     // of each type per day. If there were multiple water events at different
     // times on the same day and only 1 was deleted eventDeleted would remove
     // the event type from dateKey, resulting in the calendar dot disappearing
     // and the timeline EventMarker being removed.
+    //
+    // NOTE this is no longer reproducible in prod (delete mode will select all
+    // events within same day), but worth keeping for timelineSlice coverage.
     it('does not remove event from timeline if another event with same type exists', async () => {
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);

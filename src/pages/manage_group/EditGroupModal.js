@@ -1,4 +1,5 @@
 import React, { useRef, memo } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import EditModal from 'src/components/EditModal';
@@ -6,7 +7,7 @@ import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { groupDetailsUpdateed } from './groupSlice';
 
-const EditGroupModal = memo(function EditGroupModal() {
+const EditGroupModal = memo(function EditGroupModal({ close }) {
     const groupDetails = useSelector((state) => state.group.groupDetails);
     const dispatch = useDispatch();
     const formRef = useRef(null);
@@ -27,7 +28,7 @@ const EditGroupModal = memo(function EditGroupModal() {
     };
 
     return (
-        <EditModal title="Edit Details" formRef={formRef} onSubmit={submit}>
+        <EditModal formRef={formRef} onSubmit={submit} close={close}>
             <GroupDetailsForm
                 formRef={formRef}
                 name={groupDetails.name}
@@ -37,5 +38,9 @@ const EditGroupModal = memo(function EditGroupModal() {
         </EditModal>
     );
 });
+
+EditGroupModal.propTypes = {
+    close: PropTypes.func.isRequired
+};
 
 export default EditGroupModal;

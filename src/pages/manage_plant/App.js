@@ -5,7 +5,6 @@ import NoteModal from './NoteModal';
 import GroupModal from './GroupModal';
 import PhotoModal from './PhotoModal';
 import DivisionModal from './DivisionModal';
-import EditPlantModal from './EditPlantModal';
 import 'src/css/index.css';
 import initialStatePropTypes from './initialStatePropTypes';
 
@@ -18,7 +17,6 @@ const App = ({ initialState = null }) => {
             <GroupModal />
             <PhotoModal />
             <DivisionModal />
-            <EditPlantModal />
         </ReduxProvider>
     );
 };
