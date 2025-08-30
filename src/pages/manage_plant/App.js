@@ -27,7 +27,7 @@ const App = ({ initialState = null }) => {
                 ref={repotModal.ref}
                 title="Repot Plant"
                 ariaLabel="Repot plant"
-                load={() => import(/* webpackChunkName: "change-qr-modal" */ "./RepotModal")}
+                load={() => import(/* webpackChunkName: "repot-modal" */ "./RepotModal")}
             />
         </ReduxProvider>
     );

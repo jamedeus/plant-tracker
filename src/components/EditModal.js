@@ -1,17 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
-let modalRef;
-
-export const openEditModal = () => {
-    modalRef.current.open();
-};
 
 // Takes modal title, submit handler, and details form
 // Modal has centered title, can be closed with button, esc, or outside click
 const EditModal = ({ formRef, onSubmit, close, children }) => {
-    modalRef = useRef(null);
-
     // Disable edit button if form is invalid (field exceeded length limit)
     const [formIsValid, setFormIsValid] = useState(true);
     const onInput = () => {
