@@ -167,8 +167,9 @@ describe('App', () => {
             json: () => Promise.resolve({ options: mockPlantOptions })
         }));
 
-        // Click Add plants dropdown option
+        // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
+        await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
 
         // Mock fetch function to return expected response when first option added
         global.fetch = jest.fn(() => Promise.resolve({
@@ -197,8 +198,11 @@ describe('App', () => {
             headers: postHeaders
         });
 
-        // Mock fetch to return options remaining option (remove uuid that was
-        // already added, simulate options returned by backend)
+        // Wait for modal to close (unmount)
+        await waitFor(() => expect(app.queryByText('Add Plants')).toBeNull());
+
+        // Mock fetch to return remaining option (remove uuid that was already
+        // added, simulate options returned by backend)
         const remainingOption = Object.keys(mockPlantOptions)[1];
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -207,8 +211,9 @@ describe('App', () => {
             } })
         }));
 
-        // Open modal again, click add button again
+        // Open modal again, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
+        await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
 
         // Mock fetch function to return expected response when no UUIDs received
         global.fetch = jest.fn(() => Promise.resolve({

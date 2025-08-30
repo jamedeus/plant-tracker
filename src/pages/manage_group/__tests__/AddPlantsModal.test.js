@@ -1,4 +1,4 @@
-import AddPlantsModal, { openAddPlantsModal } from '../AddPlantsModal';
+import AddPlantsModal from '../AddPlantsModal';
 import { mockContext, mockPlantOptions } from './mockContext';
 import { ReduxProvider } from '../store';
 
@@ -32,11 +32,8 @@ describe('AddPlantsModal', () => {
         // Render modal
         const component = render(<TestComponent />);
 
-        // Open modal, confirm options requested
-        await act(async () => {
-            openAddPlantsModal();
-        });
-        await jest.advanceTimersByTimeAsync(0);
+        // Confirm options requested
+        await act(async () => await jest.advanceTimersByTimeAsync(0));
         expect(global.fetch).toHaveBeenCalledWith('/get_plant_options');
 
         // Confirm a card was rendered for each plant in options (all plants in
@@ -58,7 +55,6 @@ describe('AddPlantsModal', () => {
 
         // Render modal
         const component = render(<TestComponent />);
-        openAddPlantsModal();
 
         // Confirm no cards, confirm expected text
         await waitFor(() => {
@@ -74,7 +70,6 @@ describe('AddPlantsModal', () => {
 
         // Render modal
         const component = render(<TestComponent />);
-        openAddPlantsModal();
 
         // Confirm no cards, confirm expected text
         await waitFor(() => {
@@ -84,7 +79,7 @@ describe('AddPlantsModal', () => {
         });
     });
 
-    it('shows spinner until options load, clears options when closed', async () => {
+    it('shows spinner until options load', async () => {
         // Mock fetch to return options (requested when modal opened)
         // Add delay so loading spinner will render (simulate real request)
         global.fetch = jest.fn(() => new Promise(resolve =>
@@ -98,7 +93,6 @@ describe('AddPlantsModal', () => {
 
         // Render modal
         const component = render(<TestComponent />);
-        openAddPlantsModal();
 
         // Confirm loading spinner rendered, contents did not
         await waitFor(() => {
@@ -116,15 +110,5 @@ describe('AddPlantsModal', () => {
             expect(document.querySelector('.loading')).toBeNull();
             expect(component.getByText('Another test plant')).not.toBeNull();
         });
-
-        // Close modal, fast forward through close animation
-        let event = new Event("close");
-        document.querySelector('dialog').dispatchEvent(event);
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
-
-        // Confirm contents disappeared
-        expect(component.queryByText('Another test plant')).toBeNull();
     });
 });

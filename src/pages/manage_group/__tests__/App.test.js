@@ -10,6 +10,7 @@ jest.mock('src/navigate', () => ({
     setNavigate: jest.fn(),
 }));
 import { navigate as globalMockNavigate } from 'src/navigate';
+import { waitFor } from '@testing-library/react';
 
 describe('App', () => {
     let app, user;
@@ -277,9 +278,8 @@ describe('App', () => {
             json: () => Promise.resolve({ options: mockPlantOptions })
         }));
 
-        // Click Add plants dropdown option
+        // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
-
 
         // Mock fetch function to return expected response when submitted
         global.fetch = jest.fn(() => Promise.resolve({

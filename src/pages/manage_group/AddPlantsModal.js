@@ -1,23 +1,15 @@
-import React, { useState, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import EditableNodeList from 'src/components/EditableNodeList';
 import LoadingAnimation from 'src/components/LoadingAnimation';
-import Modal from 'src/components/Modal';
 import PlantCard from 'src/components/PlantCard';
 import { plantsAdded } from './groupSlice';
 import { openErrorModal } from 'src/components/ErrorModal';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 
-let modalRef;
-
-// Request options from backend, open modal
-export const openAddPlantsModal = () => {
-    modalRef.current.open();
-};
-
-const Options = ({ options }) => {
+const Options = ({ options, close }) => {
     const dispatch = useDispatch();
     const groupId = useSelector((state) => state.group.groupDetails.uuid);
     // Ref used to read selected items from EditableNodeList form
@@ -27,6 +19,7 @@ const Options = ({ options }) => {
     const submit = () => {
         const selected = new FormData(formRef.current);
         addPlants(Array.from(selected.keys()));
+        close();
     };
 
     // Takes array of selected plant UUIDs,posts to backend and updates state
@@ -60,17 +53,15 @@ const Options = ({ options }) => {
             </div>
 
             <div className="modal-action">
-                <form method="dialog">
-                    <button className="btn btn-soft w-20">
-                        Cancel
-                    </button>
-                    <button
-                        className="btn btn-accent w-20"
-                        onClick={submit}
-                    >
-                        Add
-                    </button>
-                </form>
+                <button className="btn btn-soft w-20" onClick={close}>
+                    Cancel
+                </button>
+                <button
+                    className="btn btn-accent w-20"
+                    onClick={submit}
+                >
+                    Add
+                </button>
             </div>
         </>
     );
@@ -78,11 +69,10 @@ const Options = ({ options }) => {
 
 Options.propTypes = {
     options: PropTypes.objectOf(plantDetailsProptypes).isRequired,
+    close: PropTypes.func.isRequired
 };
 
-const AddPlantsModal = memo(function AddPlantsModal() {
-    modalRef = useRef(null);
-
+const AddPlantsModal = memo(function AddPlantsModal({ close }) {
     // Stores options queried from backend
     const [options, setOptions] = useState(null);
 
@@ -97,29 +87,26 @@ const AddPlantsModal = memo(function AddPlantsModal() {
         }
     };
 
-    // Clear options after close animation completes
-    const clearOptions = () => {
-        setTimeout(() => {
-            setOptions(null);
-        }, 200);
-    };
+    // Get options from backend on first load
+    useEffect(() => {
+        loadOptions();
+    }, []);
 
     return (
-        <Modal
-            title='Add Plants'
-            ref={modalRef}
-            onOpen={loadOptions}
-            onClose={clearOptions}
-        >
+        <>
             {options ? (
-                <Options options={options} />
+                <Options options={options} close={close} />
             ) : (
                 <div className="flex flex-col items-center">
                     <LoadingAnimation />
                 </div>
             )}
-        </Modal>
+        </>
     );
 });
+
+AddPlantsModal.propTypes = {
+    close: PropTypes.func.isRequired
+};
 
 export default AddPlantsModal;

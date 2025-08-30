@@ -8,7 +8,6 @@ import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
 import RemovePlantsFooter from './RemovePlantsFooter';
 import AddEventsFooter from 'src/components/AddEventsFooter';
-import { openAddPlantsModal } from './AddPlantsModal';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { Tab } from '@headlessui/react';
@@ -71,6 +70,12 @@ function Layout() {
         changeQrModal.open({uuid: groupDetails.uuid});
         document.activeElement.blur();
     }, [changeQrModal]);
+
+    const addPlantsModal = useModal();
+    const openAddPlantsModal = useCallback(() => {
+        addPlantsModal.open();
+        document.activeElement.blur();
+    }, [addPlantsModal]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -203,6 +208,13 @@ function Layout() {
                 title="Change QR Code"
                 ariaLabel="Change group QR code"
                 load={() => import(/* webpackChunkName: "change-qr-modal" */ "src/components/ChangeQrModal")}
+            />
+
+            <LazyModal
+                ref={addPlantsModal.ref}
+                title="Add Plants"
+                ariaLabel="Add plants"
+                load={() => import(/* webpackChunkName: "add-plants-modal" */ "./AddPlantsModal")}
             />
         </div>
     );
