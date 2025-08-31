@@ -103,8 +103,8 @@ describe('Add new note', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to save note/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user typing note and clicking save
         await user.type(
@@ -114,8 +114,10 @@ describe('Add new note', () => {
         await user.click(app.getByText('Save'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.queryByText(/failed to save note/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to save note'
+        );
     });
 
     it('shows error toast if duplicate note error received', async() => {
@@ -250,8 +252,8 @@ describe('Edit existing note', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to delete note/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
@@ -260,8 +262,10 @@ describe('Edit existing note', () => {
         fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.queryByText(/failed to delete note/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to delete note'
+        );
     });
 
     it('shows error in modal when edit API call fails', async () => {
@@ -275,13 +279,15 @@ describe('Edit existing note', () => {
         }));
 
         // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to edit note/)).toBeNull();
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user clicking delete
         await user.click(app.getByText('Save'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.queryByText(/failed to edit note/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to edit note'
+        );
     });
 });

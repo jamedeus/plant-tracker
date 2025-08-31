@@ -74,14 +74,17 @@ describe('ChangeQrModal', () => {
         }));
 
         // Confirm arbitrary error does not appear on page
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
         expect(app.queryByText(/failed to cache UUID/)).toBeNull();
 
         // Click OK button
         await user.click(app.getByRole('button', {name: 'OK'}));
 
         // Confirm error modal appeared with arbitrary error text
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.queryByText(/failed to cache UUID/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to cache UUID'
+        );
 
         // Confirm did not close ChangeQrModal
         expect(mockClose).not.toHaveBeenCalled();

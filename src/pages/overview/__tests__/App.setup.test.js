@@ -25,7 +25,6 @@ describe('App with empty database', () => {
 
     it('opens modal when Print QR Codes button clicked', async () => {
         // Confirm modal has not been opened
-        expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
         expect(app.queryByText('96 QR codes per sheet')).toBeNull();
 
         // Click Print QR Codes button, confirm modal opened

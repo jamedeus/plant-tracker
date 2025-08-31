@@ -40,7 +40,6 @@ describe('App', () => {
 
     it('opens modal when Print QR Codes dropdown option clicked', async () => {
         // Confirm modal has not been opened
-        expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
         expect(app.queryByText('96 QR codes per sheet')).toBeNull();
 
         // Click Print QR Codes dropdown option, confirm modal opened
@@ -207,9 +206,7 @@ describe('App', () => {
         }));
 
         // Confirm error modal is not rendered
-        expect(app.queryByText(
-            'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        )).toBeNull();
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Enter edit mode, click first checkbox
         await user.click(app.getByTestId('edit_plants_option'));
@@ -222,9 +219,10 @@ describe('App', () => {
         fireEvent.mouseUp(button);
 
         // Confirm error modal appeared
-        expect(app.queryByText(
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        )).not.toBeNull();
+        );
     });
 
     it('shows error modal when unable to archive plant or group', async () => {
@@ -239,9 +237,7 @@ describe('App', () => {
         }));
 
         // Confirm error modal is not rendered
-        expect(app.queryByText(
-            'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        )).toBeNull();
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Enter edit mode, click first checkbox, click archive button
         await user.click(app.getByTestId('edit_plants_option'));
@@ -249,9 +245,10 @@ describe('App', () => {
         await user.click(app.getByText('Archive'));
 
         // Confirm error modal appeared
-        expect(app.queryByText(
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        )).not.toBeNull();
+        );
     });
 
     it('shows checkboxes and event buttons when add events option clicked', async () => {
@@ -484,8 +481,8 @@ describe('App', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to bulk add events/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click add events option, select first plant, click water button
         await user.click(app.getByTestId('add_plants_option'));
@@ -493,7 +490,10 @@ describe('App', () => {
         await user.click(app.getByTestId('water-button'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to bulk add events/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to bulk add events'
+        );
     });
 
     it('does not show AddEventsFooter and EditModeFooter at the same time', async () => {
