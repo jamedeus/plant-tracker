@@ -4,6 +4,7 @@ exports[`App matches snapshot 1`] = `
 <div>
   <div
     class="container flex flex-col mx-auto items-center"
+    data-testid="register-layout"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
@@ -269,6 +270,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
 <div>
   <div
     class="container flex flex-col mx-auto items-center"
+    data-testid="register-layout"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
@@ -483,6 +485,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
 <div>
   <div
     class="container flex flex-col mx-auto items-center"
+    data-testid="register-layout"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
@@ -742,6 +745,7 @@ exports[`App matches snapshot when group querystring param is present 1`] = `
 <div>
   <div
     class="container flex flex-col mx-auto items-center"
+    data-testid="register-layout"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
@@ -989,6 +993,7 @@ exports[`App matches snapshot when plant division in progress 1`] = `
 <div>
   <div
     class="container flex flex-col mx-auto items-center"
+    data-testid="register-layout"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"

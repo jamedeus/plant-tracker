@@ -21,6 +21,10 @@ class JSONClient(Client):
     def post(self, path, data=None, content_type='application/json', **extra):
         return super().post(path, data, content_type, **extra)
 
+    def get_json(self, path, **extra):
+        '''Makes GET request with application/json accept header.'''
+        return super().get(path, HTTP_ACCEPT='application/json', **extra)
+
 
 def enable_isolated_media_root():
     '''Create a per-module temporary MEDIA_ROOT and apply override_settings.

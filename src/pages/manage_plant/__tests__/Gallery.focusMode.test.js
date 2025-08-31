@@ -1,20 +1,17 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 import { waitFor } from '@testing-library/react';
-import { render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 describe('Gallery Focus Mode', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
 
         // Mock viewport height (simulate thumbnails inside/outside viewport)
         Object.defineProperty(window, 'innerHeight', {
@@ -34,9 +31,11 @@ describe('Gallery Focus Mode', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={mockContext} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Click gallery dropdown option, confirm gallery appears

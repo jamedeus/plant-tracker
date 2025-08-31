@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import GroupCard from 'src/components/GroupCard';
 import FilterColumn from 'src/components/FilterColumn';
+import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 // Populates sort dropdown options
 const SORT_BY_KEYS = [
@@ -36,18 +37,7 @@ const GroupsCol = ({ groups, editing, formRef, storageKey, onOpenTitle, children
 };
 
 GroupsCol.propTypes = {
-    groups: PropTypes.objectOf(
-        PropTypes.exact({
-            name: PropTypes.string,
-            display_name: PropTypes.string.isRequired,
-            uuid: PropTypes.string.isRequired,
-            created: PropTypes.string.isRequired,
-            plants: PropTypes.number.isRequired,
-            description: PropTypes.string,
-            location: PropTypes.string,
-            archived: PropTypes.bool.isRequired
-        })
-    ).isRequired,
+    groups: PropTypes.objectOf(groupDetailsProptypes).isRequired,
     editing: PropTypes.bool.isRequired,
     formRef: PropTypes.oneOfType([
         PropTypes.func,

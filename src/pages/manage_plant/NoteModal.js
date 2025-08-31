@@ -1,20 +1,16 @@
-import React, { useState, useRef, memo } from 'react';
-import clsx from 'clsx';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'src/components/Modal';
+import clsx from 'clsx';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
 import HoldToConfirm from 'src/components/HoldToConfirm';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { sendPostRequest } from 'src/util';
-import { localToUTC, timestampToReadable } from 'src/timestampUtils';
+import sendPostRequest from 'src/utils/sendPostRequest';
+import { localToUTC, timestampToReadable } from 'src/utils/timestampUtils';
 import { DateTime } from 'luxon';
 import { noteAdded, noteEdited, noteDeleted } from './timelineSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
-let modalRef;
-
-export let openNoteModal;
+import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 // Rendered instead of timestamp input when editing note (can't change time)
 const ExistingNoteTimestamp = memo(function ExistingNoteTimestamp({ noteTime }) {
@@ -28,10 +24,10 @@ const ExistingNoteTimestamp = memo(function ExistingNoteTimestamp({ noteTime }) 
 });
 
 ExistingNoteTimestamp.propTypes = {
-    noteTime: PropTypes.string.isRequired
+    noteTime: isoTimestampTzPropType.isRequired
 };
 
-const NoteModal = () => {
+const NoteModal = ({ note, close }) => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     // Get user-configured hold to delete delay
@@ -53,16 +49,8 @@ const NoteModal = () => {
     // Disable save button if text field empty or over character limit
     const saveButtonDisabled = !noteText.length || noteText.length > 500;
 
-    // Create ref for Modal component (used to show/hide)
-    modalRef = useRef(null);
-
-    // Textarea listener
-    const updateNoteText = (text) => {
-        setNoteText(text);
-        setCharCount(text.length);
-    };
-
-    openNoteModal = (note) => {
+    // Prefill existing note details when editing
+    useEffect(() => {
         if (note) {
             updateNoteText(note.text);
             setNoteTime(note.timestamp);
@@ -72,7 +60,12 @@ const NoteModal = () => {
             setNoteTime(DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss"));
             setEditingNote(false);
         }
-        modalRef.current.open();
+    }, [note]);
+
+    // Textarea listener
+    const updateNoteText = (text) => {
+        setNoteText(text);
+        setCharCount(text.length);
     };
 
     const handleSubmit = async () => {
@@ -89,7 +82,7 @@ const NoteModal = () => {
                 timestamp: data.timestamp,
                 text: data.note_text
             }));
-            modalRef.current.close();
+            close();
         } else {
             // Duplicate note timestamp: show error toast for 5 seconds
             if (response.status === 409) {
@@ -120,7 +113,7 @@ const NoteModal = () => {
                 timestamp: data.timestamp,
                 text: data.note_text
             }));
-            modalRef.current.close();
+            close();
         } else {
             // Show error in modal
             const error = await response.json();
@@ -138,7 +131,7 @@ const NoteModal = () => {
             // Remove note from state, close modal
             const data = await response.json();
             dispatch(noteDeleted(data.deleted[0]));
-            modalRef.current.close();
+            close();
         } else {
             // Show error in modal
             const error = await response.json();
@@ -147,7 +140,10 @@ const NoteModal = () => {
     };
 
     return (
-        <Modal title={editingNote ? "Edit Note" : "Add Note"} ref={modalRef}>
+        <>
+            <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
+                {editingNote ? "Edit Note" : "Add Note"}
+            </h3>
             <div className="flex flex-col">
                 <div className="min-h-36 flex flex-col items-center mt-2">
                     {editingNote
@@ -198,8 +194,16 @@ const NoteModal = () => {
                     )}
                 </div>
             </div>
-        </Modal>
+        </>
     );
+};
+
+NoteModal.propTypes = {
+    note: PropTypes.exact({
+        text: PropTypes.string.isRequired,
+        timestamp: isoTimestampTzPropType.isRequired
+    }),
+    close: PropTypes.func.isRequired
 };
 
 export default NoteModal;

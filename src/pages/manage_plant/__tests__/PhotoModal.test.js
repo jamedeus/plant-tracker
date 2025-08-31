@@ -1,17 +1,29 @@
 import React from 'react';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
 import { ReduxProvider } from '../store';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 
-const TestComponent = () => {
+/* eslint react/prop-types: 0 */
+
+// Mock useNavigate to return a mock (confirm redirected to correct page)
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    };
+});
+
+const TestComponent = ({ close }) => {
     // Render app
     return (
-        <ReduxProvider>
-            <PhotoModal />
+        <ReduxProvider initialState={mockContext}>
+            <PhotoModal close={close} />
             <button onClick={openPhotoModal}>
                 Open photo modal
             </button>
@@ -21,22 +33,21 @@ const TestComponent = () => {
 
 describe('PhotoModal', () => {
     let app, user;
-
-    beforeAll(() => {
-        // Create mock state objects (used by ReduxProvider)
-        bulkCreateMockContext(mockContext);
-    });
+    const mockClose = jest.fn();
 
     beforeEach(async () => {
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+        mockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
-                <TestComponent />
-            </PageWrapper>
+            <>
+                <TestComponent close={mockClose} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Open modal
@@ -164,10 +175,14 @@ describe('PhotoModal', () => {
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1, file2] } });
 
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
+
         // Simulate user clicking upload button
         await user.click(app.getByText('Upload'));
 
-        // Confirm modal appeared with failed photo names
+        // Confirm error modal appeared with failed photo names
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
         expect(app.queryByText(/Failed to upload 2 photo(s)/)).not.toBeNull();
         expect(app.queryByText(/photo2.heic/)).not.toBeNull();
         expect(app.queryByText(/photo1.heic/)).not.toBeNull();
@@ -190,8 +205,8 @@ describe('PhotoModal', () => {
             )
         }));
 
-        // Confirm error message does not appear on page
-        expect(app.queryByText(/Your upload was too big to process./)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user selecting a file and clicking upload
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -200,7 +215,10 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with error message
-        expect(app.queryByText(/Your upload was too big to process./)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'Your upload was too big to process.'
+        );
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
     });
@@ -215,8 +233,8 @@ describe('PhotoModal', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to upload photos/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user selecting a file and clicking upload
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -225,7 +243,10 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to upload photos/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to upload photos'
+        );
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
     });
@@ -240,8 +261,8 @@ describe('PhotoModal', () => {
             )
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to upload photos/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user selecting a file and clicking upload
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -250,7 +271,10 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with unexpected response string
-        expect(app.queryByText('Unexpected response from backend')).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'Unexpected response from backend'
+        );
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
     });
@@ -273,6 +297,6 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
+        expect(mockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });

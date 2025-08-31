@@ -1,9 +1,7 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
-import { PageWrapper } from 'src/index';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 
 describe('Timeline regressions', () => {
@@ -18,48 +16,50 @@ describe('Timeline regressions', () => {
     // timelineDays keys were chronological (they used to be) and did not sort
     // the finished array the way addNavigationOption (timelineSlice.js) does.
     it('renders quick navigation month names in chronological order', async () => {
-        // Create mock context with events in all months except December and May
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-        createMockContext('events', {
-            water: [
-                "2023-11-11T19:04:20+00:00",
-                "2023-10-26T02:49:18+00:00",
-                "2023-09-17T22:21:41+00:00",
-                "2023-08-17T22:21:41+00:00",
-                "2023-07-11T19:04:20+00:00",
-                "2023-06-26T02:49:18+00:00",
-                "2023-04-17T22:21:41+00:00",
-                "2023-03-17T22:21:41+00:00",
-                "2023-02-11T19:04:20+00:00",
-                "2023-01-26T02:49:18+00:00",
-            ],
-            fertilize: [],
-            prune: [],
-            repot: []
-        });
-        // Create mock context with a single photo in December
-        createMockContext('photos', [
-            {
-                timestamp: "2023-12-21T11:57:26+00:00",
-                image: "/media/images/IMG_5866.jpeg",
-                thumbnail: "/media/thumbnails/IMG_5866_thumb.webp",
-                preview: "/media/previews/IMG_5866_preview.webp",
-                key: 46
+        // Create mock context with events in all months except December and May,
+        // a single photo in December, and a single note in May
+        const initialState = {
+            ...mockContext,
+            events: {
+                water: [
+                    "2023-11-11T19:04:20+00:00",
+                    "2023-10-26T02:49:18+00:00",
+                    "2023-09-17T22:21:41+00:00",
+                    "2023-08-17T22:21:41+00:00",
+                    "2023-07-11T19:04:20+00:00",
+                    "2023-06-26T02:49:18+00:00",
+                    "2023-04-17T22:21:41+00:00",
+                    "2023-03-17T22:21:41+00:00",
+                    "2023-02-11T19:04:20+00:00",
+                    "2023-01-26T02:49:18+00:00",
+                ],
+                fertilize: [],
+                prune: [],
+                repot: []
             },
-        ]);
-        // Create mock context with a single note in May
-        createMockContext('notes', {
-            "2023-05-25T15:28:39+00:00": "Fertilized with a balanced 10-10-10 fertilizer."
-        });
+            photos: {
+                1: {
+                    timestamp: "2023-12-21T11:57:26+00:00",
+                    photo: "/media/images/IMG_5866.jpeg",
+                    thumbnail: "/media/thumbnails/IMG_5866_thumb.webp",
+                    preview: "/media/previews/IMG_5866_preview.webp",
+                    key: 46
+                },
+            },
+            notes: {
+                "2023-05-25T15:28:39+00:00": "Fertilized with a balanced 10-10-10 fertilizer."
+            }
+        };
+        globalThis.USER_ACCOUNTS_ENABLED = true;
 
         // Render, get reference to to 2023 month options in QuickNavigation menu
         const app = render(
-            <PageWrapper>
-                <ReduxProvider>
+            <>
+                <ReduxProvider initialState={initialState}>
                     <Timeline />
                 </ReduxProvider>
-            </PageWrapper>
+                <ErrorModal />
+            </>
         );
         const history = app.getByText(/History/).closest('.dropdown');
         const year = within(history).getByText(/2023/).closest('details');
@@ -85,32 +85,31 @@ describe('Timeline regressions', () => {
     // was because buildTimelineDays overwrote the existing dividedInto value
     // instead of concatenating the new array.
     it('shows child plants from multiple DivisionEvents on the same day', async () => {
-        // Create mock context with multiple DivisionEvents on the same day
-        bulkCreateMockContext({
-            ...mockContext,
-            division_events: {
-                "2024-02-11T04:19:23+00:00": [
-                    {
-                        name: "Child plant 1",
-                        uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
-                    },
-                ],
-                "2024-02-11T04:20:23+00:00": [
-                    {
-                        name: "Child plant 2",
-                        uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8969"
-                    },
-                ]
-            }
-        });
-
-        // Render, confirm "Divided into" text only appears once
+        // Render with mock context with multiple DivisionEvents on the same day,
+        // confirm "Divided into" text only appears once
         const app = render(
-            <PageWrapper>
-                <ReduxProvider>
+            <>
+                <ReduxProvider initialState={{
+                    ...mockContext,
+                    division_events: {
+                        "2024-02-11T04:19:23+00:00": [
+                            {
+                                name: "Child plant 1",
+                                uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                            },
+                        ],
+                        "2024-02-11T04:20:23+00:00": [
+                            {
+                                name: "Child plant 2",
+                                uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8969"
+                            },
+                        ]
+                    }
+                }}>
                     <Timeline />
                 </ReduxProvider>
-            </PageWrapper>
+                <ErrorModal />
+            </>
         );
         expect(app.getAllByText('Divided into:').length).toBe(1);
 

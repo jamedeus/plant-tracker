@@ -1,14 +1,13 @@
-import React, { useRef, useState, useLayoutEffect, memo, useEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect, memo, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
-import { capitalize, pastTense } from 'src/util';
-import { timestampToReadable, timestampToRelativeDays } from 'src/timestampUtils';
-import { openNoteModal } from './NoteModal';
-import { openRepotModal } from './RepotModal';
-import { openPhotoModal } from './PhotoModal';
-import { openDivisionModal } from './DivisionModal';
+import { capitalize, pastTense } from 'src/utils/stringUtils';
+import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
+import { openNoteModal, openRepotModal } from './modals';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
+import LazyModal, { useModal } from 'src/components/LazyModal';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
@@ -26,6 +25,9 @@ import {
     photoSelected,
     noteSelected,
 } from './interfaceSlice';
+import uuidPropType from 'src/types/uuidPropType';
+import dateKeyPropType from 'src/types/dateKeyPropType';
+import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {
@@ -57,6 +59,18 @@ const Title = memo(function Title() {
         dispatch(deleteModeChanged({editing: true}));
         document.activeElement.blur();
     };
+
+    const photoModal = useModal();
+    const openPhotoModal = useCallback(() => {
+        photoModal.open();
+        document.activeElement.blur();
+    }, [photoModal]);
+
+    const divisionModal = useModal();
+    const openDivisionModal = useCallback(() => {
+        divisionModal.open();
+        document.activeElement.blur();
+    }, [divisionModal]);
 
     return (
         <div className="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1">
@@ -133,6 +147,19 @@ const Title = memo(function Title() {
                     </>
                 }
             </div>
+
+            <LazyModal
+                ref={photoModal.ref}
+                ariaLabel="Upload plant photos"
+                load={() => import(/* webpackChunkName: "manage_plant_photo-modal" */ "./PhotoModal")}
+            />
+
+            <LazyModal
+                ref={divisionModal.ref}
+                title="Divide Plant"
+                ariaLabel="Divide plant"
+                load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}
+            />
         </div>
     );
 });
@@ -225,7 +252,7 @@ const TimelineTimestamp = memo(function TimelineTimestamp({ dateKey }) {
 });
 
 TimelineTimestamp.propTypes = {
-    dateKey: PropTypes.string.isRequired
+    dateKey: dateKeyPropType.isRequired
 };
 
 // Takes YYYY-MM-DD string, renders horizontal divider with month name that
@@ -241,7 +268,7 @@ const MonthDivider = memo(function MonthDivider({ dateKey }) {
 });
 
 MonthDivider.propTypes = {
-    dateKey: PropTypes.string.isRequired
+    dateKey: dateKeyPropType.isRequired
 };
 
 // Map event type strings to icon components
@@ -291,7 +318,7 @@ const EventMarker = memo(function EventMarker({ eventType, timestamps }) {
 
 EventMarker.propTypes = {
     eventType: PropTypes.oneOf(Object.keys(eventIconMap)).isRequired,
-    timestamps: PropTypes.array.isRequired
+    timestamps: PropTypes.arrayOf(isoTimestampTzPropType).isRequired
 };
 
 // Takes array of plant objects (name and uuid keys) that were divided from this
@@ -318,12 +345,13 @@ const DivisionEventMarker = ({ dividedPlants }) => {
                     className="flex items-center ml-6 md:ml-7"
                 >
                     <span className="bullet-point mr-2"></span>
-                    <a
-                        href={`/manage/${plant.uuid}`}
+                    <Link
+                        to={`/manage/${plant.uuid}`}
                         className="plant-link truncate"
+                        discover="none"
                     >
                         {plant.name}
-                    </a>
+                    </Link>
                 </div>
             ))}
         </div>
@@ -332,9 +360,9 @@ const DivisionEventMarker = ({ dividedPlants }) => {
 
 DivisionEventMarker.propTypes = {
     dividedPlants: PropTypes.arrayOf(
-        PropTypes.shape({
+        PropTypes.exact({
             name: PropTypes.string.isRequired,
-            uuid: PropTypes.string.isRequired,
+            uuid: uuidPropType.isRequired,
         })
     ).isRequired,
 };
@@ -345,20 +373,21 @@ const DividedFromMarker = ({ name, uuid, dateKey }) => {
         <span className="m-2 text-sm md:text-base line-clamp-1">
             <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
             Divided from&nbsp;
-            <a
-                href={`/manage/${uuid}?scrollToDate=${dateKey}`}
+            <Link
+                to={`/manage/${uuid}?scrollToDate=${dateKey}`}
                 className="plant-link"
+                discover="none"
             >
                 {name}
-            </a>
+            </Link>
         </span>
     );
 };
 
 DividedFromMarker.propTypes = {
     name: PropTypes.string.isRequired,
-    uuid: PropTypes.string.isRequired,
-    dateKey: PropTypes.string.isRequired
+    uuid: uuidPropType.isRequired,
+    dateKey: dateKeyPropType.isRequired
 };
 
 // Takes photo thumbnail URL, creation timestamp, and database key
@@ -409,7 +438,7 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, i
 
 PhotoThumbnail.propTypes = {
     thumbnailUrl: PropTypes.string.isRequired,
-    timestamp: PropTypes.string.isRequired,
+    timestamp: isoTimestampTzPropType.isRequired,
     index: PropTypes.number.isRequired,
     photoKey: PropTypes.number.isRequired
 };
@@ -582,7 +611,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
 NoteCollapse.propTypes = {
     note: PropTypes.shape({
         text: PropTypes.string.isRequired,
-        timestamp: PropTypes.string.isRequired
+        timestamp: isoTimestampTzPropType.isRequired
     }).isRequired
 };
 
@@ -674,7 +703,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
 });
 
 TimelineDay.propTypes = {
-    dateKey: PropTypes.string.isRequired,
+    dateKey: dateKeyPropType.isRequired,
     monthDivider: PropTypes.bool
 };
 

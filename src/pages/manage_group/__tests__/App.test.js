@@ -1,29 +1,45 @@
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockPlantOptions } from './mockContext';
+
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
+import { waitFor } from '@testing-library/react';
 
 describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={mockContext} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('sends correct payload when edit modal is submitted', async () => {
@@ -39,7 +55,8 @@ describe('App', () => {
         }));
 
         // Open edit modal
-        await user.click(app.getByText("Edit"));
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").closest(".modal-box");
@@ -61,6 +78,7 @@ describe('App', () => {
     it('disables edit modal submit button when fields are too long', async () => {
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Get fields with length limits + edit button
         const modal = app.getByText("Edit Details").closest(".modal-box");
@@ -172,7 +190,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
+        expect(globalMockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 
     it('shows checkboxes when Select plants tab is clicked', async () => {
@@ -259,6 +277,40 @@ describe('App', () => {
         });
     });
 
+    it('sends correct payload when only 1 plant is pruned', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "prune",
+                timestamp: "2024-03-01T20:00:00.000+00:00",
+                plants: [
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                failed: []
+            })
+        }));
+
+        // Click Select plants tab, select third plant, click prune
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
+        await user.click(app.getByLabelText('Select Newest plant'));
+        await user.click(app.getByTestId("prune-button"));
+
+        // Confirm correct data posted to /bulk_add_plant_events endpoint
+        // Should only contain UUID of third plant
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                plants: [
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                event_type: "prune",
+                timestamp: "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+    });
+
     it('sends correct payload when Add Plants modal is submitted', async () => {
         // Confirm plant list contains 3 cards
         const plantsCol = app.getByText("Plants (3)").closest('.section');
@@ -270,9 +322,9 @@ describe('App', () => {
             json: () => Promise.resolve({ options: mockPlantOptions })
         }));
 
-        // Click Add plants dropdown option
+        // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
-
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return expected response when submitted
         global.fetch = jest.fn(() => Promise.resolve({
@@ -379,62 +431,6 @@ describe('App', () => {
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
     });
 
-    it('fetches new state when user navigates to page with back button', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                group_details: mockContext.group_details,
-                plants: mockContext.plants
-            })
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith(
-                '/get_group_state/0640ec3b-1bed-4b15-a078-d6e7ec66be14'
-            );
-        });
-    });
-
-    it('reloads page if unable to fetch new state when user presses back button', async () => {
-        // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({Error: 'Group not found'})
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith(
-                '/get_group_state/0640ec3b-1bed-4b15-a078-d6e7ec66be14'
-            );
-        });
-
-        // Confirm page was reloaded
-        expect(window.location.reload).toHaveBeenCalled();
-    });
-
-    it('does not fetch new state when other pageshow events are triggered', () => {
-        // Simulate pageshow event with persisted == false (ie initial load)
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: false });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm did not call fetch
-        expect(global.fetch).not.toHaveBeenCalled();
-    });
-
     it('does not show AddEventsFooter and RemovePlantsFooter at the same time', async () => {
         // Confirm both footers are hidden
         const RemovePlantsFooter = app.getByTestId('remove-plants-footer');
@@ -451,5 +447,16 @@ describe('App', () => {
         await user.click(app.getByTestId('remove_plants_option'));
         expect(RemovePlantsFooter.classList).toContain('floating-footer-visible');
         expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
+    });
+
+    it('opens ChangeQrModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Change QR code'));
+        await waitFor(() => {
+            expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
+        });
     });
 });

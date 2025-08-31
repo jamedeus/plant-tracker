@@ -1,6 +1,7 @@
 import React from 'react';
 import { postHeaders } from 'src/testUtils/headers';
-import PrintModal, { openPrintModal } from '../PrintModal';
+import PrintModal from '../PrintModal';
+import LazyModal from 'src/components/LazyModal';
 import print from 'print-js';
 import { waitFor } from '@testing-library/react';
 
@@ -8,6 +9,8 @@ jest.mock('print-js');
 
 describe('PrintModal', () => {
     let component, user;
+    const close = jest.fn();
+    const setOnClose = jest.fn();
 
     // Mock Blob and URL.createObjectURL (used to print QR codes)
     beforeAll(() => {
@@ -18,15 +21,7 @@ describe('PrintModal', () => {
     beforeEach(async () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
-        component = render(
-            <PrintModal />
-        );
-
-        // Open modal
-        openPrintModal();
-        await waitFor(() => {
-            expect(component.getByText("Generate")).not.toBeNull();
-        });
+        component = render(<PrintModal close={close} setOnClose={setOnClose} />);
     });
 
     it('makes request and opens print dialog when small QR codes requested', async () => {
@@ -152,32 +147,6 @@ describe('PrintModal', () => {
         expect(print).not.toHaveBeenCalled();
     });
 
-    it('aborts printing QR codes if modal closed during request', async () => {
-        // Mock fetch function to return blank promise, save resolve function
-        // in variable so it can be called manually to resolve the promise
-        let resolveFetch;
-        global.fetch = jest.fn(() => new Promise((resolve) => {
-            resolveFetch = resolve;
-        }));
-
-        // Click generate button (fetch will not complete until resolveFetch called)
-        await user.click(component.getByText('Generate'));
-
-        // Close modal before response received
-        let event = new Event("close");
-        document.querySelector('dialog').dispatchEvent(event);
-
-        // Resolve fetch promise with simulated API response
-        resolveFetch({
-            ok: true,
-            json: () => Promise.resolve({ qr_codes: 'base64data' }),
-        });
-
-        // Confirm no Blob was created, print dialog was not opened
-        expect(global.Blob).not.toHaveBeenCalled();
-        expect(print).not.toHaveBeenCalled();
-    });
-
     it('remembers last-selected tab when options are rendered again', async () => {
         // Mock fetch function to return promise that never resolves (stay loading)
         global.fetch = jest.fn(() => new Promise(() => {}));
@@ -246,28 +215,6 @@ describe('PrintModal', () => {
         // Click generate button, confirm error text appears
         await user.click(component.getByText('Generate'));
         expect(component.getByText('An unknown error occurred')).not.toBeNull();
-    });
-
-    it('clears error when modal is closed', async () => {
-        // Mock fetch function to return unexpected error code
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 418,
-            json: () => Promise.resolve({
-                error: 'an unhandled exception was raised'
-            })
-        }));
-
-        // Click generate button, confirm error text appears
-        await user.click(component.getByText('Generate'));
-        expect(component.getByText('An unknown error occurred')).not.toBeNull();
-
-        // Close modal, confirm error text no longer in document
-        let event = new Event("close");
-        document.querySelector('dialog').dispatchEvent(event);
-        await waitFor(() => {
-            expect(component.queryByText('An unknown error occurred')).toBeNull();
-        });
     });
 
     it('prints in a new tab when useragent is iOS Chrome', async () => {
@@ -446,5 +393,56 @@ describe('PrintModal', () => {
         // Confirm print-js was called, new tab was NOT opened
         expect(print).toHaveBeenCalled();
         expect(window.open).not.toHaveBeenCalled();
+    });
+});
+
+// Confirm PrintModal aborts printing when LazyModal closed during request
+describe('PrintModal integration test', () => {
+    const modalRef = React.createRef();
+    let component, user;
+
+    // Mock Blob and URL.createObjectURL (used to print QR codes)
+    beforeAll(() => {
+        global.Blob = jest.fn();
+        URL.createObjectURL = jest.fn(() => 'url');
+    });
+
+    beforeEach(async () => {
+        // Render component inside LazyModal (loader resolves immediately)
+        user = userEvent.setup();
+        component = render(<LazyModal
+            ref={modalRef}
+            load={() => Promise.resolve({ default: PrintModal })}
+        />);
+        // Open modal
+        act(() => modalRef.current.open());
+        await waitFor(() => {
+            expect(component.getByText("Generate")).not.toBeNull();
+        });
+    });
+
+    it('aborts printing QR codes if modal closed during request', async () => {
+        // Mock fetch function to return blank promise, save resolve function
+        // in variable so it can be called manually to resolve the promise
+        let resolveFetch;
+        global.fetch = jest.fn(() => new Promise((resolve) => {
+            resolveFetch = resolve;
+        }));
+
+        // Click generate button (fetch will not complete until resolveFetch called)
+        await user.click(component.getByText('Generate'));
+
+        // Close modal before response received
+        await user.click(component.getByLabelText('Close modal'));
+
+        // Resolve fetch promise with simulated API response
+        resolveFetch({
+            ok: true,
+            json: () => Promise.resolve({ qr_codes: 'base64data' }),
+        });
+
+        // Confirm no Blob was created, print dialog was not opened
+        expect(global.Blob).not.toHaveBeenCalled();
+        expect(print).not.toHaveBeenCalled();
     });
 });

@@ -1,23 +1,21 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { getSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import HoldToConfirm from 'src/components/HoldToConfirm';
+import { plantsRemoved, groupsRemoved, showArchiveChanged } from './overviewSlice';
 
 const EditModeFooter = memo(function EditModeFooter({
     visible,
     selectedPlantsRef,
     selectedGroupsRef,
-    plants,
-    groups,
-    setPlants,
-    setGroups,
     setEditing,
     archivedOverview,
-    setShowArchive
 }) {
+    const dispatch = useDispatch();
     const [alternateText, setAlternateText] = useState(null);
 
     // Fade out number of selected items, fade in "Hold to confirm"
@@ -50,12 +48,8 @@ const EditModeFooter = memo(function EditModeFooter({
         // Remove deleted UUIDs from state
         if (response.ok) {
             const data = await response.json();
-            const newPlants = { ...plants };
-            data.deleted.forEach(uuid => delete newPlants[uuid]);
-            setPlants(newPlants);
-            const newGroups = { ...groups };
-            data.deleted.forEach(uuid => delete newGroups[uuid]);
-            setGroups(newGroups);
+            dispatch(plantsRemoved(data.deleted));
+            dispatch(groupsRemoved(data.deleted));
         } else {
             const data = await response.json();
             openErrorModal(`Failed to delete: ${data.failed.join(', ')}`);
@@ -91,27 +85,13 @@ const EditModeFooter = memo(function EditModeFooter({
                 archived: archived
             }
         );
-        // Remove deleted UUIDs from state
+        // Remove archived UUIDs from state
         if (response.ok) {
             const data = await response.json();
-            const newPlants = { ...plants };
-            data.archived.forEach(uuid => delete newPlants[uuid]);
-            setPlants(newPlants);
-            const newGroups = { ...groups };
-            data.archived.forEach(uuid => delete newGroups[uuid]);
-            setGroups(newGroups);
-
+            dispatch(plantsRemoved(data.archived));
+            dispatch(groupsRemoved(data.archived));
             // Ensure archive link visible in dropdown menu
-            setShowArchive(archived);
-
-            // Archived overview: redirect to overview if no plants or groups left
-            if (
-                archivedOverview &&
-                !Object.keys(newPlants).length &&
-                !Object.keys(newGroups).length
-            ) {
-                window.location.href = "/";
-            }
+            dispatch(showArchiveChanged(archived));
         } else {
             const data = await response.json();
             openErrorModal(`Failed to archive: ${data.failed.join(', ')}`);
@@ -167,13 +147,8 @@ EditModeFooter.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
-    plants: PropTypes.object.isRequired,
-    groups: PropTypes.object.isRequired,
-    setPlants: PropTypes.func.isRequired,
-    setGroups: PropTypes.func.isRequired,
     setEditing: PropTypes.func.isRequired,
     archivedOverview: PropTypes.bool.isRequired,
-    setShowArchive: PropTypes.func.isRequired
 };
 
 export default EditModeFooter;

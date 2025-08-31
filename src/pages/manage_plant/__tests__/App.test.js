@@ -1,20 +1,25 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
-import { fireEvent, waitFor, within } from '@testing-library/react';
+import { within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockGroupOptions } from './mockContext';
+
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
 
 describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
@@ -27,9 +32,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={mockContext} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 
@@ -45,6 +52,7 @@ describe('App', () => {
 
         // Open edit modal, confirm fetched species options
         await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(global.fetch).toHaveBeenCalledWith('/get_plant_species_options');
 
         // Mock fetch function to return expected response
@@ -83,6 +91,7 @@ describe('App', () => {
 
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Get fields with length limits + edit button
         const modal = app.getByText("Edit Details").closest(".modal-box");
@@ -216,7 +225,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
+        expect(globalMockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 
     it('sends correct payload when "Remove from group" clicked', async () => {
@@ -243,34 +252,6 @@ describe('App', () => {
         });
     });
 
-    it('sends the correct payload when "Add to group" modal submitted', async () => {
-        // Click remove from group button (re-renders with add to group option)
-        await user.click(app.getByTitle(/Remove plant from group/));
-
-        // Mock fetch to return group options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockGroupOptions })
-        }));
-
-        // Click "Add to group" button in details dropdown
-        await user.click(app.getByTitle(/Add plant to group/));
-
-        // Simulate user clicking group option (nextSibling targets transparent
-        // absolute-positioned div with click listener that covers group card)
-        await user.click(app.getByLabelText('Go to Test group page').nextSibling);
-
-        // Confirm correct data posted to /add_plant_to_group
-        expect(global.fetch).toHaveBeenCalledWith('/add_plant_to_group', {
-            method: 'POST',
-            body: JSON.stringify({
-                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-            }),
-            headers: postHeaders
-        });
-    });
-
     it('sends correct payload when RepotModal is submitted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -285,6 +266,7 @@ describe('App', () => {
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Select 8 inch pot
         await user.click(app.getByTitle('8 inch pot'));
@@ -318,6 +300,7 @@ describe('App', () => {
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click custom pot size option, enter "5"
         await user.click(app.getByPlaceholderText('custom'));
@@ -339,22 +322,22 @@ describe('App', () => {
     });
 
     it('does not make /repot_plant request if custom pot size is blank', async () => {
-        // Confirm error text does not exist
-        expect(app.queryByText(
-            'Please enter a custom pot size or select a different option'
-        )).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click custom pot size option, click submit without entering value
         await user.click(app.getByPlaceholderText('custom'));
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm error modal appeared with instructions
-        expect(app.getByText(
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Please enter a custom pot size or select a different option'
-        )).not.toBeNull();
+        );
 
         // Confirm fetch was NOT called
         expect(global.fetch).not.toHaveBeenCalled();
@@ -372,6 +355,7 @@ describe('App', () => {
 
         // Click "Divide plant" dropdown option (open modal)
         await user.click(app.getByText(/Divide plant/));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button
         await user.click(app.getByRole('button', {name: 'OK'}));
@@ -429,56 +413,6 @@ describe('App', () => {
         expect(within(calendar).getByRole('button', {name: 'March 2024'})).not.toBeNull();
     });
 
-    it('fetches new state when user navigates to page with back button', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                plant_details: mockContext.plant_details,
-                events: mockContext.events,
-                notes: mockContext.notes,
-                photos: mockContext.photos,
-                default_photo: mockContext.default_photo,
-                division_events: {},
-                divided_from: false
-            })
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        await act(() => window.dispatchEvent(pageshowEvent));
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith(
-                '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-            );
-        });
-    });
-
-    it('reloads page if unable to fetch new state when user presses back button', async () => {
-        // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({Error: 'Plant not found'})
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        await act(() => window.dispatchEvent(pageshowEvent));
-        await act(async () => await jest.advanceTimersByTimeAsync(0));
-
-        // Confirm fetched correct endpoint
-        expect(global.fetch).toHaveBeenCalledWith(
-            '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        );
-
-        // Confirm page was reloaded
-        expect(window.location.reload).toHaveBeenCalled();
-    });
-
     it('does not fetch new state when other pageshow events are triggered', () => {
         // Simulate pageshow event with persisted == false (ie initial load)
         const pageshowEvent = new Event('pageshow');
@@ -511,7 +445,6 @@ describe('App', () => {
 
         // Click button, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Change QR code'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         await waitFor(() => {
             expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
         });
@@ -523,10 +456,29 @@ describe('App', () => {
 
         // Click button, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add photos'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         await waitFor(() => {
             expect(app.queryByTestId('photo-input')).not.toBeNull();
         });
+    });
+
+    it('opens group modal when details dropdown button clicked', async () => {
+        // Confirm modal is not rendered
+        expect(app.queryByText('Add plant to group')).toBeNull();
+
+        // Click remove from group button (re-renders with add to group option)
+        await user.click(app.getByTitle(/Remove plant from group/));
+
+        // Mock fetch to return group options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockGroupOptions })
+        }));
+
+        // Click "Add to group" button in details dropdown
+        await user.click(app.getByTitle(/Add plant to group/));
+
+        // Confirm modal is rendered
+        expect(app.getByText('Add plant to group')).toBeInTheDocument();
     });
 
     it('removes event markers from timeline when events are deleted', async () => {
@@ -579,7 +531,6 @@ describe('App', () => {
 
         // Click dropdown option, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add note'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         expect(app.getByText('0 / 500')).not.toBeNull();
     });
 
@@ -731,6 +682,7 @@ describe('App', () => {
 
         // Simulate user opening photo modal, selecting 2 files, and submitting
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),

@@ -1,10 +1,8 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
-import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContextNoEvents } from './mockContext';
 import { act } from '@testing-library/react';
 
@@ -12,9 +10,8 @@ describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContextNoEvents);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
@@ -27,9 +24,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={mockContextNoEvents} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 
@@ -109,6 +108,7 @@ describe('App', () => {
 
         // Open Repot Modal
         await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click Repot Modal submit button
         await user.click(app.getByRole('button', {name: 'Repot'}));
@@ -129,14 +129,14 @@ describe('App', () => {
                 failed: [],
                 urls: [
                     {
-                        timestamp: "2024-03-21T10:52:03",
+                        timestamp: "2024-03-21T10:52:03.123+00:00",
                         image: "/media/images/photo1.jpg",
                         thumbnail: "/media/images/photo1_thumb.webp",
                         preview: "/media/images/photo1_preview.webp",
                         key: 1
                     },
                     {
-                        timestamp: "2024-03-22T10:52:04",
+                        timestamp: "2024-03-22T10:52:04.123+00:00",
                         image: "/media/images/photo2.jpg",
                         thumbnail: "/media/images/photo2_thumb.webp",
                         preview: "/media/images/photo2_preview.webp",
@@ -152,6 +152,7 @@ describe('App', () => {
 
         // Open photo modal
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Simulate user clicking input and selecting mock files
         const fileInput = app.getByTestId('photo-input');
@@ -212,6 +213,7 @@ describe('App', () => {
         // Open Note Modal, enter text (doesn't matter, will render text from
         // mock API response above), save first note
         await user.click(app.getByText('Add note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.type(app.getByRole('textbox'), '.');
         await user.click(app.getByText('Save'));
 
@@ -230,6 +232,7 @@ describe('App', () => {
 
         // Save second note (created later, but earlier timestamp)
         await user.click(app.getByText('Add note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.type(app.getByRole('textbox'), '.');
         await user.click(app.getByText('Save'));
 
@@ -288,57 +291,14 @@ describe('App', () => {
         expect(eventMarkers.children[1].textContent).toContain('Fertilized');
         expect(eventMarkers.children[2].textContent).toContain('Pruned');
     });
-
-    // Original bug: When RepotModal was submitted the pre-filled pot size
-    // field in EditModal form did not update. If the user then opened the
-    // EditModal to change description and did not noticed the outdated pot
-    // size value they could easily reset back to the initial pot size.
-    it('updates pot size in EditModal form when plant is repotted', async () => {
-        // Mock /get_plant_species_options response (requested when modal opens)
-        mockPlantSpeciesOptionsResponse();
-
-        // Open edit modal
-        await user.click(app.getByRole('button', {name: 'Edit'}));
-
-        // Confirm pot size field defaults to '4'
-        expect(app.getByLabelText('Pot size').value).toBe('4');
-
-        // Mock fetch to return /repot_plant response first, then
-        // /get_plant_species_options response (will be requested automatically
-        // when PlantDetailsForm remounts in response to repot state change)
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "repot",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                pot_size: 6
-            })
-        }).mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve({
-                options: [
-                    "Parlor Palm",
-                    "Spider Plant",
-                    "Calathea"
-                ]
-            })
-        });
-
-        // Simulate user opening repot modal and clicking submit without
-        // changing pot size (defaults to 6, next size up)
-        await user.click(app.getAllByText(/Repot plant/)[0]);
-        await user.click(app.getByRole('button', {name: 'Repot'}));
-
-        // Confirm pot size field in EditModal changed to '6'
-        expect(app.getByLabelText('Pot size').value).toBe('6');
-    });
-
     // Original bug: timelineSlice.eventDeleted assumed there was only 1 event
     // of each type per day. If there were multiple water events at different
     // times on the same day and only 1 was deleted eventDeleted would remove
     // the event type from dateKey, resulting in the calendar dot disappearing
     // and the timeline EventMarker being removed.
+    //
+    // NOTE this is no longer reproducible in prod (delete mode will select all
+    // events within same day), but worth keeping for timelineSlice coverage.
     it('does not remove event from timeline if another event with same type exists', async () => {
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
@@ -530,6 +490,7 @@ describe('App', () => {
 
         // Simulate user opening photo modal, selecting 2 files, and submitting
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
@@ -596,6 +557,7 @@ describe('App', () => {
 
         // Simulate user opening photo modal, selecting 2 files, and submitting
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['photo1'], 'photo1.jpg', { type: 'image/jpeg' }),
@@ -659,6 +621,7 @@ describe('App', () => {
 
         // Simulate user opening photo modal, selecting 1 photo, and submitting
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
@@ -762,201 +725,5 @@ describe('App', () => {
 
         // Confirm Delete mode dropdown option was removed
         expect(app.queryByText('Delete mode')).toBeNull();
-    });
-
-    // Original bug: If plant had no events (delete mode option not shown) and
-    // an event was added before user navigated back to page with back button
-    // (requests new state) the new event would appear in timeline, but the
-    // delete mode option would not appear.
-    it('adds/removes delete mode option after navigating to page with back button', async () => {
-        // Confirm Delete mode dropdown option was not rendered
-        expect(app.queryByText('Delete mode')).toBeNull();
-
-        // Mock fetch function to return /get_plant_state response with water event
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                plant_details: mockContextNoEvents.plant_details,
-                events: {
-                    water: [
-                        "2024-03-14T20:46:03+00:00"
-                    ],
-                    fertilize: [],
-                    prune: [],
-                    repot: [],
-                },
-                notes: [],
-                photos: [],
-                default_photo: mockContextNoEvents.default_photo,
-                division_events: {},
-                divided_from: false
-            })
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-        // Confirm /get_plant_state was called
-        expect(global.fetch).toHaveBeenCalledWith(
-            '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        );
-
-        // Confirm Delete mode dropdown option appeared
-        await waitFor(() => {
-            expect(app.queryByText('Delete mode')).not.toBeNull();
-        });
-
-        // Mock fetch function to return /get_plant_state response with no events
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                plant_details: mockContextNoEvents.plant_details,
-                events: mockContextNoEvents.events,
-                notes: [],
-                photos: [],
-                default_photo: mockContextNoEvents.default_photo,
-                division_events: {},
-                divided_from: false
-            })
-        }));
-
-        // Simulate user navigating to page with back button again
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm Delete mode dropdown option disappeared
-        await waitFor(() => {
-            expect(app.queryByText('Delete mode')).toBeNull();
-        });
-    });
-
-    // Original bug: If plant had no photos (gallery and delete mode options
-    // not shown) and a photowas added before user navigated back to page with
-    // back button (requests new state) the new photo would appear in timeline,
-    // but the gallery and delete mode options would not appear.
-    it('adds/removes delete mode option after navigating to page with back button', async () => {
-        // Confirm Gallery and Delete mode dropdown options were not rendered
-        expect(app.queryByText('Gallery')).toBeNull();
-        expect(app.queryByText('Delete mode')).toBeNull();
-
-        // Mock fetch function to return /get_plant_state response with photo
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                plant_details: mockContextNoEvents.plant_details,
-                events: mockContextNoEvents.events,
-                notes: [],
-                photos: [
-                    {
-                        timestamp: '2024-03-21T10:52:03+00:00',
-                        image: '/media/images/photo1.jpg',
-                        thumbnail: '/media/thumbnails/photo1_thumb.webp',
-                        preview: '/media/previews/photo1_preview.webp',
-                        key: 1
-                    }
-                ],
-                default_photo: {
-                    set: false,
-                    timestamp: '2024-03-21T10:52:03+00:00',
-                    image: '/media/images/photo1.jpg',
-                    thumbnail: '/media/thumbnails/photo1_thumb.webp',
-                    preview: '/media/previews/photo1_preview.webp',
-                    key: 1
-                },
-                division_events: {},
-                divided_from: false
-            })
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-        // Confirm /get_plant_state was called
-        expect(global.fetch).toHaveBeenCalledWith(
-            '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        );
-
-        // Confirm Gallery and Delete mode dropdown options appeared
-        await waitFor(() => {
-            expect(app.queryByText('Gallery')).not.toBeNull();
-            expect(app.queryByText('Delete mode')).not.toBeNull();
-        });
-
-        // Mock fetch function to return /get_plant_state response with no photos
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                plant_details: mockContextNoEvents.plant_details,
-                events: mockContextNoEvents.events,
-                notes: [],
-                photos: [],
-                default_photo: mockContextNoEvents.default_photo,
-                division_events: {},
-                divided_from: false
-            })
-        }));
-
-        // Simulate user navigating to page with back button again
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm Gallery and Delete mode dropdown options disappeared
-        await waitFor(() => {
-            expect(app.queryByText('Gallery')).toBeNull();
-            expect(app.queryByText('Delete mode')).toBeNull();
-        });
-    });
-
-    // Original bug: The default photo state was not updated when user navigated
-    // back to page with back button (requests new state). If the default photo
-    // was changed the photo shown in details dropdown would be outdated.
-    it('updates default photo after navigating to page with back button', async () => {
-        // Confirm no default photo in details dropdown (plant has no photos)
-        expect(app.queryByTestId('defaultPhotoThumbnail')).toBeNull();
-
-        // Mock fetch function to return /get_plant_state response with photo + default photo
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                plant_details: mockContextNoEvents.plant_details,
-                events: mockContextNoEvents.events,
-                notes: [],
-                photos: [
-                    {
-                        timestamp: '2024-03-21T10:52:03+00:00',
-                        image: '/media/images/photo1.jpg',
-                        thumbnail: '/media/thumbnails/photo1_thumb.webp',
-                        preview: '/media/previews/photo1_preview.webp',
-                        key: 1
-                    }
-                ],
-                default_photo: {
-                    set: false,
-                    timestamp: '2024-03-21T10:52:03+00:00',
-                    image: '/media/images/photo1.jpg',
-                    thumbnail: '/media/thumbnails/photo1_thumb.webp',
-                    preview: '/media/previews/photo1_preview.webp',
-                    key: 1
-                },
-                division_events: {},
-                divided_from: false
-            })
-        }));
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-        // Confirm /get_plant_state was called
-        expect(global.fetch).toHaveBeenCalledWith(
-            '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        );
-
-        // Confirm efault photo appeared in details dropdown
-        await waitFor(() => {
-            expect(app.queryByTestId('defaultPhotoThumbnail')).not.toBeNull();
-        });
     });
 });

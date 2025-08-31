@@ -1,5 +1,6 @@
-import React, { useMemo, Suspense, lazy } from 'react';
-import { sendPostRequest } from 'src/util';
+import React, { useMemo, Suspense, useCallback, lazy } from 'react';
+import { Link } from 'react-router-dom';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import DetailsCard from 'src/components/DetailsCard';
@@ -7,15 +8,14 @@ import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
 import EventButtons from './EventButtons';
 import EventCalendar from './EventCalendar';
-import { openGroupModal } from './GroupModal';
-import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
+import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { useBackButton } from 'src/useBackButton';
+import { setChangeQrModalHandle } from './modals';
 import Timeline from './Timeline';
 import { FaPlus, FaBan, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
-import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
+import { plantRemovedFromGroup } from './plantSlice';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
 import DeleteModeFooter from './DeleteModeFooter';
 import {
@@ -27,7 +27,7 @@ import clsx from 'clsx';
 
 // Dynamic import (don't request webpack bundle until gallery opened)
 const Gallery = lazy(
-    () => import(/* webpackChunkName: "lightbox" */ './Gallery')
+    () => import(/* webpackChunkName: "manage_plant_gallery" */ './Gallery')
 );
 
 function Layout() {
@@ -45,9 +45,24 @@ function Layout() {
     // Used to update redux store
     const dispatch = useDispatch();
 
-    // Update redux store with new state fetched from backend if user navigates
-    // to page by pressing back button (contents may be outdated)
-    useBackButton(() => dispatch(backButtonPressed()));
+    const editModal = useModal();
+    const openEditModal = useCallback(() => {
+        editModal.open();
+        document.activeElement.blur();
+    }, [editModal]);
+
+    const changeQrModal = useModal();
+    const openChangeQrModal = useCallback(() => {
+        changeQrModal.open({uuid: plantDetails.uuid});
+        document.activeElement.blur();
+    }, [changeQrModal]);
+    setChangeQrModalHandle(changeQrModal);
+
+    const groupModal = useModal();
+    const openGroupModal = useCallback(() => {
+        groupModal.open();
+        document.activeElement.blur();
+    }, [groupModal]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -55,9 +70,9 @@ function Layout() {
             {!plantDetails.archived && (
                 <>
                     {plantDetails.group &&
-                        <li><a href={`/manage/${plantDetails.group.uuid}`}>
+                        <li><Link to={`/manage/${plantDetails.group.uuid}`} discover="none">
                             Go to group
-                        </a></li>
+                        </Link></li>
                     }
                     <li><button onClick={openChangeQrModal}>
                         Change QR code
@@ -101,7 +116,7 @@ function Layout() {
         };
 
         return (
-            <DetailsCard>
+            <DetailsCard openEditModal={openEditModal}>
                 <div className="flex flex-col">
                     {defaultPhoto.thumbnail && (
                         <>
@@ -130,15 +145,16 @@ function Layout() {
                     {/* Group details if in group, add group button if not */}
                     <div className="flex flex-col text-center items-center">
                         {plantDetails.group && (
-                            <a
+                            <Link
                                 className={clsx(
                                     "font-bold text-lg line-clamp-1 rounded-lg",
                                     "focus:outline-2 outline-offset-2"
                                 )}
-                                href={`/manage/${plantDetails.group.uuid}`}
+                                to={`/manage/${plantDetails.group.uuid}`}
+                                discover="none"
                             >
                                 { plantDetails.group.name }
-                            </a>
+                            </Link>
                         )}
                         <div className="flex gap-2 mx-auto mt-2">
                             {plantDetails.group ? (
@@ -178,7 +194,10 @@ function Layout() {
     }, [plantDetails, defaultPhoto.thumbnail]);
 
     return (
-        <div className="container flex flex-col items-center mx-auto mb-28">
+        <div
+            className="container flex flex-col items-center mx-auto mb-28"
+            data-testid="manage-plant-layout"
+        >
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={plantDetails.display_name}
@@ -203,7 +222,28 @@ function Layout() {
                 <Timeline />
             </div>
 
-            <ChangeQrModal uuid={plantDetails.uuid} />
+            <LazyModal
+                ref={editModal.ref}
+                title="Edit Details"
+                ariaLabel="Edit plant details"
+                className="max-w-[25rem]"
+                load={() => import(/* webpackChunkName: "manage_plant_edit-modal" */ "./EditPlantModal")}
+            />
+
+            <LazyModal
+                ref={changeQrModal.ref}
+                title="Change QR Code"
+                ariaLabel="Change plant QR code"
+                load={() => import(/* webpackChunkName: "change-qr-modal" */ "src/components/ChangeQrModal")}
+            />
+
+            <LazyModal
+                ref={groupModal.ref}
+                title="Add plant to group"
+                ariaLabel="Add plant to group"
+                load={() => import(/* webpackChunkName: "manage_plant_group-modal" */ "./GroupModal")}
+            />
+
             {/* Don't render until user opens gallery */}
             {galleryOpen && (
                 <Suspense fallback={

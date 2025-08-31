@@ -1,40 +1,57 @@
-import React, { useState, useRef } from 'react';
-import Modal from 'src/components/Modal';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import LazyModal, { useModal } from 'src/components/LazyModal';
 
 export let openErrorModal;
 
+const ErrorModalBody = ({ close, error }) => {
+    return (
+        <>
+            <div
+                className={clsx(
+                    'flex-1 min-h-36 max-w-full mx-auto overflow-y-auto',
+                    'whitespace-pre-line break-words'
+                )}
+                data-testid="error-modal-body"
+            >
+                {error}
+            </div>
+            <div className="modal-action">
+                <button className="btn btn-accent" onClick={close}>
+                    OK
+                </button>
+            </div>
+        </>
+    );
+};
+
+ErrorModalBody.propTypes = {
+    close: PropTypes.func.isRequired,
+    error: PropTypes.string.isRequired
+};
+
 export const ErrorModal = () => {
-    const [message, setMessage] = useState('');
-    const modalRef = useRef();
+    const errorModal = useModal();
 
     // Takes error message to show inside modal
     openErrorModal = (error) => {
-        // Stringify if received raw JSON response
-        if (typeof(error) === 'object') {
-            setMessage(JSON.stringify(error));
-        } else {
-            setMessage(error);
+        // Skip mock error returned by sendPostRequest after login redirect
+        if (error === 'spa-redirect' || error === JSON.stringify('spa-redirect')) {
+            return;
         }
-        modalRef.current.open();
+
+        // Stringify if received raw JSON response
+        errorModal.open({
+            error: typeof(error) === 'object' ? JSON.stringify(error) : error
+        });
     };
 
     return (
-        <Modal ref={modalRef}>
-            <h3 className="font-bold text-lg mb-6">Error</h3>
-            <div className={clsx(
-                'min-h-36 flex flex-col justify-center mx-auto',
-                'whitespace-pre-line'
-            )}>
-                {message}
-            </div>
-            <div className="modal-action">
-                <form method="dialog">
-                    <button className="btn btn-accent">
-                        OK
-                    </button>
-                </form>
-            </div>
-        </Modal>
+        <LazyModal
+            ref={errorModal.ref}
+            title="Error"
+            ariaLabel="Error modal"
+            load={() => Promise.resolve({ default: ErrorModalBody })}
+        />
     );
 };

@@ -1,32 +1,48 @@
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext, mockChangingPlantQrCode } from './mockContext';
+
+// Mock useNavigate to return a mock (confirm redirected to correct page)
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    };
+});
+
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
 
 describe('Register page while changing QR code in progress', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (including changing_qr_code)
-        bulkCreateMockContext(mockContext);
-        bulkCreateMockContext(mockChangingPlantQrCode);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+        mockNavigate.mockReset();
+        globalMockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={{ ...mockContext, ...mockChangingPlantQrCode }} />
+                <ErrorModal />
+            </>
         );
     });
 
@@ -79,6 +95,9 @@ describe('Register page while changing QR code in progress', () => {
             })
         }));
 
+        // Mock window.location to simulate register new QR code page
+        mockCurrentURL('https://plants.lan/manage/07919189-514d-4ec1-a967-8af553dfa7e8');
+
         // Click confirm button
         await user.click(app.getByTitle('Change QR code'));
 
@@ -92,8 +111,8 @@ describe('Register page while changing QR code in progress', () => {
             headers: postHeaders
         });
 
-        // Confirm window.location.reload was called
-        expect(window.location.reload).toHaveBeenCalled();
+        // Confirm reloaded (switch to manage plant page)
+        expect(mockNavigate).toHaveBeenCalledWith('/manage/07919189-514d-4ec1-a967-8af553dfa7e8');
     });
 
     it('shows error modal if error received after confirm button clicked', async() => {
@@ -105,14 +124,17 @@ describe('Register page while changing QR code in progress', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to change QR code/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click confirm button
         await user.click(app.getByTitle('Change QR code'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to change QR code/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to change QR code'
+        );
     });
 
     // Note: this response can only be received if SINGLE_USER_MODE is disabled
@@ -130,6 +152,6 @@ describe('Register page while changing QR code in progress', () => {
         await user.click(app.getByTitle('Change QR code'));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
+        expect(globalMockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });

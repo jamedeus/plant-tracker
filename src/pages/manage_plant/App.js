@@ -1,26 +1,40 @@
 import Layout from './Layout';
 import { ReduxProvider } from './store';
 import Settings from './Settings';
-import NoteModal from './NoteModal';
-import GroupModal from './GroupModal';
-import PhotoModal from './PhotoModal';
-import RepotModal from './RepotModal';
-import DivisionModal from './DivisionModal';
-import EditPlantModal from './EditPlantModal';
+import 'src/css/index.css';
+import LazyModal, { useModal } from 'src/components/LazyModal';
+import { setNoteModalHandle, setRepotModalHandle } from './modals';
+import initialStatePropTypes from './initialStatePropTypes';
 
-const App = () => {
+const App = ({ initialState }) => {
+    const noteModal = useModal();
+    setNoteModalHandle(noteModal);
+
+    const repotModal = useModal();
+    setRepotModalHandle(repotModal);
+
     return (
-        <ReduxProvider>
+        <ReduxProvider initialState={initialState}>
             <Layout />
             <Settings />
-            <NoteModal />
-            <GroupModal />
-            <PhotoModal />
-            <RepotModal />
-            <DivisionModal />
-            <EditPlantModal />
+            <LazyModal
+                ref={noteModal.ref}
+                ariaLabel="Add/edit note"
+                load={() => import(/* webpackChunkName: "manage_plant_note-modal" */ "./NoteModal")}
+            />
+
+            <LazyModal
+                ref={repotModal.ref}
+                title="Repot Plant"
+                ariaLabel="Repot plant"
+                load={() => import(/* webpackChunkName: "manage_plant_repot-modal" */ "./RepotModal")}
+            />
         </ReduxProvider>
     );
+};
+
+App.propTypes = {
+    initialState: initialStatePropTypes.isRequired
 };
 
 export default App;

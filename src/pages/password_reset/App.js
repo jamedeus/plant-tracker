@@ -1,11 +1,14 @@
 import React, { useState, useMemo, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import Navbar from 'src/components/Navbar';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
+import 'src/css/index.css';
 import 'src/css/checkmark.css';
 
 function App() {
+    const navigate = useNavigate();
     const formRef = useRef(null);
     const [newPassword1, setNewPassword1] = useState('');
     const [newPassword2, setNewPassword2] = useState('');
@@ -38,7 +41,7 @@ function App() {
         // Show checkmark and redirect to profile page if successful
         if (response.ok) {
             setSubmitStatus('success');
-            setTimeout(() => { window.location.href = '/accounts/profile/'; }, 1500);
+            setTimeout(() => { navigate('/accounts/profile/'); }, 1500);
         // Show error and highlight fields red if unsuccessful
         } else {
             const errors = await response.json();
@@ -59,15 +62,18 @@ function App() {
 
     const DropdownMenuOptions = useMemo(() => (
         <>
-            <li><a href='/'>
+            <li><Link to='/' discover="none">
                 Overview
-            </a></li>
+            </Link></li>
             <ToggleThemeOption />
         </>
     ), [ToggleThemeOption]);
 
     return (
-        <div className="container flex flex-col full-screen mx-auto items-center">
+        <div
+            className="container flex flex-col full-screen mx-auto items-center"
+            data-testid="password-reset-page"
+        >
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title="Reset Password"

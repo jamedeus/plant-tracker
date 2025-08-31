@@ -1,22 +1,18 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { parseDomContext } from 'src/util';
+import { Link } from 'react-router-dom';
 import ToggleThemeOption from './ToggleThemeOption';
 
 const NavbarDropdownOptions = ({ children }) => {
-    const userAccountsEnabled = useMemo(() => (
-        parseDomContext("user_accounts_enabled")
-    ), []);
-
     return (
         <>
-            <li><a href='/'>
+            <li><Link to='/' discover="none">
                 Overview
-            </a></li>
-            {userAccountsEnabled && (
-                <li><a href="/accounts/profile/">
+            </Link></li>
+            {globalThis.USER_ACCOUNTS_ENABLED && (
+                <li><Link to="/accounts/profile/" discover="none">
                     User profile
-                </a></li>
+                </Link></li>
             )}
             {children}
             <ToggleThemeOption />
@@ -25,7 +21,7 @@ const NavbarDropdownOptions = ({ children }) => {
 };
 
 NavbarDropdownOptions.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.node
 };
 
 export default NavbarDropdownOptions;

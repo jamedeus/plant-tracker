@@ -5,11 +5,10 @@ services:
     working_dir: /mnt/backend
     entrypoint: []
     command: >
-      sh -c "pip install --upgrade pip &&
-             pip install pipenv &&
-             pipenv requirements --dev > /mnt/requirements-dev.txt &&
-             pip install -r /mnt/requirements-dev.txt &&
-             python manage.py migrate &&
+      sh -c "pip install --upgrade pip pipenv
+             pipenv requirements --dev > /tmp/requirements.txt
+             pip install -r /tmp/requirements.txt
+             python manage.py migrate
              python -m celery -A backend worker & \
              python manage.py runserver 0.0.0.0:8456"
     volumes:
@@ -32,6 +31,9 @@ services:
       - SINGLE_USER_MODE=True
       - DATABASE_HOST=plant-tracker-db
       - DATABASE_PASSWORD=dbpassword
+      - SECRET_KEY=secretkey
+      # Fix print statements not appearing on console
+      - PYTHONUNBUFFERED=1
     depends_on:
       plant-tracker-db:
         condition: service_healthy
@@ -78,9 +80,22 @@ services:
       context: .
       dockerfile_inline: |
         FROM jwilder/nginx-proxy:1.6.4
+
         # Fix reverse proxy blocking photo uploads
         RUN mkdir -p /etc/nginx/vhost.d/
         RUN printf 'client_max_body_size 250m;\n' > /etc/nginx/vhost.d/dev.lan
+
+        # Gzip static files to better simulate production performance
+        RUN mkdir -p /etc/nginx/conf.d && printf 'gzip               on;\n\
+        gzip_vary          on;\n\
+        gzip_proxied       any;\n\
+        gzip_comp_level    6;\n\
+        gzip_min_length    512;\n\
+        gzip_types         text/plain\n\
+                           text/css\n\
+                           text/javascript\n\
+                           application/json\n\
+                           application/javascript;\n' > /etc/nginx/conf.d/gzip.conf
     container_name: proxy-dev
     ports:
       - "80:80"

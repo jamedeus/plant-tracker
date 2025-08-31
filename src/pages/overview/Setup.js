@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import { openPrintModal } from './PrintModal';
+import { Link } from 'react-router-dom';
 
 // Rendered when both state objects are empty, shows setup instructions
-const Setup = () => {
+const Setup = ({ openPrintModal }) => {
     return (
         <div className="flex flex-col text-center my-auto px-8">
             <p className="text-2xl">No plants found!</p>
@@ -20,11 +21,19 @@ const Setup = () => {
             </button>
             <p className="text-2xl mt-8 mb-2">No printer?</p>
             <span className="mb-4">You can add a QR code later.</span>
-            <a className="btn btn-accent text-lg" href={`/manage/${uuidv4()}`}>
+            <Link
+                className="btn btn-accent text-lg"
+                to={`/manage/${uuidv4()}`}
+                discover="none"
+            >
                 Register plant
-            </a>
+            </Link>
         </div>
     );
+};
+
+Setup.propTypes = {
+    openPrintModal: PropTypes.func.isRequired,
 };
 
 export default Setup;

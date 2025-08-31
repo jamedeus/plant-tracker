@@ -1,31 +1,27 @@
 import { fireEvent } from '@testing-library/react';
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext } from './mockContext';
+
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
 
 describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (flip all archived bools to true)
-        createMockContext('plants', Object.fromEntries(
-            Object.entries(mockContext.plants).map(
-                ([uuid, plant]) => [ uuid, { ...plant, archived: true } ]
-            )
-        ));
-        createMockContext('groups', Object.fromEntries(
-            Object.entries(mockContext.groups).map(
-                ([uuid, group]) => [ uuid, { ...group, archived: true } ]
-            )
-        ));
-        createMockContext('show_archive', mockContext.show_archive);
-        createMockContext('user_accounts_enabled', true);
+        // Minimal DOM context needed
+        globalThis.USER_ACCOUNTS_ENABLED = true;
 
         // Mock window.location to simulate archived overview
-        mockCurrentURL('https://plants.lan/archived', '/archived');
+        mockCurrentURL('https://plants.lan/archived');
 
         // Mock width to force mobile layout (renders title nav dropdown)
         window.innerWidth = 750;
@@ -40,9 +36,23 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={{
+                    ...mockContext,
+                    plants: Object.fromEntries(
+                        Object.entries(mockContext.plants).map(
+                            ([uuid, plant]) => [ uuid, { ...plant, archived: true } ]
+                        )
+                    ),
+                    groups: Object.fromEntries(
+                        Object.entries(mockContext.groups).map(
+                            ([uuid, group]) => [ uuid, { ...group, archived: true } ]
+                        )
+                    ),
+                }} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 
@@ -206,7 +216,7 @@ describe('App', () => {
             json: () => Promise.resolve({
                 archived: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-fb15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
                     "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
                 ],
@@ -225,29 +235,59 @@ describe('App', () => {
         await user.click(app.getByText('Un-archive'));
 
         // Confirm redirected to overview
-        expect(window.location.href).toBe('/');
+        expect(globalMockNavigate).toHaveBeenCalledWith('/');
     });
 
-    // Regression test: When overview and archived overview were merged the
-    // useEffect containing handleBackButton was not modified, so the archived
-    // overview would request main overview state and turn into non-archived
-    // overview when the back button was pressed.
-    it('does NOT fetch new state when user navigates to archive with back button', async () => {
-        // Mock fetch function to return /get_overview_state response
+    it('redirects to overview when last plant/group is deleted', async () => {
+        // Mock fetch to simulate successfully deleting all groups
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                plants: mockContext.plants,
-                groups: mockContext.groups
+                deleted: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+                ],
+                failed: []
             })
         }));
 
-        // Simulate user navigating to overview page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
+        // Click groups column title, click both group checkboxes
+        await user.click(app.getByText('Groups (2)'));
+        await user.click(app.getByLabelText('Select Test group'));
+        await user.click(app.getByLabelText('Select Second Test group'));
 
-        // Confirm did NOT fetch new state
-        expect(global.fetch).not.toHaveBeenCalled();
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        const button = app.getByRole('button', { name: 'Delete' });
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
+        fireEvent.mouseUp(button);
+
+        // Confirm NOT redirected to overview (still have plants)
+        expect(globalMockNavigate).not.toHaveBeenCalled();
+
+        // Mock fetch to simulate successfully deleting all plants
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                deleted: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
+                ],
+                failed: []
+            })
+        }));
+
+        // Click plants column title, click both plant checkboxes
+        await user.click(app.getByText('Plants (2)'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select Second Test Plant'));
+
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
+        fireEvent.mouseUp(button);
+
+        // Confirm redirected to overview
+        expect(globalMockNavigate).toHaveBeenCalledWith('/');
     });
 });

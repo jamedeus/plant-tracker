@@ -1,9 +1,7 @@
-const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = (env, argv) => {
@@ -46,27 +44,19 @@ module.exports = (env, argv) => {
                     },
                     // Move libraries used by all pages to libs.js
                     libs: {
-                        test: /[\\/]node_modules[\\/](luxon|clsx|ua-parser-js)[\\/]/,
+                        test: /[\\/]node_modules[\\/](luxon|clsx)[\\/]/,
                         name: 'libs',
                         chunks: 'all',
                         enforce: true,
                     },
-                    // Extract CSS shared by 2 or more pages to separate shared.css
-                    sharedStyles: {
-                        type: 'css/mini-extract',
-                        name: 'shared',
-                        chunks: 'all',
-                        enforce: true,
-                        minChunks: 2,
-                        reuseExistingChunk: true,
-                    }
                 },
             }
         },
-        // Add entry for each directory in src/pages
-        entry: fs.readdirSync(path.resolve('src/pages')).reduce((o, page) => (
-            { ...o, [page]: `./src/pages/${page}/index.js`}
-        ), {}),
+        // Single entry for SPA shell
+        // Other pages are built as lazy load chunks (see src/bundles.js)
+        entry: {
+            spa: './src/index.js',
+        },
         output: {
             path: path.resolve('backend/plant_tracker/static/plant_tracker/'),
             filename: '[name].js',
@@ -80,10 +70,6 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new MiniCssExtractPlugin({ filename: '[name].css' }),
-            // Save manifest.json (maps page names to list of bundle dependencies)
-            new WebpackManifestPlugin({
-                generate(_, __, entrypoints) { return entrypoints; },
-            }),
             ...(env.analyze ? [new BundleAnalyzerPlugin()] : []),
         ],
         module: {

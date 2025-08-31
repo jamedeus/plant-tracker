@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { parseDomContext } from 'src/util';
-import { timestampToDateString } from 'src/timestampUtils';
+import { timestampToDateString } from 'src/utils/timestampUtils';
 import { plantSlice } from './plantSlice';
 import { timelineSlice } from './timelineSlice';
 import { settingsSlice } from './settingsSlice';
 import { interfaceSlice } from './interfaceSlice';
 import { loadUserSettings } from './Settings';
-import { useIsBreakpointActive } from 'src/useBreakpoint';
+import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
+import initialStatePropTypes from './initialStatePropTypes';
 
 // Takes events, notes, photos, dividedFrom, and divisionEvents context objects
 // from django backend, returns timelineDays state used by Timeline component
@@ -132,23 +132,22 @@ function createReduxStore(preloadedState) {
     });
 }
 
-export function ReduxProvider({ children }) {
+export function ReduxProvider({ children, initialState }) {
     // Get layout string used to look up default settings for current breakpoint
     const layout = useIsBreakpointActive("md") ? 'desktop' : 'mobile';
 
-    // Parses django context elements containing events, photos, and notes
+    // Parses SPA-provided context elements containing events, photos, and notes
     // Merges and returns values for all initialState keys in timelineSlice
     const init = () => {
-        // Parse django context objects
-        const plantDetails = parseDomContext("plant_details");
-        const eventsByType = parseDomContext("events");
-        const dividedFrom = parseDomContext("divided_from");
-        const divisionEvents = parseDomContext("division_events");
+        const plantDetails = initialState.plant_details;
+        const eventsByType = initialState.events;
+        const dividedFrom = initialState.divided_from;
+        const divisionEvents = initialState.division_events;
         const photos = sortPhotosChronologically(
-            Object.values(parseDomContext('photos') || {})
+            Object.values(initialState.photos || {})
         );
-        const notes = parseDomContext('notes');
-        const defaultPhoto = parseDomContext('default_photo');
+        const notes = initialState.notes;
+        const defaultPhoto = initialState.default_photo;
         const hasPhotos = photos.length > 0;
         const hasEvents = eventsByType.water.length > 0 ||
                           eventsByType.fertilize.length > 0 ||
@@ -201,10 +200,10 @@ export function ReduxProvider({ children }) {
         };
     };
 
-    // Create redux store with initial state built from django context items
+    // Create redux store
     const store = useMemo(() => createReduxStore(
         init()
-    ), []);
+    ), [initialState, layout]);
 
     return (
         <Provider store={store}>
@@ -214,5 +213,6 @@ export function ReduxProvider({ children }) {
 }
 
 ReduxProvider.propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
+    initialState: initialStatePropTypes.isRequired
 };

@@ -1,21 +1,22 @@
 import React, { useState, useMemo, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
-import { EMAIL_REGEX } from 'src/regex';
-import { parseDomContext, sendPostRequest } from 'src/util';
-import { timestampToRelative, timestampToReadable } from 'src/timestampUtils';
+import { EMAIL_REGEX } from 'src/utils/regex';
+import sendPostRequest from 'src/utils/sendPostRequest';
+import { timestampToRelative, timestampToReadable } from 'src/utils/timestampUtils';
 import Navbar from 'src/components/Navbar';
 import { showToast } from 'src/components/Toast';
 import QrScannerButton from 'src/components/QrScannerButton';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import { FaCheck } from 'react-icons/fa6';
+import userDetailsProptypes from 'src/types/userDetailsPropTypes';
+import 'src/css/index.css';
 
-const UserDetails = memo(function UserDetails() {
-    // Get initial details for form from django context
-    const [userDetails, setUserDetails] = useState(() => (
-        parseDomContext('user_details')
-    ));
+const UserDetails = memo(function UserDetails({ initialUserDetails }) {
+    // Initialize from SPA-provided state
+    const [userDetails, setUserDetails] = useState(initialUserDetails);
 
     const [firstName, setFirstName] = useState(userDetails.first_name);
     const [lastName, setLastName] = useState(userDetails.last_name);
@@ -146,6 +147,10 @@ const UserDetails = memo(function UserDetails() {
         </div>
     );
 });
+
+UserDetails.propTypes = {
+    initialUserDetails: userDetailsProptypes.isRequired
+};
 
 const ChangePassword = memo(function ChangePassword() {
     const formRef = useRef(null);
@@ -292,18 +297,21 @@ Section.propTypes = {
     children: PropTypes.node.isRequired
 };
 
-function App() {
+function App({ initialState }) {
     const DropdownMenuOptions = useMemo(() => (
         <>
-            <li><a href='/'>
+            <li><Link to='/' discover="none">
                 Overview
-            </a></li>
+            </Link></li>
             <ToggleThemeOption />
         </>
     ), [ToggleThemeOption]);
 
     return (
-        <div className="container flex flex-col full-screen mx-auto items-center">
+        <div
+            className="container flex flex-col full-screen mx-auto items-center"
+            data-testid="user-profile-page"
+        >
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title="User Profile"
@@ -311,7 +319,7 @@ function App() {
             />
             <div className="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16">
                 <Section title="Details" open={true}>
-                    <UserDetails />
+                    <UserDetails initialUserDetails={initialState.user_details} />
                 </Section>
                 <Section title="Change Password">
                     <ChangePassword />
@@ -328,3 +336,9 @@ function App() {
 }
 
 export default App;
+
+App.propTypes = {
+    initialState: PropTypes.shape({
+        user_details: userDetailsProptypes.isRequired
+    })
+};

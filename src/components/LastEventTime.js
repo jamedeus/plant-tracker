@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
-import { capitalize, pastTense } from 'src/util';
+import { capitalize, pastTense } from 'src/utils/stringUtils';
 import {
     timestampIsToday,
     timestampToReadable,
     timestampToRelative,
     timestampToRelativeCalendar,
     timestampIsLessThanOneMinuteOld
-} from 'src/timestampUtils';
+} from 'src/utils/timestampUtils';
+import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 // Return relative sec/min/hours if timestamp on current date in user timezone.
 // Return number of days since timestamp if not on current date.
@@ -36,7 +37,7 @@ const LastEventTime = ({ text, timestamp }) => {
 
 LastEventTime.propTypes = {
     text: PropTypes.string.isRequired,
-    timestamp: PropTypes.string
+    timestamp: isoTimestampTzPropType
 };
 
 export default LastEventTime;

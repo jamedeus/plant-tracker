@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import WaterIcon from 'src/components/WaterIcon';
 import PlantDetails from 'src/components/PlantDetails';
 import InstanceCard from 'src/components/InstanceCard';
-import { capitalize } from 'src/util';
+import { capitalize } from 'src/utils/stringUtils';
 import {
     timestampToRelativeCalendar,
     timestampToReadable
-} from 'src/timestampUtils';
+} from 'src/utils/timestampUtils';
+import uuidPropType from 'src/types/uuidPropType';
 
 const LastWateredSpan = ({ last_watered }) => {
     if (last_watered) {
@@ -61,7 +62,7 @@ const PlantCard = memo(function PlantCard({
 
 PlantCard.propTypes = {
     display_name: PropTypes.string.isRequired,
-    uuid: PropTypes.string.isRequired,
+    uuid: uuidPropType.isRequired,
     species: PropTypes.string,
     description: PropTypes.string,
     pot_size: PropTypes.number,

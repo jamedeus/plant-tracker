@@ -1,23 +1,19 @@
 # pylint: disable=missing-docstring,too-many-lines,R0801,global-statement
 
 import os
-import io
-import sys
-import json
 import base64
 from uuid import uuid4
 from datetime import datetime
 from unittest.mock import patch
 
 from django.conf import settings
+from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
-from django.test import TestCase, override_settings
-from django.test.client import RequestFactory, MULTIPART_CONTENT
+from django.test.client import MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
 
-from .views import render_react_app
 from .view_decorators import get_default_user
 from .models import (
     Group,
@@ -54,67 +50,6 @@ def tearDownModule():
     cleanup_isolated_media_root(OVERRIDE, MODULE_MEDIA_ROOT)
 
 
-class RenderReactAppTests(TestCase):
-    def setUp(self):
-        # Clear entire cache before each test
-        cache.clear()
-
-        # Create GET request for mock endpoint
-        factory = RequestFactory()
-        self.request = factory.get('/mock')
-
-        # Redirect stdout to variable
-        self.stdout = io.StringIO()
-        sys.stdout = self.stdout
-
-    def tearDown(self):
-        # Reset stdout redirect
-        sys.stdout = sys.__stdout__
-
-    @override_settings(DEBUG=False)
-    def test_render_react_app_without_logging_state(self):
-        # Call function with mock arguments and DEBUG set to False
-        response = render_react_app(
-            request=self.request,
-            title='Mock Title',
-            bundle='overview',
-            state={
-                'data': 'mock'
-            }
-        )
-
-        # Confirm returned status 200, confirm nothing was printed to stdout
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.stdout.getvalue(), '')
-
-    @override_settings(DEBUG=True)
-    def test_render_react_app_and_log_state(self):
-        # Call function with mock arguments and DEBUG set to True
-        response = render_react_app(
-            request=self.request,
-            title='Mock Title',
-            bundle='overview',
-            state={
-                'data': 'mock'
-            }
-        )
-
-        # Confirm returned status 200 and pretty printed context to stdout
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            self.stdout.getvalue(),
-            json.dumps({
-                'title': 'Mock Title',
-                'js_files': settings.PAGE_DEPENDENCIES['overview']['js'],
-                'css_files': settings.PAGE_DEPENDENCIES['overview']['css'],
-                'state': {
-                    'data': 'mock'
-                },
-                'user_accounts_enabled': False
-            }, indent=4) + '\n'
-        )
-
-
 class OverviewTests(TestCase):
     def setUp(self):
         # Clear entire cache before each test
@@ -123,28 +58,49 @@ class OverviewTests(TestCase):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
-    def test_overview_page_no_database_entries(self):
-        # Request overview, confirm uses correct JS bundle and title
+    def test_overview_page(self):
+        # Request overview, confirm returns SPA
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['overview']['js']
-        )
-        self.assertEqual(response.context['title'], 'Plant Overview')
 
-        # Confirm correct state object (no plants or groups in database)
+    def test_overview_page_cached_state(self):
+        # Cache arbitrary string as overview_state
+        cache.set(f'overview_state_{get_default_user().pk}', {'state': 'cached'})
+
+        # Mock build_overview_state to return a different string
+        # pylint: disable-next=line-too-long
+        with patch('plant_tracker.get_state_views.build_overview_state', return_value={'state': 'built'}):
+            # Request overview state, confirm state was loaded from cache
+            response = self.client.get('/get_overview_state')
+            self.assertEqual(response.json(), {'state': 'cached'})
+
+        # Delete cached overview__state
+        cache.delete(f'overview_state_{get_default_user().pk}')
+
+        # Mock build_overview_state to return a different string
+        # pylint: disable-next=line-too-long
+        with patch('plant_tracker.get_state_views.build_overview_state', return_value={'state': 'built'}):
+            # Request overview state, confirm was built by calling mocked
+            # function (failed to load from cache)
+            response = self.client.get('/get_overview_state')
+            self.assertEqual(response.json(), {'state': 'built'})
+
+    def test_get_overview_state_no_database_entries(self):
+        # Call get_overview_state endpoint, confirm returns overview state
+        response = self.client.get('/get_overview_state')
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.context['state'],
+            response.json(),
             {
                 'plants': {},
                 'groups': {},
-                'show_archive': False
+                'show_archive': False,
+                'title': 'Plant Overview'
             }
         )
 
-    def test_overview_page_with_database_entries(self):
+    def test_get_overview_state_with_database_entries(self):
         # Create test group and 2 test plants
         default_user = get_default_user()
         group = Group.objects.create(
@@ -180,101 +136,60 @@ class OverviewTests(TestCase):
         # Clear cache (plant post_save does not update number of plants in group)
         cache.clear()
 
-        # Request overview, confirm uses correct JS bundle and title
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['overview']['js']
-        )
-        self.assertEqual(response.context['title'], 'Plant Overview')
-
-        # Confirm state object has details of all non-archived plants and groups,
-        # does not contain archived plant and group
-        state = response.context['state']
-        self.assertEqual(
-            state['plants'],
-            {
-                str(plant1.uuid): {
-                    'uuid': str(plant1.uuid),
-                    'created': plant1.created.isoformat(),
-                    'archived': False,
-                    'name': 'Test plant',
-                    'display_name': 'Test plant',
-                    'species': None,
-                    'thumbnail': None,
-                    'description': None,
-                    'pot_size': None,
-                    'last_watered': None,
-                    'last_fertilized': None,
-                    'group': None
-                },
-                str(plant2.uuid): {
-                    'uuid': str(plant2.uuid),
-                    'created': plant2.created.isoformat(),
-                    'archived': False,
-                    'name': None,
-                    'display_name': 'Unnamed fittonia',
-                    'species': 'fittonia',
-                    'thumbnail': None,
-                    'description': None,
-                    'pot_size': None,
-                    'last_watered': None,
-                    'last_fertilized': None,
-                    'group': {
-                        'name': 'Unnamed group 1',
-                        'uuid': str(group.uuid)
-                    }
-                }
-            }
-        )
-        self.assertEqual(
-            state['groups'],
-            {
-                str(group.uuid): {
-                    'uuid': str(group.uuid),
-                    'created': group.created.isoformat(),
-                    'archived': False,
-                    'name': None,
-                    'display_name': 'Unnamed group 1',
-                    'location': None,
-                    'description': None,
-                    'plants': 1
-                }
-            }
-        )
-
-    def test_overview_page_cached_state(self):
-        # Cache arbitrary string as overview_state
-        cache.set(f'overview_state_{get_default_user().pk}', 'cached')
-
-        # Mock build_overview_state to return a different string
-        with patch('plant_tracker.build_states.build_overview_state', return_value='built'):
-            # Request overview page, confirm state was loaded from cache
-            response = self.client.get('/')
-            self.assertEqual(response.context['state'], 'cached')
-
-        # Delete cached overview__state
-        cache.delete(f'overview_state_{get_default_user().pk}')
-
-        # Mock build_overview_state to return a different string
-        with patch('plant_tracker.build_states.build_overview_state', return_value='built'):
-            # Request overview page, confirm was built by calling mocked
-            # function (failed to load from cache)
-            response = self.client.get('/')
-            self.assertEqual(response.context['state'], 'built')
-
-    def test_get_overview_state(self):
-        # Call get_overview_state endpoint, confirm returns overview state
+        # Request overview state, confirm contains details of all non-archived
+        # plants and groups, does not contain archived plant and group
         response = self.client.get('/get_overview_state')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
-                'plants': {},
-                'groups': {},
-                'show_archive': False
+                'plants': {
+                    str(plant1.uuid): {
+                        'uuid': str(plant1.uuid),
+                        'created': plant1.created.isoformat(),
+                        'archived': False,
+                        'name': 'Test plant',
+                        'display_name': 'Test plant',
+                        'species': None,
+                        'thumbnail': None,
+                        'description': None,
+                        'pot_size': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'group': None
+                    },
+                    str(plant2.uuid): {
+                        'uuid': str(plant2.uuid),
+                        'created': plant2.created.isoformat(),
+                        'archived': False,
+                        'name': None,
+                        'display_name': 'Unnamed fittonia',
+                        'species': 'fittonia',
+                        'thumbnail': None,
+                        'description': None,
+                        'pot_size': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'group': {
+                            'name': 'Unnamed group 1',
+                            'uuid': str(group.uuid)
+                        }
+                    }
+                },
+                'groups': {
+                    str(group.uuid): {
+                        'uuid': str(group.uuid),
+                        'created': group.created.isoformat(),
+                        'archived': False,
+                        'name': None,
+                        'display_name': 'Unnamed group 1',
+                        'location': None,
+                        'description': None,
+                        'plants': 1
+                    }
+                },
+                'show_archive': True,
+                'title': 'Plant Overview'
             }
         )
 
@@ -450,11 +365,31 @@ class ArchivedOverviewTests(TestCase):
         # Request archived overview when no archived plants or groups exist
         response = self.client.get('/archived')
 
+        # Request archive overview, confirm uses correct template and title
+        # (get_archived_overview_state response will redirect to permission denied)
+        response = self.client.get('/archived')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+
+    def test_archived_overview_page_with_database_entries(self):
+        # Create test group (archived)
+        default_user = get_default_user()
+        Group.objects.create(uuid=uuid4(), user=default_user, archived=True)
+
+        # Request archive overview, confirm uses correct template and title
+        response = self.client.get('/archived')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+
+
+    def test_get_archived_overview_state_no_database_entries(self):
+        # Request archived overview state when no archived plants or groups exist
+        response = self.client.get('/get_archived_overview_state')
         # Confirm redirected to main overview
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/')
+        self.assertEqual(response.json(), {'redirect': '/'})
 
-    def test_overview_page_with_database_entries(self):
+    def test_get_archived_overview_state_with_database_entries(self):
         # Create test group and 2 test plants (should NOT be in context)
         default_user = get_default_user()
         Group.objects.create(uuid=uuid4(), user=default_user)
@@ -475,22 +410,11 @@ class ArchivedOverviewTests(TestCase):
             archived=True
         )
 
-        # Request archive overview, confirm uses correct JS bundle and title
-        response = self.client.get('/archived')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['overview']['js']
-        )
-        self.assertEqual(response.context['title'], 'Archived')
-
-        # Confirm state object has details of all archived plants and groups,
-        # does not contain non-archived plant and group
-        state = response.context['state']
-        self.assertEqual(
-            state['plants'],
-            {
+        # Request archive overview state, confirm state object has details of all
+        # archived plants and groups, does not contain non-archived plant and group
+        response = self.client.get('/get_archived_overview_state')
+        self.assertEqual(response.json(), {
+            'plants': {
                 str(plant.uuid): {
                     'uuid': str(plant.uuid),
                     'created': plant.created.isoformat(),
@@ -505,11 +429,8 @@ class ArchivedOverviewTests(TestCase):
                     'last_fertilized': None,
                     'group': None
                 }
-            }
-        )
-        self.assertEqual(
-            state['groups'],
-            {
+            },
+            'groups': {
                 str(group.uuid): {
                     'uuid': str(group.uuid),
                     'created': group.created.isoformat(),
@@ -520,8 +441,10 @@ class ArchivedOverviewTests(TestCase):
                     'description': None,
                     'plants': 0
                 }
-            }
-        )
+            },
+            'show_archive': True,
+            'title': 'Archived'
+        })
 
 
 class RegistrationTests(TestCase):
@@ -550,8 +473,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm response redirects to management page for new plant
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'success': 'plant registered'})
 
         # Confirm new plant exists in database, confirm no group was created
         self.assertEqual(len(Plant.objects.all()), 1)
@@ -605,8 +528,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm response redirects to management page for new plant
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'success': 'plant registered'})
 
         # Confirm new plant was created, has reverse relation to original plant
         # and DivisionEvent
@@ -651,8 +574,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm response redirects to management page for new plant
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'success': 'plant registered'})
 
         # Confirm new plant was created, does NOT have reverse relation to
         # original plant or DivisionEvent
@@ -678,8 +601,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm response redirects to management page for new group
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'success': 'group registered'})
 
         # Confirm new group exists in database, confirm no plant was created
         self.assertEqual(len(Group.objects.all()), 1)
@@ -697,17 +620,17 @@ class RegistrationTests(TestCase):
         # Request management page with uuid that doesn't exist in database
         response = self.client.get(f'/manage/{uuid4()}')
 
-        # Confirm used register bundle and correct title
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['register']['js']
-        )
-        self.assertEqual(response.context['title'], 'Register New Plant')
+
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{uuid4()}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
 
         # Confirm does not contain details of plant being divided (cache not set)
-        self.assertNotIn('dividing_from', response.context['state'].keys())
+        self.assertNotIn('dividing_from', state.keys())
 
     def test_registration_page_division_in_progress(self):
         # Create Plant + DivisionEvent, simulate division in progress
@@ -724,17 +647,17 @@ class RegistrationTests(TestCase):
         # Request management page with uuid that doesn't exist in database
         response = self.client.get(f'/manage/{uuid4()}')
 
-        # Confirm used register bundle and correct title
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['register']['js']
-        )
-        self.assertEqual(response.context['title'], 'Register New Plant')
+
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{uuid4()}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
 
         # Confirm context contains details of plant being divided from
-        self.assertEqual(response.context['state']['dividing_from'], {
+        self.assertEqual(state['dividing_from'], {
             'plant_details': existing_plant.get_details(),
             'default_photo': existing_plant.get_default_photo_details(),
             'plant_key': str(existing_plant.pk),
@@ -858,48 +781,35 @@ class ManagePageTests(TestCase):
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
 
-        # Confirm used manage_plant bundle and correct title
+        # Confirm returned SPA
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_plant']['js']
-        )
-        self.assertEqual(response.context['title'], 'Manage Plant')
 
-        # Confirm expected state object
-        state = response.context['state']
-        self.assertEqual(
-            state['plant_details'],
-            {
-                'uuid': str(self.plant1.uuid),
-                'created': self.plant1.created.isoformat(),
-                'archived': False,
-                'name': None,
-                'display_name': 'Unnamed plant 1',
-                'species': None,
-                'thumbnail': None,
-                'pot_size': None,
-                'description': None,
-                'last_watered': None,
-                'last_fertilized': None,
-                'group': None,
-            }
-        )
-        self.assertEqual(
-            state['events'],
-            {
-                'water': [],
-                'fertilize': [],
-                'prune': [],
-                'repot': []
-            }
-        )
-
-        # Confirm notes dict is empty (test plant has no notes)
-        self.assertEqual(state['notes'], {})
-
-        # Confirm photos list is empty (test plant has no photos)
-        self.assertEqual(state['photos'], {})
+        # Request state, confirm state object has correct details
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['title'], 'Manage Plant')
+        self.assertEqual(response.json()['state']['plant_details'], {
+            'uuid': str(self.plant1.uuid),
+            'created': self.plant1.created.isoformat(),
+            'archived': False,
+            'name': None,
+            'display_name': 'Unnamed plant 1',
+            'species': None,
+            'thumbnail': None,
+            'pot_size': None,
+            'description': None,
+            'last_watered': None,
+            'last_fertilized': None,
+            'group': None,
+        })
+        self.assertEqual(response.json()['state']['events'], {
+            'water': [],
+            'fertilize': [],
+            'prune': [],
+            'repot': []
+        })
+        self.assertEqual(response.json()['state']['notes'], {})
+        self.assertEqual(response.json()['state']['photos'], {})
 
     def test_manage_plant_with_photos(self):
         # Create mock photos for plant1
@@ -916,25 +826,30 @@ class ManagePageTests(TestCase):
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
 
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
+
         # Confirm plant.thumbnail contains URL of most recent photo
         self.assertEqual(
-            response.context['state']['plant_details']['thumbnail'],
+            state['plant_details']['thumbnail'],
             '/media/user_1/thumbnails/photo2_thumb.webp'
         )
 
         # Confirm photos key contains list of dicts with timestamps, database
         # keys, thumbnail URLs, and full-res URLs of each photo
         self.assertEqual(
-            response.context['state']['photos'],
+            state['photos'],
             {
-                photo2.pk: {
+                str(photo2.pk): {
                     'timestamp': '2024-03-22T10:52:03+00:00',
                     'photo': '/media/user_1/images/photo2.jpg',
                     'thumbnail': '/media/user_1/thumbnails/photo2_thumb.webp',
                     'preview': '/media/user_1/previews/photo2_preview.webp',
                     'key': photo2.pk
                 },
-                photo1.pk: {
+                str(photo1.pk): {
                     'timestamp': '2024-03-21T10:52:03+00:00',
                     'photo': '/media/user_1/images/photo1.jpg',
                     'thumbnail': '/media/user_1/thumbnails/photo1_thumb.webp',
@@ -961,9 +876,14 @@ class ManagePageTests(TestCase):
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
 
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
+
         # Confirm notes dict contains timestamp and text of both notes
         self.assertEqual(
-            response.context['state']['notes'],
+            state['notes'],
             {
                 '2024-02-06T03:06:26+00:00': 'Leaves drooping, needs to be watered more often',
                 '2024-02-16T03:06:26+00:00': 'Looks much better now'
@@ -979,9 +899,14 @@ class ManagePageTests(TestCase):
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
 
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
+
         # Confirm group key in plant state state contains group details
         self.assertEqual(
-            response.context['state']['plant_details']['group'],
+            state['plant_details']['group'],
             {
                 'name': self.group1.get_display_name(),
                 'uuid': str(self.group1.uuid)
@@ -993,27 +918,27 @@ class ManagePageTests(TestCase):
         self.plant1.name = 'Favorite Plant'
         self.plant1.save()
 
-        # Request manage page, confirm display_name matches name attribute
-        response = self.client.get(f'/manage/{self.plant1.uuid}')
+        # Request manage page state, confirm display_name matches name attribute
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
         self.assertEqual(
-            response.context['state']['plant_details']['display_name'],
+            response.json()['state']['plant_details']['display_name'],
             'Favorite Plant'
         )
 
-    def test_get_plant_state(self):
+    def test_get_new_plant_state(self):
         # Create water events for test plant in non-chronological order (should
         # be sorted chronologically by database)
         WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 26, 0, 0, 0, 0))
         WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 28, 0, 0, 0, 0))
         WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 27, 0, 0, 0, 0))
 
-        # Call get_plant_state endpoint with UUID of existing plant entry
-        response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
+        # Request new state with UUID of existing plant entry
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
 
         # Confirm returned full manage_plant state
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.json(),
+            response.json()['state'],
             {
                 'plant_details': {
                     'uuid': str(self.plant1.uuid),
@@ -1054,7 +979,7 @@ class ManagePageTests(TestCase):
             }
         )
 
-    def test_get_plant_state_plant_has_parent(self):
+    def test_get_new_plant_state_plant_has_parent(self):
         # Simulate division in progress (user called /divide_plant from plant1)
         divide = DivisionEvent.objects.create(plant=self.plant1, timestamp=timezone.now())
         cache.set(f'division_in_progress_{self.plant1.user.pk}', {
@@ -1074,33 +999,33 @@ class ManagePageTests(TestCase):
             'divided_from_event_id': str(divide.pk)
         })
 
-        # Call get_plant_state endpoint with UUID of new child plant
-        response = self.client.get(f'/get_plant_state/{test_id}')
+        # Request new state with UUID of new child plant
+        response = self.client.get_json(f'/get_manage_state/{test_id}')
 
         # Confirm returned manage_plant state contains details of plant1 (parent)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['divided_from'], {
+        self.assertEqual(response.json()['state']['divided_from'], {
             'name': self.plant1.get_display_name(),
             'uuid': str(self.plant1.uuid),
             'timestamp': divide.timestamp.isoformat()
         })
         # Confirm no division_events (DivisionEvent associated with parent, not child)
-        self.assertEqual(response.json()['division_events'], {})
+        self.assertEqual(response.json()['state']['division_events'], {})
 
-    def test_get_plant_state_plant_has_child(self):
+    def test_get_new_plant_state_plant_has_child(self):
         # Make plant2 child of plant1
         divide = DivisionEvent.objects.create(plant=self.plant1, timestamp=timezone.now())
         self.plant2.divided_from = self.plant1
         self.plant2.divided_from_event = divide
         self.plant2.save()
 
-        # Call get_plant_state endpoint with UUID of plant1
-        response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
+        # Request new state with UUID of plant1
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
 
         # Confirm returned manage_plant state contains division_events + details
         # of plant2 (child)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['division_events'], {
+        self.assertEqual(response.json()['state']['division_events'], {
             divide.timestamp.isoformat(): [
                 {
                     'name': self.plant2.get_display_name(),
@@ -1109,38 +1034,30 @@ class ManagePageTests(TestCase):
             ]
         })
         # Confirm no divided_from (parent has no parent)
-        self.assertFalse(response.json()['divided_from'])
+        self.assertFalse(response.json()['state']['divided_from'])
 
-    def test_get_plant_state_invalid(self):
-        # Call get_plant_state endpoint with UUID that doesn't exist in database
-        response = self.client.get(f'/get_plant_state/{uuid4()}')
-
-        # Confirmer returned expected error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'Error': 'Plant not found'})
-
-        # Call get_plant_state endpoint with non-UUID string
-        response = self.client.get('/get_plant_state/plant1')
+    def test_get_new_plant_state_invalid(self):
+        # Request new state with non-UUID string
+        response = self.client.get_json('/get_manage_state/plant1')
 
         # Confirmer returned expected error
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {'Error': 'Requires plant UUID'})
+        self.assertEqual(response.json(), {'Error': 'Requires valid UUID'})
 
     def test_manage_group_with_no_plants(self):
         # Request management page for test group, confirm status
         response = self.client.get(f'/manage/{self.group1.uuid}')
         self.assertEqual(response.status_code, 200)
 
-        # Confirm used manage_group bundle and correct title
+        # Confirm returned SPA
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_group']['js']
-        )
-        self.assertEqual(response.context['title'], 'Manage Group')
+
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{self.group1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
 
         # Confirm expected state objects
-        state = response.context['state']
         self.assertEqual(
             state['group_details'],
             {
@@ -1167,8 +1084,12 @@ class ManagePageTests(TestCase):
         response = self.client.get(f'/manage/{self.group1.uuid}')
         self.assertEqual(response.status_code, 200)
 
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{self.group1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
+
         # Confirm plants key in group state matches number of plants
-        state = response.context['state']
         self.assertEqual(state['group_details']['plants'], 1)
 
         # Confirm details state contains params for plant in group
@@ -1195,20 +1116,20 @@ class ManagePageTests(TestCase):
             }
         )
 
-    def test_get_group_state(self):
+    def test_get_new_group_state(self):
         # Create second group, add plant2
         group2 = Group.objects.create(uuid=uuid4(), user=get_default_user())
         self.plant2.group = group2
         self.plant2.save()
 
-        # Call get_group_state endpoint with UUID of existing group entry
-        response = self.client.get(f'/get_group_state/{self.group1.uuid}')
+        # Request new state with UUID of existing group entry
+        response = self.client.get_json(f'/get_manage_state/{self.group1.uuid}')
 
         # Confirm returned full manage_group state
         # Confirm options list does NOT contain plant2 (already in a group)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.json(),
+            response.json()['state'],
             {
                 'group_details': {
                     'uuid': str(self.group1.uuid),
@@ -1224,20 +1145,13 @@ class ManagePageTests(TestCase):
             }
         )
 
-    def test_get_group_state_invalid(self):
-        # Call get_group_state endpoint with UUID that doesn't exist in database
-        response = self.client.get(f'/get_group_state/{uuid4()}')
-
-        # Confirmer returned expected error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'Error': 'Group not found'})
-
-        # Call get_group_state endpoint with non-UUID string
-        response = self.client.get('/get_group_state/group1')
+    def test_get_new_group_state_invalid(self):
+        # Request new state with non-UUID string
+        response = self.client.get_json('/get_manage_state/group1')
 
         # Confirmer returned expected error
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {'Error': 'Requires group UUID'})
+        self.assertEqual(response.json(), {'Error': 'Requires valid UUID'})
 
 
 class ManagePlantEndpointTests(TestCase):
@@ -1875,18 +1789,18 @@ class ChangeQrCodeTests(TestCase):
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
 
-        # Confirm status code, correct bundle and title
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['register']['js']
-        )
-        self.assertEqual(response.context['title'], 'Register New Plant')
+
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{self.fake_id}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
 
         # Confirm state contains plant details and new UUID
         self.assertEqual(
-            response.context['state'],
+            state,
             {
                 'new_id': str(self.fake_id),
                 'changing_qr_code': {
@@ -1920,20 +1834,20 @@ class ChangeQrCodeTests(TestCase):
         )
 
         # Request management page with new UUID (simulate user scanning new QR)
-        response = self.client.get(f'/manage/{self.fake_id}')
+        response = self.client.get_json(f'/manage/{self.fake_id}')
 
-        # Confirm status code, correct bundle and title
+        # Confirm returned SPA
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['register']['js']
-        )
-        self.assertEqual(response.context['title'], 'Register New Plant')
 
-        # Confirm state contains plant details and new UUID
+        # Request state
+        response = self.client.get_json(f'/get_manage_state/{self.fake_id}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
+
+        # Confirm state contains group details and new UUID
         self.assertEqual(
-            response.context['state'],
+            state,
             {
                 'new_id': str(self.fake_id),
                 'changing_qr_code': {
@@ -1966,34 +1880,26 @@ class ChangeQrCodeTests(TestCase):
             str(self.plant1.uuid)
         )
 
-        # Request management page with new UUID (should return confirmation page)
-        response = self.client.get(f'/manage/{self.fake_id}')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['register']['js']
-        )
+        # Request management page state with new UUID (should return confirmation page)
+        response = self.client.get_json(f'/get_manage_state/{self.fake_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['title'], 'Register New Plant')
 
-        # Request management page with existing plant UUID (should return manage_plant)
-        response = self.client.get(f'/manage/{self.plant2.uuid}')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_plant']['js']
-        )
+        # Request management page state with existing plant UUID (should return manage_plant)
+        response = self.client.get_json(f'/get_manage_state/{self.plant2.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['title'], 'Manage Plant')
 
-        # Request management page with existing group UUID (should return manage_group)
-        response = self.client.get(f'/manage/{self.group1.uuid}')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_group']['js']
-        )
+        # Request management page state with existing group UUID (should return manage_group)
+        response = self.client.get_json(f'/get_manage_state/{self.group1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['title'], 'Manage Group')
 
-        # Request management page with UUID of plant waiting for new QR code,
+        # Request management page state with UUID of plant waiting for new QR code,
         # should return manage_plant page like normal
-        response = self.client.get(f'/manage/{self.plant1.uuid}')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['manage_plant']['js']
-        )
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['title'], 'Manage Plant')
 
     def test_target_plant_deleted_before_confirmation_page_loaded(self):
         # Simulate user changing plant QR code
@@ -2002,20 +1908,14 @@ class ChangeQrCodeTests(TestCase):
         self.plant1.delete()
         self.assertIsNotNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
-        # Request management page with new UUID (simulate user scanning new QR)
-        response = self.client.get(f'/manage/{self.fake_id}')
-
-        # Confirm redirected to registration page (old_uuid no longer exists)
+        # Request register state with new UUID (simulate user scanning new QR)
+        response = self.client.get_json(f'/get_manage_state/{self.fake_id}')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(
-            response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['register']['js']
-        )
-        self.assertEqual(response.context['title'], 'Register New Plant')
+        state = response.json()['state']
 
-        # Confirm old_id cache was cleared
+        # Confirm old_id cache was cleared, state does not say changing QR code
         self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
+        self.assertNotIn('changing_qr_code', state)
 
 
 class PlantEventEndpointTests(TestCase):

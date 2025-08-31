@@ -1,20 +1,12 @@
 import React, { useRef } from 'react';
-import Modal from 'src/components/Modal';
+import PropTypes from 'prop-types';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest } from 'src/util';
+import { localToUTC } from 'src/utils/timestampUtils';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, } from 'react-redux';
 
-let modalRef;
-
-export const openDivisionModal = () => {
-    modalRef.current.open();
-};
-
-const DivisionModal = () => {
-    modalRef = useRef(null);
-
+const DivisionModal = ({ close }) => {
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
     // Ref to access timestamp input
@@ -26,7 +18,7 @@ const DivisionModal = () => {
             timestamp: localToUTC(timestampRef.current.value)
         });
         if (response.ok) {
-            modalRef.current.close();
+            close();
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -34,7 +26,7 @@ const DivisionModal = () => {
     };
 
     return (
-        <Modal title='Divide Plant' ref={modalRef}>
+        <>
             <div className="min-h-36 max-w-86 flex flex-col justify-evenly gap-6 mx-auto">
                 <div>
                     <DatetimeInput inputRef={timestampRef} />
@@ -59,8 +51,12 @@ const DivisionModal = () => {
                     OK
                 </button>
             </div>
-        </Modal>
+        </>
     );
+};
+
+DivisionModal.propTypes = {
+    close: PropTypes.func.isRequired,
 };
 
 export default DivisionModal;

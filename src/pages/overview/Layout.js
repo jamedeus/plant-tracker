@@ -1,31 +1,47 @@
-import React, { useState, useRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Setup from './Setup';
 import EditModeFooter from './EditModeFooter';
 import AddEventsFooter from 'src/components/AddEventsFooter';
+import Navbar from 'src/components/Navbar';
 import PlantsCol from 'src/components/PlantsCol';
 import GroupsCol from 'src/components/GroupsCol';
 import { hideToast } from 'src/components/Toast';
 import DropdownMenu from 'src/components/DropdownMenu';
+import QrScannerButton from 'src/components/QrScannerButton';
+import ToggleThemeOption from 'src/components/ToggleThemeOption';
+import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
+import LazyModal, { useModal } from 'src/components/LazyModal';
+import { updatePlantLastEventTimes } from './overviewSlice';
 import clsx from 'clsx';
 import { v4 as uuidv4 } from 'uuid';
 import { FaPlus } from 'react-icons/fa6';
 
 // Render correct components for current state objects
-const Layout = ({
-    plants,
-    groups,
-    setPlants,
-    setGroups,
-    plantsColRef,
-    groupsColRef,
-    archivedOverview,
-    setShowArchive
-}) => {
+const Layout = () => {
+    const dispatch = useDispatch();
+
+    const plants = useSelector((state) => state.overview.plants);
+    const groups = useSelector((state) => state.overview.groups);
+    const archivedOverview = useSelector((state) => state.overview.archivedOverview);
+    const showArchive = useSelector((state) => state.overview.showArchive);
+    const pageTitle = useSelector((state) => state.overview.title);
+
     // Determines if 2-column layout or single centered column
     const hasPlants = Object.keys(plants).length > 0;
     const hasGroups = Object.keys(groups).length > 0;
     const twoColumns = hasPlants && hasGroups;
+
+    // True if desktop layout, false if mobile
+    const desktop = useIsBreakpointActive('md');
+    // True if mobile layout with stacked plant and group columns
+    // False if desktop layout (side by side columns) or only one column
+    const stackedColumns = !desktop && hasPlants && hasGroups;
+
+    // Refs used to jump to top of plant and group columns
+    const plantsColRef = useRef(null);
+    const groupsColRef = useRef(null);
 
     // FormRefs for PlantsCol and GroupsCol, used to read user selection
     const selectedPlantsRef = useRef(null);
@@ -50,8 +66,93 @@ const Layout = ({
         document.activeElement.blur();
     }, [addingEvents]);
 
+    const stopAddingEvents = useCallback(() => {
+        setAddingEvents(false);
+    }, []);
+
+    // Handler for AddEventsFooter buttons
+    const handleAddEvents = useCallback((payload) => {
+        dispatch(updatePlantLastEventTimes(payload));
+    }, [dispatch]);
+
+    // Get ref for PrintModal, create callback that opens + closes dropdown
+    const printModal = useModal();
+    const openPrintModal = useCallback(() => {
+        printModal.open();
+        document.activeElement.blur();
+    }, [printModal]);
+
+    // Top left corner dropdown options
+    const DropdownMenuOptions = useMemo(() => {
+        return (
+            <>
+                {/* Main overview: Link to archive overview if it exists */}
+                {(!archivedOverview && showArchive) && (
+                    <li><Link to='/archived' discover="none">
+                        Archived plants
+                    </Link></li>
+                )}
+                {/* Archive overview: Link back to main overview */}
+                {archivedOverview && (
+                    <li><Link to='/' discover="none">
+                        Main overview
+                    </Link></li>
+                )}
+                {/* Link to user profile unless accounts disabled */}
+                {globalThis.USER_ACCOUNTS_ENABLED && (
+                    <li><Link to='/accounts/profile/' discover="none">
+                        User profile
+                    </Link></li>
+                )}
+                {/* Main overview: Show Print QR Codes option */}
+                {!archivedOverview && (
+                    <li><a onClick={openPrintModal}>
+                        Print QR Codes
+                    </a></li>
+                )}
+                <ToggleThemeOption />
+
+            </>
+        );
+    }, [ToggleThemeOption, showArchive]);
+
+    // Dropdown with links to jump to plant or group columns
+    // Only rendered on mobile layout (both columns always visible on desktop)
+    const TitleQuickNavigation = useMemo(() => {
+        const jumpTo = (ref) => {
+            ref.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+            document.activeElement.blur();
+        };
+        const jumpToPlants = () => jumpTo(plantsColRef);
+        const jumpToGroups = () => jumpTo(groupsColRef);
+
+        return (
+            <DropdownMenu className="mt-3 w-24">
+                <li><a className="flex justify-center" onClick={jumpToPlants}>
+                    Plants
+                </a></li>
+                <li><a className="flex justify-center" onClick={jumpToGroups}>
+                    Groups
+                </a></li>
+            </DropdownMenu>
+        );
+    }, []);
+
     return (
-        <>
+        <div
+            className="container flex flex-col items-center mx-auto pb-28"
+            data-testid="overview-layout"
+        >
+            <Navbar
+                menuOptions={DropdownMenuOptions}
+                title={pageTitle}
+                titleOptions={stackedColumns ? TitleQuickNavigation : null}
+                topRightButton={<QrScannerButton />}
+            />
+
             <div className={clsx(
                 'grid grid-cols-1 mx-auto px-4',
                 twoColumns && 'md:grid-cols-2'
@@ -93,13 +194,14 @@ const Layout = ({
                             )}
                         >
                             {!archivedOverview && (
-                                <a
+                                <Link
                                     className="btn btn-accent mx-auto mt-4"
-                                    href={`/manage/${uuidv4()}`}
+                                    to={`/manage/${uuidv4()}`}
                                     aria-label="Register new plant"
+                                    discover="none"
                                 >
                                     <FaPlus className="size-5 mr-1" /> Add plant
-                                </a>
+                                </Link>
                             )}
                         </PlantsCol>
                     </div>
@@ -121,20 +223,21 @@ const Layout = ({
                             onOpenTitle={toggleEditing}
                         >
                             {!archivedOverview && (
-                                <a
+                                <Link
                                     className="btn btn-accent mx-auto mt-4"
-                                    href={`/manage/${uuidv4()}?type=group`}
+                                    to={`/manage/${uuidv4()}?type=group`}
                                     aria-label="Register new group"
+                                    discover="none"
                                 >
                                     <FaPlus className="size-5 mr-1" /> Add group
-                                </a>
+                                </Link>
                             )}
                         </GroupsCol>
                     </div>
                 )}
                 {/* Render setup instructions if database is empty */}
                 {!hasPlants && !hasGroups && (
-                    <Setup />
+                    <Setup openPrintModal={openPrintModal} />
                 )}
             </div>
 
@@ -142,43 +245,27 @@ const Layout = ({
                 visible={editing}
                 selectedPlantsRef={selectedPlantsRef}
                 selectedGroupsRef={selectedGroupsRef}
-                plants={plants}
-                groups={groups}
-                setPlants={setPlants}
-                setGroups={setGroups}
                 setEditing={setEditing}
                 archivedOverview={archivedOverview}
-                setShowArchive={setShowArchive}
             />
 
             {!archivedOverview &&
                 <AddEventsFooter
                     visible={addingEvents}
-                    onClose={() => setAddingEvents(false)}
+                    onClose={stopAddingEvents}
                     selectedPlantsRef={selectedPlantsRef}
                     plants={plants}
-                    setPlants={setPlants}
+                    updatePlantLastEventTimes={handleAddEvents}
                 />
             }
-        </>
-    );
-};
 
-Layout.propTypes = {
-    plants: PropTypes.object.isRequired,
-    groups: PropTypes.object.isRequired,
-    setPlants: PropTypes.func.isRequired,
-    setGroups: PropTypes.func.isRequired,
-    plantsColRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
-    groupsColRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
-    archivedOverview: PropTypes.bool.isRequired,
-    setShowArchive: PropTypes.func.isRequired
+            <LazyModal
+                ref={printModal.ref}
+                ariaLabel="Print QR Codes"
+                load={() => import(/* webpackChunkName: "overview_print-modal" */ "./PrintModal")}
+            />
+        </div>
+    );
 };
 
 export default Layout;

@@ -1,6 +1,4 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { mockContext } from './mockContext';
 import { waitFor } from '@testing-library/react';
@@ -17,9 +15,8 @@ describe('Settings menu', () => {
     };
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
@@ -34,7 +31,7 @@ describe('Settings menu', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(<App />);
+        app = render(<App initialState={mockContext} />);
     });
 
     // Clean up pending timers after each test
@@ -153,6 +150,7 @@ describe('Settings menu', () => {
             'One of the older leaves is starting to turn yellow'
         ).closest('.note-collapse').querySelector('svg');
         await user.click(editButton);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Get delete note button, confirm has hold-to-confirm class
         const editModal = app.getByText('Edit Note').closest('.modal-box');
@@ -185,13 +183,12 @@ describe('Settings default values', () => {
     // Renders app (call in tests after mocking window size, localStorage, etc)
     const renderApp = () => {
         user = userEvent.setup();
-        app = render(<App />);
+        app = render(<App initialState={mockContext} />);
     };
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {

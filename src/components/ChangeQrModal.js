@@ -1,24 +1,16 @@
-import React, { useRef, memo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'src/components/Modal';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
+import uuidPropType from 'src/types/uuidPropType';
 
-let modalRef;
-
-export const openChangeQrModal = () => {
-    modalRef.current.open();
-};
-
-const ChangeQrModal = memo(function ChangeQrModal({ uuid }) {
-    modalRef = useRef(null);
-
+const ChangeQrModal = memo(function ChangeQrModal({ uuid, close }) {
     const submit = async () => {
         const response = await sendPostRequest('/change_qr_code', {
             uuid: uuid
         });
         if (response.ok) {
-            modalRef.current.close();
+            close();
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -26,7 +18,7 @@ const ChangeQrModal = memo(function ChangeQrModal({ uuid }) {
     };
 
     return (
-        <Modal title='Change QR Code' ref={modalRef}>
+        <>
             <div className="min-h-36 flex flex-col justify-evenly mx-auto">
                 <p>
                     Get your new QR code ready, then click OK.
@@ -42,12 +34,13 @@ const ChangeQrModal = memo(function ChangeQrModal({ uuid }) {
                     OK
                 </button>
             </div>
-        </Modal>
+        </>
     );
 });
 
 ChangeQrModal.propTypes = {
-    uuid: PropTypes.string.isRequired
+    uuid: uuidPropType.isRequired,
+    close: PropTypes.func.isRequired
 };
 
 export default ChangeQrModal;

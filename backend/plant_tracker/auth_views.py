@@ -19,7 +19,6 @@ from django.views.decorators.debug import sensitive_variables
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
 
-from .views import render_react_app
 from .view_decorators import (
     get_user_token,
     requires_json_post,
@@ -123,12 +122,11 @@ class LoginView(views.LoginView):
     # Allow logging in with email address instead of username
     form_class = EmailOrUsernameAuthenticationForm
 
-    # Override default django form with boilerplate template + webpack bundles
+    # Override default django form with SPA shell + bundles
     template_name = "plant_tracker/index.html"
     extra_context = {
         "title": "Login",
-        'js_files': settings.PAGE_DEPENDENCIES['login']['js'],
-        'css_files': settings.PAGE_DEPENDENCIES['login']['css']
+        "user_accounts_enabled": not settings.SINGLE_USER_MODE
     }
 
     @method_decorator(ensure_csrf_cookie)
@@ -171,13 +169,9 @@ class PasswordChangeView(views.PasswordChangeView):
 
     success_url = "/"
 
+    @method_decorator(disable_in_single_user_mode)
     def dispatch(self, *args, **kwargs):
         '''Changes password unless SINGLE_USER_MODE is enabled.'''
-        if settings.SINGLE_USER_MODE:
-            return JsonResponse(
-                {"error": "user accounts are disabled"},
-                status=400
-            )
         if self.request.user.username == settings.DEFAULT_USERNAME:
             return JsonResponse(
                 {"error": "cannot change default user password"},
@@ -267,13 +261,9 @@ class PasswordResetConfirmView(views.PasswordResetConfirmView):
     post_reset_login_backend = settings.AUTHENTICATION_BACKENDS[0]
     success_url = "/accounts/profile/"
 
-    # Override default django form with boilerplate template + webpack bundles
+    # Override default django form with SPA shell + bundles
     template_name = "plant_tracker/index.html"
-    extra_context = {
-        "title": "Reset Password",
-        'js_files': settings.PAGE_DEPENDENCIES['password_reset']['js'],
-        'css_files': settings.PAGE_DEPENDENCIES['password_reset']['css']
-    }
+    extra_context = {"title": "Reset Password"}
 
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(disable_in_single_user_mode)
@@ -375,28 +365,6 @@ def resend_verification_email(request, user, **kwargs):
 
 @get_user_token
 @disable_in_single_user_mode
-def user_profile_page(request, user):
-    '''Renders the user profile page'''
-
-    return render_react_app(
-        request,
-        title='User Profile',
-        bundle='user_profile',
-        state={
-            'user_details': {
-                'username': user.username,
-                'email': user.email,
-                'email_verified': user.email_verification.is_email_verified,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'date_joined': user.date_joined.isoformat()
-            }
-        }
-    )
-
-
-@get_user_token
-@disable_in_single_user_mode
 @requires_json_post(["email", "first_name", "last_name"])
 def edit_user_details(data, user, **kwargs):
     '''Updates details of an existing user account.
@@ -423,3 +391,20 @@ def edit_user_details(data, user, **kwargs):
             "date_joined": user.date_joined.isoformat()
         }
     })
+
+
+@get_user_token
+@disable_in_single_user_mode
+def get_user_details(_, user):
+    '''Returns user profile details for the requesting user as JSON.'''
+    return JsonResponse({
+        "user_details": {
+            "username": user.username,
+            "email": user.email,
+            "email_verified": user.email_verification.is_email_verified,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "date_joined": user.date_joined.isoformat()
+        },
+        "title": "User Profile"
+    }, status=200)

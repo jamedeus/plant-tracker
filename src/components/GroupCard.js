@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import GroupDetails from 'src/components/GroupDetails';
 import InstanceCard from 'src/components/InstanceCard';
+import uuidPropType from 'src/types/uuidPropType';
 
 const GroupCard = memo(function GroupCard({
     display_name,
@@ -30,7 +31,7 @@ const GroupCard = memo(function GroupCard({
 GroupCard.propTypes = {
     display_name: PropTypes.string.isRequired,
     plants: PropTypes.number.isRequired,
-    uuid: PropTypes.string.isRequired,
+    uuid: uuidPropType.isRequired,
     location: PropTypes.string,
     description: PropTypes.string,
     archived: PropTypes.bool

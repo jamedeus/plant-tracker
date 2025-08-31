@@ -1,30 +1,38 @@
 import { fireEvent, within } from '@testing-library/react';
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { mockContext, mockPlantOptions } from './mockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 
 describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={mockContext} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     // Original bug: The updatePlantTimestamps function overwrote last_watered
@@ -167,8 +175,10 @@ describe('App', () => {
             json: () => Promise.resolve({ options: mockPlantOptions })
         }));
 
-        // Click Add plants dropdown option
+        // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
 
         // Mock fetch function to return expected response when first option added
         global.fetch = jest.fn(() => Promise.resolve({
@@ -197,8 +207,11 @@ describe('App', () => {
             headers: postHeaders
         });
 
-        // Mock fetch to return options remaining option (remove uuid that was
-        // already added, simulate options returned by backend)
+        // Wait for modal to close (unmount)
+        await waitFor(() => expect(app.queryByText('Add Plants')).toBeNull());
+
+        // Mock fetch to return remaining option (remove uuid that was already
+        // added, simulate options returned by backend)
         const remainingOption = Object.keys(mockPlantOptions)[1];
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -207,8 +220,9 @@ describe('App', () => {
             } })
         }));
 
-        // Open modal again, click add button again
+        // Open modal again, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
+        await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
 
         // Mock fetch function to return expected response when no UUIDs received
         global.fetch = jest.fn(() => Promise.resolve({
@@ -380,6 +394,7 @@ describe('App', () => {
 
         // Open AddPlantsModal, confirm "Another test plant" option exists
         await user.click(app.getByTestId("add_plants_option"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const modal = app.getByText("Add Plants").closest(".modal-box");
         expect(within(modal).getAllByText("Another test plant").length).toBe(1);
 

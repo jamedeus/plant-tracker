@@ -4,11 +4,22 @@ import { act, waitFor } from '@testing-library/react';
 import * as matchers from 'jest-extended';
 import '@testing-library/jest-dom';
 import 'src/testUtils/dateMock';
+import { BrowserRouter } from 'react-router-dom';
+import { enableFetchMocks } from 'jest-fetch-mock'
 
 // Add jest-extended matchers (toEndWith etc)
 expect.extend(matchers);
 
+// Custom render function that wraps children in BrowserRouter (fix <Link>s)
+const renderWithRouter = (ui, { route = '/' } = {}) => {
+    window.history.pushState({}, 'Test page', route);
+    return render(ui, { wrapper: BrowserRouter });
+};
+
 beforeAll(() => {
+    // Fix "Request is not defined" in components that use react-router-dom
+    enableFetchMocks();
+
     // Mock navigator.userAgent to simulate iOS Safari (most common client)
     Object.defineProperty(navigator, 'userAgent', {
         writable: true,
@@ -92,25 +103,12 @@ beforeAll(() => {
     });
 
     // Make available in all tests
-    global.render = render;
+    global.render = renderWithRouter;
     global.within = within;
     global.userEvent = userEvent;
     global.act = act;
     global.waitFor = waitFor;
     global.fireEvent = fireEvent;
-
-    // Mock method called when window.location.href set
-    Object.defineProperty(window, 'location', {
-        value: {
-            assign: jest.fn(),
-        },
-    });
-
-    // Mock window.location.reload
-    Object.defineProperty(window, 'location', {
-        configurable: true,
-        value: { reload: jest.fn() },
-    });
 
     // Mock DataTransfer and DataTransferItemList objects
     const mockDataTransferItemList = {

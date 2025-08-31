@@ -3,27 +3,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{ title }}</title>
+    <title>Plant Tracker</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="{% static 'plant_tracker/favicon-96x96.png' %}" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="{% static 'plant_tracker/favicon.svg' %}" />
     <link rel="shortcut icon" href="{% static 'plant_tracker/favicon.ico' %}" />
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'plant_tracker/apple-touch-icon.png' %}" />
-    {# Load all CSS files from context #}
-    {% for css in css_files %}
-        {% with 'plant_tracker/'|add:css as css_path %}
-        <link rel="stylesheet" type="text/css" href="{% static css_path %}">
-        {% endwith %}
-    {% endfor %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plant_tracker/spa.css' %}">
+    <script defer src="{% static 'plant_tracker/react-common.js' %}"></script>
+    <script defer src="{% static 'plant_tracker/libs.js' %}"></script>
+    <script defer src="{% static 'plant_tracker/icons.js' %}"></script>
+    <script defer src="{% static 'plant_tracker/spa.js' %}"></script>
     {# Prevent visual flash on page load in dark mode #}
     <style>
         html[data-theme="dark"] body {
             background: #1D232A;
         }
     </style>
+    {# Set theme dataset attribute from localStorage (or default to dark) #}
     <script>
-        // Set theme dataset attribute from localStorage (or default to dark)
         const initialTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', initialTheme);
     </script>
@@ -31,20 +30,9 @@
 
 <body>
     <div id="root"></div>
-    {# Iterate state object from context, save each key to JSON object #}
-    {# Each object is parsed by react bundle to set initial state #}
-    {% for key, value in state.items %}
-        {{ value|json_script:key }}
-    {% endfor %}
-
     {# Save bool that controls whether user profile links are rendered #}
-    {{ user_accounts_enabled|json_script:"user_accounts_enabled" }}
-
-    {# Load all JS files from context (includes bundle that renders to root) #}
-    {% for js in js_files %}
-        {% with 'plant_tracker/'|add:js as js_path %}
-            <script src="{% static js_path %}"></script>
-        {% endwith %}
-    {% endfor %}
+    <script>
+        window.USER_ACCOUNTS_ENABLED = {{ user_accounts_enabled|yesno:"true,false" }};
+    </script>
 </body>
 </html>

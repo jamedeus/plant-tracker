@@ -1,38 +1,27 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { fireEvent } from '@testing-library/react';
 import App from '../App';
-import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
 import { act } from '@testing-library/react';
-
-const TestComponent = () => {
-    // Render app
-    return (
-        <ReduxProvider>
-            <App />
-        </ReduxProvider>
-    );
-};
 
 describe('Plant with no photos (no default photo set)', () => {
     let app, user;
 
+    // Mock state objects simulating plant with no photos
+    const initialState = { ...mockContext,
+        photos: {},
+        default_photo: { ...mockContext.default_photo,
+            set: false,
+            timestamp: null,
+            photo: null,
+            thumbnail: null,
+            key: null
+        }
+    };
+
     beforeAll(() => {
-        // Create mock state objects (override photos and default_photo to
-        // simulate plant with no photos)
-        bulkCreateMockContext({ ...mockContext,
-            photos: {},
-            default_photo: { ...mockContext.default_photo,
-                set: false,
-                timestamp: null,
-                image: null,
-                thumbnail: null,
-                key: null
-            }
-        });
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
@@ -44,7 +33,7 @@ describe('Plant with no photos (no default photo set)', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(<TestComponent />);
+        app = render(<App initialState={initialState} />);
     });
 
     // Clean up pending timers after each test
@@ -72,14 +61,14 @@ describe('Plant with no photos (no default photo set)', () => {
                 urls: [
                     {
                         timestamp: "2024-03-21T10:52:03+00:00",
-                        image: "/media/images/photo1.jpg",
+                        photo: "/media/images/photo1.jpg",
                         thumbnail: "/media/images/photo1_thumb.webp",
                         preview: "/media/images/photo1_preview.webp",
                         key: 1774
                     },
                     {
                         timestamp: "2024-03-22T10:52:03+00:00",
-                        image: "/media/images/photo2.jpg",
+                        photo: "/media/images/photo2.jpg",
                         thumbnail: "/media/images/photo2_thumb.webp",
                         preview: "/media/images/photo2_preview.webp",
                         key: 1775
@@ -90,6 +79,7 @@ describe('Plant with no photos (no default photo set)', () => {
 
         // Simulate user uploading 2 photos with PhotoModal
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
@@ -107,15 +97,17 @@ describe('Plant with no photos (no default photo set)', () => {
 describe('Plant with photos but no configured default photo', () => {
     let app, user;
 
+    // Mock state objects simulating plant with photos but no default photo set
+    // (uses most-recent photo as default photo)
+    const initialStateNoDefaultPhoto = { ...mockContext,
+        default_photo: { ...mockContext.default_photo,
+            set: false
+        }
+    };
+
     beforeAll(() => {
-        // Create mock state objects to simulate plant with photos but no
-        // default photo set (uses most-recent photo as default photo)
-        bulkCreateMockContext({ ...mockContext,
-            default_photo: { ...mockContext.default_photo,
-                set: false
-            }
-        });
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
@@ -124,7 +116,7 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(<TestComponent />);
+        app = render(<App initialState={initialStateNoDefaultPhoto} />);
     });
 
     // Clean up pending timers after each test
@@ -157,7 +149,7 @@ describe('Plant with photos but no configured default photo', () => {
                 urls: [
                     {
                         timestamp: "2025-03-21T10:52:03+00:00",
-                        image: "/media/images/photo_new.jpg",
+                        photo: "/media/images/photo_new.jpg",
                         thumbnail: "/media/images/photo_new_thumb.webp",
                         preview: "/media/images/photo_new_preview.webp",
                         key: 1774
@@ -168,6 +160,7 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Simulate user uploading newer photo with PhotoModal
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
@@ -248,9 +241,8 @@ describe('Plant with default photo configured', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (has default photo set)
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
@@ -259,7 +251,7 @@ describe('Plant with default photo configured', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(<TestComponent />);
+        app = render(<App initialState={mockContext} />);
     });
 
     // Clean up pending timers after each test
@@ -292,7 +284,7 @@ describe('Plant with default photo configured', () => {
                 urls: [
                     {
                         timestamp: "2025-03-21T10:52:03+00:00",
-                        image: "/media/images/photo_new.jpg",
+                        photo: "/media/images/photo_new.jpg",
                         thumbnail: "/media/images/photo_new_thumb.webp",
                         preview: "/media/images/photo_new_preview.webp",
                         key: 1774
@@ -303,6 +295,7 @@ describe('Plant with default photo configured', () => {
 
         // Simulate user uploading newer photo with PhotoModal
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })

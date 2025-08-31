@@ -1,13 +1,43 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { showToast } from 'src/components/Toast';
 import Navbar from 'src/components/Navbar';
-import { sendPostRequest } from 'src/util';
-import { EMAIL_REGEX } from 'src/regex';
+import sendPostRequest from 'src/utils/sendPostRequest';
+import { EMAIL_REGEX } from 'src/utils/regex';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
+import 'src/css/index.css';
+
+// Takes ?next= querystring param, sanitizes to prevent malicious redirects
+// Returns sanitized URL or fallback (overview) if invalid
+export function sanitizeNext(next, fallback = '/') {
+    // Reject empty or excessively long paths
+    if (!next || next.length > 2048) return fallback;
+
+    // Normalize, return fallback if invalid
+    try {
+        next = decodeURIComponent(next);
+    } catch {
+        return fallback;
+    }
+
+    // Must be relative path starting with /
+    if (!next.startsWith('/') || next.startsWith('//')) return fallback;
+
+    // Normalize backslashes, remove duplicates
+    next = next.replace(/\\/g, '/').replace(/\/{2,}/g, '/');
+
+    // Require same-origin
+    const url = new URL(next, window.location.origin);
+    /* istanbul ignore next: defensive, not currently reachable */
+    if (url.origin !== window.location.origin) return fallback;
+
+    return url.pathname + url.search + url.hash;
+}
 
 const LoginForm = () => {
+    const navigate = useNavigate();
     const formRef = useRef(null);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -30,14 +60,9 @@ const LoginForm = () => {
         });
         // Redirect if logged in successfully
         if (response.ok) {
-            // Redirect to url in querystring if present
+            // Redirect to url in querystring if present (or overview if not)
             const params = new URL(window.location.href).searchParams;
-            if (params.get('next')) {
-                window.location.href = params.get('next');
-            // Redirect to overview if no querystring
-            } else {
-                window.location.href = '/';
-            }
+            navigate(sanitizeNext(params.get('next')));
         // Show error text if login failed
         } else {
             setShowError(true);
@@ -127,6 +152,7 @@ const LoginForm = () => {
 };
 
 const RegisterForm = () => {
+    const navigate = useNavigate();
     const formRef = useRef(null);
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -156,7 +182,7 @@ const RegisterForm = () => {
         );
         // Redirect to overview if logged in successfully
         if (response.ok) {
-            window.location.href = '/';
+            navigate('/');
         // Show correct error if account creation failed
         } else {
             const data = await response.json();
@@ -279,7 +305,10 @@ function App() {
     const toggleForm = () => setShowLoginForm(!showLoginForm);
 
     return (
-        <div className="container flex flex-col full-screen mx-auto items-center">
+        <div
+            className="container flex flex-col full-screen mx-auto items-center"
+            data-testid="login-page"
+        >
             <Navbar
                 menuOptions={<ToggleThemeOption />}
                 title={showLoginForm ? "Login" : "Create Account"}

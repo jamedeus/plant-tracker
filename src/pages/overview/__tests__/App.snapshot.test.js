@@ -1,5 +1,3 @@
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 
 // Mock consistent UUID (prevent changing each time tests run)
@@ -14,83 +12,80 @@ describe('App', () => {
     beforeAll(() => {
         // Mock page title (set by django template in prod)
         document.title = 'Plant Overview';
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     it('matches snapshot when plants and groups exist (desktop layout)', () => {
-        // Create mock state objects with a single plant and group
-        const plantUUID = Object.keys(mockContext.plants)[0];
-        const groupUUID = Object.keys(mockContext.groups)[0];
-        bulkCreateMockContext({ ...mockContext,
-            plants: { plantUUID: mockContext.plants[plantUUID] },
-            groups: { groupUUID: mockContext.groups[groupUUID] }
-        });
-        createMockContext('user_accounts_enabled', true);
-
         // Set width greater than tailwind md breakpoint
         window.innerWidth = 800;
 
-        // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        // Render App with a single plant and group, confirm matches snapshot
+        const plantUUID = Object.keys(mockContext.plants)[0];
+        const groupUUID = Object.keys(mockContext.groups)[0];
+        const { container } = render(
+            <App initialState={{
+                ...mockContext,
+                plants: { plantUUID: mockContext.plants[plantUUID] },
+                groups: { groupUUID: mockContext.groups[groupUUID] },
+            }} />
+        );
         expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when plants and groups exist (mobile layout)', () => {
-        // Create mock state objects with a single plant and group
-        const plantUUID = Object.keys(mockContext.plants)[0];
-        const groupUUID = Object.keys(mockContext.groups)[0];
-        bulkCreateMockContext({ ...mockContext,
-            plants: { plantUUID: mockContext.plants[plantUUID] },
-            groups: { groupUUID: mockContext.groups[groupUUID] }
-        });
-        createMockContext('user_accounts_enabled', true);
-
         // Set width less than tailwind md breakpoint
         window.innerWidth = 600;
 
-        // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        // Render App with a single plant and group, confirm matches snapshot
+        const plantUUID = Object.keys(mockContext.plants)[0];
+        const groupUUID = Object.keys(mockContext.groups)[0];
+        const { container } = render(
+            <App initialState={{
+                ...mockContext,
+                plants: { plantUUID: mockContext.plants[plantUUID] },
+                groups: { groupUUID: mockContext.groups[groupUUID] },
+            }} />
+        );
         expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when only plants exist', () => {
-        // Create mock state objects with a single plant and no groups
+        // Render App with a single plant, confirm matches snapshot
         const plantUUID = Object.keys(mockContext.plants)[0];
-        bulkCreateMockContext({ ...mockContext,
-            plants: { plantUUID: mockContext.plants[plantUUID] },
-            groups: {},
-        });
-        createMockContext('user_accounts_enabled', true);
-
-        // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        const { container } = render(
+            <App initialState={{
+                ...mockContext,
+                plants: { plantUUID: mockContext.plants[plantUUID] },
+                groups: {},
+            }} />
+        );
         expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when only groups exist', () => {
-        // Create mock state objects with a single group and no plants
+        // Render App with a single plant, confirm matches snapshot
         const groupUUID = Object.keys(mockContext.groups)[0];
-        bulkCreateMockContext({ ...mockContext,
-            plants: {},
-            groups: { groupUUID: mockContext.groups[groupUUID] }
-        });
-        createMockContext('user_accounts_enabled', true);
-
-        // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        const { container } = render(
+            <App initialState={{
+                ...mockContext,
+                plants: {},
+                groups: { groupUUID: mockContext.groups[groupUUID] },
+            }} />
+        );
         expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when no models exist (setup)', () => {
-        // Create mock state objects with no plants or groups
-        bulkCreateMockContext({ ...mockContext,
-            plants: {},
-            groups: {},
-            show_archive: false
-        });
-        createMockContext('user_accounts_enabled', true);
-
         // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        const { container } = render(
+            <App initialState={{
+                plants: {},
+                groups: {},
+                show_archive: false,
+                title: "Plant Overview"
+            }} />
+        );
         expect(container).toMatchSnapshot();
     });
 });
@@ -99,30 +94,25 @@ describe('App (archived page)', () => {
     beforeAll(() => {
         // Mock page title (set by django template in prod)
         document.title = 'Archived';
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     it('matches snapshot when plants and groups exist', () => {
-        // Create mock state objects with a single plant and group (flip
-        // archived bools to true)
+        // Mock window.location to simulate archived overview
+        mockCurrentURL('https://plants.lan/archived');
+
+        // Render App with a single plant and group, confirm matches snapshot
         const plantUUID = Object.keys(mockContext.plants)[0];
         const groupUUID = Object.keys(mockContext.groups)[0];
-        bulkCreateMockContext({ ...mockContext,
-            plants: { plantUUID: {
-                ...mockContext.plants[plantUUID],
-                archived: true
-            }},
-            groups: { groupUUID: {
-                ...mockContext.groups[groupUUID],
-                archived: true
-            }}
-        });
-        createMockContext('user_accounts_enabled', true);
-
-        // Mock window.location to simulate archived overview
-        mockCurrentURL('https://plants.lan/archived', '/archived');
-
-        // Render App, confirm matches snapshot
-        const { container } = render(<App />);
+        const { container } = render(
+            <App initialState={{
+                ...mockContext,
+                plants: { plantUUID: { ...mockContext.plants[plantUUID], archived: true } },
+                groups: { groupUUID: { ...mockContext.groups[groupUUID], archived: true } },
+                title: "Archived"
+            }} />
+        );
         expect(container).toMatchSnapshot();
     });
 });

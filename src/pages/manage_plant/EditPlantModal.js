@@ -1,49 +1,27 @@
-import React, { useRef } from 'react';
-import { sendPostRequest } from 'src/util';
-import EditModal from 'src/components/EditModal';
+import PropTypes from 'prop-types';
+import FormModal from 'src/components/FormModal';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
-import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { plantDetailsUpdated } from './plantSlice';
 
-const EditPlantModal = () => {
-    const formRef = useRef(null);
+const EditPlantModal = ({ close }) => {
     const dispatch = useDispatch();
     const plantDetails = useSelector((state) => state.plant.plantDetails);
 
-    const submit = async () => {
-        const response = await sendPostRequest('/edit_plant_details', {
-            plant_id: plantDetails.uuid,
-            ...Object.fromEntries(new FormData(formRef.current))
-        });
-        if (response.ok) {
-            // Update plant state with new values from response
-            const data = await response.json();
-            dispatch(plantDetailsUpdated(data));
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
-    };
-
     return (
-        <EditModal title="Edit Details" formRef={formRef} onSubmit={submit}>
-            {/* Key forces form to remount when RepotModal is submitted -
-                form is unmanaged so props only set default values, which
-                do not change when plantDetails updates. If pot_size field
-                does not update after repot the user could easily reset the
-                new pot size without noticing.
-            */}
-            <PlantDetailsForm
-                key={plantDetails.pot_size}
-                formRef={formRef}
-                name={plantDetails.name}
-                species={plantDetails.species}
-                pot_size={plantDetails.pot_size}
-                description={plantDetails.description}
-            />
-        </EditModal>
+        <FormModal
+            close={close}
+            FormComponent={PlantDetailsForm}
+            endpoint='/edit_plant_details'
+            initialValues={plantDetails}
+            payload={{plant_id: plantDetails.uuid}}
+            onSuccess={data => dispatch(plantDetailsUpdated(data))}
+        />
     );
+};
+
+EditPlantModal.propTypes = {
+    close: PropTypes.func.isRequired
 };
 
 export default EditPlantModal;

@@ -357,19 +357,3 @@ STATIC_HOST = os.environ.get("STATIC_URL", "")
 STATIC_URL = STATIC_HOST + "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-# Read webpack manifest.json from static directory
-MANIFEST_PATH = Path(BASE_DIR, 'plant_tracker/static/plant_tracker/manifest.json')
-try:
-    with open(MANIFEST_PATH, 'r', encoding='utf-8' ) as file:
-        MANIFEST = json.load(file)
-except FileNotFoundError:
-    MANIFEST = {}
-
-# Build mapping dict with page names as keys, static dependencies as values
-PAGE_DEPENDENCIES = {
-    page_name: {
-        "js": [f for f in dependencies if f.endswith('.js')],
-        "css": [f for f in dependencies if f.endswith('.css')]
-    } for page_name, dependencies in MANIFEST.items()
-}

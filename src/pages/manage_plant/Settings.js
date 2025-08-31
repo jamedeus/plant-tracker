@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { settingChanged, settingsReset } from './settingsSlice';
 import { settingsMenuOpened } from './interfaceSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
-import { useIsBreakpointActive } from 'src/useBreakpoint';
+import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import 'src/css/settings.css';
 import clsx from 'clsx';
 

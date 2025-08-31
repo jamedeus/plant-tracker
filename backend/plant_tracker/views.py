@@ -1,20 +1,19 @@
 '''Django API endpoint functions'''
 
-# pylint: disable=too-many-lines
-
 import base64
 from io import BytesIO
 from itertools import chain
 
 from django.conf import settings
+from django.shortcuts import render
 from django.core.cache import cache
+from django.http import JsonResponse
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse, HttpResponseRedirect
+from django.views.decorators.csrf import ensure_csrf_cookie
 from PIL import UnidentifiedImageError
 
 from generate_qr_code_grid import generate_layout
-from .render_react_app import render_react_app, render_permission_denied_page
 from .models import (
     Group,
     Plant,
@@ -26,26 +25,29 @@ from .models import (
 from .view_decorators import (
     events_map,
     get_user_token,
-    find_model_type,
     requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
-    get_plant_or_group_by_uuid,
     get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
     clean_payload_data
 )
-from .build_states import (
-    build_overview_state,
-    get_overview_state,
-    build_manage_plant_state,
-    build_manage_group_state,
+from .get_state_views import (
     update_cached_overview_details_keys,
     add_instance_to_cached_overview_state,
     remove_instance_from_cached_overview_state,
     update_cached_overview_state_show_archive_bool
 )
+
+
+@get_user_token
+@ensure_csrf_cookie
+def serve_spa(request, **kwargs):
+    '''Renders the SPA shell.'''
+    return render(request, 'plant_tracker/index.html', {
+        'user_accounts_enabled': not settings.SINGLE_USER_MODE
+    })
 
 
 @requires_json_post(["qr_per_row"])
@@ -74,243 +76,6 @@ def get_qr_codes(data, **kwargs):
             {'error': 'failed to generate, try a shorter URL_PREFIX'},
             status=500
         )
-
-
-@get_user_token
-def overview(request, user):
-    '''Renders the overview page for the requesting user (shows their existing
-    plants/groups, or setup if none).
-    '''
-
-    # Set generic page title in SINGLE_USER_MODE or if user has no first name
-    if settings.SINGLE_USER_MODE or not user.first_name:
-        title='Plant Overview'
-    else:
-        title=f"{user.first_name}'s Plants"
-
-    return render_react_app(
-        request,
-        title=title,
-        bundle='overview',
-        state=get_overview_state(user)
-    )
-
-
-@get_user_token
-def get_overview_page_state(_, user):
-    '''Returns current overview page state for the requesting user, used to
-    refresh contents when returning to over view with back button.
-    '''
-    return JsonResponse(
-        get_overview_state(user),
-        status=200
-    )
-
-
-@get_user_token
-def archived_overview(request, user):
-    '''Renders overview page for the requesting user showing only their
-    archived plants and groups.
-    '''
-
-    state = build_overview_state(user, archived=True)
-
-    # Redirect to main overview if user has no archived plants or groups
-    if not state:
-        return HttpResponseRedirect('/')
-
-    return render_react_app(
-        request,
-        title='Archived',
-        bundle='overview',
-        state=state
-    )
-
-
-@get_user_token
-def manage(request, uuid, user):
-    '''Renders the correct page when a QR code is scanned:
-      - manage_plant: rendered if QR code UUID matches an existing Plant entry
-      - manage_group: rendered if QR code UUID matches an existing Group entry
-      - register: rendered if the QR code UUID does not match an existing Plant/Group
-    '''
-
-    model_type = find_model_type(uuid)
-    if model_type == 'plant':
-        plant = Plant.objects.get_with_manage_plant_annotation(uuid)
-        return render_manage_plant_page(request, plant, user)
-
-    if model_type == 'group':
-        group = Group.objects.get_with_manage_group_annotation(uuid)
-        return render_manage_group_page(request, group, user)
-
-    # Render register page if UUID is new
-    return render_registration_page(request, uuid, user)
-
-
-def render_manage_plant_page(request, plant, user):
-    '''Renders management page for an existing plant.
-    Called by /manage endpoint if UUID is found in database plant table.
-    '''
-
-    # Render permission denied page if requesting user does not own plant
-    if plant.user != user:
-        return render_permission_denied_page(
-            request,
-            'You do not have permission to view this plant'
-        )
-
-    return render_react_app(
-        request,
-        title='Manage Plant',
-        bundle='manage_plant',
-        state=build_manage_plant_state(plant)
-    )
-
-
-@get_user_token
-def get_plant_state(request, uuid, user):
-    '''Returns current manage_plant state for the requested plant.
-    Used to refresh contents after user presses back button.
-    '''
-    try:
-        plant = Plant.objects.get_with_manage_plant_annotation(uuid)
-        if not plant:
-            return JsonResponse({'Error': 'Plant not found'}, status=404)
-        if plant.user != user:
-            return JsonResponse(
-                {"error": "plant is owned by a different user"},
-                status=403
-            )
-        return JsonResponse(
-            build_manage_plant_state(plant),
-            status=200
-        )
-    except ValidationError:
-        return JsonResponse({'Error': 'Requires plant UUID'}, status=400)
-
-
-def get_plant_species_options(request):
-    '''Returns list used to populate plant species combobox suggestions.'''
-    species = Plant.objects.all().values_list('species', flat=True)
-    options = sorted(list(set(i for i in species if i is not None)))
-    return JsonResponse({'options': options}, status=200)
-
-
-@get_user_token
-def get_plant_options(request, user):
-    '''Returns dict of plants with no group (populates group add plants modal).'''
-    return JsonResponse(
-        {'options': Plant.objects.get_add_plants_to_group_modal_options(user)},
-        status=200
-    )
-
-
-@get_user_token
-def get_add_to_group_options(request, user):
-    '''Returns dict of groups (populates plant add to group modal).'''
-    return JsonResponse(
-        {'options': Group.objects.get_add_to_group_modal_options(user)},
-        status=200
-    )
-
-
-def render_manage_group_page(request, group, user):
-    '''Renders management page for an existing group.
-    Called by /manage endpoint if UUID is found in database group table.
-    '''
-
-    # Render permission denied page if requesting user does not own group
-    if group.user != user:
-        return render_permission_denied_page(
-            request,
-            'You do not have permission to view this group'
-        )
-
-    return render_react_app(
-        request,
-        title='Manage Group',
-        bundle='manage_group',
-        state=build_manage_group_state(group)
-    )
-
-
-@get_user_token
-def get_group_state(request, uuid, user):
-    '''Returns current manage_group state for the requested group.
-    Used to refresh contents after user presses back button.
-    '''
-    try:
-        group = Group.objects.get_with_manage_group_annotation(uuid)
-        if not group:
-            return JsonResponse({'Error': 'Group not found'}, status=404)
-        if group.user != user:
-            return JsonResponse(
-                {"error": "group is owned by a different user"},
-                status=403
-            )
-        return JsonResponse(
-            build_manage_group_state(group),
-            status=200
-        )
-    except ValidationError:
-        return JsonResponse({'Error': 'Requires group UUID'}, status=400)
-
-
-def render_registration_page(request, uuid, user):
-    '''Renders registration page used to create a new plant or group.
-    Called by /manage endpoint if UUID does not exist in database.
-
-    If the old_uuid cache is set (see /change_qr_code endpoint) context includes
-    information used by frontend to show change QR prompt (calls /change_uuid
-    and redirects if confirmed, shows normal registration form if rejected).
-
-    If the dividing_from cache is set (see /divide_plant endpoint) context
-    includes information used by frontend to show confirm dividing prompt (shows
-    plant form with pre-filled details if confirmed, shows normal registration
-    for if rejected).
-    '''
-
-    state = { 'new_id': uuid }
-
-    # Check if user is changing plant QR code, add details if so
-    old_uuid = cache.get(f'old_uuid_{user.pk}')
-    if old_uuid:
-        instance = get_plant_or_group_by_uuid(old_uuid, annotate=True)
-        if instance:
-            state['changing_qr_code'] = {
-                'type': instance._meta.model_name,
-                'instance': instance.get_details(),
-                'new_uuid': uuid
-            }
-            if state['changing_qr_code']['type'] == 'plant':
-                preview_url = instance.get_default_photo_details()['preview']
-                state['changing_qr_code']['preview'] = preview_url
-
-        # If UUID no longer exists in database (plant/group deleted) clear cache
-        else:
-            cache.delete(f'old_uuid_{user.pk}')
-
-    # Check if user is dividing plant, add details if dividing
-    division_in_progress = cache.get(f'division_in_progress_{user.pk}')
-    if division_in_progress:
-        plant = Plant.objects.get_with_overview_annotation(
-            uuid=division_in_progress['divided_from_plant_uuid']
-        )
-        if plant:
-            state['dividing_from'] = {
-                'plant_details': plant.get_details(),
-                'default_photo': plant.get_default_photo_details(),
-                'plant_key': str(plant.pk),
-                'event_key': division_in_progress['division_event_key']
-            }
-
-    return render_react_app(
-        request,
-        title='Register New Plant',
-        bundle='register',
-        state=state
-    )
 
 
 @get_user_token
@@ -346,7 +111,7 @@ def register_plant(user, data, **kwargs):
                 )
 
         # Redirect to manage page
-        return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+        return JsonResponse({'success': 'plant registered'}, status=200)
 
     except IntegrityError:
         return JsonResponse(
@@ -378,7 +143,7 @@ def register_group(user, data, **kwargs):
             add_instance_to_cached_overview_state(group)
 
         # Redirect to manage page
-        return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+        return JsonResponse({'success': 'group registered'}, status=200)
 
     except IntegrityError:
         return JsonResponse(

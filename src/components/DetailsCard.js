@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { openEditModal } from 'src/components/EditModal';
 
 // Shown in dropdown when name in nav bar clicked
-const DetailsCard = ({ children }) => {
+const DetailsCard = ({ openEditModal, children }) => {
     return (
         <div className="details-card">
             <div className="card-body text-sm">
@@ -17,6 +16,7 @@ const DetailsCard = ({ children }) => {
 };
 
 DetailsCard.propTypes = {
+    openEditModal: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 };
 

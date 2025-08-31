@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import FloatingFooter from 'src/components/FloatingFooter';
-import { sendPostRequest } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteModeChanged } from './interfaceSlice';

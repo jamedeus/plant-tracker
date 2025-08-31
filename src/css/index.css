@@ -134,7 +134,7 @@
         box-shadow 0.2s ease-out;
 
     /* Start animation smaller (makes faster animation more noticeable) */
-    .modal:not([open]) > & {
+    .modal:not(.modal-open) > & {
         scale: 90%;
     }
 }

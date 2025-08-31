@@ -1,21 +1,16 @@
-import createMockContext from 'src/testUtils/createMockContext';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockEvents, mockphotos } from './mockContext';
 
 describe('Timeline', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state object
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-        // Override events and photos states with mocks containing more items
-        createMockContext('events', mockEvents);
-        createMockContext('photos', mockphotos);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
@@ -25,11 +20,13 @@ describe('Timeline', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
-                <ReduxProvider>
+            <>
+                <ReduxProvider initialState={{ ...mockContext, events: mockEvents, photos: mockphotos }}>
                     <Timeline />
                 </ReduxProvider>
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 

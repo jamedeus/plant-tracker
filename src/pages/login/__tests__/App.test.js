@@ -1,7 +1,18 @@
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
+
+// Mock useNavigate to return a mock (confirm redirected to correct page)
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    };
+});
 
 describe('App', () => {
     let app, user;
@@ -10,13 +21,16 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <App />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Mock window.location to expected URL (parsed after logging in)
         mockCurrentURL('https://plants.lan/accounts/login/');
+        mockNavigate.mockReset();
     });
 
     it('shows registration form when Create account clicked', async () => {
@@ -64,7 +78,7 @@ describe('App', () => {
         expect(fetchOptions.body.get('password')).toBe('defnotanthonyweiner');
 
         // Confirm redirected to overview since no querystring in URL
-        expect(window.location.href).toBe('/');
+        expect(mockNavigate).toHaveBeenCalledWith('/');
     });
 
     it('redirects to URL in querystring after successful login', async () => {
@@ -84,7 +98,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Login"}));
 
         // Confirm redirected to user profile after login
-        expect(window.location.href).toBe('/accounts/profile/');
+        expect(mockNavigate).toHaveBeenCalledWith('/accounts/profile/');
     });
 
     it('shows error if credentials are not accepted', async () => {
@@ -207,7 +221,7 @@ describe('App', () => {
         });
 
         // Confirm redirected to overview page
-        expect(window.location.href).toBe('/');
+        expect(mockNavigate).toHaveBeenCalledWith('/');
     });
 
     it('shows error text under username when backend rejects username', async () => {

@@ -1,19 +1,24 @@
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext } from './mockContext';
+
+// Mock the global navigate function used by sendPostRequest
+jest.mock('src/navigate', () => ({
+    navigate: jest.fn(),
+    setNavigate: jest.fn(),
+}));
+import { navigate as globalMockNavigate } from 'src/navigate';
 
 describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(async () => {
@@ -22,13 +27,16 @@ describe('App', () => {
 
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+        globalMockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={mockContext} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Wait for species options to be fetched
@@ -73,8 +81,10 @@ describe('App', () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            status: 200,
+            json: () => Promise.resolve({
+                success: 'plant registered'
+            })
         }));
 
         // Fill in form fields
@@ -104,8 +114,10 @@ describe('App', () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            status: 200,
+            json: () => Promise.resolve({
+                success: 'group registered'
+            })
         }));
 
         // Click Group button
@@ -142,30 +154,15 @@ describe('App', () => {
             })
         }));
 
-        // Confirm error text is not in document
-        expect(app.queryByText('Failed to register plant')).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click Save button, confirm error modal appears
         await user.click(app.getByText('Save'));
-        expect(app.getByText('Failed to register plant')).toBeInTheDocument();
-    });
-
-    it('shows unexpected API response in error modal', async () => {
-        // Mock fetch function to return unexpected response (not error or redirect)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            redirected: false,
-            json: () => Promise.resolve({
-                error: "Unexpected, should return redirect or error"
-            })
-        }));
-
-        // Confirm error text is not in document
-        expect(app.queryByText(/Unexpected, should return redirect or error/)).toBeNull();
-
-        // Click Save button, confirm error modal appears
-        await user.click(app.getByText('Save'));
-        expect(app.getByText(/Unexpected, should return redirect or error/)).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'Failed to register plant'
+        );
     });
 
     it('disables the save button when plant fields exceed max length', async () => {
@@ -261,26 +258,6 @@ describe('App', () => {
         await user.click(app.getByText('Save'));
 
         // Confirm redirected
-        expect(window.location.href).toBe('/accounts/login/');
-    });
-
-    it('refreshes when user navigates to register page with back button', async () => {
-        // Simulate user navigating to register page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm page was reloaded
-        expect(window.location.reload).toHaveBeenCalled();
-    });
-
-    it('does not refresh when other pageshow events are triggered', () => {
-        // Simulate pageshow event with persisted == false (ie initial load)
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: false });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm page was not reloaded
-        expect(window.location.reload).not.toHaveBeenCalled();
+        expect(globalMockNavigate).toHaveBeenCalledWith('/accounts/login/');
     });
 });

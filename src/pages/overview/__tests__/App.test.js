@@ -1,8 +1,7 @@
 import { fireEvent, waitFor } from '@testing-library/react';
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext } from './mockContext';
 
@@ -12,10 +11,6 @@ describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-
         // Mock width to force mobile layout (renders title nav dropdown)
         window.innerWidth = 750;
     });
@@ -29,9 +24,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={mockContext} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 
@@ -43,12 +40,11 @@ describe('App', () => {
 
     it('opens modal when Print QR Codes dropdown option clicked', async () => {
         // Confirm modal has not been opened
-        expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
         expect(app.queryByText('96 QR codes per sheet')).toBeNull();
 
         // Click Print QR Codes dropdown option, confirm modal opened
         await user.click(app.getByText("Print QR Codes"));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(app.queryByText(/QR codes per sheet/)).not.toBeNull();
     });
 
@@ -210,9 +206,7 @@ describe('App', () => {
         }));
 
         // Confirm error modal is not rendered
-        expect(app.queryByText(
-            'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        )).toBeNull();
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Enter edit mode, click first checkbox
         await user.click(app.getByTestId('edit_plants_option'));
@@ -225,9 +219,10 @@ describe('App', () => {
         fireEvent.mouseUp(button);
 
         // Confirm error modal appeared
-        expect(app.queryByText(
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        )).not.toBeNull();
+        );
     });
 
     it('shows error modal when unable to archive plant or group', async () => {
@@ -242,9 +237,7 @@ describe('App', () => {
         }));
 
         // Confirm error modal is not rendered
-        expect(app.queryByText(
-            'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        )).toBeNull();
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Enter edit mode, click first checkbox, click archive button
         await user.click(app.getByTestId('edit_plants_option'));
@@ -252,9 +245,10 @@ describe('App', () => {
         await user.click(app.getByText('Archive'));
 
         // Confirm error modal appeared
-        expect(app.queryByText(
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        )).not.toBeNull();
+        );
     });
 
     it('shows checkboxes and event buttons when add events option clicked', async () => {
@@ -487,8 +481,8 @@ describe('App', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to bulk add events/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click add events option, select first plant, click water button
         await user.click(app.getByTestId('add_plants_option'));
@@ -496,7 +490,10 @@ describe('App', () => {
         await user.click(app.getByTestId('water-button'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to bulk add events/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to bulk add events'
+        );
     });
 
     it('does not show AddEventsFooter and EditModeFooter at the same time', async () => {
@@ -520,60 +517,6 @@ describe('App', () => {
         await user.click(app.getByTestId('edit_plants_option'));
         expect(EditModeFooter.classList).toContain('floating-footer-visible');
         expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
-    });
-
-    it('fetches new state when user navigates to overview with back button', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                plants: mockContext.plants,
-                groups: mockContext.groups
-            })
-        }));
-
-        // Simulate user navigating to overview page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith('/get_overview_state');
-        });
-    });
-
-    it('shows alert if unable to fetch new state when user presses back button', async () => {
-        // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({Error: 'Unexpected'})
-        }));
-        // Mock alert function that will be called when request fails
-        global.alert = jest.fn();
-
-        // Simulate user navigating to page with back button
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith('/get_overview_state');
-        });
-
-        // Confirm alert was shown
-        expect(global.alert).toHaveBeenCalled();
-    });
-
-    it('does not fetch new state when other pageshow events are triggered', () => {
-        // Simulate pageshow event with persisted == false (ie initial load)
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: false });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm did not call fetch
-        expect(global.fetch).not.toHaveBeenCalled();
     });
 
     it('scrolls to plants column when title dropdown is clicked', async () => {

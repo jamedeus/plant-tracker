@@ -1,23 +1,32 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
-import NoteModal, { openNoteModal } from '../NoteModal';
+import NoteModal from '../NoteModal';
+import LazyModal, { useModal } from 'src/components/LazyModal';
+import { setNoteModalHandle, openNoteModal } from '../modals';
 import { ReduxProvider } from '../store';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { postHeaders } from 'src/testUtils/headers';
 import { mockContext } from './mockContext';
 
 const mockNotes = {
-    '2024-02-13T12:00:00': 'this is an existing note',
-    '2024-02-12T12:00:00': 'another existing note'
+    '2024-02-13T12:00:00+00:00': 'this is an existing note',
+    '2024-02-12T12:00:00+00:00': 'another existing note',
+    '2024-02-13T13:00:00+00:00': 'newest existing note'
 };
 
+// Renders LazyModal with NoteModal loader that resolves immediately (no lazy load)
 const TestComponent = () => {
+    const noteModal = useModal();
+    setNoteModalHandle(noteModal);
+
     return (
-        <ReduxProvider>
-            <NoteModal />
+        <ReduxProvider initialState={{ ...mockContext, notes: mockNotes }}>
+            <LazyModal
+                ref={noteModal.ref}
+                load={() => Promise.resolve({ default: NoteModal })}
+            />
             <button onClick={() => openNoteModal()}>
                 Add New Note
             </button>
@@ -34,13 +43,6 @@ const TestComponent = () => {
 describe('Add new note', () => {
     let app, user;
 
-    beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        // Override notes state with mock containing more notes
-        createMockContext('notes', mockNotes);
-    });
-
     beforeEach(async () => {
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
@@ -48,9 +50,11 @@ describe('Add new note', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
+            <>
                 <TestComponent />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Open modal in new note mode
@@ -99,8 +103,8 @@ describe('Add new note', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to save note/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user typing note and clicking save
         await user.type(
@@ -110,8 +114,10 @@ describe('Add new note', () => {
         await user.click(app.getByText('Save'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.queryByText(/failed to save note/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to save note'
+        );
     });
 
     it('shows error toast if duplicate note error received', async() => {
@@ -153,13 +159,6 @@ describe('Add new note', () => {
 describe('Edit existing note', () => {
     let app, user;
 
-    beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        // Override notes state with mock containing more notes
-        createMockContext('notes', mockNotes);
-    });
-
     beforeEach(async () => {
         // Allow fast forwarding (must hold delete note button to confirm)
         jest.useFakeTimers({ doNotFake: ['Date'] });
@@ -167,13 +166,16 @@ describe('Edit existing note', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
+            <>
                 <TestComponent />
-            </PageWrapper>
+                <Toast />
+                <ErrorModal />
+            </>
         );
 
         // Open modal in edit mode
         await user.click(app.getByText('Edit Existing Note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
     });
 
     // Clean up pending timers after each test
@@ -205,7 +207,7 @@ describe('Edit existing note', () => {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
-                timestamps: ['2024-02-13T12:00:00']
+                timestamps: ['2024-02-13T12:00:00+00:00']
             }),
             headers: postHeaders
         });
@@ -233,7 +235,7 @@ describe('Edit existing note', () => {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
-                timestamp: '2024-02-13T12:00:00',
+                timestamp: '2024-02-13T12:00:00+00:00',
                 note_text: 'this is an existing note some more details'
             }),
             headers: postHeaders
@@ -250,8 +252,8 @@ describe('Edit existing note', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to delete note/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
@@ -260,8 +262,10 @@ describe('Edit existing note', () => {
         fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.queryByText(/failed to delete note/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to delete note'
+        );
     });
 
     it('shows error in modal when edit API call fails', async () => {
@@ -275,13 +279,15 @@ describe('Edit existing note', () => {
         }));
 
         // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to edit note/)).toBeNull();
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user clicking delete
         await user.click(app.getByText('Save'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.queryByText(/failed to edit note/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to edit note'
+        );
     });
 });

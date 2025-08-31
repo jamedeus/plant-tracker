@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import GroupDetails from 'src/components/GroupDetails';
 import PlantDetails from 'src/components/PlantDetails';
 import clsx from 'clsx';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 const DetailsCard = ({ name, photo, type, detailsParams }) => {
     return (
@@ -62,7 +64,10 @@ DetailsCard.propTypes = {
         "plant",
         "group"
     ]).isRequired,
-    detailsParams: PropTypes.object.isRequired
+    detailsParams: PropTypes.oneOfType([
+        plantDetailsProptypes,
+        groupDetailsProptypes
+    ]).isRequired
 };
 
 export default DetailsCard;

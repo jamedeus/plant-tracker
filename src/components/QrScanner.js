@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import useSound from 'use-sound';
 import error from 'src/sounds/error.mp3';
@@ -62,7 +63,7 @@ const QrScanner = ({ onExit }) => {
         result.forEach(code => {
             if (urlIsSupported(code.rawValue)) {
                 // Show button to open scanned URL
-                setScannedUrl(code.rawValue);
+                setScannedUrl(new URL(code.rawValue).pathname);
                 // Play sound first time valid QR code is scanned
                 if (!matchedUrls.current.includes(code.rawValue)) {
                     playMatch();
@@ -95,17 +96,19 @@ const QrScanner = ({ onExit }) => {
                 sound={false}
             />
             {scannedUrl ? (
-                <a
-                    href={scannedUrl}
+                <Link
+                    to={scannedUrl}
                     className={clsx(
                         'absolute bottom-8 btn btn-accent rounded-full text-lg',
                         'left-1/2 -translate-x-1/2'
                     )}
                     data-testid="scanned-url"
                     key={scannedUrl}
+                    onClick={onExit}
+                    discover="none"
                 >
                     Open
-                </a>
+                </Link>
             ) : (
                 <div className="qr-scanner-instructions">
                     Point the camera at a QR code

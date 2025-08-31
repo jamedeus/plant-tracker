@@ -1,28 +1,32 @@
-import createMockContext from 'src/testUtils/createMockContext';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 
 describe('App', () => {
     let app, user;
 
-    // Create mock state object
-    createMockContext('user_details', {
-        username: "cdanger",
-        email: "totally.not.anthony.weiner@gmail.com",
-        first_name: "Carlos",
-        last_name: "Danger",
-        date_joined: "2025-04-06T00:08:53.392806+00:00"
-    });
-    createMockContext('user_accounts_enabled', true);
+    // Simulate SINGLE_USER_MODE disabled on backend
+    globalThis.USER_ACCOUNTS_ENABLED = true;
 
     beforeEach(() => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={{
+                    user_details: {
+                        username: "cdanger",
+                        email: "totally.not.anthony.weiner@gmail.com",
+                        first_name: "Carlos",
+                        last_name: "Danger",
+                        date_joined: "2025-04-06T00:08:53.392806+00:00",
+                        email_verified: false
+                    }
+                }} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 

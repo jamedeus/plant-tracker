@@ -12,11 +12,11 @@ from functools import wraps, cache
 
 from django.conf import settings
 from django.db.models import Value
+from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
 
-from .render_react_app import render_permission_denied_page
 from .models import Group, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
@@ -67,18 +67,22 @@ def get_user_token(func):
     '''Passes User model object to wrapped function as user kwarg.
     If SINGLE_USER_MODE enabled returns default user without checking request.
     If user accounts enabled reads user from requests. If not logged in returns
-    401 error for POST, redirect to login page for GET.
+    401 error for POST and GETs that expect JSON, otherwise redirects to login.
     '''
     @wraps(func)
     def wrapper(request, **kwargs):
         # Return default user without checking auth if SINGLE_USER_MODE enabled
         if settings.SINGLE_USER_MODE:
             return func(request, user=get_default_user(), **kwargs)
+        # User not signed in
         if not request.user.is_authenticated:
-            # Redirect to login page if not signed in
-            if request.method != "POST":
+            # Redirect page requests to login with requested URL in querystring
+            accept = request.headers.get("Accept", "").lower()
+            if request.method != "POST" and "application/json" not in accept:
                 return HttpResponseRedirect(f'/accounts/login/?next={request.path}')
-            # Frontend sendPostRequest redirects to login if it receives 401
+
+            # Return 401 error for POST requests and GETs that expect JSON
+            # (frontend SPA redirects to login page and sets querystring)
             return JsonResponse({'error': 'authentication required'}, status=401)
         return func(request, user=request.user, **kwargs)
     return wrapper
@@ -316,14 +320,15 @@ def disable_in_single_user_mode(func):
         if settings.SINGLE_USER_MODE:
             # User requesting disabled page: render permission denied
             if request.method == "GET":
-                return render_permission_denied_page(
+                return render(
                     request,
-                    'User accounts are disabled'
+                    'plant_tracker/permission_denied.html',
+                    { 'error': 'User accounts are disabled' }
                 )
             # User POSTing to disabled endpoint: return error response
             return JsonResponse(
                 {"error": "user accounts are disabled"},
-                status=400
+                status=403
             )
         return func(request, *args, **kwargs)
     return wrapper

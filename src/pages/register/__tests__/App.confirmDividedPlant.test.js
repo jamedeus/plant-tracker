@@ -1,9 +1,7 @@
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext, mockDividingFrom } from './mockContext';
 
@@ -11,10 +9,8 @@ describe('Register page while plant division in progress', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (including dividing_from)
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-        createMockContext('dividing_from', mockDividingFrom);
+        // Simulate SINGLE_USER_MODE disabled on backend
+        globalThis.USER_ACCOUNTS_ENABLED = true;
     });
 
     beforeEach(() => {
@@ -27,9 +23,10 @@ describe('Register page while plant division in progress', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={{ ...mockContext, dividing_from: mockDividingFrom }} />
+                <ErrorModal />
+            </>
         );
     });
 
@@ -119,8 +116,10 @@ describe('Register page while plant division in progress', () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            status: 200,
+            json: () => Promise.resolve({
+                success: 'plant registered'
+            })
         }));
 
         // Click Save button
@@ -156,8 +155,10 @@ describe('Register page while plant division in progress', () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+            status: 200,
+            json: () => Promise.resolve({
+                success: 'plant registered'
+            })
         }));
 
         // Click Save button

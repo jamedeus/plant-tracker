@@ -1,18 +1,22 @@
 import React, { useState, useRef, memo, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
-import { sendPostRequest, parseDomContext } from 'src/util';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import QrScannerButton from 'src/components/QrScannerButton';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { useBackButton } from 'src/useBackButton';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
+import 'src/css/index.css';
+import uuidPropType from 'src/types/uuidPropType';
+import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 const Form = memo(function Form({
     visibleForm,
@@ -76,7 +80,12 @@ Form.propTypes = {
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     showTabs: PropTypes.bool.isRequired,
-    defaultValues: PropTypes.object.isRequired
+    defaultValues: PropTypes.shape({
+        name: PropTypes.string,
+        species: PropTypes.string,
+        pot_size: PropTypes.number,
+        description: PropTypes.string
+    })
 };
 
 const ConfirmPrompt = ({
@@ -131,18 +140,21 @@ ConfirmPrompt.propTypes = {
         "plant",
         "group"
     ]).isRequired,
-    detailsParams: PropTypes.object.isRequired,
+    detailsParams: PropTypes.oneOfType([
+        plantDetailsProptypes,
+        groupDetailsProptypes
+    ]).isRequired,
     handleConfirm: PropTypes.func.isRequired,
     handleReject: PropTypes.func.isRequired,
     confirmButtonTitle: PropTypes.string.isRequired,
     rejectButtonTitle: PropTypes.string.isRequired
 };
 
-function App() {
-    // Load context set by django template
-    const newID = parseDomContext("new_id");
-    const dividingFrom = parseDomContext("dividing_from");
-    const changingQrCode = parseDomContext("changing_qr_code");
+function App({ initialState }) {
+    // Initialize entirely from SPA-provided state
+    const newID = initialState.new_id;
+    const dividingFrom = initialState.dividing_from;
+    const changingQrCode = initialState.changing_qr_code;
 
     // Default form values (only used when dividing existing plant)
     const defaultValues = useMemo(() => {
@@ -191,9 +203,8 @@ function App() {
         setFormIsValid(true);
     };
 
-    // Reload if user navigates to page by pressing back button (uuid may now
-    // be registered, refresh will replace with manage plant/group page if so)
-    useBackButton(window.location.reload);
+    // Used to change page after successful registration
+    const navigate = useNavigate();
 
     const handleRegister = async () => {
         // Build payload by parsing all fields from visible form
@@ -214,16 +225,13 @@ function App() {
 
         const endpoint = visibleForm === 0 ? '/register_plant' : '/register_group';
         const response = await sendPostRequest(endpoint, payload);
+        // Reload route (switch to manage page) if successful
+        if (response.ok) {
+            navigate(window.location.pathname);
         // Show error modal if registration failed
-        if (!response.ok) {
+        } else {
             const data = await response.json();
             openErrorModal(data.error);
-        // Redirect to manage page if successfully registered
-        } else if (response.redirected) {
-            window.location.href = response.url;
-        } else {
-            const responseData = await response.json();
-            openErrorModal(responseData);
         }
     };
 
@@ -233,9 +241,9 @@ function App() {
             uuid: changingQrCode.instance.uuid,
             new_id: changingQrCode.new_uuid
         });
-        // Reload page if changed successfully
+        // Reload route (switch to manage page) if successful
         if (response.ok) {
-            window.location.reload();
+            navigate(window.location.pathname);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -293,7 +301,10 @@ function App() {
     const DropdownMenuOptions = useMemo(() => <NavbarDropdownOptions />, []);
 
     return (
-        <div className="container flex flex-col mx-auto items-center">
+        <div
+            className="container flex flex-col mx-auto items-center"
+            data-testid="register-layout"
+        >
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title='Registration'
@@ -328,5 +339,29 @@ function App() {
         </div>
     );
 }
+
+App.propTypes = {
+    initialState: PropTypes.shape({
+        new_id: uuidPropType.isRequired,
+        changing_qr_code: PropTypes.shape({
+            instance: PropTypes.oneOfType([
+                plantDetailsProptypes,
+                groupDetailsProptypes
+            ]).isRequired,
+            new_uuid: uuidPropType.isRequired,
+            preview: PropTypes.string,
+            type: PropTypes.oneOf([
+                "plant",
+                "group"
+            ]).isRequired
+        }),
+        dividing_from: PropTypes.shape({
+            plant_details: plantDetailsProptypes.isRequired,
+            default_photo: PropTypes.object.isRequired,
+            event_key: PropTypes.string.isRequired,
+            plant_key: PropTypes.string.isRequired,
+        })
+    }).isRequired
+};
 
 export default App;

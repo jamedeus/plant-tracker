@@ -1,12 +1,15 @@
 import React from 'react';
-import { PageWrapper } from 'src/index';
+import { ErrorModal } from 'src/components/ErrorModal';
 import ChangeQrModal, { openChangeQrModal } from '../ChangeQrModal';
 import { postHeaders } from 'src/testUtils/headers';
 
-const TestComponent = () => {
+/* eslint react/prop-types: 0 */
+
+const TestComponent = ({ mockClose }) => {
     return (
         <>
             <ChangeQrModal
+                close={mockClose}
                 uuid='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
             />
             <button onClick={openChangeQrModal}>
@@ -18,14 +21,16 @@ const TestComponent = () => {
 
 describe('ChangeQrModal', () => {
     let app, user;
+    const mockClose = jest.fn();
 
     beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <PageWrapper>
-                <TestComponent />
-            </PageWrapper>
+            <>
+                <TestComponent mockClose={mockClose} />
+                <ErrorModal />
+            </>
         );
 
         // Open modal
@@ -55,7 +60,7 @@ describe('ChangeQrModal', () => {
         });
 
         // Confirm modal was closed
-        expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
+        expect(mockClose).toHaveBeenCalled();
     });
 
     it('shows error in modal when API call fails', async () => {
@@ -69,13 +74,19 @@ describe('ChangeQrModal', () => {
         }));
 
         // Confirm arbitrary error does not appear on page
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
         expect(app.queryByText(/failed to cache UUID/)).toBeNull();
 
         // Click OK button
         await user.click(app.getByRole('button', {name: 'OK'}));
 
-        // Confirm modal appeared with arbitrary error text
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.queryByText(/failed to cache UUID/)).not.toBeNull();
+        // Confirm error modal appeared with arbitrary error text
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to cache UUID'
+        );
+
+        // Confirm did not close ChangeQrModal
+        expect(mockClose).not.toHaveBeenCalled();
     });
 });

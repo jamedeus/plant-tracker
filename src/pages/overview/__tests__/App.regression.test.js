@@ -1,8 +1,7 @@
 import { fireEvent, waitFor } from '@testing-library/react';
-import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
-import { PageWrapper } from 'src/index';
+import { Toast } from 'src/components/Toast';
+import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext } from './mockContext';
 
@@ -10,12 +9,6 @@ jest.mock('print-js');
 
 describe('App', () => {
     let app, user;
-
-    beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-    });
 
     beforeEach(() => {
         // Allow fast forwarding (must hold delete button to confirm)
@@ -26,9 +19,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
+            <>
+                <App initialState={{ ...mockContext, show_archive: false }} />
+                <Toast />
+                <ErrorModal />
+            </>
         );
     });
 
@@ -171,5 +166,32 @@ describe('App', () => {
 
         // Confirm no request was made (selection cleared after first request)
         expect(global.fetch).not.toHaveBeenCalled();
+    });
+
+    // Original bug: The archived overview link in dropdown was rendered if the
+    // show_archive state was true, but show_archive was not in the memo
+    // dependencies for the DropdownMenuOptions component. This prevented the
+    // dropdown options from updating when the first plant was archived.
+    it('adds archived overview link to dropdown when first plant is archived', async () => {
+        // Confirm archived overview link is not visible
+        expect(app.queryByText('Archived plants')).toBeNull();
+
+        // Mock fetch function to return expected response when plant is archived
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                failed: []
+            })
+        }));
+
+        // Enter edit mode, click first checkbox, click archive button
+        await user.click(app.getByTestId('edit_plants_option'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByText('Archive'));
+
+        // Confirm archived overview link appeared in dropdown
+        expect(app.getByText('Archived plants')).toBeInTheDocument();
+        expect(app.getByText('Archived plants')).toHaveAttribute('href', '/archived');
     });
 });

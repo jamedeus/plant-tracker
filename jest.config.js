@@ -31,9 +31,12 @@ module.exports = {
         'src/css/',
         'src/testUtils/',
         'mockContext.js',
-        'tailwind.config.js'
+        'tailwind.config.js',
+        'PropType.js$',
+        'PropTypes.js$'
     ],
     testPathIgnorePatterns: ['mockContext.js'],
+    setupFiles: ['<rootDir>/src/testUtils/jest.polyfills.js'],
     setupFilesAfterEnv: ['<rootDir>/src/testUtils/jest.setup.js'],
-    testTimeout: 10000
+    testTimeout: 15000
 };
