@@ -262,7 +262,7 @@ const Layout = () => {
             <LazyModal
                 ref={printModal.ref}
                 ariaLabel="Print QR Codes"
-                load={() => import(/* webpackChunkName: "print-modal" */ "./PrintModal")}
+                load={() => import(/* webpackChunkName: "overview_print-modal" */ "./PrintModal")}
             />
         </div>
     );

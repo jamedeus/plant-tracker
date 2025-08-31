@@ -151,14 +151,14 @@ const Title = memo(function Title() {
             <LazyModal
                 ref={photoModal.ref}
                 ariaLabel="Upload plant photos"
-                load={() => import(/* webpackChunkName: "photo-modal" */ "./PhotoModal")}
+                load={() => import(/* webpackChunkName: "manage_plant_photo-modal" */ "./PhotoModal")}
             />
 
             <LazyModal
                 ref={divisionModal.ref}
                 title="Divide Plant"
                 ariaLabel="Divide plant"
-                load={() => import(/* webpackChunkName: "division-modal" */ "./DivisionModal")}
+                load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}
             />
         </div>
     );

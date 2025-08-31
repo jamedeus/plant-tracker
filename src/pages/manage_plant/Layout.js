@@ -27,7 +27,7 @@ import clsx from 'clsx';
 
 // Dynamic import (don't request webpack bundle until gallery opened)
 const Gallery = lazy(
-    () => import(/* webpackChunkName: "lightbox" */ './Gallery')
+    () => import(/* webpackChunkName: "manage_plant_gallery" */ './Gallery')
 );
 
 function Layout() {
@@ -227,7 +227,7 @@ function Layout() {
                 title="Edit Details"
                 ariaLabel="Edit plant details"
                 className="max-w-[25rem]"
-                load={() => import(/* webpackChunkName: "edit-plant-modal" */ "./EditPlantModal")}
+                load={() => import(/* webpackChunkName: "manage_plant_edit-modal" */ "./EditPlantModal")}
             />
 
             <LazyModal
@@ -241,7 +241,7 @@ function Layout() {
                 ref={groupModal.ref}
                 title="Add plant to group"
                 ariaLabel="Add plant to group"
-                load={() => import(/* webpackChunkName: "add-to-group-modal" */ "./GroupModal")}
+                load={() => import(/* webpackChunkName: "manage_plant_group-modal" */ "./GroupModal")}
             />
 
             {/* Don't render until user opens gallery */}

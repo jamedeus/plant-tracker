@@ -20,14 +20,14 @@ const App = ({ initialState }) => {
             <LazyModal
                 ref={noteModal.ref}
                 ariaLabel="Add/edit note"
-                load={() => import(/* webpackChunkName: "note-modal" */ "./NoteModal")}
+                load={() => import(/* webpackChunkName: "manage_plant_note-modal" */ "./NoteModal")}
             />
 
             <LazyModal
                 ref={repotModal.ref}
                 title="Repot Plant"
                 ariaLabel="Repot plant"
-                load={() => import(/* webpackChunkName: "repot-modal" */ "./RepotModal")}
+                load={() => import(/* webpackChunkName: "manage_plant_repot-modal" */ "./RepotModal")}
             />
         </ReduxProvider>
     );
