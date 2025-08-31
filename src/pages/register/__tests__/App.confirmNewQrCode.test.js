@@ -124,14 +124,17 @@ describe('Register page while changing QR code in progress', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to change QR code/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click confirm button
         await user.click(app.getByTitle('Change QR code'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to change QR code/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to change QR code'
+        );
     });
 
     // Note: this response can only be received if SINGLE_USER_MODE is disabled

@@ -154,12 +154,15 @@ describe('App', () => {
             })
         }));
 
-        // Confirm error text is not in document
-        expect(app.queryByText('Failed to register plant')).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click Save button, confirm error modal appears
         await user.click(app.getByText('Save'));
-        expect(app.getByText('Failed to register plant')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'Failed to register plant'
+        );
     });
 
     it('disables the save button when plant fields exceed max length', async () => {

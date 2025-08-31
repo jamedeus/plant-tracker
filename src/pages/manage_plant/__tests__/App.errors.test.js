@@ -43,8 +43,8 @@ describe('App', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to edit plant details/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Open edit modal
         await act(async () => await jest.advanceTimersByTimeAsync(100));
@@ -58,7 +58,10 @@ describe('App', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to edit plant details/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to edit plant details'
+        );
     });
 
     it('shows error modal if error received while creating event', async() => {
@@ -70,15 +73,18 @@ describe('App', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to create event/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click water button
         await user.click(app.getByRole("button", {name: "Water"}));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to create event/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to create event'
+        );
     });
 
     it('shows error modal if error received while removing from group', async() => {
@@ -90,15 +96,18 @@ describe('App', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to remove plant from group/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click "Remove from group" button in details dropdown
         await user.click(app.getByTitle(/Remove plant from group/));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to remove plant from group/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to remove plant from group'
+        );
     });
 
     it('shows error modal if error received while repotting plant', async() => {
@@ -110,8 +119,8 @@ describe('App', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to repot plant/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user submitting repot modal
         await user.click(app.getAllByText('Repot plant')[0]);
@@ -119,7 +128,10 @@ describe('App', () => {
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to repot plant/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to repot plant'
+        );
     });
 
     it('shows error modal if error received while dividing plant', async() => {
@@ -131,8 +143,8 @@ describe('App', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/same timestamp already exists/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user submitting division modal
         await user.click(app.getByText(/Divide plant/));
@@ -140,7 +152,10 @@ describe('App', () => {
         await user.click(app.getByRole('button', {name: 'OK'}));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/same timestamp already exists/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'Event with same timestamp already exists'
+        );
     });
 
     it('shows error modal if error received while adding to group', async() => {
@@ -161,8 +176,8 @@ describe('App', () => {
         const addButton = app.getByTitle("Add plant to group");
         expect(addButton).not.toBeNull();
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to add plant to group/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Mock fetch to return group options (requested when modal opened)
         global.fetch = jest.fn(() => Promise.resolve({
@@ -186,6 +201,9 @@ describe('App', () => {
         await user.click(app.getByLabelText('Go to Test group page').nextSibling);
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to add plant to group/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to add plant to group'
+        );
     });
 });

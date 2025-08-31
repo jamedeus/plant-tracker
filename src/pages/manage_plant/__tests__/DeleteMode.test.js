@@ -389,8 +389,8 @@ describe('Delete mode', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to delete event/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user deleting newest water event
         await user.click(app.getByText('Delete mode'));
@@ -403,7 +403,10 @@ describe('Delete mode', () => {
         fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to delete event/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to delete event'
+        );
     });
 
     it('shows error modal if error received while deleting photo', async () => {
@@ -415,8 +418,8 @@ describe('Delete mode', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to delete photos/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user deleting a photo
         await user.click(app.getByText('Delete mode'));
@@ -427,7 +430,10 @@ describe('Delete mode', () => {
         fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to delete photos/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to delete photos'
+        );
     });
 
     it('shows error modal if error received while deleting note', async () => {
@@ -439,8 +445,8 @@ describe('Delete mode', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to delete note/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user deleting a note
         await user.click(app.getByText('Delete mode'));
@@ -451,6 +457,9 @@ describe('Delete mode', () => {
         fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to delete note/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to delete note'
+        );
     });
 });

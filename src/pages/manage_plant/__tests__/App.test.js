@@ -322,10 +322,8 @@ describe('App', () => {
     });
 
     it('does not make /repot_plant request if custom pot size is blank', async () => {
-        // Confirm error text does not exist
-        expect(app.queryByText(
-            'Please enter a custom pot size or select a different option'
-        )).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
@@ -336,9 +334,10 @@ describe('App', () => {
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm error modal appeared with instructions
-        expect(app.getByText(
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Please enter a custom pot size or select a different option'
-        )).not.toBeNull();
+        );
 
         // Confirm fetch was NOT called
         expect(global.fetch).not.toHaveBeenCalled();

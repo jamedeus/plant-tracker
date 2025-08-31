@@ -175,10 +175,14 @@ describe('PhotoModal', () => {
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1, file2] } });
 
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
+
         // Simulate user clicking upload button
         await user.click(app.getByText('Upload'));
 
-        // Confirm modal appeared with failed photo names
+        // Confirm error modal appeared with failed photo names
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
         expect(app.queryByText(/Failed to upload 2 photo(s)/)).not.toBeNull();
         expect(app.queryByText(/photo2.heic/)).not.toBeNull();
         expect(app.queryByText(/photo1.heic/)).not.toBeNull();
@@ -201,8 +205,8 @@ describe('PhotoModal', () => {
             )
         }));
 
-        // Confirm error message does not appear on page
-        expect(app.queryByText(/Your upload was too big to process./)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user selecting a file and clicking upload
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -211,7 +215,10 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with error message
-        expect(app.queryByText(/Your upload was too big to process./)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'Your upload was too big to process.'
+        );
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
     });
@@ -226,8 +233,8 @@ describe('PhotoModal', () => {
             })
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to upload photos/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user selecting a file and clicking upload
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -236,7 +243,10 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to upload photos/)).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to upload photos'
+        );
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
     });
@@ -251,8 +261,8 @@ describe('PhotoModal', () => {
             )
         }));
 
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to upload photos/)).toBeNull();
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user selecting a file and clicking upload
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -261,7 +271,10 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with unexpected response string
-        expect(app.queryByText('Unexpected response from backend')).not.toBeNull();
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'Unexpected response from backend'
+        );
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
     });
