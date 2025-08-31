@@ -95,7 +95,6 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref)
     return createPortal(
         <div
             className={clsx("modal", active && "modal-open")}
-            open={active ? true : undefined}
             aria-modal="true"
             role="dialog"
         >
