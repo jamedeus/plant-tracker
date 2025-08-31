@@ -415,7 +415,7 @@ describe('PrintModal integration test', () => {
             load={() => Promise.resolve({ default: PrintModal })}
         />);
         // Open modal
-        modalRef.current.open();
+        act(() => modalRef.current.open());
         await waitFor(() => {
             expect(component.getByText("Generate")).not.toBeNull();
         });

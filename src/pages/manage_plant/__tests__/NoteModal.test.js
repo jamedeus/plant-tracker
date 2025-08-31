@@ -59,7 +59,6 @@ describe('Add new note', () => {
 
         // Open modal in new note mode
         await user.click(app.getByText('Add New Note'));
-        await act(async () => await jest.advanceTimersByTimeAsync(100));
     });
 
     it('sends correct payload when note is saved', async () => {

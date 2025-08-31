@@ -33,6 +33,7 @@ const FormModal = ({ close, FormComponent, initialValues, endpoint, payload, onS
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
+        close();
     };
 
     return (
@@ -42,18 +43,16 @@ const FormModal = ({ close, FormComponent, initialValues, endpoint, payload, onS
             </div>
 
             <div className="modal-action">
-                <form method="dialog" onSubmit={close}>
-                    <button className="btn btn-soft w-20">
-                        Cancel
-                    </button>
-                    <button
-                        className="btn btn-accent w-20"
-                        onClick={submit}
-                        disabled={!formIsValid}
-                    >
-                        Edit
-                    </button>
-                </form>
+                <button className="btn btn-soft w-20" onClick={close}>
+                    Cancel
+                </button>
+                <button
+                    className="btn btn-accent w-20"
+                    onClick={submit}
+                    disabled={!formIsValid}
+                >
+                    Edit
+                </button>
             </div>
         </>
     );
