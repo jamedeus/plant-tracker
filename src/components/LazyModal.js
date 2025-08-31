@@ -100,7 +100,7 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref)
             role="dialog"
         >
             <div className={clsx(
-                "modal-box", "text-center", "flex", "flex-col", "pt-4",
+                "modal-box text-center flex flex-col pt-4",
                 className
             )}>
                 {/* Close button */}
