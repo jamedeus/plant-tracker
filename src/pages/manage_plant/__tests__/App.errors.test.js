@@ -13,11 +13,13 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
 
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
                 <App initialState={mockContext} />
@@ -25,6 +27,11 @@ describe('App', () => {
                 <ErrorModal />
             </>
         );
+    });
+
+    afterEach(() => {
+        act(() => jest.runOnlyPendingTimers());
+        jest.useRealTimers();
     });
 
     it('shows error modal if error received while editing details', async() => {
@@ -40,11 +47,15 @@ describe('App', () => {
         expect(app.queryByText(/failed to edit plant details/)).toBeNull();
 
         // Open edit modal
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.click(app.getByText("Edit"));
+
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").closest(".modal-box");
         await user.click(within(modal).getByText("Edit"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to edit plant details/)).not.toBeNull();
@@ -64,6 +75,7 @@ describe('App', () => {
 
         // Click water button
         await user.click(app.getByRole("button", {name: "Water"}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to create event/)).not.toBeNull();
@@ -83,6 +95,7 @@ describe('App', () => {
 
         // Click "Remove from group" button in details dropdown
         await user.click(app.getByTitle(/Remove plant from group/));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to remove plant from group/)).not.toBeNull();
@@ -102,6 +115,7 @@ describe('App', () => {
 
         // Simulate user submitting repot modal
         await user.click(app.getAllByText('Repot plant')[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm modal appeared with arbitrary error text
@@ -122,6 +136,7 @@ describe('App', () => {
 
         // Simulate user submitting division modal
         await user.click(app.getByText(/Divide plant/));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.click(app.getByRole('button', {name: 'OK'}));
 
         // Confirm modal appeared with arbitrary error text
@@ -141,6 +156,7 @@ describe('App', () => {
 
         // Click "Remove from group" button in details dropdown
         await user.click(app.getByTitle(/Remove plant from group/));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         // Confirm "Add to group" button appeared in details dropdown
         const addButton = app.getByTitle("Add plant to group");
         expect(addButton).not.toBeNull();

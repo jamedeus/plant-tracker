@@ -2,6 +2,7 @@ import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockPlantOptions } from './mockContext';
+import { act } from 'react';
 
 describe('App', () => {
     let app, user;
@@ -12,10 +13,12 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
                 <App initialState={mockContext} />
@@ -23,6 +26,12 @@ describe('App', () => {
                 <ErrorModal />
             </>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('shows error modal if error received while editing details', async() => {
@@ -39,6 +48,7 @@ describe('App', () => {
 
         // Open edit modal
         await user.click(app.getByText("Edit"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").closest(".modal-box");
@@ -80,6 +90,7 @@ describe('App', () => {
 
         // Open AddPlantsModal modal
         await user.click(app.getByTestId("add_plants_option"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({

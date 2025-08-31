@@ -152,6 +152,7 @@ describe('App', () => {
 
         // Open photo modal
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Simulate user clicking input and selecting mock files
         const fileInput = app.getByTestId('photo-input');
@@ -212,6 +213,7 @@ describe('App', () => {
         // Open Note Modal, enter text (doesn't matter, will render text from
         // mock API response above), save first note
         await user.click(app.getByText('Add note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.type(app.getByRole('textbox'), '.');
         await user.click(app.getByText('Save'));
 
@@ -230,6 +232,7 @@ describe('App', () => {
 
         // Save second note (created later, but earlier timestamp)
         await user.click(app.getByText('Add note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.type(app.getByRole('textbox'), '.');
         await user.click(app.getByText('Save'));
 
@@ -487,6 +490,7 @@ describe('App', () => {
 
         // Simulate user opening photo modal, selecting 2 files, and submitting
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
@@ -553,6 +557,7 @@ describe('App', () => {
 
         // Simulate user opening photo modal, selecting 2 files, and submitting
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['photo1'], 'photo1.jpg', { type: 'image/jpeg' }),
@@ -616,6 +621,7 @@ describe('App', () => {
 
         // Simulate user opening photo modal, selecting 1 photo, and submitting
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })

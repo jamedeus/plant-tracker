@@ -14,10 +14,12 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
                 <App initialState={mockContext} />
@@ -25,6 +27,12 @@ describe('App', () => {
                 <ErrorModal />
             </>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     // Original bug: The updatePlantTimestamps function overwrote last_watered
@@ -169,6 +177,7 @@ describe('App', () => {
 
         // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
 
         // Mock fetch function to return expected response when first option added
@@ -385,6 +394,7 @@ describe('App', () => {
 
         // Open AddPlantsModal, confirm "Another test plant" option exists
         await user.click(app.getByTestId("add_plants_option"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const modal = app.getByText("Add Plants").closest(".modal-box");
         expect(within(modal).getAllByText("Another test plant").length).toBe(1);
 

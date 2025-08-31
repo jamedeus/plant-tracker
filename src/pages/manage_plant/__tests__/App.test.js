@@ -356,6 +356,7 @@ describe('App', () => {
 
         // Click "Divide plant" dropdown option (open modal)
         await user.click(app.getByText(/Divide plant/));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button
         await user.click(app.getByRole('button', {name: 'OK'}));
@@ -682,6 +683,7 @@ describe('App', () => {
 
         // Simulate user opening photo modal, selecting 2 files, and submitting
         await user.click(app.getByText('Add photos'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),

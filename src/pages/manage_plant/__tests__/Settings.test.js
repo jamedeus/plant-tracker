@@ -150,6 +150,7 @@ describe('Settings menu', () => {
             'One of the older leaves is starting to turn yellow'
         ).closest('.note-collapse').querySelector('svg');
         await user.click(editButton);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Get delete note button, confirm has hold-to-confirm class
         const editModal = app.getByText('Edit Note').closest('.modal-box');

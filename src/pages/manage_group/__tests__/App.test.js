@@ -21,10 +21,12 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
                 <App initialState={mockContext} />
@@ -32,6 +34,12 @@ describe('App', () => {
                 <ErrorModal />
             </>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('sends correct payload when edit modal is submitted', async () => {
@@ -47,7 +55,8 @@ describe('App', () => {
         }));
 
         // Open edit modal
-        await user.click(app.getByText("Edit"));
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").closest(".modal-box");
@@ -69,6 +78,7 @@ describe('App', () => {
     it('disables edit modal submit button when fields are too long', async () => {
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Get fields with length limits + edit button
         const modal = app.getByText("Edit Details").closest(".modal-box");
@@ -280,7 +290,7 @@ describe('App', () => {
 
         // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
-        await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return expected response when submitted
         global.fetch = jest.fn(() => Promise.resolve({

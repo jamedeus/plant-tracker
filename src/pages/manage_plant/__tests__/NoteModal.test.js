@@ -58,6 +58,7 @@ describe('Add new note', () => {
 
         // Open modal in new note mode
         await user.click(app.getByText('Add New Note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
     });
 
     it('sends correct payload when note is saved', async () => {
@@ -172,6 +173,7 @@ describe('Edit existing note', () => {
 
         // Open modal in edit mode
         await user.click(app.getByText('Edit Existing Note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
     });
 
     // Clean up pending timers after each test
