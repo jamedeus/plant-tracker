@@ -22,7 +22,7 @@ describe('Timeline', () => {
         const { container } = render(
             <>
                 <ReduxProvider initialState={initialState}>
-                    <Timeline openRepotModal={jest.fn()} />
+                    <Timeline />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />
@@ -42,10 +42,7 @@ describe('Timeline', () => {
                         archived: true
                     }
                 }}>
-                    <Timeline
-                        plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                        archived={true}
-                    />
+                    <Timeline />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />
@@ -67,10 +64,7 @@ describe('Timeline', () => {
                         timestamp: "2024-02-11T04:19:23+00:00"
                     }
                 }}>
-                    <Timeline
-                        plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                        archived={true}
-                    />
+                    <Timeline />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />
@@ -99,10 +93,7 @@ describe('Timeline', () => {
                         ]
                     }
                 }}>
-                    <Timeline
-                        plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                        archived={true}
-                    />
+                    <Timeline />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />
@@ -122,10 +113,7 @@ describe('Timeline', () => {
                         "2024-02-11T04:19:23+00:00": []
                     }
                 }}>
-                    <Timeline
-                        plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                        archived={true}
-                    />
+                    <Timeline />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />

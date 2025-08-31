@@ -22,8 +22,8 @@ export const setRepotModalHandle = (handle) => {
     repotModalHandle = handle;
 };
 
-export const openRepotModal = (openChangeQrModal) => {
-    repotModalHandle?.open({ openChangeQrModal: openChangeQrModal });
+export const openRepotModal = () => {
+    repotModalHandle?.open();
     document.activeElement.blur();
 };
 

@@ -56,7 +56,7 @@ describe('Timeline regressions', () => {
         const app = render(
             <>
                 <ReduxProvider initialState={initialState}>
-                    <Timeline openRepotModal={jest.fn()} />
+                    <Timeline />
                 </ReduxProvider>
                 <ErrorModal />
             </>
@@ -106,7 +106,7 @@ describe('Timeline regressions', () => {
                         ]
                     }
                 }}>
-                    <Timeline openRepotModal={jest.fn()} />
+                    <Timeline />
                 </ReduxProvider>
                 <ErrorModal />
             </>
