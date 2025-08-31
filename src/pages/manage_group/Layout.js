@@ -38,7 +38,7 @@ function Layout() {
     // Show RemovePlantsFooter, hide AddEventsFooter, close dropdown menu
     const startRemovingPlants = useCallback(() => {
         setRemovingPlants(true);
-        setAddEventsMode(0);
+        stopAddingEvents();
         document.activeElement.blur();
     }, []);
 

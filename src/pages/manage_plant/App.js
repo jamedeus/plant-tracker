@@ -6,7 +6,7 @@ import LazyModal, { useModal } from 'src/components/LazyModal';
 import { setNoteModalHandle, setRepotModalHandle } from './modals';
 import initialStatePropTypes from './initialStatePropTypes';
 
-const App = ({ initialState = null }) => {
+const App = ({ initialState }) => {
     const noteModal = useModal();
     setNoteModalHandle(noteModal);
 

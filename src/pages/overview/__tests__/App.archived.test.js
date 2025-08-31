@@ -237,4 +237,57 @@ describe('App', () => {
         // Confirm redirected to overview
         expect(globalMockNavigate).toHaveBeenCalledWith('/');
     });
+
+    it('redirects to overview when last plant/group is deleted', async () => {
+        // Mock fetch to simulate successfully deleting all groups
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                deleted: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+                ],
+                failed: []
+            })
+        }));
+
+        // Click groups column title, click both group checkboxes
+        await user.click(app.getByText('Groups (2)'));
+        await user.click(app.getByLabelText('Select Test group'));
+        await user.click(app.getByLabelText('Select Second Test group'));
+
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        const button = app.getByRole('button', { name: 'Delete' });
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
+        fireEvent.mouseUp(button);
+
+        // Confirm NOT redirected to overview (still have plants)
+        expect(globalMockNavigate).not.toHaveBeenCalled();
+
+        // Mock fetch to simulate successfully deleting all plants
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                deleted: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
+                ],
+                failed: []
+            })
+        }));
+
+        // Click plants column title, click both plant checkboxes
+        await user.click(app.getByText('Plants (2)'));
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select Second Test Plant'));
+
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
+        fireEvent.mouseUp(button);
+
+        // Confirm redirected to overview
+        expect(globalMockNavigate).toHaveBeenCalledWith('/');
+    });
 });

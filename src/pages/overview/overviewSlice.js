@@ -64,10 +64,6 @@ export const overviewSlice = createSlice({
         // Takes new showArchive bool
         showArchiveChanged(state, action) {
             state.showArchive = action.payload;
-        },
-        // Takes new title string
-        titleChanged(state, action) {
-            state.title = action.payload;
         }
     }
 });

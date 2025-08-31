@@ -277,6 +277,40 @@ describe('App', () => {
         });
     });
 
+    it('sends correct payload when only 1 plant is pruned', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "prune",
+                timestamp: "2024-03-01T20:00:00.000+00:00",
+                plants: [
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                failed: []
+            })
+        }));
+
+        // Click Select plants tab, select third plant, click prune
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
+        await user.click(app.getByLabelText('Select Newest plant'));
+        await user.click(app.getByTestId("prune-button"));
+
+        // Confirm correct data posted to /bulk_add_plant_events endpoint
+        // Should only contain UUID of third plant
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                plants: [
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                event_type: "prune",
+                timestamp: "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+    });
+
     it('sends correct payload when Add Plants modal is submitted', async () => {
         // Confirm plant list contains 3 cards
         const plantsCol = app.getByText("Plants (3)").closest('.section');
@@ -397,16 +431,6 @@ describe('App', () => {
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
     });
 
-    it('does not fetch new state when other pageshow events are triggered', () => {
-        // Simulate pageshow event with persisted == false (ie initial load)
-        const pageshowEvent = new Event('pageshow');
-        Object.defineProperty(pageshowEvent, 'persisted', { value: false });
-        window.dispatchEvent(pageshowEvent);
-
-        // Confirm did not call fetch
-        expect(global.fetch).not.toHaveBeenCalled();
-    });
-
     it('does not show AddEventsFooter and RemovePlantsFooter at the same time', async () => {
         // Confirm both footers are hidden
         const RemovePlantsFooter = app.getByTestId('remove-plants-footer');
@@ -423,5 +447,16 @@ describe('App', () => {
         await user.click(app.getByTestId('remove_plants_option'));
         expect(RemovePlantsFooter.classList).toContain('floating-footer-visible');
         expect(AddEventsFooter.classList).toContain('floating-footer-hidden');
+    });
+
+    it('opens ChangeQrModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Change QR code'));
+        await waitFor(() => {
+            expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
+        });
     });
 });

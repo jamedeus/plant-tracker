@@ -407,6 +407,36 @@ describe('SPA integration tests', () => {
         );
     });
 
+    it('does not fetch new state when other pageshow events are triggered', async () => {
+        // Mock fetch function to return overview page state
+        mockFetchJSONResponse(mockOverviewContext);
+
+        // Render SPA on overview page, confirm rendered + fetched overview state
+        const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+        const { getByTestId } = render(
+            <AppRoot router={router} />
+        );
+
+        // Confirm rendered overview page, fetched overview state
+        await waitFor(() => {
+            expect(document.title).toBe('Plant Overview');
+            expect(getByTestId('overview-layout')).toBeInTheDocument();
+        });
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_overview_state',
+            {headers: {Accept: "application/json"}}
+        );
+        jest.clearAllMocks();
+
+        // Simulate pageshow event with persisted == false (ie initial load)
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: false });
+        await act(() => window.dispatchEvent(pageshowEvent));
+
+        // Confirm did NOT call fetch
+        expect(global.fetch).not.toHaveBeenCalled();
+    });
+
     it('switches pages if different state received after user navigates to SPA with back button', async () => {
         // Mock fetch function to return manage_group page state
         mockFetchJSONResponse({

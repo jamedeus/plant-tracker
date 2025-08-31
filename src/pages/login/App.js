@@ -11,7 +11,7 @@ import 'src/css/index.css';
 
 // Takes ?next= querystring param, sanitizes to prevent malicious redirects
 // Returns sanitized URL or fallback (overview) if invalid
-function sanitizeNext(next, fallback = '/') {
+export function sanitizeNext(next, fallback = '/') {
     // Reject empty or excessively long paths
     if (!next || next.length > 2048) return fallback;
 
@@ -30,6 +30,7 @@ function sanitizeNext(next, fallback = '/') {
 
     // Require same-origin
     const url = new URL(next, window.location.origin);
+    /* istanbul ignore next: defensive, not currently reachable */
     if (url.origin !== window.location.origin) return fallback;
 
     return url.pathname + url.search + url.hash;

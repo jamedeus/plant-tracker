@@ -12,7 +12,8 @@ import { mockContext } from './mockContext';
 
 const mockNotes = {
     '2024-02-13T12:00:00+00:00': 'this is an existing note',
-    '2024-02-12T12:00:00+00:00': 'another existing note'
+    '2024-02-12T12:00:00+00:00': 'another existing note',
+    '2024-02-13T13:00:00+00:00': 'newest existing note'
 };
 
 // Renders LazyModal with NoteModal loader that resolves immediately (no lazy load)
