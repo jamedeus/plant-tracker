@@ -127,32 +127,40 @@ function Layout() {
                 topRightButton={<QrScannerButton />}
             />
 
-            <div className={clsx(
-                "flex flex-col items-center transition-[height] duration-300",
-                hideEventButtons ? "h-0" : "h-[14.25rem]"
-            )}>
-                <Tab.Group
-                    selectedIndex={addEventsMode}
-                    onChange={(index) => setAddEventsMode(index)}
-                >
-                    <Tab.List className="tab-group my-2 w-64">
-                        <Tab className={({ selected }) => clsx(
-                            'tab-option whitespace-nowrap',
-                            selected && 'tab-option-selected'
-                        )}>
-                            All plants
-                        </Tab>
-                        <Tab className={({ selected }) => clsx(
-                            'tab-option whitespace-nowrap',
-                            selected && 'tab-option-selected'
-                        )}>
-                            Select plants
-                        </Tab>
-                    </Tab.List>
-                </Tab.Group>
+            {/* Don't render event buttons if group is archived */}
+            {groupDetails.archived ? (
+                <div className="text-center text-xl mb-8">
+                    Group Archived
+                </div>
+            ) : (
+                <div className={clsx(
+                    "flex flex-col items-center transition-[height] duration-300",
+                    hideEventButtons ? "h-0" : "h-[14.25rem]"
+                )}>
+                    <Tab.Group
+                        selectedIndex={addEventsMode}
+                        onChange={(index) => setAddEventsMode(index)}
+                    >
+                        <Tab.List className="tab-group my-2 w-64">
+                            <Tab className={({ selected }) => clsx(
+                                'tab-option whitespace-nowrap',
+                                selected && 'tab-option-selected'
+                            )}>
+                                All plants
+                            </Tab>
+                            <Tab className={({ selected }) => clsx(
+                                'tab-option whitespace-nowrap',
+                                selected && 'tab-option-selected'
+                            )}>
+                                Select plants
+                            </Tab>
+                        </Tab.List>
+                    </Tab.Group>
 
-                <EventButtons />
-            </div>
+                    <EventButtons />
+                </div>
+            )}
+
 
             <div className="px-4 relative">
                 <PlantsCol
