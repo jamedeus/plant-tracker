@@ -1523,6 +1523,81 @@ class CachedStateRegressionTests(TestCase):
         })
         self.assertFalse(get_overview_state(user)['show_archive'])
 
+    def test_plant_name_does_not_update_on_overview_page_when_details_edited(self):
+        '''Issue: The /edit_plant_details endpoint incorrectly set the name key
+        to plant.get_display_name() and did not update the display_name key. The
+        frontend only reads the display_name key, so the name did not update on
+        the overview page. Writing display_name to name is also incorrect (can
+        be different, ie if name is null display_name is "Unnamed plant X").
+        '''
+
+        # Create unnamed plant
+        user = get_default_user()
+        plant = Plant.objects.create(uuid=uuid4(), user=user)
+
+        # Confirm name is unset, display_name is "Unnamed plant 1" in overview state
+        self.assertIsNone(get_overview_state(user)['plants'][str(plant.uuid)]['name'])
+        self.assertEqual(
+            get_overview_state(user)['plants'][str(plant.uuid)]['display_name'],
+            'Unnamed plant 1'
+        )
+
+        # Send edit_plant_details request with new name
+        JSONClient().post('/edit_plant_details', {
+            'plant_id': str(plant.uuid),
+            'name': 'new plant name',
+            'species': '',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Confirm both name and display_name keys were updated in overview state
+        self.assertEqual(
+            get_overview_state(user)['plants'][str(plant.uuid)]['name'],
+            'new plant name'
+        )
+        self.assertEqual(
+            get_overview_state(user)['plants'][str(plant.uuid)]['display_name'],
+            'new plant name'
+        )
+
+    def test_group_name_does_not_update_on_overview_page_when_details_edited(self):
+        '''Issue: The /edit_group_details endpoint incorrectly set the name key
+        to group.get_display_name() and did not update the display_name key. The
+        frontend only reads the display_name key, so the name did not update on
+        the overview page. Writing display_name to name is also incorrect (can
+        be different, ie if name is null display_name is "Unnamed group X").
+        '''
+
+        # Create unnamed group
+        user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=user)
+
+        # Confirm name is unset, display_name is "Unnamed group 1" in overview state
+        self.assertIsNone(get_overview_state(user)['groups'][str(group.uuid)]['name'])
+        self.assertEqual(
+            get_overview_state(user)['groups'][str(group.uuid)]['display_name'],
+            'Unnamed group 1'
+        )
+
+        # Send edit_group_details request with new name
+        JSONClient().post('/edit_group_details', {
+            'group_id': str(group.uuid),
+            'name': 'new group name',
+            'location': '',
+            'description': ''
+        })
+
+        # Confirm both name and display_name keys were updated in overview state
+        self.assertEqual(
+            get_overview_state(user)['groups'][str(group.uuid)]['name'],
+            'new group name'
+        )
+        self.assertEqual(
+            get_overview_state(user)['groups'][str(group.uuid)]['display_name'],
+            'new group name'
+        )
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

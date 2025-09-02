@@ -227,7 +227,8 @@ def edit_plant_details(plant, data, **kwargs):
         update_cached_overview_details_keys(
             plant,
             {
-                'name': plant.get_display_name(),
+                'name': plant.name,
+                'display_name': plant.get_display_name(),
                 'species': plant.species,
                 'pot_size': plant.pot_size,
                 'description': plant.description
@@ -264,7 +265,8 @@ def edit_group_details(group, data, **kwargs):
         update_cached_overview_details_keys(
             group,
             {
-                'name': group.get_display_name(),
+                'name': group.name,
+                'display_name': group.get_display_name(),
                 'location': group.location,
                 'description': group.description
             }
