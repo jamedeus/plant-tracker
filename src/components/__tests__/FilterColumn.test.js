@@ -12,7 +12,9 @@ const plants = [
         pot_size: 6,
         last_watered: "2024-02-26T05:45:44+00:00",
         last_fertilized: "2024-03-01T05:45:44+00:00",
-        thumbnail: "/media/thumbnails/IMG_8000_thumb.webp"
+        thumbnail: "/media/thumbnails/IMG_8000_thumb.webp",
+        archived: false,
+        group: null
     },
     {
         name: null,
@@ -24,7 +26,9 @@ const plants = [
         pot_size: 4,
         last_watered: null,
         last_fertilized: "2024-03-01T05:45:44+00:00",
-        thumbnail: "/media/thumbnails/IMG_8001_thumb.webp"
+        thumbnail: "/media/thumbnails/IMG_8001_thumb.webp",
+        archived: false,
+        group: null
     },
     {
         name: null,
@@ -36,7 +40,12 @@ const plants = [
         pot_size: 8,
         last_watered: "2024-02-28T05:45:44+00:00",
         last_fertilized: "2024-03-01T05:45:44+00:00",
-        thumbnail: "/media/thumbnails/IMG_8002_thumb.webp"
+        thumbnail: "/media/thumbnails/IMG_8002_thumb.webp",
+        archived: false,
+        group: {
+            name: 'Back yard',
+            uuid: 'dc569900-2066-488a-b7b0-ce72252756cb'
+        }
     },
     {
         name: null,
@@ -48,7 +57,9 @@ const plants = [
         pot_size: 2,
         last_watered: "2024-03-02T04:31:20+00:00",
         last_fertilized: "2024-03-02T04:31:20+00:00",
-        thumbnail: "/media/thumbnails/IMG_8004_thumb.webp"
+        thumbnail: "/media/thumbnails/IMG_8004_thumb.webp",
+        archived: false,
+        group: null
     },
     {
         name: "Favorite plant",
@@ -60,7 +71,9 @@ const plants = [
         pot_size: 14,
         last_watered: null,
         last_fertilized: "2024-03-01T05:45:44+00:00",
-        thumbnail: "/media/thumbnails/IMG_8003_thumb.webp"
+        thumbnail: "/media/thumbnails/IMG_8003_thumb.webp",
+        archived: false,
+        group: null
     },
 ];
 
@@ -159,6 +172,15 @@ describe('FilterColumn', () => {
         });
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('mini palm tree')).toBeInTheDocument();
+
+        // Type "yard", should only show "Unnamed plant 1" (matches group name)
+        await user.clear(filterInput);
+        await user.type(filterInput, 'yard');
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
+        });
+        expect(component.container.querySelectorAll('.card').length).toBe(1);
+        expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
     });
 
     it('does not match the keys in ignoreKeys arg when filtering', async () => {

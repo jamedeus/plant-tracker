@@ -8,6 +8,24 @@ import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FaArrowUpLong, FaArrowDownLong } from 'react-icons/fa6';
 import clsx from 'clsx';
 
+// Takes object, ignoreKeys array, and filter input query
+// Returns true if any object value (except keys in ignoreKeys) contains query
+const checkObjectForMatch = (object, ignoreKeys, query) => {
+    // Case-insensitive matching
+    const lowercaseQuery = query.toLowerCase();
+
+    return Object.entries(object).some(([key, value]) => {
+        if (value === null) return false;
+        if (ignoreKeys.includes(key)) return false;
+        // Recursively check values inside sub-objects
+        if (typeof value === 'object') {
+            return checkObjectForMatch(value, ignoreKeys, query);
+        } else {
+            return String(value).toLowerCase().includes(lowercaseQuery);
+        }
+    });
+};
+
 // Takes originalContents array, ignoreKeys array, and filter input query
 // Returns a subset of originalContents with all items that have one or more
 // parameter containing query (not including parameters in ignoreKeys)
@@ -16,19 +34,12 @@ const getCurrentContents = (originalContents, ignoreKeys, query) => {
         return originalContents;
     }
 
-    // Case-insensitive matching
-    const lowercaseQuery = query.toLowerCase();
-
     // Iterate over keys of each item in originalContents, add item to return
     // array once a single key is found that is not in state.ignoreKeys array
     // and has a value that contains query
-    return originalContents.filter(item => {
-        return Object.entries(item).some(([key, value]) => {
-            return !ignoreKeys.includes(key)
-            && value !== null
-            && value.toString().toLowerCase().includes(lowercaseQuery);
-        });
-    });
+    return originalContents.filter(item =>
+        checkObjectForMatch(item, ignoreKeys, query)
+    );
 };
 
 // Reducer used to set visible cards, sort key, and sort direction
