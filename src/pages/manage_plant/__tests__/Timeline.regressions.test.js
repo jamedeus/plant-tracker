@@ -1,13 +1,19 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
+import DeleteModeFooter from '../DeleteModeFooter';
 import { ErrorModal } from 'src/components/ErrorModal';
-import { mockContext } from './mockContext';
+import { mockContext, mockContextNoEvents } from './mockContext';
 
 describe('Timeline regressions', () => {
     beforeEach(() => {
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
+    });
+
+    // Switch back to realy timers after each test
+    afterEach(() => {
+        jest.useRealTimers();
     });
 
     // Original bug: If a month contained photos/notes but no events it would
@@ -116,5 +122,73 @@ describe('Timeline regressions', () => {
         // Confirm both child plants were rendered (not just second)
         expect(app.getByRole('link', {name: 'Child plant 1'})).not.toBeNull();
         expect(app.getByRole('link', {name: 'Child plant 2'})).not.toBeNull();
+    });
+
+    // Original bug: The timelineSlice removeDateKeyIfEmpty helper function only
+    // checked if events, photos, or notes existed before removing a dateKey. If
+    // a dividedFrom marker still existed it would disappear when the last event
+    // was deleted from the same day (until the page was reloaded).
+    it('does not remove timeline day when a dividedFrom marker still exists', async () => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
+        // Render with mock context with a single divided_from marker and repot
+        // event on the same day (simulates child plant just registered)
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const app = render(
+            <>
+                <ReduxProvider initialState={{
+                    ...mockContextNoEvents,
+                    events: {
+                        ...mockContextNoEvents.events,
+                        repot: ["2024-02-11T04:19:23+00:00"]
+                    },
+                    divided_from: {
+                        name: "Parent plant",
+                        uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968",
+                        timestamp: "2024-02-11T04:19:23+00:00"
+                    }
+                }}>
+                    <Timeline />
+                    <DeleteModeFooter />
+                </ReduxProvider>
+                <ErrorModal />
+            </>
+        );
+
+        // Confirm "Divided from" marker and repot event are in timeline
+        expect(app.getByText('Divided from')).toBeInTheDocument();
+        expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toBeInTheDocument();
+        expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toHaveTextContent('Repoted');
+
+        // Mock fetch to return response when repot event is deleted
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                deleted: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: ["2024-02-11T04:19:23+00:00"]
+                },
+                failed: []
+            })
+        }));
+
+        // Enter delete mode, select repot event
+        await user.click(app.getByText('Delete mode'));
+        await user.click(within(app.getByTestId("2024-02-10-events")).getByText("Repoted"));
+
+        // Hold delete button for 1.5 seconds, confirm repot event is deleted
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
+        expect(global.fetch).toHaveBeenCalled();
+
+        // Confirm repot event was deleted, "Divided from" marker still exists
+        expect(app.getByText('Divided from')).toBeInTheDocument();
+        expect(app.queryByTitle('Repoted')).toBeNull();
+        expect(app.queryByTitle('2024-02-11T04:19:23+00:00')).toBeNull();
     });
 });
