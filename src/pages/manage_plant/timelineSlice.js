@@ -48,7 +48,8 @@ function removeDateKeyIfEmpty(state, dateKey) {
         !state.timelineDays[dateKey].notes.length &&
         !state.timelineDays[dateKey].photos.length &&
         !state.timelineDays[dateKey].events.length &&
-        !state.timelineDays[dateKey].dividedFrom
+        !state.timelineDays[dateKey].dividedFrom &&
+        !state.timelineDays[dateKey].dividedInto
     ) {
         delete state.timelineDays[dateKey];
         delete state.calendarDays[dateKey];

@@ -191,4 +191,73 @@ describe('Timeline regressions', () => {
         expect(app.queryByTitle('Repoted')).toBeNull();
         expect(app.queryByTitle('2024-02-11T04:19:23+00:00')).toBeNull();
     });
+
+    // Original bug: The timelineSlice removeDateKeyIfEmpty helper function only
+    // checked if events, photos, or notes existed before removing a dateKey. If
+    // DivisionEvent(s) still existed it would disappear when the last event was
+    // deleted from the same day (until the page was reloaded).
+    it('does not remove timeline day when a DivisionEvent still exists', async () => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
+        // Render with mock context with 2 DivisionEvents and a repot event on
+        // the same day (common if roots were split while plant was repotted)
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const app = render(
+            <>
+                <ReduxProvider initialState={{
+                    ...mockContextNoEvents,
+                    events: {
+                        ...mockContextNoEvents.events,
+                        repot: ["2024-02-11T04:19:23+00:00"]
+                    },
+                    division_events: {
+                        "2024-02-11T04:19:23+00:00": [
+                            {name: "Child plant 1", uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8969"},
+                            {name: "Child plant 2", uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"}
+                        ]
+                    }
+                }}>
+                    <Timeline />
+                    <DeleteModeFooter />
+                </ReduxProvider>
+                <ErrorModal />
+            </>
+        );
+
+        // Confirm "Divided into" marker and repot event are in timeline
+        expect(app.getByText(/Divided into/)).toBeInTheDocument();
+        expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toBeInTheDocument();
+        expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toHaveTextContent('Repoted');
+
+        // Mock fetch to return response when repot event is deleted
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                deleted: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: ["2024-02-11T04:19:23+00:00"]
+                },
+                failed: []
+            })
+        }));
+
+        // Enter delete mode, select repot event
+        await user.click(app.getByText('Delete mode'));
+        await user.click(within(app.getByTestId("2024-02-10-events")).getByText("Repoted"));
+
+        // Hold delete button for 1.5 seconds, confirm repot event is deleted
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
+        expect(global.fetch).toHaveBeenCalled();
+
+        // Confirm repot event was deleted, "Divided into" marker still exists
+        expect(app.getByText(/Divided into/)).toBeInTheDocument();
+        expect(app.queryByTitle('Repoted')).toBeNull();
+        expect(app.queryByTitle('2024-02-11T04:19:23+00:00')).toBeNull();
+    });
 });
