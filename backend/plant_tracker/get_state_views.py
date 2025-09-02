@@ -140,6 +140,13 @@ def has_archived_entries(user):
     return bool(plant_queryset.union(group_queryset))
 
 
+def get_overview_page_title(user):
+    '''Takes user, returns title for the overview page.'''
+    if not settings.SINGLE_USER_MODE and user.first_name:
+        return f"{user.first_name}'s Plants"
+    return "Plant Overview"
+
+
 def build_overview_state(user, archived=False):
     '''Takes user, builds state parsed by overview page and returns.
 
@@ -171,14 +178,6 @@ def build_overview_state(user, archived=False):
             .prefetch_related(Prefetch('group', queryset=groups))
     )
 
-    # Add title for navbar
-    if archived:
-        title = "Archived"
-    elif not settings.SINGLE_USER_MODE and user.first_name:
-        title = f"{user.first_name}'s Plants"
-    else:
-        title = "Plant Overview"
-
     state = {
         'plants': {
             str(plant.uuid): plant.get_details()
@@ -189,7 +188,7 @@ def build_overview_state(user, archived=False):
             for group in groups
         },
         'show_archive': show_archive,
-        'title': title
+        'title': 'Archived' if archived else get_overview_page_title(user)
     }
 
     # Cache state indefinitely (updates automatically when database changes)

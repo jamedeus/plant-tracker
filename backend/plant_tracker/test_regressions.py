@@ -994,6 +994,10 @@ class CachedStateRegressionTests(TestCase):
         # Clear entire cache before each test
         cache.clear()
 
+    def tearDown(self):
+        # Revert back to SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = True
+
     def test_display_name_of_unnamed_plants_update_correctly(self):
         '''Issue: cached manage_plant state is not updated until plant is saved
         in database. If plant has no name or species its display_name will have
@@ -1597,6 +1601,43 @@ class CachedStateRegressionTests(TestCase):
             get_overview_state(user)['groups'][str(group.uuid)]['display_name'],
             'new group name'
         )
+
+    def test_overview_title_does_not_update_when_user_details_changed(self):
+        '''Issue: Since the SPA refactor the cached overview state contains the
+        title used for the page and navbar. If the user's name is set the title
+        changes to "<Name>'s Plants, but the /edit_user_details endpoint did not
+        update the title in the cached overview state.
+        '''
+
+        # Disable SINGLE_USER_MODE (overview always uses generic title)
+        settings.SINGLE_USER_MODE = False
+
+        # Create user with no first name
+        user = get_user_model().objects.create_user(
+            username='unittest',
+            password='12345',
+            first_name='',
+            last_name='',
+            email='carlosdanger@hotmail.com'
+        )
+
+        # Confirm cached overview state has generic title (user has no name)
+        self.assertEqual(get_overview_state(user)['title'], 'Plant Overview')
+
+        # Send edit_user_details request to update default user's name
+        self.client.login(username='unittest', password='12345')
+        response = self.client.post(
+            '/accounts/edit_user_details/',
+            {
+                'email': 'carlosdanger@hotmail.com',
+                'first_name': 'Carlos',
+                'last_name': 'Danger'
+            },
+            content_type='application/json'
+        )
+
+        # Confirm title updated in cached overview state
+        self.assertEqual(get_overview_state(user)['title'], "Carlos's Plants")
 
 
 class ViewDecoratorRegressionTests(TestCase):

@@ -2,6 +2,7 @@
 
 from django import forms
 from django.conf import settings
+from django.core.cache import cache
 from django.contrib.auth import views
 from django.contrib.auth import get_user_model
 from django.core.validators import validate_email
@@ -26,6 +27,7 @@ from .view_decorators import (
 )
 from .models import UserEmailVerification
 from .tasks import send_verification_email
+from .get_state_views import get_overview_page_title
 
 user_model = get_user_model()
 
@@ -381,6 +383,13 @@ def edit_user_details(data, user, **kwargs):
     user.first_name = data["first_name"]
     user.last_name = data["last_name"]
     user.save()
+
+    # Update cached overview state title (user's name may have changed)
+    state = cache.get(f'overview_state_{user.pk}')
+    if state:
+        state['title'] = get_overview_page_title(user)
+        cache.set(f'overview_state_{user.pk}', state, None)
+
     return JsonResponse({
         "success": "details updated",
         "user_details": {
