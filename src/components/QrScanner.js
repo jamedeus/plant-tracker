@@ -79,7 +79,7 @@ const QrScanner = ({ onExit }) => {
 
     return (
         <div
-            className="fixed inset-0 bg-black z-90 overscroll-none"
+            className="fixed inset-0 bg-black z-90 overscroll-none touch-none"
             data-testid="qr-scanner-overlay"
         >
             <Scanner
