@@ -290,26 +290,58 @@ exports[`App matches snapshot 1`] = `
     <div
       class="flex flex-col text-center"
     >
-      <span
-        class="text-lg"
-      >
-        <span
-          title="07:45 AM - March 1, 2024"
-        >
-          Watered 4 hours ago
-        </span>
-      </span>
-      <span
-        class="text-lg"
-      >
-        <span
-          title="07:45 AM - March 1, 2024"
-        >
-          Fertilized 4 hours ago
-        </span>
-      </span>
       <div
-        class="mx-auto"
+        aria-label="Show last event time for all event types"
+        class="flex flex-col overflow-hidden transition-[height] duration-300 h-8"
+        data-testid="last-event-times"
+        role="button"
+        tabindex="0"
+      >
+        <span
+          class="text-lg relative w-fit mx-auto"
+        >
+          <span
+            title="07:45 AM - March 1, 2024"
+          >
+            Watered 4 hours ago
+          </span>
+          <svg
+            aria-hidden="true"
+            class="absolute -right-7 top-1 min-size-5 size-5 transition-transform duration-200 rotate-0"
+            data-slot="icon"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </span>
+        <span
+          class="text-lg"
+        >
+          <span
+            title="07:45 AM - March 1, 2024"
+          >
+            Fertilized 4 hours ago
+          </span>
+        </span>
+        <span
+          class="text-lg"
+        >
+          Never pruned
+        </span>
+        <span
+          class="text-lg"
+        >
+          Never repotted
+        </span>
+      </div>
+      <div
+        class="mx-auto mt-2"
       >
         <input
           aria-label="New event timestamp"

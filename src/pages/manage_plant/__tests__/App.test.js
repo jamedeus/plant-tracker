@@ -755,4 +755,20 @@ describe('App', () => {
         expect(quickNav.children.length).toBe(1);
         expect(quickNav.children[0].textContent).toContain('2024');
     });
+
+    it('expands/collapses last event times when clicked', async () => {
+        // Confirm div is collapsed (only shows last watered time)
+        const lastEventTimes = app.getByTestId('last-event-times');
+        expect(lastEventTimes).toHaveAttribute(
+            "aria-label",
+            "Show last event time for all event types"
+        );
+
+        // Click div, confirm expands to show last time for all event types
+        await user.click(lastEventTimes);
+        expect(lastEventTimes).toHaveAttribute(
+            "aria-label",
+            "Hide all last event times except water"
+        );
+    });
 });

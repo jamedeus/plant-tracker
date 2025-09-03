@@ -1,4 +1,4 @@
-import React, { useRef,  memo } from 'react';
+import React, { useState, useRef,  memo } from 'react';
 import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import DatetimeInput from 'src/components/DatetimeInput';
@@ -7,15 +7,27 @@ import LastEventTime from 'src/components/LastEventTime';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { eventAdded } from './timelineSlice';
+import { ChevronDownIcon } from '@heroicons/react/16/solid';
+import clsx from 'clsx';
 
 const EventButtons = memo(function EventButtons() {
     // Get state from redux store
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const lastWatered = useSelector((state) => state.timeline.eventsByType.water[0]);
     const lastFertilized = useSelector((state) => state.timeline.eventsByType.fertilize[0]);
+    const lastPruned = useSelector((state) => state.timeline.eventsByType.prune[0]);
+    const lastRepotted = useSelector((state) => state.timeline.eventsByType.repot[0]);
 
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);
+
+    // Expands/collapses last event times
+    // Only shows water when collapsed, shows everything when expanded
+    const [showAllEventTimes, setShowAllEventTimes] = useState(false);
+
+    const toggleShowAllEventTimes = () => {
+        setShowAllEventTimes(!showAllEventTimes);
+    };
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -51,24 +63,61 @@ const EventButtons = memo(function EventButtons() {
 
     return (
         <div className="flex flex-col text-center">
-            <span className="text-lg">
-                <LastEventTime
-                    text="watered"
-                    timestamp={lastWatered}
-                />
-            </span>
-            <span className="text-lg">
-                <LastEventTime
-                    text="fertilized"
-                    timestamp={lastFertilized}
-                />
-            </span>
-            <div className="mx-auto">
+            {/* Last event times (water always visible, rest in collapse) */}
+            <div
+                className={clsx(
+                    "flex flex-col overflow-hidden",
+                    "transition-[height] duration-300",
+                    showAllEventTimes ? "h-28" : "h-8"
+                )}
+                onClick={toggleShowAllEventTimes}
+                role="button"
+                tabIndex={0}
+                aria-label={showAllEventTimes ?
+                    "Hide all last event times except water" :
+                    "Show last event time for all event types"
+                }
+                data-testid="last-event-times"
+            >
+                <span className="text-lg relative w-fit mx-auto">
+                    <LastEventTime
+                        text="watered"
+                        timestamp={lastWatered}
+                    />
+                    {/* Arrow shows open/close state (whole div clickable) */}
+                    <ChevronDownIcon className={clsx(
+                        "absolute -right-7 top-1",
+                        "min-size-5 size-5 transition-transform duration-200",
+                        showAllEventTimes ? "rotate-180" : "rotate-0"
+                    )} />
+                </span>
+                <span className="text-lg">
+                    <LastEventTime
+                        text="fertilized"
+                        timestamp={lastFertilized}
+                    />
+                </span>
+                <span className="text-lg">
+                    <LastEventTime
+                        text="pruned"
+                        timestamp={lastPruned}
+                    />
+                </span>
+                <span className="text-lg">
+                    <LastEventTime
+                        text="repotted"
+                        timestamp={lastRepotted}
+                    />
+                </span>
+            </div>
+            {/* New event time input */}
+            <div className="mx-auto mt-2">
                 <DatetimeInput
                     inputRef={eventTimeInput}
                     ariaLabel="New event timestamp"
                 />
             </div>
+            {/* Add event buttons */}
             <div className="flex mx-auto">
                 <button
                     className="btn btn-info m-2"
