@@ -121,6 +121,9 @@ def build_register_state(new_uuid, user):
                 'plant_key': str(plant.pk),
                 'event_key': division_in_progress['division_event_key']
             }
+        else:
+            # Could not find parent plant in database, remove cache
+            cache.delete(f'division_in_progress_{user.pk}')
 
     return state
 

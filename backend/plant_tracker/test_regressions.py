@@ -1635,6 +1635,7 @@ class CachedStateRegressionTests(TestCase):
             },
             content_type='application/json'
         )
+        self.assertEqual(response.status_code, 200)
 
         # Confirm title updated in cached overview state
         self.assertEqual(get_overview_state(user)['title'], "Carlos's Plants")

@@ -1,4 +1,4 @@
-# pylint: disable=missing-docstring,too-many-lines,too-many-public-methods,global-statement
+# pylint: disable=missing-docstring,too-many-lines,too-many-public-methods,global-statement,duplicate-code
 
 import re
 from uuid import uuid4

@@ -664,6 +664,25 @@ class RegistrationTests(TestCase):
             'event_key': str(division_event.pk)
         })
 
+    def test_registration_page_division_in_progress_parent_deleted(self):
+        # Simulate leftover division_in_progress cache key from a deleted parent
+        cache.set(f'division_in_progress_{self.default_user.pk}', {
+            'divided_from_plant_uuid': str(uuid4()),
+            'division_event_key': '3'
+        }, 900)
+
+        # Request registration page state
+        response = self.client.get_json(f'/get_manage_state/{uuid4()}')
+        self.assertEqual(response.status_code, 200)
+        state = response.json()['state']
+
+        # Confirm does not contain details of plant being divided even though
+        # cache was set (could not find parent plant in database)
+        self.assertNotIn('dividing_from', state.keys())
+
+        # Confirm cache key was deleted
+        self.assertIsNone(cache.get(f'division_in_progress_{self.default_user.pk}'))
+
     def test_plant_fields_max_length(self):
         # Send plant registration request name longer than 50 characters
         response = self.client.post('/register_plant', {

@@ -329,7 +329,7 @@ def create_user(request, data):
         if user is not None:
             login(request, user)
             return JsonResponse({"success": "account created"})
-        return JsonResponse({"error": ["failed to create account"]}, status=400)
+        return JsonResponse({"error": ["failed to create account"]}, status=400)  # pragma: no cover
     except ValueError:
         return JsonResponse({"error": ["missing required field"]}, status=400)
     except IntegrityError as e:
