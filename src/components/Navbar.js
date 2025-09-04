@@ -42,6 +42,10 @@ const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, onTitleC
     // Create state for title font size (calculated from navbar width)
     const [titleFontSize, setTitleFontSize] = useState(32);
 
+    // True if titleOptions or onTitleClick were was given, false if both null
+    // Controls whether title has button CSS (click animation) or not
+    const titleIsButton = Boolean(titleOptions || onTitleClick);
+
     // Clicking title scrolls to top if titleOptions param not given
     const jumpToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -108,16 +112,16 @@ const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, onTitleC
                 onClick={onTitleClick ? onTitleClick : (
                     titleOptions ? null : jumpToTop
                 )}
-                title={titleOptions || onTitleClick ? null : "Scroll to top"}
+                title={titleIsButton ? null : "Scroll to top"}
             >
                 <div className="dropdown dropdown-center w-full">
                     {/* Button if dropdown options exist, otherwise text */}
                     <a
-                        tabIndex={titleOptions ? 0 : -1}
-                        role={titleOptions ? "button" : "heading"}
+                        tabIndex={titleIsButton ? 0 : -1}
+                        role={titleIsButton ? "button" : "heading"}
                         className={clsx(
                             "w-full px-0 text-nowrap font-semibold",
-                            titleOptions && "btn btn-ghost border-0"
+                            titleIsButton && "btn btn-ghost border-0"
                         )}
                     >
                         <span
