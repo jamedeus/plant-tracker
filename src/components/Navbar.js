@@ -31,10 +31,11 @@ const DropdownButton = memo(function DropdownButton() {
 });
 
 // Renders navbar with dropdown on left and dynamically-sized title in center
-// Optional titleOptions param will be shown in dropdown when title is clicked
-// Both option params must be list of <li> elements
-// the top-left dropdown and title dropdown respectively
-const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, topRightButton }) {
+// menuOptions param must be list of <li> elements to show in top left dropdown
+// Optional titleOptions takes another list of <li> shown when title is clicked
+// Optional onTitleClick takes a function to call when title is clicked
+// If both titleOptions and onTitleClick are null clicking title scrolls to top
+const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, onTitleClick, topRightButton }) {
     // Create refs for navbar and title text (used to read widths)
     const navbarRef = useRef(null);
     const titleRef = useRef(null);
@@ -104,8 +105,10 @@ const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, topRight
             {/* Title */}
             <div
                 className="mx-auto shrink min-w-0"
-                onClick={titleOptions ? null : jumpToTop}
-                title={titleOptions ? null : "Scroll to top"}
+                onClick={onTitleClick ? onTitleClick : (
+                    titleOptions ? null : jumpToTop
+                )}
+                title={titleOptions || onTitleClick ? null : "Scroll to top"}
             >
                 <div className="dropdown dropdown-center w-full">
                     {/* Button if dropdown options exist, otherwise text */}
@@ -142,9 +145,10 @@ const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, topRight
 });
 
 Navbar.propTypes = {
-    menuOptions: PropTypes.node,
+    menuOptions: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
     titleOptions: PropTypes.node,
+    onTitleClick: PropTypes.func,
     topRightButton: PropTypes.node
 };
 

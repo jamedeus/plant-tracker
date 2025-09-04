@@ -3,7 +3,7 @@ import Navbar from '../Navbar';
 describe('Navbar', () => {
     it('adjusts title font size when window is resized', () => {
         const { container, getByText } = render(
-            <Navbar title='Test Page' />
+            <Navbar title='Test Page' menuOptions={<li>Home</li>} />
         );
 
         // Create variables to mock navbar and menu button widths
@@ -60,10 +60,10 @@ describe('Navbar', () => {
         expect(titleElement.style.fontSize).toBe('26px');
     });
 
-    it('scrolls to top when title is clicked if no titleOptions given', async () => {
+    it('scrolls to top when title is clicked if no titleOptions or onTitleClick given', async () => {
         const user = userEvent.setup();
         const app = render(
-            <Navbar title='Test Page' />
+            <Navbar title='Test Page' menuOptions={<li>Home</li>} />
         );
         await user.click(app.getByText("Test Page"));
         expect(window.scrollTo).toHaveBeenCalled();
@@ -74,6 +74,7 @@ describe('Navbar', () => {
         const app = render(
             <Navbar
                 title='Test Page'
+                menuOptions={<li>Home</li>}
                 titleOptions={
                     <ul>
                         <li><a>
@@ -88,6 +89,21 @@ describe('Navbar', () => {
         );
         await user.click(app.getByText("Test Page"));
         expect(window.scrollTo).not.toHaveBeenCalled();
+    });
 
+    it('calls onTitleClick when title is clicked if given', async () => {
+        const user = userEvent.setup();
+        const onTitleClick = jest.fn();
+        const app = render(
+            <Navbar
+                title='Test Page'
+                menuOptions={<li>Home</li>}
+                onTitleClick={onTitleClick}
+            />
+        );
+        expect(onTitleClick).not.toHaveBeenCalled();
+        await user.click(app.getByText("Test Page"));
+        expect(onTitleClick).toHaveBeenCalled();
+        expect(window.scrollTo).not.toHaveBeenCalled();
     });
 });
