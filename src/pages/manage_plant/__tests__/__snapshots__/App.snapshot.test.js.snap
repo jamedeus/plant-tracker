@@ -180,7 +180,7 @@ exports[`App matches snapshot 1`] = `
           Test group
         </a>
         <div
-          class="flex gap-2 mx-auto my-2"
+          class="flex gap-2 mx-auto mt-2"
         >
           <a
             class="btn btn-square size-10 min-size-10"
@@ -2240,7 +2240,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           Test group
         </a>
         <div
-          class="flex gap-2 mx-auto my-2"
+          class="flex gap-2 mx-auto mt-2"
         >
           <a
             class="btn btn-square size-10 min-size-10"

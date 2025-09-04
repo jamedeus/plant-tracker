@@ -1,30 +1,22 @@
 import React, { useMemo, Suspense, useCallback, lazy } from 'react';
 import { Link } from 'react-router-dom';
-import sendPostRequest from 'src/utils/sendPostRequest';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
-import TitleDrawer from 'src/components/TitleDrawer';
-import PlantDetails from 'src/components/PlantDetails';
-import IconButton from 'src/components/IconButton';
 import EventButtons from './EventButtons';
 import EventCalendar from './EventCalendar';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
-import { openErrorModal } from 'src/components/ErrorModal';
 import { setChangeQrModalHandle } from './modals';
 import Timeline from './Timeline';
-import { FaPlus, FaBan, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
-import { plantRemovedFromGroup } from './plantSlice';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
+import DetailsDrawer from './DetailsDrawer';
 import DeleteModeFooter from './DeleteModeFooter';
 import {
     titleDrawerOpened,
     settingsMenuOpened,
     photoGalleryOpened,
-    photoGalleryIndexChanged
 } from './interfaceSlice';
-import clsx from 'clsx';
 
 // Dynamic import (don't request webpack bundle until gallery opened)
 const Gallery = lazy(
@@ -34,17 +26,17 @@ const Gallery = lazy(
 function Layout() {
     // Get redux state (parsed from context set by django template)
     const plantDetails = useSelector((state) => state.plant.plantDetails);
-    const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
     const galleryOpen = useSelector((state) => state.interface.photoGalleryOpen);
     const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
-    // Get index of default photo (used to open in gallery)
-    const photos = useSelector((state) => state.timeline.photos);
-    const defaultPhotoIndex = photos.indexOf(
-        photos.filter(photo => photo.key === defaultPhoto.key)[0]
-    );
 
     // Used to update redux store
     const dispatch = useDispatch();
+
+    // Create callback to open/close details drawer when title clicked
+    const titleDrawerOpen = useSelector((state) => state.interface.titleDrawerOpen);
+    const toggleDetailsDrawerOpen = useCallback(() => {
+        dispatch(titleDrawerOpened(!titleDrawerOpen));
+    }, [titleDrawerOpen, dispatch]);
 
     const editModal = useModal();
     const openEditModal = useCallback(() => {
@@ -94,34 +86,6 @@ function Layout() {
         </NavbarDropdownOptions>
     ), [plantDetails, hasPhotos]);
 
-    // Opens default photo in gallery
-    const openGallery = useCallback(() => {
-        dispatch(photoGalleryIndexChanged({index: defaultPhotoIndex}));
-        dispatch(photoGalleryOpened({open: true}));
-    }, [dispatch, defaultPhotoIndex]);
-
-    // Makes remove_plant_from_group API call, updates state if successful
-    const handleRemoveGroup = useCallback(async () => {
-        const response = await sendPostRequest('/remove_plant_from_group', {
-            plant_id: plantDetails.uuid
-        });
-        if (response.ok) {
-            // Remove group details from plant state
-            dispatch(plantRemovedFromGroup());
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
-    }, [dispatch, plantDetails.uuid]);
-
-    const titleDrawerOpen = useSelector((state) => state.interface.titleDrawerOpen);
-    const toggleTitleDrawerOpen = useCallback(() => {
-        dispatch(titleDrawerOpened(!titleDrawerOpen));
-    }, [titleDrawerOpen, dispatch]);
-    const closeTitleDrawer = useCallback(() => {
-        dispatch(titleDrawerOpened(false));
-    }, [dispatch]);
-
     return (
         <div
             className="container flex flex-col items-center mx-auto mb-28"
@@ -130,87 +94,14 @@ function Layout() {
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={plantDetails.display_name}
-                onTitleClick={toggleTitleDrawerOpen}
+                onTitleClick={toggleDetailsDrawerOpen}
                 topRightButton={<QrScannerButton />}
             />
 
-            <TitleDrawer open={titleDrawerOpen} onClose={closeTitleDrawer}>
-                {/* Default photo section (if present) */}
-                {defaultPhoto.thumbnail && (
-                    <>
-                        <div className="divider font-bold">
-                            Default Photo
-                        </div>
-                        <img
-                            loading="lazy"
-                            draggable={false}
-                            className={clsx(
-                                "photo-thumbnail mx-auto cursor-pointer",
-                                "size-[8rem] md:size-[14rem]"
-                            )}
-                            src={defaultPhoto.preview}
-                            data-testid="defaultPhotoThumbnail"
-                            onClick={openGallery}
-                        />
-                    </>
-                )}
-
-                {/* Group section */}
-                <div className="divider font-bold">
-                    Group
-                </div>
-                {/* Group details if in group, add group button if not */}
-                {plantDetails.group ? (
-                    <>
-                        <Link
-                            className={clsx(
-                                "font-bold text-lg line-clamp-1 rounded-lg",
-                                "focus:outline-2 outline-offset-2"
-                            )}
-                            to={`/manage/${plantDetails.group.uuid}`}
-                            discover="none"
-                        >
-                            { plantDetails.group.name }
-                        </Link>
-                        <div className="flex gap-2 mx-auto my-2">
-                            <IconButton
-                                onClick={handleRemoveGroup}
-                                title='Remove plant from group'
-                            >
-                                <FaBan className="size-4" />
-                            </IconButton>
-                            <IconButton
-                                href={`/manage/${plantDetails.group.uuid}`}
-                                title='Go to group page'
-                            >
-                                <FaUpRightFromSquare className="size-4" />
-                            </IconButton>
-                        </div>
-                    </>
-                ) : (
-                    <IconButton
-                        onClick={openGroupModal}
-                        title='Add plant to group'
-                    >
-                        <FaPlus className="size-4" />
-                    </IconButton>
-                )}
-
-                {/* Details section */}
-                <div className="divider font-bold">
-                    Details
-                </div>
-                <div className='min-w-full'>
-                    <PlantDetails
-                        species={plantDetails.species}
-                        pot_size={plantDetails.pot_size}
-                        description={plantDetails.description}
-                    />
-                    <button className="btn h-8 mt-4 w-full" onClick={openEditModal}>
-                        Edit
-                    </button>
-                </div>
-            </TitleDrawer>
+            <DetailsDrawer
+                openGroupModal={openGroupModal}
+                openEditModal={openEditModal}
+            />
 
             {/* Don't render event buttons if plant is archived */}
             {plantDetails.archived ? (
