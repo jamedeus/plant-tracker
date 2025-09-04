@@ -3,7 +3,7 @@
 /* Container div */
 div.settings-menu {
     /* Prevent display: none when closed (allow open animation to run) */
-    @apply block text-base-content z-99;
+    @apply block text-base-content z-101;
 
     /* Slide open animation */
     &.settings-menu-open {
@@ -15,7 +15,7 @@ div.settings-menu {
 
 /* Contents wrapper (inside container div) */
 .settings-contents {
-    @apply fixed inset-0 md:w-128 flex flex-col gap-8 p-4 z-99;
+    @apply fixed inset-0 md:w-128 flex flex-col gap-8 p-4 z-101;
 
     /* Semi-transparent frosted background */
     backdrop-filter: blur(8px) saturate(180%);

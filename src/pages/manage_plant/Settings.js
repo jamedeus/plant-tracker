@@ -269,7 +269,7 @@ const Settings = () => {
             <div
                 tabIndex={0}
                 onClick={closeSettings}
-                className={clsx("fixed inset-0 cursor-pointer", !open && "hidden")}
+                className={clsx("fixed inset-0 cursor-pointer z-100", !open && "hidden")}
                 data-testid="settings-menu-overlay"
             />
             <div className="settings-contents">
