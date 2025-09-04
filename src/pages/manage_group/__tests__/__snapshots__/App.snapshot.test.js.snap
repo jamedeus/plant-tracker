@@ -131,7 +131,7 @@ exports[`App matches snapshot 1`] = `
       class="title-drawer"
     >
       <div
-        class="fixed inset-0 cursor-pointer hidden"
+        class="fixed inset-0 cursor-pointer z-98 hidden"
         data-testid="title-drawer-menu-overlay"
       />
       <div
@@ -987,7 +987,7 @@ exports[`App matches snapshot when group is archived 1`] = `
       class="title-drawer"
     >
       <div
-        class="fixed inset-0 cursor-pointer hidden"
+        class="fixed inset-0 cursor-pointer z-98 hidden"
         data-testid="title-drawer-menu-overlay"
       />
       <div
@@ -1795,7 +1795,7 @@ exports[`App matches snapshot when no plants 1`] = `
       class="title-drawer"
     >
       <div
-        class="fixed inset-0 cursor-pointer hidden"
+        class="fixed inset-0 cursor-pointer z-98 hidden"
         data-testid="title-drawer-menu-overlay"
       />
       <div
