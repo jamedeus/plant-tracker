@@ -89,9 +89,9 @@ exports[`App matches snapshot 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -100,147 +100,6 @@ exports[`App matches snapshot 1`] = `
               Test Plant
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          >
-            <div
-              class="details-card"
-            >
-              <div
-                class="card-body text-sm"
-              >
-                <div
-                  class="flex flex-col"
-                >
-                  <div
-                    class="divider font-bold mt-0"
-                  >
-                    Default Photo
-                  </div>
-                  <img
-                    class="photo-thumbnail mx-auto cursor-pointer size-[8rem] md:size-[14rem]"
-                    data-testid="defaultPhotoThumbnail"
-                    draggable="false"
-                    loading="lazy"
-                    src="/media/previews/photo3_preview.webp"
-                  />
-                  <div
-                    class="divider font-bold"
-                  >
-                    Group
-                  </div>
-                  <div
-                    class="flex flex-col text-center items-center"
-                  >
-                    <a
-                      class="font-bold text-lg line-clamp-1 rounded-lg focus:outline-2 outline-offset-2"
-                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                    >
-                      Test group
-                    </a>
-                    <div
-                      class="flex gap-2 mx-auto mt-2"
-                    >
-                      <a
-                        class="btn btn-square size-10 min-size-10"
-                        tabindex="0"
-                        title="Remove plant from group"
-                      >
-                        <svg
-                          class="size-4"
-                          fill="currentColor"
-                          height="1em"
-                          stroke="currentColor"
-                          stroke-width="0"
-                          viewBox="0 0 512 512"
-                          width="1em"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
-                          />
-                        </svg>
-                      </a>
-                      <a
-                        class="btn btn-square size-10 min-size-10"
-                        href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                        tabindex="0"
-                        title="Go to group page"
-                      >
-                        <svg
-                          class="size-4"
-                          fill="currentColor"
-                          height="1em"
-                          stroke="currentColor"
-                          stroke-width="0"
-                          viewBox="0 0 512 512"
-                          width="1em"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6l0-128c0-17.7-14.3-32-32-32L352 0zM80 32C35.8 32 0 67.8 0 112L0 432c0 44.2 35.8 80 80 80l320 0c44.2 0 80-35.8 80-80l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-320c0-8.8 7.2-16 16-16l112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 32z"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="divider font-bold"
-                >
-                  Details
-                </div>
-                <p
-                  class="flex"
-                >
-                  <span
-                    class="font-semibold break-keep mr-4"
-                  >
-                    Species:
-                  </span>
-                  <span
-                    class="ml-auto text-right line-clamp-1 break-all"
-                  >
-                    Calathea
-                  </span>
-                </p>
-                <p
-                  class="flex"
-                >
-                  <span
-                    class="font-semibold break-keep mr-4"
-                  >
-                    Pot size:
-                  </span>
-                  <span
-                    class="ml-auto text-right line-clamp-1 break-all"
-                  >
-                    4
-                  </span>
-                </p>
-                <div
-                  class="text-center"
-                >
-                  <p
-                    class="font-semibold mt-3"
-                  >
-                    Description:
-                  </p>
-                  <p
-                    class="text-sm line-clamp-6 break-anywhere"
-                  >
-                    This is a plant with a long description
-                  </p>
-                </div>
-                <button
-                  class="btn h-8 mt-4"
-                >
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div
@@ -285,6 +144,142 @@ exports[`App matches snapshot 1`] = `
             />
           </svg>
         </button>
+      </div>
+    </div>
+    <div
+      class="title-drawer"
+    >
+      <div
+        class="fixed inset-0 cursor-pointer hidden"
+        data-testid="title-drawer-menu-overlay"
+      />
+      <div
+        class="title-drawer-contents"
+      >
+        <div
+          class="divider font-bold"
+        >
+          Default Photo
+        </div>
+        <img
+          class="photo-thumbnail mx-auto cursor-pointer size-[8rem] md:size-[14rem]"
+          data-testid="defaultPhotoThumbnail"
+          draggable="false"
+          loading="lazy"
+          src="/media/previews/photo3_preview.webp"
+        />
+        <div
+          class="divider font-bold"
+        >
+          Group
+        </div>
+        <a
+          class="font-bold text-lg line-clamp-1 rounded-lg focus:outline-2 outline-offset-2"
+          href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+        >
+          Test group
+        </a>
+        <div
+          class="flex gap-2 mx-auto my-2"
+        >
+          <a
+            class="btn btn-square size-10 min-size-10"
+            tabindex="0"
+            title="Remove plant from group"
+          >
+            <svg
+              class="size-4"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 512 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+              />
+            </svg>
+          </a>
+          <a
+            class="btn btn-square size-10 min-size-10"
+            href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            tabindex="0"
+            title="Go to group page"
+          >
+            <svg
+              class="size-4"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 512 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6l0-128c0-17.7-14.3-32-32-32L352 0zM80 32C35.8 32 0 67.8 0 112L0 432c0 44.2 35.8 80 80 80l320 0c44.2 0 80-35.8 80-80l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-320c0-8.8 7.2-16 16-16l112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 32z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div
+          class="divider font-bold"
+        >
+          Details
+        </div>
+        <div
+          class="min-w-full"
+        >
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
+              Species:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              Calathea
+            </span>
+          </p>
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
+              Pot size:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              4
+            </span>
+          </p>
+          <div
+            class="text-center"
+          >
+            <p
+              class="font-semibold mt-3"
+            >
+              Description:
+            </p>
+            <p
+              class="text-sm line-clamp-6 break-anywhere"
+            >
+              This is a plant with a long description
+            </p>
+          </div>
+          <button
+            class="btn h-8 mt-4 w-full"
+          >
+            Edit
+          </button>
+        </div>
       </div>
     </div>
     <div
@@ -2154,9 +2149,9 @@ exports[`App matches snapshot when plant is archived 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -2165,147 +2160,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
               Test Plant
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          >
-            <div
-              class="details-card"
-            >
-              <div
-                class="card-body text-sm"
-              >
-                <div
-                  class="flex flex-col"
-                >
-                  <div
-                    class="divider font-bold mt-0"
-                  >
-                    Default Photo
-                  </div>
-                  <img
-                    class="photo-thumbnail mx-auto cursor-pointer size-[8rem] md:size-[14rem]"
-                    data-testid="defaultPhotoThumbnail"
-                    draggable="false"
-                    loading="lazy"
-                    src="/media/previews/photo3_preview.webp"
-                  />
-                  <div
-                    class="divider font-bold"
-                  >
-                    Group
-                  </div>
-                  <div
-                    class="flex flex-col text-center items-center"
-                  >
-                    <a
-                      class="font-bold text-lg line-clamp-1 rounded-lg focus:outline-2 outline-offset-2"
-                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                    >
-                      Test group
-                    </a>
-                    <div
-                      class="flex gap-2 mx-auto mt-2"
-                    >
-                      <a
-                        class="btn btn-square size-10 min-size-10"
-                        tabindex="0"
-                        title="Remove plant from group"
-                      >
-                        <svg
-                          class="size-4"
-                          fill="currentColor"
-                          height="1em"
-                          stroke="currentColor"
-                          stroke-width="0"
-                          viewBox="0 0 512 512"
-                          width="1em"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
-                          />
-                        </svg>
-                      </a>
-                      <a
-                        class="btn btn-square size-10 min-size-10"
-                        href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                        tabindex="0"
-                        title="Go to group page"
-                      >
-                        <svg
-                          class="size-4"
-                          fill="currentColor"
-                          height="1em"
-                          stroke="currentColor"
-                          stroke-width="0"
-                          viewBox="0 0 512 512"
-                          width="1em"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6l0-128c0-17.7-14.3-32-32-32L352 0zM80 32C35.8 32 0 67.8 0 112L0 432c0 44.2 35.8 80 80 80l320 0c44.2 0 80-35.8 80-80l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-320c0-8.8 7.2-16 16-16l112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 32z"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="divider font-bold"
-                >
-                  Details
-                </div>
-                <p
-                  class="flex"
-                >
-                  <span
-                    class="font-semibold break-keep mr-4"
-                  >
-                    Species:
-                  </span>
-                  <span
-                    class="ml-auto text-right line-clamp-1 break-all"
-                  >
-                    Calathea
-                  </span>
-                </p>
-                <p
-                  class="flex"
-                >
-                  <span
-                    class="font-semibold break-keep mr-4"
-                  >
-                    Pot size:
-                  </span>
-                  <span
-                    class="ml-auto text-right line-clamp-1 break-all"
-                  >
-                    4
-                  </span>
-                </p>
-                <div
-                  class="text-center"
-                >
-                  <p
-                    class="font-semibold mt-3"
-                  >
-                    Description:
-                  </p>
-                  <p
-                    class="text-sm line-clamp-6 break-anywhere"
-                  >
-                    This is a plant with a long description
-                  </p>
-                </div>
-                <button
-                  class="btn h-8 mt-4"
-                >
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div
@@ -2350,6 +2204,142 @@ exports[`App matches snapshot when plant is archived 1`] = `
             />
           </svg>
         </button>
+      </div>
+    </div>
+    <div
+      class="title-drawer"
+    >
+      <div
+        class="fixed inset-0 cursor-pointer hidden"
+        data-testid="title-drawer-menu-overlay"
+      />
+      <div
+        class="title-drawer-contents"
+      >
+        <div
+          class="divider font-bold"
+        >
+          Default Photo
+        </div>
+        <img
+          class="photo-thumbnail mx-auto cursor-pointer size-[8rem] md:size-[14rem]"
+          data-testid="defaultPhotoThumbnail"
+          draggable="false"
+          loading="lazy"
+          src="/media/previews/photo3_preview.webp"
+        />
+        <div
+          class="divider font-bold"
+        >
+          Group
+        </div>
+        <a
+          class="font-bold text-lg line-clamp-1 rounded-lg focus:outline-2 outline-offset-2"
+          href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+        >
+          Test group
+        </a>
+        <div
+          class="flex gap-2 mx-auto my-2"
+        >
+          <a
+            class="btn btn-square size-10 min-size-10"
+            tabindex="0"
+            title="Remove plant from group"
+          >
+            <svg
+              class="size-4"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 512 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
+              />
+            </svg>
+          </a>
+          <a
+            class="btn btn-square size-10 min-size-10"
+            href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            tabindex="0"
+            title="Go to group page"
+          >
+            <svg
+              class="size-4"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 512 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6l0-128c0-17.7-14.3-32-32-32L352 0zM80 32C35.8 32 0 67.8 0 112L0 432c0 44.2 35.8 80 80 80l320 0c44.2 0 80-35.8 80-80l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-320c0-8.8 7.2-16 16-16l112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 32z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div
+          class="divider font-bold"
+        >
+          Details
+        </div>
+        <div
+          class="min-w-full"
+        >
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
+              Species:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              Calathea
+            </span>
+          </p>
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
+              Pot size:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              4
+            </span>
+          </p>
+          <div
+            class="text-center"
+          >
+            <p
+              class="font-semibold mt-3"
+            >
+              Description:
+            </p>
+            <p
+              class="text-sm line-clamp-6 break-anywhere"
+            >
+              This is a plant with a long description
+            </p>
+          </div>
+          <button
+            class="btn h-8 mt-4 w-full"
+          >
+            Edit
+          </button>
+        </div>
       </div>
     </div>
     <div

@@ -1,0 +1,36 @@
+@reference './index.css';
+
+/* Container div */
+div.title-drawer {
+    /* Slide open animation */
+    &.title-drawer-open {
+        & > .title-drawer-contents {
+            @apply shadow-sm;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* Contents wrapper (inside container div) */
+.title-drawer-contents {
+    @apply fixed inset-0 flex flex-col items-center mt-16 p-6 pt-2 z-90;
+    @apply w-78 mx-auto h-fit rounded-2xl;
+    /* Semi-transparent frosted background */
+    @apply bg-neutral/50 backdrop-saturate-180 backdrop-blur-sm ;
+
+    /* Allow scrolling inside drawer, eg phone in landscape orientation */
+    @apply max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain;
+    /* Prevent long strings without spaces making drawer side scroll */
+    @apply overflow-x-hidden;
+
+    /* Translate off top edge of screen when closed */
+    transform: translateY(-100%);
+
+    /* Slide open/closed */
+    transition: transform .5s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+/* Block scrolling body while drawer is open */
+:root:has(div.title-drawer.title-drawer-open) {
+    @apply overflow-hidden;
+}

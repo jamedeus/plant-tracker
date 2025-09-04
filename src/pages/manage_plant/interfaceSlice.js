@@ -4,6 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const interfaceSlice = createSlice({
     name: 'interface',
     initialState: {
+        // Navbar title drawer open state
+        titleDrawerOpen: false,
         // Settings side menu open state
         settingsMenuOpen: false,
         // Fullscreen lightbox gallery open state
@@ -26,6 +28,10 @@ export const interfaceSlice = createSlice({
         selectedNotes: []
     },
     reducers: {
+        // Takes true or false
+        titleDrawerOpened(state, action) {
+            state.titleDrawerOpen = action.payload;
+        },
         // Takes true or false
         settingsMenuOpened(state, action) {
             state.settingsMenuOpen = action.payload;
@@ -102,6 +108,7 @@ export const interfaceSlice = createSlice({
 });
 
 export const {
+    titleDrawerOpened,
     settingsMenuOpened,
     photoGalleryOpened,
     photoGalleryIndexChanged,

@@ -184,6 +184,7 @@ export function ReduxProvider({ children, initialState }) {
             },
             settings: loadUserSettings(layout),
             interface: {
+                titleDrawerOpen: false,
                 settingsMenuOpen: false,
                 photoGalleryOpen: false,
                 photoGalleryIndex: 0,
