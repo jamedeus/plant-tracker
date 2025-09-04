@@ -14,7 +14,7 @@ const TitleDrawer = ({ open, onClose, children }) => {
             <div
                 onClick={onClose}
                 className={clsx(
-                    "fixed inset-0 cursor-pointer",
+                    "fixed inset-0 cursor-pointer z-98",
                     !open && "hidden"
                 )}
                 data-testid="title-drawer-menu-overlay"
