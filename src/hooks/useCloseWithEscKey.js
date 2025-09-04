@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-// Takes callback function, adds window listener that calls callback when user
-// navigates to page by pressing back button
+// Takes isOpen (bool) and onClose callback (closes whatever isOpen controls)
+// Adds listener when isOpen is true that closes it when escape key is pressed
 export const useCloseWithEscKey = (isOpen, onClose) => {
     useEffect(() => {
         if (!isOpen) {

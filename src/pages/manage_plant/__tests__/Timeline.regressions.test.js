@@ -11,7 +11,7 @@ describe('Timeline regressions', () => {
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
     });
 
-    // Switch back to realy timers after each test
+    // Switch back to real timers after each test
     afterEach(() => {
         jest.useRealTimers();
     });
