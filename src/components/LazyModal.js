@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import LoadingAnimation from './LoadingAnimation';
 import CloseButtonIcon from './CloseButtonIcon';
+import { useCloseWithEscKey } from 'src/hooks/useCloseWithEscKey';
 
 // Helper hook to get ref and open/close methods for LazyModal
 export function useModal() {
@@ -67,22 +68,7 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref)
     }, []);
 
     // Close modal by pressing escape key
-    useEffect(() => {
-        if (!isOpen) {
-            return;
-        }
-
-        const onKey = (e) => {
-            if (e.key === 'Escape') {
-                close();
-            }
-        };
-        window.addEventListener('keydown', onKey);
-
-        return () => {
-            window.removeEventListener('keydown', onKey);
-        };
-    }, [isOpen, close]);
+    useCloseWithEscKey(isOpen, close);
 
     // Expose open and close methods to parent
     useImperativeHandle(ref, () => ({ open, close }), [open, close]);

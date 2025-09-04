@@ -1,4 +1,4 @@
-import { memo, useState, Fragment } from 'react';
+import { memo, useState, useCallback, Fragment } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
@@ -7,6 +7,7 @@ import { settingChanged, settingsReset } from './settingsSlice';
 import { settingsMenuOpened } from './interfaceSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
+import { useCloseWithEscKey } from 'src/hooks/useCloseWithEscKey';
 import 'src/css/settings.css';
 import clsx from 'clsx';
 
@@ -240,15 +241,22 @@ const Settings = () => {
     const open = useSelector((state) => state.interface.settingsMenuOpen);
     const dispatch = useDispatch();
 
+    const closeSettings = useCallback(() => {
+        dispatch(settingsMenuOpened(false));
+    }, [dispatch]);
+
     // Close settings by swiping left
     const handlers = useSwipeable({
-        onSwipedLeft: () => dispatch(settingsMenuOpened(false)),
+        onSwipedLeft: closeSettings,
         ...{
             delta: 25,
             preventScrollOnSwipe: true,
             trackMouse: true,
         },
     });
+
+    // Close settings by pressing escape key
+    useCloseWithEscKey(open, closeSettings);
 
     return (
         <dialog
@@ -260,7 +268,7 @@ const Settings = () => {
             {/* Tabindex sets initial focus (will open dropdown otherwise) */}
             <div
                 tabIndex={0}
-                onClick={() => dispatch(settingsMenuOpened(false))}
+                onClick={closeSettings}
                 className="fixed inset-0 cursor-pointer not-group-open:hidden"
                 data-testid="settings-menu-overlay"
             />
@@ -272,7 +280,7 @@ const Settings = () => {
                     </h2>
                     <button
                         className="btn btn-ghost btn-circle size-12"
-                        onClick={() => dispatch(settingsMenuOpened(false))}
+                        onClick={closeSettings}
                         aria-label="Close settings menu"
                     >
                         <CloseButtonIcon />
