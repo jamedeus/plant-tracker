@@ -70,9 +70,9 @@ exports[`App matches snapshot 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -81,38 +81,6 @@ exports[`App matches snapshot 1`] = `
               Test group
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          >
-            <div
-              class="details-card"
-            >
-              <div
-                class="card-body text-sm"
-              >
-                <p
-                  class="flex"
-                >
-                  <span
-                    class="font-semibold break-keep mr-4"
-                  >
-                    Location:
-                  </span>
-                  <span
-                    class="ml-auto text-right line-clamp-1 break-all"
-                  >
-                    Middle shelf
-                  </span>
-                </p>
-                <button
-                  class="btn h-8 mt-4"
-                >
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div
@@ -156,6 +124,46 @@ exports[`App matches snapshot 1`] = `
               d="m16 16-1.9-1.9"
             />
           </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="title-drawer"
+    >
+      <div
+        class="fixed inset-0 cursor-pointer hidden"
+        data-testid="title-drawer-menu-overlay"
+      />
+      <div
+        class="title-drawer-contents"
+      >
+        <div
+          class="divider font-bold"
+        >
+          Details
+        </div>
+        <div
+          class="min-w-full"
+        >
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
+              Location:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              Middle shelf
+            </span>
+          </p>
+        </div>
+        <button
+          class="btn h-8 mt-4 w-full"
+        >
+          Edit
         </button>
       </div>
     </div>
@@ -918,9 +926,9 @@ exports[`App matches snapshot when group is archived 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -929,38 +937,6 @@ exports[`App matches snapshot when group is archived 1`] = `
               Test group
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          >
-            <div
-              class="details-card"
-            >
-              <div
-                class="card-body text-sm"
-              >
-                <p
-                  class="flex"
-                >
-                  <span
-                    class="font-semibold break-keep mr-4"
-                  >
-                    Location:
-                  </span>
-                  <span
-                    class="ml-auto text-right line-clamp-1 break-all"
-                  >
-                    Middle shelf
-                  </span>
-                </p>
-                <button
-                  class="btn h-8 mt-4"
-                >
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div
@@ -1004,6 +980,46 @@ exports[`App matches snapshot when group is archived 1`] = `
               d="m16 16-1.9-1.9"
             />
           </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="title-drawer"
+    >
+      <div
+        class="fixed inset-0 cursor-pointer hidden"
+        data-testid="title-drawer-menu-overlay"
+      />
+      <div
+        class="title-drawer-contents"
+      >
+        <div
+          class="divider font-bold"
+        >
+          Details
+        </div>
+        <div
+          class="min-w-full"
+        >
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
+              Location:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              Middle shelf
+            </span>
+          </p>
+        </div>
+        <button
+          class="btn h-8 mt-4 w-full"
+        >
+          Edit
         </button>
       </div>
     </div>
@@ -1718,9 +1734,9 @@ exports[`App matches snapshot when no plants 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -1729,38 +1745,6 @@ exports[`App matches snapshot when no plants 1`] = `
               Test group
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          >
-            <div
-              class="details-card"
-            >
-              <div
-                class="card-body text-sm"
-              >
-                <p
-                  class="flex"
-                >
-                  <span
-                    class="font-semibold break-keep mr-4"
-                  >
-                    Location:
-                  </span>
-                  <span
-                    class="ml-auto text-right line-clamp-1 break-all"
-                  >
-                    Middle shelf
-                  </span>
-                </p>
-                <button
-                  class="btn h-8 mt-4"
-                >
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div
@@ -1804,6 +1788,46 @@ exports[`App matches snapshot when no plants 1`] = `
               d="m16 16-1.9-1.9"
             />
           </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="title-drawer"
+    >
+      <div
+        class="fixed inset-0 cursor-pointer hidden"
+        data-testid="title-drawer-menu-overlay"
+      />
+      <div
+        class="title-drawer-contents"
+      >
+        <div
+          class="divider font-bold"
+        >
+          Details
+        </div>
+        <div
+          class="min-w-full"
+        >
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
+              Location:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              Middle shelf
+            </span>
+          </p>
+        </div>
+        <button
+          class="btn h-8 mt-4 w-full"
+        >
+          Edit
         </button>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import DropdownMenu from 'src/components/DropdownMenu';
-import DetailsCard from 'src/components/DetailsCard';
+import TitleDrawer from 'src/components/TitleDrawer';
 import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
 import RemovePlantsFooter from './RemovePlantsFooter';
@@ -24,6 +24,15 @@ function Layout() {
 
     // Hide event buttons if no plants in group
     const noPlants = Object.keys(plantDetails).length === 0;
+
+    // Controls navbar TitleDrawer open/close state
+    const [titleDrawerOpen, setTitleDrawerOpen] = useState(false);
+    const toggleTitleDrawerOpen = useCallback(() => {
+        setTitleDrawerOpen(!titleDrawerOpen);
+    }, [titleDrawerOpen]);
+    const closeTitleDrawer = useCallback(() => {
+        setTitleDrawerOpen(false);
+    }, []);
 
     // Buttons add events to all plants if 0, only selected plants if 1
     // Set with tabs above event timestamp input
@@ -86,16 +95,6 @@ function Layout() {
         </NavbarDropdownOptions>
     ), []);
 
-    // Group details card shown when title is clicked
-    const GroupDetailsDropdown = useMemo(() => (
-        <DetailsCard openEditModal={openEditModal}>
-            <GroupDetails
-                location={groupDetails.location}
-                description={groupDetails.description}
-            />
-        </DetailsCard>
-    ), [groupDetails]);
-
     const PlantsColTitleOptions = useMemo(() => (
         <DropdownMenu>
             <li><a
@@ -123,9 +122,24 @@ function Layout() {
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={groupDetails.display_name}
-                titleOptions={GroupDetailsDropdown}
+                onTitleClick={toggleTitleDrawerOpen}
                 topRightButton={<QrScannerButton />}
             />
+
+            <TitleDrawer open={titleDrawerOpen} onClose={closeTitleDrawer}>
+                <div className="divider font-bold">
+                    Details
+                </div>
+                <div className='min-w-full'>
+                    <GroupDetails
+                        location={groupDetails.location}
+                        description={groupDetails.description}
+                    />
+                </div>
+                <button className="btn h-8 mt-4 w-full" onClick={openEditModal}>
+                    Edit
+                </button>
+            </TitleDrawer>
 
             {/* Don't render event buttons if group is archived */}
             {groupDetails.archived ? (
