@@ -42,36 +42,36 @@ describe('Settings menu', () => {
 
     it('closes when user clicks close button, swipes left, presses esc, or clicks outside menu', async () => {
         // Confirm settings menu is closed
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
+        const settingsWrapper = app.getByTestId('settings-menu-wrapper');
+        expect(settingsWrapper.classList).not.toContain('settings-menu-open');
 
         // Click dropdown option to open settings, confirm open
         await user.click(app.getByTestId('open-settings-menu'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
+        expect(settingsWrapper.classList).toContain('settings-menu-open');
 
         // Click overlay that covers the full page outside menu, confirm closed
         await user.click(app.getByTestId('settings-menu-overlay'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
+        expect(settingsWrapper.classList).not.toContain('settings-menu-open');
 
         // Open again, click close button, confirm closed
         await user.click(app.getByTestId('open-settings-menu'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
+        expect(settingsWrapper.classList).toContain('settings-menu-open');
         await user.click(app.getByLabelText('Close settings menu'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
+        expect(settingsWrapper.classList).not.toContain('settings-menu-open');
 
         // Open again, swipe left, confirm closed
         await user.click(app.getByTestId('open-settings-menu'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
-        const dialog = app.container.querySelector('dialog.settings-menu');
-        fireEvent.touchStart(dialog, {touches: [{ clientX: 100, clientY: 10 }]});
-        fireEvent.touchMove(dialog, {touches: [{ clientX:  50, clientY: 10 }]});
-        fireEvent.touchEnd(dialog, {changedTouches: [{ clientX:  50, clientY: 10 }]});
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
+        expect(settingsWrapper.classList).toContain('settings-menu-open');
+        fireEvent.touchStart(settingsWrapper, {touches: [{ clientX: 100, clientY: 10 }]});
+        fireEvent.touchMove(settingsWrapper, {touches: [{ clientX:  50, clientY: 10 }]});
+        fireEvent.touchEnd(settingsWrapper, {changedTouches: [{ clientX:  50, clientY: 10 }]});
+        expect(settingsWrapper.classList).not.toContain('settings-menu-open');
 
         // Open again, press escape, confirm closed
         await user.click(app.getByTestId('open-settings-menu'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
+        expect(settingsWrapper.classList).toContain('settings-menu-open');
         await user.keyboard('{Escape}');
-        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
+        expect(settingsWrapper.classList).not.toContain('settings-menu-open');
     });
 
     it('changes number of collapsed note visible lines when collapsedNoteLines changed', async () => {

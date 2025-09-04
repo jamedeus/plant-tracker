@@ -1691,11 +1691,12 @@ exports[`App matches snapshot 1`] = `
       </div>
     </div>
   </div>
-  <dialog
+  <div
     class="settings-menu group"
+    data-testid="settings-menu-wrapper"
   >
     <div
-      class="fixed inset-0 cursor-pointer not-group-open:hidden"
+      class="fixed inset-0 cursor-pointer hidden"
       data-testid="settings-menu-overlay"
       tabindex="0"
     />
@@ -2084,7 +2085,7 @@ exports[`App matches snapshot 1`] = `
         </button>
       </div>
     </div>
-  </dialog>
+  </div>
 </div>
 `;
 
@@ -3614,11 +3615,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
       </div>
     </div>
   </div>
-  <dialog
+  <div
     class="settings-menu group"
+    data-testid="settings-menu-wrapper"
   >
     <div
-      class="fixed inset-0 cursor-pointer not-group-open:hidden"
+      class="fixed inset-0 cursor-pointer hidden"
       data-testid="settings-menu-overlay"
       tabindex="0"
     />
@@ -4007,6 +4009,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </button>
       </div>
     </div>
-  </dialog>
+  </div>
 </div>
 `;

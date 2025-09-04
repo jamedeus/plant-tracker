@@ -259,9 +259,9 @@ const Settings = () => {
     useCloseWithEscKey(open, closeSettings);
 
     return (
-        <dialog
-            className="settings-menu group"
-            open={open ? true : undefined}
+        <div
+            className={clsx("settings-menu group", open && "settings-menu-open")}
+            data-testid="settings-menu-wrapper"
             {...handlers}
         >
             {/* Full screen overlay when menu open (click outside to close) */}
@@ -269,7 +269,7 @@ const Settings = () => {
             <div
                 tabIndex={0}
                 onClick={closeSettings}
-                className="fixed inset-0 cursor-pointer not-group-open:hidden"
+                className={clsx("fixed inset-0 cursor-pointer", !open && "hidden")}
                 data-testid="settings-menu-overlay"
             />
             <div className="settings-contents">
@@ -307,7 +307,7 @@ const Settings = () => {
                     <ResetAllSettingsButton />
                 </div>
             </div>
-        </dialog>
+        </div>
     );
 };
 

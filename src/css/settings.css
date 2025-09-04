@@ -1,24 +1,19 @@
 @reference './index.css';
 
-/* Container dialog */
-dialog.settings-menu {
+/* Container div */
+div.settings-menu {
     /* Prevent display: none when closed (allow open animation to run) */
     @apply block text-base-content z-99;
 
     /* Slide open animation */
-    &[open] {
+    &.settings-menu-open {
         & > .settings-contents {
             transform: translateX(0);
         }
     }
-
-    /* Hide daisyui dialog backdrop (caused by showModal, need for esc key) */
-    &::backdrop {
-        @apply hidden;
-    }
 }
 
-/* Wrapper inside dialog */
+/* Contents wrapper (inside container div) */
 .settings-contents {
     @apply fixed inset-0 md:w-128 flex flex-col gap-8 p-4 z-99;
 
@@ -59,6 +54,6 @@ dialog.settings-menu {
 }
 
 /* Block scrolling while menu is open on mobile, allow on desktop */
-:root:has(dialog.settings-menu[open]) {
+:root:has(div.settings-menu.settings-menu-open) {
     @apply overflow-hidden md:overflow-auto;
 }
