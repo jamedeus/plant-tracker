@@ -33,4 +33,5 @@ div.title-drawer {
 /* Block scrolling body while drawer is open */
 :root:has(div.title-drawer.title-drawer-open) {
     @apply overflow-hidden;
+    scrollbar-gutter: stable;
 }
