@@ -46,6 +46,28 @@ describe('App', () => {
         jest.useRealTimers();
     });
 
+    it('opens TitleDrawer with plant details when title is clicked', async () => {
+        // Confirm title drawer is closed by default
+        const titleDrawer = app.getByTestId('title-drawer');
+        expect(titleDrawer.classList).not.toContain('title-drawer-open');
+
+        // Click title, confirm drawer opens
+        await user.click(app.getByText('Test Plant'));
+        expect(titleDrawer.classList).toContain('title-drawer-open');
+
+        // Click title again, confirm drawer closes
+        await user.click(app.getByText('Test Plant'));
+        expect(titleDrawer.classList).not.toContain('title-drawer-open');
+
+        // Open again
+        await user.click(app.getByText('Test Plant'));
+        expect(titleDrawer.classList).toContain('title-drawer-open');
+
+        // Click page outside of drawer, confirm drawer closes
+        await user.click(app.getByTestId('title-drawer-overlay'));
+        expect(titleDrawer.classList).not.toContain('title-drawer-open');
+    });
+
     it('sends correct payload when edit modal is submitted', async () => {
         // Mock /get_plant_species_options response (requested when modal opens)
         mockPlantSpeciesOptionsResponse();

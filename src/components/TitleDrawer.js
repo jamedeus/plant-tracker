@@ -9,7 +9,10 @@ const TitleDrawer = ({ open, onClose, children }) => {
     useCloseWithEscKey(open, onClose);
 
     return (
-        <div className={clsx("title-drawer", open && "title-drawer-open")}>
+        <div
+            className={clsx("title-drawer", open && "title-drawer-open")}
+            data-testid="title-drawer"
+        >
             {/* Full screen overlay when open (click outside to close) */}
             <div
                 onClick={onClose}
@@ -17,7 +20,7 @@ const TitleDrawer = ({ open, onClose, children }) => {
                     "fixed inset-0 cursor-pointer z-98",
                     !open && "hidden"
                 )}
-                data-testid="title-drawer-menu-overlay"
+                data-testid="title-drawer-overlay"
             />
             {/* Contents */}
             <div className="title-drawer-contents">

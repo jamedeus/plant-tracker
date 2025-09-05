@@ -129,10 +129,11 @@ exports[`App matches snapshot 1`] = `
     </div>
     <div
       class="title-drawer"
+      data-testid="title-drawer"
     >
       <div
         class="fixed inset-0 cursor-pointer z-98 hidden"
-        data-testid="title-drawer-menu-overlay"
+        data-testid="title-drawer-overlay"
       />
       <div
         class="title-drawer-contents"
@@ -985,10 +986,11 @@ exports[`App matches snapshot when group is archived 1`] = `
     </div>
     <div
       class="title-drawer"
+      data-testid="title-drawer"
     >
       <div
         class="fixed inset-0 cursor-pointer z-98 hidden"
-        data-testid="title-drawer-menu-overlay"
+        data-testid="title-drawer-overlay"
       />
       <div
         class="title-drawer-contents"
@@ -1793,10 +1795,11 @@ exports[`App matches snapshot when no plants 1`] = `
     </div>
     <div
       class="title-drawer"
+      data-testid="title-drawer"
     >
       <div
         class="fixed inset-0 cursor-pointer z-98 hidden"
-        data-testid="title-drawer-menu-overlay"
+        data-testid="title-drawer-overlay"
       />
       <div
         class="title-drawer-contents"

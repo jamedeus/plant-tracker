@@ -42,6 +42,28 @@ describe('App', () => {
         jest.useRealTimers();
     });
 
+    it('opens TitleDrawer with group details when title is clicked', async () => {
+        // Confirm title drawer is closed by default
+        const titleDrawer = app.getByTestId('title-drawer');
+        expect(titleDrawer.classList).not.toContain('title-drawer-open');
+
+        // Click title, confirm drawer opens
+        await user.click(app.getByText('Test group'));
+        expect(titleDrawer.classList).toContain('title-drawer-open');
+
+        // Click title again, confirm drawer closes
+        await user.click(app.getByText('Test group'));
+        expect(titleDrawer.classList).not.toContain('title-drawer-open');
+
+        // Open again
+        await user.click(app.getByText('Test group'));
+        expect(titleDrawer.classList).toContain('title-drawer-open');
+
+        // Click page outside of drawer, confirm drawer closes
+        await user.click(app.getByTestId('title-drawer-overlay'));
+        expect(titleDrawer.classList).not.toContain('title-drawer-open');
+    });
+
     it('sends correct payload when edit modal is submitted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
