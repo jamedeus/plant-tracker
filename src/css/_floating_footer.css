@@ -12,7 +12,7 @@
 }
 
 @utility floating-footer-hidden {
-    @apply translate-y-24 scale-90 opacity-0;
+    @apply translate-y-24 scale-90 opacity-0 pointer-events-none;
 }
 
 @utility floating-footer-visible {
