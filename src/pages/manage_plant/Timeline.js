@@ -7,6 +7,7 @@ import { capitalize, pastTense } from 'src/utils/stringUtils';
 import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
 import { openNoteModal, openRepotModal } from './modals';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
+import { FaTrash, FaCamera } from "react-icons/fa";
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
@@ -14,6 +15,7 @@ import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
 import { LuSplit } from "react-icons/lu";
+import { TbShovel } from "react-icons/tb";
 import { useSelector, useDispatch } from 'react-redux';
 import 'src/css/timeline.css';
 import { EVENTS_ORDER } from './timelineSlice';
@@ -110,29 +112,34 @@ const Title = memo(function Title() {
                         >
                             <FaEllipsis className="size-6" />
                         </div>
-                        <DropdownMenu className="w-40">
+                        <DropdownMenu className="w-42">
                             <li><button
                                 className="flex justify-end"
                                 onClick={() => openNoteModal()}
                             >
+
+                                <FaPenToSquare className='size-4 mr-auto' />
                                 Add note
                             </button></li>
                             <li><button
                                 className="flex justify-end"
                                 onClick={openPhotoModal}
                             >
+                                <FaCamera className='size-4 mr-auto' />
                                 Add photos
                             </button></li>
                             <li><button
                                 className="flex justify-end"
                                 onClick={openRepotModal}
                             >
+                                <TbShovel className='size-5 mr-auto' />
                                 Repot plant
                             </button></li>
                             <li><button
                                 className="flex justify-end"
                                 onClick={openDivisionModal}
                             >
+                                <LuSplit className='size-4 mr-auto rotate-90' />
                                 Divide plant
                             </button></li>
                             {(hasPhotos || hasEvents) &&
@@ -140,6 +147,7 @@ const Title = memo(function Title() {
                                     className="flex justify-end"
                                     onClick={startDeleteMode}
                                 >
+                                    <FaTrash className='size-4 mr-auto' />
                                     Delete mode
                                 </button></li>
                             }
