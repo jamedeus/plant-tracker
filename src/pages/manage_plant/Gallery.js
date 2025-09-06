@@ -173,25 +173,25 @@ const GalleryDropdown = ({ currentSlide }) => {
                 </div>
                 <DropdownMenu>
                     <li><button
-                        className="flex justify-end"
+                        className="flex justify-between"
                         onClick={handleDownloadPhoto}
                     >
-                        <ArrowDownTrayIcon className="size-4 mr-auto" />
                         Download photo
+                        <ArrowDownTrayIcon className="size-4 ml-4" />
                     </button></li>
                     <li><button
-                        className="flex justify-end"
+                        className="flex justify-between"
                         onClick={handleSetDefaultPhoto}
                     >
-                        <StarIcon className="size-4 mr-auto" />
                         Set default photo
+                        <StarIcon className="size-4 ml-4" />
                     </button></li>
                     <li><button
-                        className="flex justify-end"
+                        className="flex justify-between"
                         onClick={handleDeletePhotoOption}
                     >
-                        <TrashIcon className="size-4 mr-auto" />
                         Delete photo
+                        <TrashIcon className="size-4 ml-4" />
                     </button></li>
                 </DropdownMenu>
             </div>
