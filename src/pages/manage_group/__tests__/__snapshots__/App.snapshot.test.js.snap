@@ -314,7 +314,7 @@ exports[`App matches snapshot 1`] = `
                         class="flex justify-between"
                       >
                         <svg
-                          class="fa-arrow-down-long mr-2"
+                          class="transition-transform duration-200 mr-2 rotate-0"
                           fill="currentColor"
                           height="1em"
                           stroke="currentColor"
@@ -1132,7 +1132,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                         class="flex justify-between"
                       >
                         <svg
-                          class="fa-arrow-down-long mr-2"
+                          class="transition-transform duration-200 mr-2 rotate-0"
                           fill="currentColor"
                           height="1em"
                           stroke="currentColor"
@@ -1976,7 +1976,7 @@ exports[`App matches snapshot when no plants 1`] = `
                         class="flex justify-between"
                       >
                         <svg
-                          class="fa-arrow-down-long mr-2"
+                          class="transition-transform duration-200 mr-2 rotate-0"
                           fill="currentColor"
                           height="1em"
                           stroke="currentColor"

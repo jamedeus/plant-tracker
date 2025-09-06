@@ -5,7 +5,7 @@ import SectionCol from 'src/components/SectionCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import DropdownMenu from 'src/components/DropdownMenu';
 import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
-import { FaArrowUpLong, FaArrowDownLong } from 'react-icons/fa6';
+import { FaArrowDownLong } from 'react-icons/fa6';
 import clsx from 'clsx';
 
 // Takes object, ignoreKeys array, and filter input query
@@ -100,11 +100,10 @@ ClearButton.propTypes = {
 
 // Indicates sort direction on selected option
 const OptionArrow = ({ down }) => {
-    if (down === 1) {
-        return <FaArrowDownLong className="fa-arrow-down-long mr-2" />;
-    } else {
-        return <FaArrowUpLong className="fa-arrow-up-long mr-2" />;
-    }
+    return <FaArrowDownLong className={clsx(
+        "transition-transform duration-200 mr-2",
+        down === 1 ? "rotate-0" : "-rotate-180"
+    )} />;
 };
 
 OptionArrow.propTypes = {
@@ -192,7 +191,6 @@ const FilterInput = memo(function FilterInput({ state, dispatch, sortByKeys }) {
                 sortDirection: 1
             });
         }
-        document.activeElement.blur();
     };
 
     return (

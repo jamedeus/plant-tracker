@@ -220,7 +220,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="flex justify-between"
                         >
                           <svg
-                            class="fa-arrow-down-long mr-2"
+                            class="transition-transform duration-200 mr-2 rotate-0"
                             fill="currentColor"
                             height="1em"
                             stroke="currentColor"
@@ -491,7 +491,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="flex justify-between"
                         >
                           <svg
-                            class="fa-arrow-down-long mr-2"
+                            class="transition-transform duration-200 mr-2 rotate-0"
                             fill="currentColor"
                             height="1em"
                             stroke="currentColor"
@@ -1184,7 +1184,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           class="flex justify-between"
                         >
                           <svg
-                            class="fa-arrow-down-long mr-2"
+                            class="transition-transform duration-200 mr-2 rotate-0"
                             fill="currentColor"
                             height="1em"
                             stroke="currentColor"
@@ -1707,7 +1707,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           class="flex justify-between"
                         >
                           <svg
-                            class="fa-arrow-down-long mr-2"
+                            class="transition-transform duration-200 mr-2 rotate-0"
                             fill="currentColor"
                             height="1em"
                             stroke="currentColor"
@@ -2280,7 +2280,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="flex justify-between"
                         >
                           <svg
-                            class="fa-arrow-down-long mr-2"
+                            class="transition-transform duration-200 mr-2 rotate-0"
                             fill="currentColor"
                             height="1em"
                             stroke="currentColor"
@@ -2572,7 +2572,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="flex justify-between"
                         >
                           <svg
-                            class="fa-arrow-down-long mr-2"
+                            class="transition-transform duration-200 mr-2 rotate-0"
                             fill="currentColor"
                             height="1em"
                             stroke="currentColor"
@@ -3118,7 +3118,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="flex justify-between"
                         >
                           <svg
-                            class="fa-arrow-down-long mr-2"
+                            class="transition-transform duration-200 mr-2 rotate-0"
                             fill="currentColor"
                             height="1em"
                             stroke="currentColor"
@@ -3410,7 +3410,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="flex justify-between"
                         >
                           <svg
-                            class="fa-arrow-down-long mr-2"
+                            class="transition-transform duration-200 mr-2 rotate-0"
                             fill="currentColor"
                             height="1em"
                             stroke="currentColor"

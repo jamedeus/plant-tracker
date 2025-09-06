@@ -130,8 +130,12 @@ describe('FilterColumn', () => {
         expect(menu.children[3]).toHaveTextContent('Watered');
 
         // Confirm there is a down arrow icon next to the default option
-        expect(menu.children[0].children[0].innerHTML).toContain('svg');
-        expect(menu.children[0].children[0].innerHTML).toContain('fa-arrow-down-long');
+        expect(menu.children[0].querySelector('svg')).not.toBeNull();
+        expect(menu.children[0].querySelector('svg').classList).toContain('rotate-0');
+        // Confirm there is no icon next to the other options
+        expect(menu.children[1].querySelector('svg')).toBeNull();
+        expect(menu.children[2].querySelector('svg')).toBeNull();
+        expect(menu.children[3].querySelector('svg')).toBeNull();
     });
 
     it('filters visible cards when user types in the filter input', async () => {
@@ -248,7 +252,8 @@ describe('FilterColumn', () => {
 
         // Confirm a down arrow icon appeared next to name
         let nameOption = component.getByText('Name').closest('li');
-        expect(nameOption.querySelector('.fa-arrow-down-long')).not.toBeNull();
+        expect(nameOption.querySelector('svg')).not.toBeNull();
+        expect(nameOption.querySelector('svg').classList).toContain('rotate-0');
 
         // Click the Name option again to reverse sort order
         await user.click(component.getByText('Name'));
@@ -261,10 +266,10 @@ describe('FilterColumn', () => {
         expect(titles[3].innerHTML).toBe("mini palm tree");
         expect(titles[4].innerHTML).toBe("Favorite plant");
 
-        // Confirm the down arrow was replaced by an up arrow
+        // Confirm the down arrow rotated 180 degrees (up arrow)
         nameOption = component.getByText('Name').closest('li');
-        expect(nameOption.querySelector('.fa-arrow-down-long')).toBeNull();
-        expect(nameOption.querySelector('.fa-arrow-up-long')).not.toBeNull();
+        expect(nameOption.querySelector('svg').classList).not.toContain('rotate-0');
+        expect(nameOption.querySelector('svg').classList).toContain('-rotate-180');
     });
 
     it('sorts items where selected key is null to end of list', async () => {
@@ -513,9 +518,9 @@ describe('FilterColumn optional parameters', () => {
         expect(titles[3].innerHTML).toBe("Unnamed plant 2");
         expect(titles[4].innerHTML).toBe("Favorite plant");
 
-        // Confirm neither arrow icon is present anywhere in the component
-        expect(component.container.querySelector('.fa-arrow-up-long')).toBeNull();
-        expect(component.container.querySelector('.fa-arrow-down-long')).toBeNull();
+        // Confirm arrow icon is not present on any dropdown option
+        const options = component.container.querySelector('.dropdown-content');
+        expect(options.querySelector('svg')).toBeNull();
     });
 
     it('caches sortDirection and sortKey to sessionStorage when changed', async () => {
