@@ -76,7 +76,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
         // Click cancel button, confirm buttons and checkboxes disappear
-        await user.click(app.getByRole('button', {name: 'Cancel'}));
+        await user.click(app.getByRole('button', {name: 'Exit edit mode'}));
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
     });
@@ -96,7 +96,10 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Test Plant'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
-        const button = app.getByRole('button', { name: 'Delete' });
+        const button = app.getByRole(
+            'button',
+            { name: 'Press and hold to delete selected plants and groups' }
+        );
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);
@@ -154,7 +157,10 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Test group'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
-        const button = app.getByRole('button', { name: 'Delete' });
+        const button = app.getByRole(
+            'button',
+            { name: 'Press and hold to delete selected plants and groups' }
+        );
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);
@@ -257,7 +263,10 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Second Test group'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
-        const button = app.getByRole('button', { name: 'Delete' });
+        const button = app.getByRole(
+            'button',
+            { name: 'Press and hold to delete selected plants and groups' }
+        );
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);

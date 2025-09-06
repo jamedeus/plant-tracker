@@ -4,7 +4,16 @@ import PropTypes from 'prop-types';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 
-const FloatingFooter = ({ visible, children, text, fadeText, onClose, closeButton, testId='floating-footer' }) => {
+const FloatingFooter = ({
+    visible,
+    children,
+    text,
+    fadeText,
+    onClose,
+    closeButton,
+    closeButtonAriaLabel='Close floating footer',
+    testId='floating-footer'
+}) => {
     // Track displayed text (prevents immediate change when prop changes)
     const [displayedText, setDisplayedText] = useState(text);
     // Text fades in if true, fades out if false
@@ -66,6 +75,7 @@ const FloatingFooter = ({ visible, children, text, fadeText, onClose, closeButto
                         style={{
                             '--btn-bg': 'color-mix(in oklab,var(--color-base-content)20%,#0000)'
                         }}
+                        aria-label={closeButtonAriaLabel}
                     >
                         <XMarkIcon className="size-5" />
                     </button>
@@ -98,6 +108,7 @@ FloatingFooter.propTypes = {
     fadeText: PropTypes.bool,
     onClose: PropTypes.func,
     closeButton: PropTypes.bool,
+    closeButtonAriaLabel: PropTypes.string,
     testId: PropTypes.string
 };
 

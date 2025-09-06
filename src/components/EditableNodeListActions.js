@@ -25,6 +25,7 @@ const EditableNodeListActions = memo(function EditableNodeListActions({
     initialText,
     alternateText,
     closeButton=false,
+    closeButtonAriaLabel,
     testId,
     children,
 }) {
@@ -104,6 +105,7 @@ const EditableNodeListActions = memo(function EditableNodeListActions({
             fadeText={shouldFade}
             onClose={onClose}
             closeButton={closeButton}
+            closeButtonAriaLabel={closeButtonAriaLabel}
             testId={testId}
         >
             {children}
@@ -124,6 +126,7 @@ EditableNodeListActions.propTypes = {
     initialText: PropTypes.string.isRequired,
     alternateText: PropTypes.string,
     closeButton: PropTypes.bool,
+    closeButtonAriaLabel: PropTypes.string,
     testId: PropTypes.string,
     children: PropTypes.node.isRequired,
 };

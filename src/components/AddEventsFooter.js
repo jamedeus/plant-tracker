@@ -73,11 +73,13 @@ const AddEventsFooter = memo(function AddEventsFooter({
             initialText="Select plants to add events"
             alternateText={successMessage}
             closeButton={true}
+            closeButtonAriaLabel="Stop adding events"
             testId="add-events-footer"
         >
             <button
                 className="btn btn-square btn-info"
                 onClick={() => handleAddEvents('water')}
+                aria-label="Water selected plants"
                 data-testid="water-button"
             >
                 <FaDroplet className="size-5 text-neutral" />
@@ -86,6 +88,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
             <button
                 className="btn btn-square btn-success"
                 onClick={() => handleAddEvents('fertilize')}
+                aria-label="Fertilize selected plants"
                 data-testid="fertilize-button"
             >
                 <FaSeedling className="size-5 text-neutral" />
@@ -94,6 +97,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
             <button
                 className="btn btn-square btn-prune"
                 onClick={() => handleAddEvents('prune')}
+                aria-label="Prune selected plants"
                 data-testid="prune-button"
             >
                 <FaScissors className="size-5 text-neutral" />

@@ -114,6 +114,7 @@ const EditModeFooter = memo(function EditModeFooter({
             <button
                 className="btn btn-neutral w-20"
                 onClick={() => setEditing(false)}
+                aria-label="Exit edit mode"
             >
                 Cancel
             </button>
@@ -121,6 +122,10 @@ const EditModeFooter = memo(function EditModeFooter({
             <button
                 className="btn"
                 onClick={handleArchive}
+                aria-label={archivedOverview ?
+                    "Un-archive selected plants and groups" :
+                    "Archive selected plants and groups"
+                }
             >
                 {archivedOverview ? "Un-archive" : "Archive"}
             </button>
@@ -130,6 +135,7 @@ const EditModeFooter = memo(function EditModeFooter({
                 timeout={2500}
                 buttonText="Delete"
                 buttonClass="w-20"
+                buttonAriaLabel="Press and hold to delete selected plants and groups"
                 onHoldStart={handleHoldDeleteStart}
                 onHoldStop={handleHoldDeleteStop}
             />

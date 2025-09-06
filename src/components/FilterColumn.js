@@ -98,16 +98,41 @@ ClearButton.propTypes = {
     onClick: PropTypes.func.isRequired
 };
 
-// Indicates sort direction on selected option
-const OptionArrow = ({ down }) => {
-    return <FaArrowDownLong className={clsx(
-        "transition-transform duration-200 mr-2",
-        down === 1 ? "rotate-0" : "-rotate-180"
-    )} />;
+// Renders a single option in SortMenu dropdown
+const SortMenuOption = ({ display, isSelected, state, onClick }) => {
+    return (
+        <li>
+            <a
+                className="flex justify-between"
+                onClick={onClick}
+                aria-label={isSelected && state.sortDirection === 1 ? (
+                    `Sort by ${display} (reverse alphabetical)'`
+                ): (
+                    `Sort by ${display} (alphabetical)`
+                )}
+            >
+                {isSelected ? (
+                    // Arrow indicates sort direction on selected option
+                    <FaArrowDownLong className={clsx(
+                        "transition-transform duration-200 mr-2",
+                        state.sortDirection === 1 ? "rotate-0" : "-rotate-180"
+                    )} />
+                ): (
+                    // Spacer to prevent dropdown width changing
+                    // Has same width as OptionArrow + margin
+                    <div className="w-[14px] mr-2" />
+                )}
+                {display}
+            </a>
+        </li>
+    );
 };
 
-OptionArrow.propTypes = {
-    down: PropTypes.oneOf([1, -1]).isRequired
+SortMenuOption.propTypes = {
+    display: PropTypes.string.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+    state: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired
 };
 
 // Dropdown button rendered next to filter input, used to sort column
@@ -125,22 +150,13 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
             </div>
             <DropdownMenu className="mt-2">
                 {sortByKeys.map((key) => (
-                    <li key={key.key}>
-                        <a
-                            className="flex justify-between"
-                            onClick={() => setSort(key.key)}
-                        >
-                            {state.sortKey === key.key ? (
-                                // Arrow shows sort direction on selected option
-                                <OptionArrow down={state.sortDirection} />
-                            ): (
-                                // Spacer to prevent dropdown width changing
-                                // Has same width as OptionArrow + margin
-                                <div className="w-[14px] mr-2" />
-                            )}
-                            {key.display}
-                        </a>
-                    </li>
+                    <SortMenuOption
+                        key={key.key}
+                        display={key.display}
+                        isSelected={state.sortKey === key.key}
+                        state={state}
+                        onClick={() => setSort(key.key)}
+                    />
                 ))}
             </DropdownMenu>
         </div>

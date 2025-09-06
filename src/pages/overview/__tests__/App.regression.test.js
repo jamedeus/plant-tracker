@@ -88,7 +88,10 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Test group'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
-        const button = app.getByRole('button', { name: 'Delete' });
+        const button = app.getByRole(
+            'button',
+            { name: 'Press and hold to delete selected plants and groups' }
+        );
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);

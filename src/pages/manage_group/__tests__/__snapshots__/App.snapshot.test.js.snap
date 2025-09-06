@@ -311,6 +311,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <li>
                       <a
+                        aria-label="Sort by Added (reverse alphabetical)'"
                         class="flex justify-between"
                       >
                         <svg
@@ -332,6 +333,7 @@ exports[`App matches snapshot 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Name (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -342,6 +344,7 @@ exports[`App matches snapshot 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Species (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -352,6 +355,7 @@ exports[`App matches snapshot 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Watered (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -759,6 +763,7 @@ exports[`App matches snapshot 1`] = `
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <button
+          aria-label="Stop adding events"
           class="absolute -top-2 -right-2 btn-close size-6"
           data-testid="close-add-events-footer"
           style="--btn-bg: color-mix(in oklab,var(--color-base-content)20%,#0000);"
@@ -780,6 +785,7 @@ exports[`App matches snapshot 1`] = `
           class="flex flex-row justify-center gap-8"
         >
           <button
+            aria-label="Water selected plants"
             class="btn btn-square btn-info"
             data-testid="water-button"
           >
@@ -799,6 +805,7 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
           <button
+            aria-label="Fertilize selected plants"
             class="btn btn-square btn-success"
             data-testid="fertilize-button"
           >
@@ -818,6 +825,7 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
           <button
+            aria-label="Prune selected plants"
             class="btn btn-square btn-prune"
             data-testid="prune-button"
           >
@@ -1129,6 +1137,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                   >
                     <li>
                       <a
+                        aria-label="Sort by Added (reverse alphabetical)'"
                         class="flex justify-between"
                       >
                         <svg
@@ -1150,6 +1159,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Name (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -1160,6 +1170,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Species (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -1170,6 +1181,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Watered (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -1577,6 +1589,7 @@ exports[`App matches snapshot when group is archived 1`] = `
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <button
+          aria-label="Stop adding events"
           class="absolute -top-2 -right-2 btn-close size-6"
           data-testid="close-add-events-footer"
           style="--btn-bg: color-mix(in oklab,var(--color-base-content)20%,#0000);"
@@ -1598,6 +1611,7 @@ exports[`App matches snapshot when group is archived 1`] = `
           class="flex flex-row justify-center gap-8"
         >
           <button
+            aria-label="Water selected plants"
             class="btn btn-square btn-info"
             data-testid="water-button"
           >
@@ -1617,6 +1631,7 @@ exports[`App matches snapshot when group is archived 1`] = `
             </svg>
           </button>
           <button
+            aria-label="Fertilize selected plants"
             class="btn btn-square btn-success"
             data-testid="fertilize-button"
           >
@@ -1636,6 +1651,7 @@ exports[`App matches snapshot when group is archived 1`] = `
             </svg>
           </button>
           <button
+            aria-label="Prune selected plants"
             class="btn btn-square btn-prune"
             data-testid="prune-button"
           >
@@ -1973,6 +1989,7 @@ exports[`App matches snapshot when no plants 1`] = `
                   >
                     <li>
                       <a
+                        aria-label="Sort by Added (reverse alphabetical)'"
                         class="flex justify-between"
                       >
                         <svg
@@ -1994,6 +2011,7 @@ exports[`App matches snapshot when no plants 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Name (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -2004,6 +2022,7 @@ exports[`App matches snapshot when no plants 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Species (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -2014,6 +2033,7 @@ exports[`App matches snapshot when no plants 1`] = `
                     </li>
                     <li>
                       <a
+                        aria-label="Sort by Watered (alphabetical)"
                         class="flex justify-between"
                       >
                         <div
@@ -2070,6 +2090,7 @@ exports[`App matches snapshot when no plants 1`] = `
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <button
+          aria-label="Stop adding events"
           class="absolute -top-2 -right-2 btn-close size-6"
           data-testid="close-add-events-footer"
           style="--btn-bg: color-mix(in oklab,var(--color-base-content)20%,#0000);"
@@ -2091,6 +2112,7 @@ exports[`App matches snapshot when no plants 1`] = `
           class="flex flex-row justify-center gap-8"
         >
           <button
+            aria-label="Water selected plants"
             class="btn btn-square btn-info"
             data-testid="water-button"
           >
@@ -2110,6 +2132,7 @@ exports[`App matches snapshot when no plants 1`] = `
             </svg>
           </button>
           <button
+            aria-label="Fertilize selected plants"
             class="btn btn-square btn-success"
             data-testid="fertilize-button"
           >
@@ -2129,6 +2152,7 @@ exports[`App matches snapshot when no plants 1`] = `
             </svg>
           </button>
           <button
+            aria-label="Prune selected plants"
             class="btn btn-square btn-prune"
             data-testid="prune-button"
           >

@@ -163,6 +163,7 @@ exports[`App matches snapshot 1`] = `
           Default Photo
         </div>
         <img
+          alt="Plant default photo"
           class="photo-thumbnail mx-auto cursor-pointer size-[8rem] md:size-[14rem]"
           data-testid="defaultPhotoThumbnail"
           draggable="false"
@@ -2313,6 +2314,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           Default Photo
         </div>
         <img
+          alt="Plant default photo"
           class="photo-thumbnail mx-auto cursor-pointer size-[8rem] md:size-[14rem]"
           data-testid="defaultPhotoThumbnail"
           draggable="false"

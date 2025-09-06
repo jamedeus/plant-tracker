@@ -52,6 +52,7 @@ exports[`App matches snapshot 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
+            aria-level="1"
             class="w-full px-0 text-nowrap font-semibold"
             role="heading"
             tabindex="-1"

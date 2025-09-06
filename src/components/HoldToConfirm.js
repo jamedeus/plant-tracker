@@ -8,7 +8,16 @@ import 'src/css/hold_to_confirm.css';
 // Shows tooltip with instructions if tooltipText given and timeout is not 0
 // Becomes normal btn-error btn-soft if timeout is 0 (callback runs onClick)
 // Runs optional onHoldStart and onHoldStop callbacks when held and released
-const HoldToConfirm = ({ callback, timeout, buttonText, buttonClass, tooltipText, onHoldStart, onHoldStop }) => {
+const HoldToConfirm = ({
+    callback,
+    timeout,
+    buttonText,
+    buttonAriaLabel,
+    buttonClass,
+    tooltipText,
+    onHoldStart,
+    onHoldStop
+}) => {
     const [holding, setHolding] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
     const timerRef = useRef(null);
@@ -76,6 +85,7 @@ const HoldToConfirm = ({ callback, timeout, buttonText, buttonClass, tooltipText
                     holding && 'active',
                     buttonClass && buttonClass
                 )}
+                aria-label={buttonAriaLabel}
                 style={{ '--hold-duration': `${timeout}ms` }}
                 onMouseDown={handleHold}
                 onTouchStart={handleHold}
@@ -100,6 +110,7 @@ HoldToConfirm.propTypes = {
     timeout: PropTypes.number.isRequired,
     buttonText: PropTypes.string.isRequired,
     buttonClass: PropTypes.string,
+    buttonAriaLabel: PropTypes.string,
     tooltipText: PropTypes.string,
     onHoldStart: PropTypes.func,
     onHoldStop: PropTypes.func

@@ -70,6 +70,7 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
                             "size-[8rem] md:size-[14rem]"
                         )}
                         src={defaultPhoto.preview}
+                        alt="Plant default photo"
                         data-testid="defaultPhotoThumbnail"
                         onClick={openGallery}
                     />

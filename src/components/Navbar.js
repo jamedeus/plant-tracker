@@ -119,6 +119,7 @@ const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, onTitleC
                     <a
                         tabIndex={titleIsButton ? 0 : -1}
                         role={titleIsButton ? "button" : "heading"}
+                        aria-level={titleIsButton ? null : 1}
                         className={clsx(
                             "w-full px-0 text-nowrap font-semibold",
                             titleIsButton && "btn btn-ghost border-0"
