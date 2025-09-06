@@ -30,6 +30,8 @@
             transform: scale(1);
             visibility: visible;
             opacity: 1;
+            /* Prevent scrolling body when swiping inside open dropdown */
+            touch-action: none;
         }
     }
 }
