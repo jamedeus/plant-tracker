@@ -130,7 +130,7 @@
     /* v4 hover highlight color */
     /* Keep dropdown button hover highlight visible while dropdown is open */
     &:hover,
-    .dropdown > &:focus {
+    .dropdown:focus-within > & {
         --btn-bg: color-mix(in oklab,var(--color-base-content)20%,#0000);
         --btn-border: #0000;
     }
