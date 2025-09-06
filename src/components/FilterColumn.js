@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useReducer, memo } from 'react';
 import PropTypes from 'prop-types';
 import useDebounce from 'src/hooks/useDebounce';
-import SectionCol from 'src/components/SectionCol';
-import EditableNodeList from 'src/components/EditableNodeList';
-import DropdownMenu from 'src/components/DropdownMenu';
+import SectionCol from './SectionCol';
+import DropdownMenu from './DropdownMenu';
+import DropdownButton from './DropdownButton';
+import EditableNodeList from './EditableNodeList';
 import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FaArrowDownLong } from 'react-icons/fa6';
 import clsx from 'clsx';
@@ -140,14 +141,12 @@ SortMenuOption.propTypes = {
 const SortMenu = ({ sortByKeys, state, setSort }) => {
     return (
         <div className="dropdown dropdown-end">
-            <div
-                role="button"
-                tabIndex="0"
+            <DropdownButton
                 className="btn-close size-8"
                 title="Sort menu"
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />
-            </div>
+            </DropdownButton>
             <DropdownMenu className="mt-2">
                 {sortByKeys.map((key) => (
                     <SortMenuOption

@@ -17,6 +17,7 @@ exports[`App matches snapshot 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"

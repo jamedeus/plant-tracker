@@ -18,9 +18,11 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
           class="dropdown dropdown-center"
         >
           <div
+            aria-label="Timeline quick navigation menu"
             class="btn btn-ghost text-xl font-bold"
             role="button"
             tabindex="0"
+            title="Timeline quick navigation menu"
           >
             History
           </div>
@@ -53,6 +55,7 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="More plant actions menu"
         >
           <svg
             class="size-6"
@@ -281,9 +284,11 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           class="dropdown dropdown-center"
         >
           <div
+            aria-label="Timeline quick navigation menu"
             class="btn btn-ghost text-xl font-bold"
             role="button"
             tabindex="0"
+            title="Timeline quick navigation menu"
           >
             History
           </div>
@@ -316,6 +321,7 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="More plant actions menu"
         >
           <svg
             class="size-6"
@@ -570,9 +576,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="dropdown dropdown-center"
         >
           <div
+            aria-label="Timeline quick navigation menu"
             class="btn btn-ghost text-xl font-bold"
             role="button"
             tabindex="0"
+            title="Timeline quick navigation menu"
           >
             History
           </div>
@@ -3657,9 +3665,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="dropdown dropdown-center"
         >
           <div
+            aria-label="Timeline quick navigation menu"
             class="btn btn-ghost text-xl font-bold"
             role="button"
             tabindex="0"
+            title="Timeline quick navigation menu"
           >
             History
           </div>
@@ -3790,6 +3800,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="More plant actions menu"
         >
           <svg
             class="size-6"
@@ -6895,9 +6906,11 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           class="dropdown dropdown-center"
         >
           <div
+            aria-label="Timeline quick navigation menu"
             class="btn btn-ghost text-xl font-bold"
             role="button"
             tabindex="0"
+            title="Timeline quick navigation menu"
           >
             History
           </div>
@@ -6930,6 +6943,7 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="More plant actions menu"
         >
           <svg
             class="size-6"

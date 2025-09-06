@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import DropdownButton from './DropdownButton';
 
 // Renders section with centered title and flex column containing children
 const SectionCol = ({ title, titleOptions, onOpenTitle, headerChildren, colRef, children }) => {
@@ -8,14 +9,12 @@ const SectionCol = ({ title, titleOptions, onOpenTitle, headerChildren, colRef, 
             <div className="section-header">
                 {/* Title text + dropdown with titleOptions if prop used */}
                 <div className="flex dropdown dropdown-center min-h-[3.75rem]">
-                    <div
-                        tabIndex={0}
-                        role="button"
+                    <DropdownButton
                         className="section-title btn btn-ghost cursor-pointer"
                         onClick={onOpenTitle}
                     >
                         {title}
-                    </div>
+                    </DropdownButton>
                     <div className="dropdown-content z-50 mt-14">
                         {titleOptions}
                     </div>

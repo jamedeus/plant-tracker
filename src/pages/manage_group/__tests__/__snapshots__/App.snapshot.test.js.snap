@@ -17,6 +17,7 @@ exports[`App matches snapshot 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -285,6 +286,7 @@ exports[`App matches snapshot 1`] = `
                   class="dropdown dropdown-end"
                 >
                   <div
+                    aria-label="Sort menu"
                     class="btn-close size-8"
                     role="button"
                     tabindex="0"
@@ -891,6 +893,7 @@ exports[`App matches snapshot when group is archived 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -1111,6 +1114,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                   class="dropdown dropdown-end"
                 >
                   <div
+                    aria-label="Sort menu"
                     class="btn-close size-8"
                     role="button"
                     tabindex="0"
@@ -1717,6 +1721,7 @@ exports[`App matches snapshot when no plants 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -1963,6 +1968,7 @@ exports[`App matches snapshot when no plants 1`] = `
                   class="dropdown dropdown-end"
                 >
                   <div
+                    aria-label="Sort menu"
                     class="btn-close size-8"
                     role="button"
                     tabindex="0"

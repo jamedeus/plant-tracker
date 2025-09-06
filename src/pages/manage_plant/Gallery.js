@@ -18,6 +18,7 @@ import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import { showToast } from 'src/components/Toast';
 import DropdownMenu from 'src/components/DropdownMenu';
+import DropdownButton from 'src/components/DropdownButton';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import {
     XMarkIcon,
@@ -163,14 +164,12 @@ const GalleryDropdown = ({ currentSlide }) => {
     return (
         <>
             <div className="gallery-dropdown dropdown dropdown-start">
-                <div
-                    tabIndex={0}
-                    role="button"
+                <DropdownButton
                     className="yarl__button"
-                    aria-label="Gallery options"
+                    title="Gallery options"
                 >
                     <FaEllipsis className="size-8" />
-                </div>
+                </DropdownButton>
                 <DropdownMenu>
                     <li><button
                         className="flex justify-between"

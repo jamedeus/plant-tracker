@@ -17,6 +17,7 @@ exports[`App matches snapshot 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -284,6 +285,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -500,6 +502,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -761,6 +764,7 @@ exports[`App matches snapshot when group querystring param is present 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -1010,6 +1014,7 @@ exports[`App matches snapshot when plant division in progress 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"

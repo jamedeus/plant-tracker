@@ -11,6 +11,7 @@ import { FaCamera } from "react-icons/fa";
 import { TrashIcon } from '@heroicons/react/24/solid';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import DropdownMenu from 'src/components/DropdownMenu';
+import DropdownButton from 'src/components/DropdownButton';
 import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
@@ -83,13 +84,12 @@ const Title = memo(function Title() {
             <div className="mx-auto my-1">
                 {hasNavigationOptions ? (
                     <div className="dropdown dropdown-center">
-                        <div
-                            tabIndex={0}
-                            role="button"
+                        <DropdownButton
                             className="btn btn-ghost text-xl font-bold"
+                            title="Timeline quick navigation menu"
                         >
                             History
-                        </div>
+                        </DropdownButton>
                         <DropdownMenu className="min-w-44">
                             <QuickNavigation />
                         </DropdownMenu>
@@ -105,14 +105,12 @@ const Title = memo(function Title() {
             <div className="justify-end w-12 dropdown dropdown-end">
                 {!archived &&
                     <>
-                        <div
-                            tabIndex={0}
-                            role="button"
+                        <DropdownButton
                             className="btn btn-ghost btn-circle size-12"
-                            aria-label="More plant actions menu"
+                            title="More plant actions menu"
                         >
                             <FaEllipsis className="size-6" />
-                        </div>
+                        </DropdownButton>
                         <DropdownMenu>
                             <li><button
                                 className="flex justify-between"

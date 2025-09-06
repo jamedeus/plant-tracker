@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { settingChanged, settingsReset } from './settingsSlice';
 import { settingsMenuOpened } from './interfaceSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
+import DropdownButton from 'src/components/DropdownButton';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import { useCloseWithEscKey } from 'src/hooks/useCloseWithEscKey';
 import 'src/css/settings.css';
@@ -154,14 +155,12 @@ const SettingSection = memo(function SettingSection({
             {/* Button shows current value, opens dropdown with options */}
             <div className="flex items-center">
                 <div className="dropdown dropdown-center mx-auto">
-                    <button
-                        tabIndex={0}
-                        role="button"
-                        aria-label={`Set ${settingText}`}
+                    <DropdownButton
                         className="btn btn-ghost text-xl font-bold"
+                        title={`Set ${settingText}`}
                     >
                         {currentValueName}
-                    </button>
+                    </DropdownButton>
                     <DropdownMenu className="min-w-24 mt-2">
                         {settingOptions.map((option) =>  (
                             <li key={option.value}>

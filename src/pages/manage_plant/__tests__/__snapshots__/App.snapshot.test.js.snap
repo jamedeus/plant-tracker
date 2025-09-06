@@ -17,6 +17,7 @@ exports[`App matches snapshot 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -1109,9 +1110,11 @@ exports[`App matches snapshot 1`] = `
               class="dropdown dropdown-center"
             >
               <div
+                aria-label="Timeline quick navigation menu"
                 class="btn btn-ghost text-xl font-bold"
                 role="button"
                 tabindex="0"
+                title="Timeline quick navigation menu"
               >
                 History
               </div>
@@ -1149,6 +1152,7 @@ exports[`App matches snapshot 1`] = `
               class="btn btn-ghost btn-circle size-12"
               role="button"
               tabindex="0"
+              title="More plant actions menu"
             >
               <svg
                 class="size-6"
@@ -1835,14 +1839,15 @@ exports[`App matches snapshot 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Show full dates"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Show full dates"
             >
               Show
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -1878,14 +1883,15 @@ exports[`App matches snapshot 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Closed note visible lines"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Closed note visible lines"
             >
               1
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -1945,14 +1951,15 @@ exports[`App matches snapshot 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Hold to delete delay (seconds)"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Hold to delete delay (seconds)"
             >
               1.5
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -2009,14 +2016,15 @@ exports[`App matches snapshot 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Show photo dates"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Show photo dates"
             >
               Yes
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -2052,14 +2060,15 @@ exports[`App matches snapshot 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Slideshow delay (seconds)"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Slideshow delay (seconds)"
             >
               3
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -2119,14 +2128,15 @@ exports[`App matches snapshot 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Scroll timeline to viewed photo"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Scroll timeline to viewed photo"
             >
               Yes
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -2192,6 +2202,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           class="btn btn-ghost btn-circle size-12"
           role="button"
           tabindex="0"
+          title="Navigation menu"
         >
           <svg
             class="size-5"
@@ -3181,9 +3192,11 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="dropdown dropdown-center"
             >
               <div
+                aria-label="Timeline quick navigation menu"
                 class="btn btn-ghost text-xl font-bold"
                 role="button"
                 tabindex="0"
+                title="Timeline quick navigation menu"
               >
                 History
               </div>
@@ -3756,14 +3769,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Show full dates"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Show full dates"
             >
               Show
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -3799,14 +3813,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Closed note visible lines"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Closed note visible lines"
             >
               1
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -3866,14 +3881,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Hold to delete delay (seconds)"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Hold to delete delay (seconds)"
             >
               1.5
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -3930,14 +3946,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Show photo dates"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Show photo dates"
             >
               Yes
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -3973,14 +3990,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Slideshow delay (seconds)"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Slideshow delay (seconds)"
             >
               3
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
@@ -4040,14 +4058,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
           <div
             class="dropdown dropdown-center mx-auto"
           >
-            <button
+            <div
               aria-label="Set Scroll timeline to viewed photo"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
+              title="Set Scroll timeline to viewed photo"
             >
               Yes
-            </button>
+            </div>
             <ul
               class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
               tabindex="0"
