@@ -7,7 +7,8 @@ import { capitalize, pastTense } from 'src/utils/stringUtils';
 import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
 import { openNoteModal, openRepotModal } from './modals';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
-import { FaTrash, FaCamera } from "react-icons/fa";
+import { FaCamera } from "react-icons/fa";
+import { TrashIcon } from '@heroicons/react/24/solid';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
@@ -147,8 +148,8 @@ const Title = memo(function Title() {
                                     className="flex justify-between"
                                     onClick={startDeleteMode}
                                 >
-                                    <FaTrash className='size-4 mr-4' />
-                                    Delete mode
+                                    <TrashIcon className='size-4 mr-4' />
+                                    Edit timeline
                                 </button></li>
                             }
                         </DropdownMenu>

@@ -340,7 +340,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(1);
 
         // Start deleting events, select more recent event
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -423,7 +423,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
 
         // Start deleting events, select March 1 event
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -580,7 +580,7 @@ describe('App', () => {
         }));
 
         // Simulate user entering delete mode, selecting first photo
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(app.getByTitle('12:54 PM - March 1, 2024'));
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
@@ -596,9 +596,9 @@ describe('App', () => {
     // Original bug: The top-left dropdown contained a gallery link even if no
     // photos existed, which rendered an empty lightbox with no explanation.
     it('only shows gallery and delete mode links if 1 or more photos exist', async () => {
-        // Confirm Gallery and Delete mode dropdown options were not rendered
+        // Confirm Gallery and Edit timeline dropdown options were not rendered
         expect(app.queryByText('Gallery')).toBeNull();
-        expect(app.queryByText('Delete mode')).toBeNull();
+        expect(app.queryByText('Edit timeline')).toBeNull();
 
         // Mock expected API response when photo is uploaded
         global.fetch = jest.fn(() => Promise.resolve({
@@ -628,9 +628,9 @@ describe('App', () => {
         ] } });
         await user.click(app.getByText('Upload'));
 
-        // Confirm Gallery and Delete mode dropdown options appeared
+        // Confirm Gallery and Edit timeline dropdown options appeared
         expect(app.queryByText('Gallery')).not.toBeNull();
-        expect(app.queryByText('Delete mode')).not.toBeNull();
+        expect(app.queryByText('Edit timeline')).not.toBeNull();
 
         // Mock fetch function to return expected response when photo is deleted
         global.fetch = jest.fn(() => Promise.resolve({
@@ -643,7 +643,7 @@ describe('App', () => {
         }));
 
         // Simulate user entering delete mode, selecting photo
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(app.getByTitle('12:52 PM - June 21, 2024'));
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
@@ -651,14 +651,14 @@ describe('App', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
-        // Confirm Gallery and Delete mode dropdown options were removed
+        // Confirm Gallery and Edit timeline dropdown options were removed
         expect(app.queryByText('Gallery')).toBeNull();
-        expect(app.queryByText('Delete mode')).toBeNull();
+        expect(app.queryByText('Edit timeline')).toBeNull();
     });
 
     it('only shows delete mode dropdown option if events exist', async () => {
-        // Confirm Delete mode dropdown option was not rendered
-        expect(app.queryByText('Delete mode')).toBeNull();
+        // Confirm Edit timeline dropdown option was not rendered
+        expect(app.queryByText('Edit timeline')).toBeNull();
 
         // Mock fetch function to return expected response when water event added
         global.fetch = jest.fn(() => Promise.resolve({
@@ -673,8 +673,8 @@ describe('App', () => {
         // Click water button
         await user.click(app.getByRole("button", {name: "Water"}));
 
-        // Confirm Delete mode dropdown option appeared
-        expect(app.queryByText('Delete mode')).not.toBeNull();
+        // Confirm Edit timeline dropdown option appeared
+        expect(app.queryByText('Edit timeline')).not.toBeNull();
 
         // Mock fetch function to return expected response when water event deleted
         global.fetch = jest.fn(() => Promise.resolve({
@@ -696,7 +696,7 @@ describe('App', () => {
         }));
 
         // Start deleting events, select water event
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -723,7 +723,7 @@ describe('App', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
-        // Confirm Delete mode dropdown option was removed
-        expect(app.queryByText('Delete mode')).toBeNull();
+        // Confirm Edit timeline dropdown option was removed
+        expect(app.queryByText('Edit timeline')).toBeNull();
     });
 });

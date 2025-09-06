@@ -44,7 +44,7 @@ describe('Delete mode', () => {
         // Confirm footer is hidden
         expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-hidden");
         // Click dropdown option, confirm footer appeared
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-visible");
         // Click cancel button, confirm footer disappeared
         await user.click(app.getByRole('button', {name: 'Cancel'}));
@@ -53,7 +53,7 @@ describe('Delete mode', () => {
 
     it('closes DeleteModeFooter when user swipes down', async () => {
         // Click dropdown option, confirm footer appeared
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-visible");
 
         // Swipe down on footer, confirm footer disappeared
@@ -66,7 +66,7 @@ describe('Delete mode', () => {
 
     it('updates instructions text to show number of selected items', async () => {
         // Enter delete mode
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
 
         // Confirm initial instructions text is visible
         await act(async () => await jest.advanceTimersByTimeAsync(150));
@@ -123,7 +123,7 @@ describe('Delete mode', () => {
         }));
 
         // Enter delete mode
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
 
         // Select newest water event
         await user.click(
@@ -183,7 +183,7 @@ describe('Delete mode', () => {
         }));
 
         // Enter delete mode
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
 
         // Click note twice (un-select), should not be in payload
         await user.click(app.getByText('One of the older leaves is starting to turn yellow'));
@@ -221,7 +221,7 @@ describe('Delete mode', () => {
         }));
 
         // Enter delete mode
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
 
         // Click photo 3 twice (un-select), should not be in payload
         await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
@@ -280,7 +280,7 @@ describe('Delete mode', () => {
             }));
 
         // Enter delete mode
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
 
         // Select one water event, one photo, and one note, hold delete button
         await user.click(
@@ -328,7 +328,7 @@ describe('Delete mode', () => {
 
     it('clears selection when cancel button clicked', async () => {
         // Enter delete mode, select newest water event, photo, and note
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -339,7 +339,7 @@ describe('Delete mode', () => {
         await user.click(app.getByRole('button', {name: 'Cancel'}));
 
         // Start selecting again, select second newest water event
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(
             within(app.getByTestId("2024-02-29-events")).getByText("Watered")
         );
@@ -393,7 +393,7 @@ describe('Delete mode', () => {
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user deleting newest water event
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -422,7 +422,7 @@ describe('Delete mode', () => {
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user deleting a photo
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);
@@ -449,7 +449,7 @@ describe('Delete mode', () => {
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Simulate user deleting a note
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);

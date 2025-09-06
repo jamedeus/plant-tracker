@@ -176,7 +176,7 @@ describe('Timeline regressions', () => {
         }));
 
         // Enter delete mode, select repot event
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(within(app.getByTestId("2024-02-10-events")).getByText("Repoted"));
 
         // Hold delete button for 1.5 seconds, confirm repot event is deleted
@@ -245,7 +245,7 @@ describe('Timeline regressions', () => {
         }));
 
         // Enter delete mode, select repot event
-        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Edit timeline'));
         await user.click(within(app.getByTestId("2024-02-10-events")).getByText("Repoted"));
 
         // Hold delete button for 1.5 seconds, confirm repot event is deleted
