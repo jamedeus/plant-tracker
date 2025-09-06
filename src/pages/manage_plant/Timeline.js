@@ -112,42 +112,42 @@ const Title = memo(function Title() {
                         >
                             <FaEllipsis className="size-6" />
                         </div>
-                        <DropdownMenu className="w-42">
+                        <DropdownMenu>
                             <li><button
-                                className="flex justify-end"
+                                className="flex justify-between"
                                 onClick={() => openNoteModal()}
                             >
 
-                                <FaPenToSquare className='size-4 mr-auto' />
+                                <FaPenToSquare className='size-4 mr-4' />
                                 Add note
                             </button></li>
                             <li><button
-                                className="flex justify-end"
+                                className="flex justify-between"
                                 onClick={openPhotoModal}
                             >
-                                <FaCamera className='size-4 mr-auto' />
+                                <FaCamera className='size-4 mr-4' />
                                 Add photos
                             </button></li>
                             <li><button
-                                className="flex justify-end"
+                                className="flex justify-between"
                                 onClick={openRepotModal}
                             >
-                                <TbShovel className='size-5 mr-auto' />
+                                <TbShovel className='size-5 mr-4' />
                                 Repot plant
                             </button></li>
                             <li><button
-                                className="flex justify-end"
+                                className="flex justify-between"
                                 onClick={openDivisionModal}
                             >
-                                <LuSplit className='size-4 mr-auto rotate-90' />
+                                <LuSplit className='size-4 mr-4 rotate-90' />
                                 Divide plant
                             </button></li>
                             {(hasPhotos || hasEvents) &&
                                 <li><button
-                                    className="flex justify-end"
+                                    className="flex justify-between"
                                     onClick={startDeleteMode}
                                 >
-                                    <FaTrash className='size-4 mr-auto' />
+                                    <FaTrash className='size-4 mr-4' />
                                     Delete mode
                                 </button></li>
                             }

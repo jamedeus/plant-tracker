@@ -70,15 +70,15 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
           </svg>
         </div>
         <ul
-          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box w-42"
+          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
           tabindex="0"
         >
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -96,10 +96,10 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -117,10 +117,10 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-5 mr-auto"
+                class="size-5 mr-4"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -146,10 +146,10 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto rotate-90"
+                class="size-4 mr-4 rotate-90"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -333,15 +333,15 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           </svg>
         </div>
         <ul
-          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box w-42"
+          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
           tabindex="0"
         >
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -359,10 +359,10 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -380,10 +380,10 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-5 mr-auto"
+                class="size-5 mr-4"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -409,10 +409,10 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto rotate-90"
+                class="size-4 mr-4 rotate-90"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -3807,15 +3807,15 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </svg>
         </div>
         <ul
-          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box w-42"
+          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
           tabindex="0"
         >
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -3833,10 +3833,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -3854,10 +3854,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-5 mr-auto"
+                class="size-5 mr-4"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -3883,10 +3883,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto rotate-90"
+                class="size-4 mr-4 rotate-90"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -3915,10 +3915,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -6947,15 +6947,15 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           </svg>
         </div>
         <ul
-          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box w-42"
+          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
           tabindex="0"
         >
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -6973,10 +6973,10 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto"
+                class="size-4 mr-4"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -6994,10 +6994,10 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-5 mr-auto"
+                class="size-5 mr-4"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -7023,10 +7023,10 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           </li>
           <li>
             <button
-              class="flex justify-end"
+              class="flex justify-between"
             >
               <svg
-                class="size-4 mr-auto rotate-90"
+                class="size-4 mr-4 rotate-90"
                 fill="none"
                 height="1em"
                 stroke="currentColor"

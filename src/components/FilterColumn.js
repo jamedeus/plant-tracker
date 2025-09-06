@@ -101,9 +101,9 @@ ClearButton.propTypes = {
 // Indicates sort direction on selected option
 const OptionArrow = ({ down }) => {
     if (down === 1) {
-        return <FaArrowDownLong className="fa-arrow-down-long mr-auto" />;
+        return <FaArrowDownLong className="fa-arrow-down-long mr-2" />;
     } else {
-        return <FaArrowUpLong className="fa-arrow-up-long mr-auto" />;
+        return <FaArrowUpLong className="fa-arrow-up-long mr-2" />;
     }
 };
 
@@ -124,15 +124,20 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />
             </div>
-            <DropdownMenu className="mt-2 min-w-32">
+            <DropdownMenu className="mt-2">
                 {sortByKeys.map((key) => (
                     <li key={key.key}>
                         <a
-                            className="flex justify-end"
+                            className="flex justify-between"
                             onClick={() => setSort(key.key)}
                         >
-                            {state.sortKey === key.key && (
+                            {state.sortKey === key.key ? (
+                                // Arrow shows sort direction on selected option
                                 <OptionArrow down={state.sortDirection} />
+                            ): (
+                                // Spacer to prevent dropdown width changing
+                                // Has same width as OptionArrow + margin
+                                <div className="w-[14px] mr-2" />
                             )}
                             {key.display}
                         </a>

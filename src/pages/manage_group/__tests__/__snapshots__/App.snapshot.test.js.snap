@@ -306,15 +306,15 @@ exports[`App matches snapshot 1`] = `
                     </svg>
                   </div>
                   <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 min-w-32"
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
                     tabindex="0"
                   >
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
                         <svg
-                          class="fa-arrow-down-long mr-auto"
+                          class="fa-arrow-down-long mr-2"
                           fill="currentColor"
                           height="1em"
                           stroke="currentColor"
@@ -332,22 +332,31 @@ exports[`App matches snapshot 1`] = `
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Name
                       </a>
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Species
                       </a>
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Watered
                       </a>
                     </li>
@@ -1115,15 +1124,15 @@ exports[`App matches snapshot when group is archived 1`] = `
                     </svg>
                   </div>
                   <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 min-w-32"
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
                     tabindex="0"
                   >
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
                         <svg
-                          class="fa-arrow-down-long mr-auto"
+                          class="fa-arrow-down-long mr-2"
                           fill="currentColor"
                           height="1em"
                           stroke="currentColor"
@@ -1141,22 +1150,31 @@ exports[`App matches snapshot when group is archived 1`] = `
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Name
                       </a>
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Species
                       </a>
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Watered
                       </a>
                     </li>
@@ -1950,15 +1968,15 @@ exports[`App matches snapshot when no plants 1`] = `
                     </svg>
                   </div>
                   <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 min-w-32"
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
                     tabindex="0"
                   >
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
                         <svg
-                          class="fa-arrow-down-long mr-auto"
+                          class="fa-arrow-down-long mr-2"
                           fill="currentColor"
                           height="1em"
                           stroke="currentColor"
@@ -1976,22 +1994,31 @@ exports[`App matches snapshot when no plants 1`] = `
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Name
                       </a>
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Species
                       </a>
                     </li>
                     <li>
                       <a
-                        class="flex justify-end"
+                        class="flex justify-between"
                       >
+                        <div
+                          class="w-[14px] mr-2"
+                        />
                         Watered
                       </a>
                     </li>

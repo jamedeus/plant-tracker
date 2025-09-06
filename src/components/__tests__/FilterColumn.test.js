@@ -124,10 +124,10 @@ describe('FilterColumn', () => {
 
         // Confirm the sort dropdown contains the options set in sortByKeys arg
         const menu = component.container.querySelector('ul.dropdown-content');
-        expect(menu.children[0].children[0].innerHTML).toContain('Added');
-        expect(menu.children[1].children[0].innerHTML).toBe('Name');
-        expect(menu.children[2].children[0].innerHTML).toBe('Species');
-        expect(menu.children[3].children[0].innerHTML).toBe('Watered');
+        expect(menu.children[0]).toHaveTextContent('Added');
+        expect(menu.children[1]).toHaveTextContent('Name');
+        expect(menu.children[2]).toHaveTextContent('Species');
+        expect(menu.children[3]).toHaveTextContent('Watered');
 
         // Confirm there is a down arrow icon next to the default option
         expect(menu.children[0].children[0].innerHTML).toContain('svg');
