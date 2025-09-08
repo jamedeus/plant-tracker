@@ -538,4 +538,33 @@ describe('Gallery', () => {
         expect(app.queryByText('Failed to delete photo')).not.toBeNull();
         expect(app.queryByText('Are you sure? This cannot be undone.')).toBeNull();
     });
+
+    it('toggles focus mode when dropdown option is clicked', async () => {
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Confirm not in focus mode
+        expect(document.body.querySelector('.yarl__root.focus-mode')).toBeNull();
+
+        // Click focus mode dropdown option
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Focus mode on'));
+
+        // Confirm focus mode activated, dropdown option text changed
+        expect(document.body.querySelector('.yarl__root.focus-mode')).not.toBeNull();
+        expect(app.queryByText('Focus mode on')).toBeNull();
+        expect(app.getByText('Focus mode off')).not.toBeNull();
+
+        // Click focus mode dropdown option again
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Focus mode off'));
+
+        // Confirm focus mode deactivated, dropdown option text changed back
+        expect(document.body.querySelector('.yarl__root.focus-mode')).toBeNull();
+        expect(app.getByText('Focus mode on')).not.toBeNull();
+        expect(app.queryByText('Focus mode off')).toBeNull();
+    });
 });

@@ -35,6 +35,7 @@ import {
     MagnifyingGlassPlusIcon,
     MagnifyingGlassMinusIcon
 } from '@heroicons/react/24/solid';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaEllipsis } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import clsx from 'clsx';
@@ -68,7 +69,7 @@ SlideshowProgressBar.propTypes = {
 };
 
 // Top-right corner dropdown menu
-const GalleryDropdown = ({ currentSlide }) => {
+const GalleryDropdown = ({ currentSlide, focusMode, toggleFocusMode }) => {
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const dispatch = useDispatch();
 
@@ -173,6 +174,22 @@ const GalleryDropdown = ({ currentSlide }) => {
                 <DropdownMenu>
                     <li><button
                         className="flex justify-between"
+                        onClick={toggleFocusMode}
+                    >
+                        {focusMode ? (
+                            <>
+                                Focus mode off
+                                <FaEyeSlash className="size-4 ml-4" />
+                            </>
+                        ) : (
+                            <>
+                                Focus mode on
+                                <FaEye className="size-4 ml-4" />
+                            </>
+                        )}
+                    </button></li>
+                    <li><button
+                        className="flex justify-between"
                         onClick={handleDownloadPhoto}
                     >
                         Download photo
@@ -225,7 +242,9 @@ const GalleryDropdown = ({ currentSlide }) => {
 };
 
 GalleryDropdown.propTypes = {
-    currentSlide: PropTypes.object
+    currentSlide: PropTypes.object,
+    focusMode: PropTypes.bool.isRequired,
+    toggleFocusMode: PropTypes.func.isRequired
 };
 
 const Gallery = () => {
@@ -411,7 +430,11 @@ const Gallery = () => {
                 // Render slideshow progress bar if slideshow is running
                 controls: () =>
                     <>
-                        <GalleryDropdown currentSlide={slides[index]} />
+                        <GalleryDropdown
+                            currentSlide={slides[index]}
+                            focusMode={focusMode}
+                            toggleFocusMode={toggleFocusMode}
+                        />
                         {slideshowRunning && (
                             // Key changes on each slide or when direction
                             // changes (remount, start animation over)
