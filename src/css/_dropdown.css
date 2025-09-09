@@ -34,6 +34,14 @@
             touch-action: none;
         }
     }
+
+    /* Close dropdown by clicking button a second time */
+    /* Makes click pass through button and move focus to body (closes menu) */
+    &:not(.dropdown-hover):focus, &:focus-within {
+        > [tabindex]:first-child {
+            pointer-events: none;
+        }
+    }
 }
 
 /* Position variants */
