@@ -10,6 +10,7 @@ describe('PlantCard with water event', () => {
             <PlantCard
                 display_name='Test Plant'
                 uuid='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                created='2024-02-13T12:00:00+00:00'
                 species='Calathea'
                 description='Mother plant'
                 pot_size={12}
@@ -63,6 +64,7 @@ describe('PlantCard with no water event', () => {
             <PlantCard
                 display_name='Test Plant'
                 uuid='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                created='2024-02-13T12:00:00+00:00'
                 species='Calathea'
                 description='Mother plant'
                 pot_size={12}
@@ -89,6 +91,7 @@ describe('PlantCard last watered time display', () => {
             <PlantCard
                 display_name='Test Plant'
                 uuid='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                created='2024-02-13T12:00:00+00:00'
                 species='Calathea'
                 description='Mother plant'
                 pot_size={12}

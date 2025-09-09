@@ -132,6 +132,7 @@ function Layout() {
                 </div>
                 <div className='min-w-full'>
                     <GroupDetails
+                        created={groupDetails.created}
                         location={groupDetails.location}
                         description={groupDetails.description}
                     />

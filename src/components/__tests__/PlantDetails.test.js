@@ -4,6 +4,7 @@ describe('PlantDetails', () => {
     it('displays correct details', () => {
         const { getByText, queryByText } = render(
             <PlantDetails
+                created='2024-02-13T12:00:00+00:00'
                 species='Fittonia'
                 pot_size={4}
                 description='Propagated in March 2023'
@@ -18,6 +19,7 @@ describe('PlantDetails', () => {
     it('does not render species row if argument is null', () => {
         const { queryByText } = render(
             <PlantDetails
+                created='2024-02-13T12:00:00+00:00'
                 species={null}
                 pot_size={4}
                 description='Propagated in March 2023'
@@ -30,6 +32,7 @@ describe('PlantDetails', () => {
     it('does not render pot_size row if argument is null', () => {
         const { queryByText } = render(
             <PlantDetails
+                created='2024-02-13T12:00:00+00:00'
                 species='Fittonia'
                 pot_size={null}
                 description='Propagated in March 2023'
@@ -42,6 +45,7 @@ describe('PlantDetails', () => {
     it('does not render description row if argument is null', () => {
         const { queryByText } = render(
             <PlantDetails
+                created='2024-02-13T12:00:00+00:00'
                 species='Fittonia'
                 pot_size={4}
                 description={null}
@@ -53,7 +57,12 @@ describe('PlantDetails', () => {
 
     it('displays "No details" when both arguments are null', () => {
         const { getByText, queryByText } = render(
-            <PlantDetails species={null} pot_size={null} description={null} />
+            <PlantDetails
+                created='2024-02-13T12:00:00+00:00'
+                species={null}
+                pot_size={null}
+                description={null}
+            />
         );
         expect(getByText('No details')).toBeInTheDocument();
         expect(queryByText('Description:')).toBeNull();

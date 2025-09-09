@@ -9,6 +9,7 @@ import {
     timestampToReadable
 } from 'src/utils/timestampUtils';
 import uuidPropType from 'src/types/uuidPropType';
+import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
 const LastWateredSpan = ({ last_watered }) => {
     if (last_watered) {
@@ -33,6 +34,7 @@ LastWateredSpan.propTypes = {
 const PlantCard = memo(function PlantCard({
     display_name,
     uuid,
+    created,
     species,
     description,
     pot_size,
@@ -50,6 +52,7 @@ const PlantCard = memo(function PlantCard({
             }
             details={
                 <PlantDetails
+                    created={created}
                     species={species}
                     pot_size={pot_size}
                     description={description}
@@ -63,6 +66,7 @@ const PlantCard = memo(function PlantCard({
 PlantCard.propTypes = {
     display_name: PropTypes.string.isRequired,
     uuid: uuidPropType.isRequired,
+    created: isoTimestampTzPropType.isRequired,
     species: PropTypes.string,
     description: PropTypes.string,
     pot_size: PropTypes.number,

@@ -122,6 +122,7 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
             </div>
             <div className='min-w-full'>
                 <PlantDetails
+                    created={plantDetails.created}
                     species={plantDetails.species}
                     pot_size={plantDetails.pot_size}
                     description={plantDetails.description}

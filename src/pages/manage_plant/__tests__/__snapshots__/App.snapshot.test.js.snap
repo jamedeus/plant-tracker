@@ -241,6 +241,20 @@ exports[`App matches snapshot 1`] = `
             <span
               class="font-semibold break-keep mr-4"
             >
+              Created:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              December 25, 2023
+            </span>
+          </p>
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
               Species:
             </span>
             <span
@@ -2396,6 +2410,20 @@ exports[`App matches snapshot when plant is archived 1`] = `
         <div
           class="min-w-full"
         >
+          <p
+            class="flex"
+          >
+            <span
+              class="font-semibold break-keep mr-4"
+            >
+              Created:
+            </span>
+            <span
+              class="ml-auto text-right line-clamp-1 break-all"
+            >
+              December 25, 2023
+            </span>
+          </p>
           <p
             class="flex"
           >
