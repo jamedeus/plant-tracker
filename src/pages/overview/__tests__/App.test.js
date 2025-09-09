@@ -252,6 +252,7 @@ describe('App', () => {
         await user.click(app.getByTestId('edit_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByText('Archive'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm error modal appeared
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();

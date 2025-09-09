@@ -553,6 +553,7 @@ describe('App', () => {
 
         // Click dropdown option, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(app.getByText('0 / 500')).not.toBeNull();
     });
 
@@ -579,6 +580,7 @@ describe('App', () => {
 
         // Open Note Modal
         await user.click(app.getByText('Add note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Simulate user typing new note and clicking save
         await user.type(app.getByRole('textbox'), '  Started flowering  ');
@@ -611,15 +613,14 @@ describe('App', () => {
             'One of the older leaves is starting to turn yellow'
         )).not.toBeNull();
         // Confirm timeline does not contain text we will add
-        expect(within(timeline).queryByText(
-            /pinched it off/
-        )).toBeNull();
+        expect(within(timeline).queryByText(/pinched it off/)).toBeNull();
 
         // Simulate user clicking icon next to note, adding text, clicking save
         const editButton = within(timeline).getByText(
             'One of the older leaves is starting to turn yellow'
         ).closest('.note-collapse').querySelector('svg');
         await user.click(editButton);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.type(app.getByRole('textbox'), ', pinched it off');
         await user.click(app.getByText('Save'));
 
@@ -654,6 +655,7 @@ describe('App', () => {
             'Fertilized with dilute 10-15-10 liquid fertilizer'
         ).closest('.note-collapse').querySelector('svg');
         await user.click(editButton);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         const editModal = app.getByText('Edit Note').closest('.modal-box');
 
         // Simulate user holding delete button for 1.5 seconds
