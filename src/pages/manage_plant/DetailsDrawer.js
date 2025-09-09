@@ -7,7 +7,8 @@ import TitleDrawer from 'src/components/TitleDrawer';
 import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { FaPlus, FaBan, FaUpRightFromSquare } from 'react-icons/fa6';
+import { FaPlus } from 'react-icons/fa6';
+import { IoMdCloseCircle } from "react-icons/io";
 import { plantRemovedFromGroup } from './plantSlice';
 import {
     titleDrawerOpened,
@@ -82,32 +83,24 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
             </div>
             {/* Group details if in group, add group button if not */}
             {plantDetails.group ? (
-                <>
+                <span className="relative">
                     <Link
-                        className={clsx(
-                            "font-bold text-lg line-clamp-1 rounded-lg",
-                            "focus:outline-2 outline-offset-2"
-                        )}
+                        className="btn text-lg h-10"
                         to={`/manage/${plantDetails.group.uuid}`}
                         discover="none"
                     >
-                        { plantDetails.group.name }
+                        <span className="line-clamp-1">
+                            { plantDetails.group.name }
+                        </span>
                     </Link>
-                    <div className="flex gap-2 mx-auto mt-2">
-                        <IconButton
-                            onClick={handleRemoveGroup}
-                            title='Remove plant from group'
-                        >
-                            <FaBan className="size-4" />
-                        </IconButton>
-                        <IconButton
-                            href={`/manage/${plantDetails.group.uuid}`}
-                            title='Go to group page'
-                        >
-                            <FaUpRightFromSquare className="size-4" />
-                        </IconButton>
-                    </div>
-                </>
+                    <button
+                        className="absolute -right-2 -top-2 cursor-pointer"
+                        onClick={handleRemoveGroup}
+                        title='Remove plant from group'
+                    >
+                        <IoMdCloseCircle className="size-5" />
+                    </button>
+                </span>
             ) : (
                 <IconButton
                     onClick={openGroupModal}
