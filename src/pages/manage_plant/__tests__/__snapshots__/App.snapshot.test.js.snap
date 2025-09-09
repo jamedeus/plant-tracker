@@ -236,7 +236,7 @@ exports[`App matches snapshot 1`] = `
           class="min-w-full"
         >
           <div
-            class="grid grid-cols-min-max"
+            class="grid grid-cols-min-max gap-y-1"
           >
             <span
               class="font-semibold break-keep mr-4"
@@ -244,7 +244,7 @@ exports[`App matches snapshot 1`] = `
               Created:
             </span>
             <span
-              class="text-right line-clamp-1 break-all"
+              class="text-center line-clamp-1 break-all"
             >
               December 25, 2023
             </span>
@@ -254,7 +254,7 @@ exports[`App matches snapshot 1`] = `
               Species:
             </span>
             <span
-              class="text-right line-clamp-1 break-all"
+              class="text-center line-clamp-1 break-all"
             >
               Calathea
             </span>
@@ -264,7 +264,7 @@ exports[`App matches snapshot 1`] = `
               Pot size:
             </span>
             <span
-              class="text-right line-clamp-1 break-all"
+              class="text-center line-clamp-1 break-all"
             >
               4
             </span>
@@ -2403,7 +2403,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           class="min-w-full"
         >
           <div
-            class="grid grid-cols-min-max"
+            class="grid grid-cols-min-max gap-y-1"
           >
             <span
               class="font-semibold break-keep mr-4"
@@ -2411,7 +2411,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               Created:
             </span>
             <span
-              class="text-right line-clamp-1 break-all"
+              class="text-center line-clamp-1 break-all"
             >
               December 25, 2023
             </span>
@@ -2421,7 +2421,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               Species:
             </span>
             <span
-              class="text-right line-clamp-1 break-all"
+              class="text-center line-clamp-1 break-all"
             >
               Calathea
             </span>
@@ -2431,7 +2431,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               Pot size:
             </span>
             <span
-              class="text-right line-clamp-1 break-all"
+              class="text-center line-clamp-1 break-all"
             >
               4
             </span>

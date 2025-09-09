@@ -11,7 +11,7 @@ const GroupDetails = ({ created, location, description }) => {
     } else {
         return (
             <>
-                <div className="grid grid-cols-min-max">
+                <div className="grid grid-cols-min-max gap-y-1">
                     <DetailsRow
                         label="Created"
                         value={timestampToReadable(created).split('-')[1].trim()}

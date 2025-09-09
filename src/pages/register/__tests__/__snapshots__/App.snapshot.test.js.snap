@@ -422,7 +422,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             class="collapse-content mx-auto max-w-72 w-full"
           >
             <div
-              class="grid grid-cols-min-max"
+              class="grid grid-cols-min-max gap-y-1"
             >
               <span
                 class="font-semibold break-keep mr-4"
@@ -430,7 +430,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
                 Created:
               </span>
               <span
-                class="text-right line-clamp-1 break-all"
+                class="text-center line-clamp-1 break-all"
               >
                 December 25, 2023
               </span>
@@ -440,7 +440,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
                 Location:
               </span>
               <span
-                class="text-right line-clamp-1 break-all"
+                class="text-center line-clamp-1 break-all"
               >
                 Nowhere
               </span>
@@ -666,7 +666,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             class="collapse-content mx-auto max-w-72 w-full"
           >
             <div
-              class="grid grid-cols-min-max"
+              class="grid grid-cols-min-max gap-y-1"
             >
               <span
                 class="font-semibold break-keep mr-4"
@@ -674,7 +674,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                 Created:
               </span>
               <span
-                class="text-right line-clamp-1 break-all"
+                class="text-center line-clamp-1 break-all"
               >
                 December 25, 2023
               </span>
@@ -684,7 +684,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                 Species:
               </span>
               <span
-                class="text-right line-clamp-1 break-all"
+                class="text-center line-clamp-1 break-all"
               >
                 Calathea
               </span>
@@ -694,7 +694,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                 Pot size:
               </span>
               <span
-                class="text-right line-clamp-1 break-all"
+                class="text-center line-clamp-1 break-all"
               >
                 4
               </span>
@@ -1184,7 +1184,7 @@ exports[`App matches snapshot when plant division in progress 1`] = `
             class="collapse-content mx-auto max-w-72 w-full"
           >
             <div
-              class="grid grid-cols-min-max"
+              class="grid grid-cols-min-max gap-y-1"
             >
               <span
                 class="font-semibold break-keep mr-4"
@@ -1192,7 +1192,7 @@ exports[`App matches snapshot when plant division in progress 1`] = `
                 Created:
               </span>
               <span
-                class="text-right line-clamp-1 break-all"
+                class="text-center line-clamp-1 break-all"
               >
                 December 25, 2023
               </span>
@@ -1202,7 +1202,7 @@ exports[`App matches snapshot when plant division in progress 1`] = `
                 Species:
               </span>
               <span
-                class="text-right line-clamp-1 break-all"
+                class="text-center line-clamp-1 break-all"
               >
                 Calathea
               </span>
@@ -1212,7 +1212,7 @@ exports[`App matches snapshot when plant division in progress 1`] = `
                 Pot size:
               </span>
               <span
-                class="text-right line-clamp-1 break-all"
+                class="text-center line-clamp-1 break-all"
               >
                 4
               </span>
