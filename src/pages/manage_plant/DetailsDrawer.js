@@ -5,7 +5,6 @@ import sendPostRequest from 'src/utils/sendPostRequest';
 import { useSelector, useDispatch } from 'react-redux';
 import TitleDrawer from 'src/components/TitleDrawer';
 import PlantDetails from 'src/components/PlantDetails';
-import IconButton from 'src/components/IconButton';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FaPlus } from 'react-icons/fa6';
 import { IoMdCloseCircle } from "react-icons/io";
@@ -102,12 +101,14 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
                     </button>
                 </span>
             ) : (
-                <IconButton
+                <a
+                    className='btn btn-square size-10 min-size-10'
                     onClick={openGroupModal}
                     title='Add plant to group'
+                    tabIndex={0}
                 >
                     <FaPlus className="size-4" />
-                </IconButton>
+                </a>
             )}
             {/* Details section */}
             <div className="divider font-bold">
