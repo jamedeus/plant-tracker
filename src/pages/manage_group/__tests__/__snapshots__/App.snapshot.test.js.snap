@@ -147,8 +147,8 @@ exports[`App matches snapshot 1`] = `
         <div
           class="min-w-full"
         >
-          <p
-            class="flex"
+          <div
+            class="grid grid-cols-min-max"
           >
             <span
               class="font-semibold break-keep mr-4"
@@ -156,25 +156,21 @@ exports[`App matches snapshot 1`] = `
               Created:
             </span>
             <span
-              class="ml-auto text-right line-clamp-1 break-all"
+              class="text-right line-clamp-1 break-all"
             >
               December 25, 2023
             </span>
-          </p>
-          <p
-            class="flex"
-          >
             <span
               class="font-semibold break-keep mr-4"
             >
               Location:
             </span>
             <span
-              class="ml-auto text-right line-clamp-1 break-all"
+              class="text-right line-clamp-1 break-all"
             >
               Middle shelf
             </span>
-          </p>
+          </div>
         </div>
         <button
           class="btn h-8 mt-4 w-full"
@@ -482,8 +478,8 @@ exports[`App matches snapshot 1`] = `
                     <div
                       class="pt-4"
                     >
-                      <p
-                        class="flex"
+                      <div
+                        class="grid grid-cols-min-max"
                       >
                         <span
                           class="font-semibold break-keep mr-4"
@@ -491,39 +487,31 @@ exports[`App matches snapshot 1`] = `
                           Created:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           December 25, 2023
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Species:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           Calathea
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Pot size:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           4
                         </span>
-                      </p>
+                      </div>
                       <div
                         class="text-center"
                       >
@@ -648,8 +636,8 @@ exports[`App matches snapshot 1`] = `
                     <div
                       class="pt-4"
                     >
-                      <p
-                        class="flex"
+                      <div
+                        class="grid grid-cols-min-max"
                       >
                         <span
                           class="font-semibold break-keep mr-4"
@@ -657,39 +645,31 @@ exports[`App matches snapshot 1`] = `
                           Created:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           December 26, 2023
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Species:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           Spider Plant
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Pot size:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           2
                         </span>
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </a>
@@ -772,8 +752,8 @@ exports[`App matches snapshot 1`] = `
                     <div
                       class="pt-4"
                     >
-                      <p
-                        class="flex"
+                      <div
+                        class="grid grid-cols-min-max"
                       >
                         <span
                           class="font-semibold break-keep mr-4"
@@ -781,25 +761,21 @@ exports[`App matches snapshot 1`] = `
                           Created:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           December 27, 2023
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Species:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           null
                         </span>
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </a>
@@ -1079,8 +1055,8 @@ exports[`App matches snapshot when group is archived 1`] = `
         <div
           class="min-w-full"
         >
-          <p
-            class="flex"
+          <div
+            class="grid grid-cols-min-max"
           >
             <span
               class="font-semibold break-keep mr-4"
@@ -1088,25 +1064,21 @@ exports[`App matches snapshot when group is archived 1`] = `
               Created:
             </span>
             <span
-              class="ml-auto text-right line-clamp-1 break-all"
+              class="text-right line-clamp-1 break-all"
             >
               December 25, 2023
             </span>
-          </p>
-          <p
-            class="flex"
-          >
             <span
               class="font-semibold break-keep mr-4"
             >
               Location:
             </span>
             <span
-              class="ml-auto text-right line-clamp-1 break-all"
+              class="text-right line-clamp-1 break-all"
             >
               Middle shelf
             </span>
-          </p>
+          </div>
         </div>
         <button
           class="btn h-8 mt-4 w-full"
@@ -1366,8 +1338,8 @@ exports[`App matches snapshot when group is archived 1`] = `
                     <div
                       class="pt-4"
                     >
-                      <p
-                        class="flex"
+                      <div
+                        class="grid grid-cols-min-max"
                       >
                         <span
                           class="font-semibold break-keep mr-4"
@@ -1375,39 +1347,31 @@ exports[`App matches snapshot when group is archived 1`] = `
                           Created:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           December 25, 2023
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Species:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           Calathea
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Pot size:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           4
                         </span>
-                      </p>
+                      </div>
                       <div
                         class="text-center"
                       >
@@ -1532,8 +1496,8 @@ exports[`App matches snapshot when group is archived 1`] = `
                     <div
                       class="pt-4"
                     >
-                      <p
-                        class="flex"
+                      <div
+                        class="grid grid-cols-min-max"
                       >
                         <span
                           class="font-semibold break-keep mr-4"
@@ -1541,39 +1505,31 @@ exports[`App matches snapshot when group is archived 1`] = `
                           Created:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           December 26, 2023
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Species:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           Spider Plant
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Pot size:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           2
                         </span>
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </a>
@@ -1656,8 +1612,8 @@ exports[`App matches snapshot when group is archived 1`] = `
                     <div
                       class="pt-4"
                     >
-                      <p
-                        class="flex"
+                      <div
+                        class="grid grid-cols-min-max"
                       >
                         <span
                           class="font-semibold break-keep mr-4"
@@ -1665,25 +1621,21 @@ exports[`App matches snapshot when group is archived 1`] = `
                           Created:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           December 27, 2023
                         </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
                         <span
                           class="font-semibold break-keep mr-4"
                         >
                           Species:
                         </span>
                         <span
-                          class="ml-auto text-right line-clamp-1 break-all"
+                          class="text-right line-clamp-1 break-all"
                         >
                           null
                         </span>
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </a>
@@ -1963,8 +1915,8 @@ exports[`App matches snapshot when no plants 1`] = `
         <div
           class="min-w-full"
         >
-          <p
-            class="flex"
+          <div
+            class="grid grid-cols-min-max"
           >
             <span
               class="font-semibold break-keep mr-4"
@@ -1972,25 +1924,21 @@ exports[`App matches snapshot when no plants 1`] = `
               Created:
             </span>
             <span
-              class="ml-auto text-right line-clamp-1 break-all"
+              class="text-right line-clamp-1 break-all"
             >
               December 25, 2023
             </span>
-          </p>
-          <p
-            class="flex"
-          >
             <span
               class="font-semibold break-keep mr-4"
             >
               Location:
             </span>
             <span
-              class="ml-auto text-right line-clamp-1 break-all"
+              class="text-right line-clamp-1 break-all"
             >
               Middle shelf
             </span>
-          </p>
+          </div>
         </div>
         <button
           class="btn h-8 mt-4 w-full"

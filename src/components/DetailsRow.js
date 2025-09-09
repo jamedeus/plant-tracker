@@ -1,0 +1,17 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+// Renders a single grid row in PlantDetails and GroupDetails
+const DetailsRow = ({ label, value }) => (
+    <>
+        <span className="font-semibold break-keep mr-4">{`${label}:`}</span>
+        <span className="text-right line-clamp-1 break-all">{value}</span>
+    </>
+);
+
+DetailsRow.propTypes = {
+    label: PropTypes.string.isRequired,
+    value: PropTypes.any.isRequired
+};
+
+export default DetailsRow;

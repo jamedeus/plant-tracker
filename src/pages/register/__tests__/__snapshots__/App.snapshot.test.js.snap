@@ -421,8 +421,8 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           <div
             class="collapse-content mx-auto max-w-72 w-full"
           >
-            <p
-              class="flex"
+            <div
+              class="grid grid-cols-min-max"
             >
               <span
                 class="font-semibold break-keep mr-4"
@@ -430,25 +430,21 @@ exports[`App matches snapshot when changing group QR code 1`] = `
                 Created:
               </span>
               <span
-                class="ml-auto text-right line-clamp-1 break-all"
+                class="text-right line-clamp-1 break-all"
               >
                 December 25, 2023
               </span>
-            </p>
-            <p
-              class="flex"
-            >
               <span
                 class="font-semibold break-keep mr-4"
               >
                 Location:
               </span>
               <span
-                class="ml-auto text-right line-clamp-1 break-all"
+                class="text-right line-clamp-1 break-all"
               >
                 Nowhere
               </span>
-            </p>
+            </div>
           </div>
         </div>
       </div>
@@ -669,8 +665,8 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           <div
             class="collapse-content mx-auto max-w-72 w-full"
           >
-            <p
-              class="flex"
+            <div
+              class="grid grid-cols-min-max"
             >
               <span
                 class="font-semibold break-keep mr-4"
@@ -678,39 +674,31 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                 Created:
               </span>
               <span
-                class="ml-auto text-right line-clamp-1 break-all"
+                class="text-right line-clamp-1 break-all"
               >
                 December 25, 2023
               </span>
-            </p>
-            <p
-              class="flex"
-            >
               <span
                 class="font-semibold break-keep mr-4"
               >
                 Species:
               </span>
               <span
-                class="ml-auto text-right line-clamp-1 break-all"
+                class="text-right line-clamp-1 break-all"
               >
                 Calathea
               </span>
-            </p>
-            <p
-              class="flex"
-            >
               <span
                 class="font-semibold break-keep mr-4"
               >
                 Pot size:
               </span>
               <span
-                class="ml-auto text-right line-clamp-1 break-all"
+                class="text-right line-clamp-1 break-all"
               >
                 4
               </span>
-            </p>
+            </div>
             <div
               class="text-center"
             >
@@ -1195,8 +1183,8 @@ exports[`App matches snapshot when plant division in progress 1`] = `
           <div
             class="collapse-content mx-auto max-w-72 w-full"
           >
-            <p
-              class="flex"
+            <div
+              class="grid grid-cols-min-max"
             >
               <span
                 class="font-semibold break-keep mr-4"
@@ -1204,39 +1192,31 @@ exports[`App matches snapshot when plant division in progress 1`] = `
                 Created:
               </span>
               <span
-                class="ml-auto text-right line-clamp-1 break-all"
+                class="text-right line-clamp-1 break-all"
               >
                 December 25, 2023
               </span>
-            </p>
-            <p
-              class="flex"
-            >
               <span
                 class="font-semibold break-keep mr-4"
               >
                 Species:
               </span>
               <span
-                class="ml-auto text-right line-clamp-1 break-all"
+                class="text-right line-clamp-1 break-all"
               >
                 Calathea
               </span>
-            </p>
-            <p
-              class="flex"
-            >
               <span
                 class="font-semibold break-keep mr-4"
               >
                 Pot size:
               </span>
               <span
-                class="ml-auto text-right line-clamp-1 break-all"
+                class="text-right line-clamp-1 break-all"
               >
                 4
               </span>
-            </p>
+            </div>
           </div>
         </div>
       </div>

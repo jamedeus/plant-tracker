@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import DetailsRow from './DetailsRow';
 import { timestampToReadable } from 'src/utils/timestampUtils';
 import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
@@ -10,34 +11,14 @@ const PlantDetails = ({ created, species, pot_size, description }) => {
     } else {
         return (
             <>
-                <p className='flex'>
-                    <span className="font-semibold break-keep mr-4">
-                        Created:
-                    </span>
-                    <span className="ml-auto text-right line-clamp-1 break-all">
-                        {timestampToReadable(created).split('-')[1].trim()}
-                    </span>
-                </p>
-                {species &&
-                    <p className='flex'>
-                        <span className="font-semibold break-keep mr-4">
-                            Species:
-                        </span>
-                        <span className="ml-auto text-right line-clamp-1 break-all">
-                            {species}
-                        </span>
-                    </p>
-                }
-                {pot_size &&
-                    <p className='flex'>
-                        <span className="font-semibold break-keep mr-4">
-                            Pot size:
-                        </span>
-                        <span className="ml-auto text-right line-clamp-1 break-all">
-                            {pot_size}
-                        </span>
-                    </p>
-                }
+                <div className="grid grid-cols-min-max">
+                    <DetailsRow
+                        label="Created"
+                        value={timestampToReadable(created).split('-')[1].trim()}
+                    />
+                    {species && <DetailsRow label="Species" value={species} />}
+                    {pot_size && <DetailsRow label="Pot size" value={pot_size} />}
+                </div>
                 {description &&
                     <div className='text-center'>
                         <p className="font-semibold mt-3">Description:</p>
