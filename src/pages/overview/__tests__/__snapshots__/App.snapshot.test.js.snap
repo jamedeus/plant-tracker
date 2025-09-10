@@ -879,9 +879,25 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           You can add a QR code later.
         </span>
         <a
+          aria-label="Register new plant"
           class="btn btn-accent text-lg"
           href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
         >
+          <svg
+            class="size-5 mr-1"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 448 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
+            />
+          </svg>
+           
           Register plant
         </a>
       </div>
@@ -1404,7 +1420,8 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
                 />
               </svg>
-               Add group
+               
+              Register group
             </a>
           </div>
         </div>
@@ -1997,7 +2014,8 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
                 />
               </svg>
-               Add plant
+               
+              Register plant
             </a>
           </div>
         </div>
@@ -2590,7 +2608,8 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
                 />
               </svg>
-               Add plant
+               
+              Register plant
             </a>
           </div>
         </div>
@@ -2846,7 +2865,8 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
                 />
               </svg>
-               Add group
+               
+              Register group
             </a>
           </div>
         </div>
@@ -3461,7 +3481,8 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
                 />
               </svg>
-               Add plant
+               
+              Register plant
             </a>
           </div>
         </div>
@@ -3717,7 +3738,8 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
                 />
               </svg>
-               Add group
+               
+              Register group
             </a>
           </div>
         </div>

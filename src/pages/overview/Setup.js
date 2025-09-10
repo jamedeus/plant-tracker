@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
-import { Link } from 'react-router-dom';
+import RegisterPageLink from 'src/components/RegisterPageLink';
 
 // Rendered when both state objects are empty, shows setup instructions
 const Setup = ({ openPrintModal }) => {
@@ -21,13 +20,7 @@ const Setup = ({ openPrintModal }) => {
             </button>
             <p className="text-2xl mt-8 mb-2">No printer?</p>
             <span className="mb-4">You can add a QR code later.</span>
-            <Link
-                className="btn btn-accent text-lg"
-                to={`/manage/${uuidv4()}`}
-                discover="none"
-            >
-                Register plant
-            </Link>
+            <RegisterPageLink type="plant" className="text-lg" />
         </div>
     );
 };

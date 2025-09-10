@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
-import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import EditableNodeList from 'src/components/EditableNodeList';
 import LoadingAnimation from 'src/components/LoadingAnimation';
+import RegisterPageLink from 'src/components/RegisterPageLink';
 import PlantCard from 'src/components/PlantCard';
 import { plantsAdded } from './groupSlice';
 import { openErrorModal } from 'src/components/ErrorModal';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
-import { FaPlus } from 'react-icons/fa6';
 
 const Options = ({ options, close }) => {
     const dispatch = useDispatch();
@@ -53,16 +51,9 @@ const Options = ({ options, close }) => {
                         ))}
                     </EditableNodeList>
                 ) : (
-                    <div className="flex flex-col h-28 pl-4 justify-center gap-4">
+                    <div className="flex flex-col h-28 pl-4 pb-4 justify-center gap-4">
                         <span>No plants</span>
-                        <Link
-                            className="btn btn-accent mb-4 mx-auto"
-                            to={`/manage/${uuidv4()}`}
-                            aria-label="Register new plant"
-                            discover="none"
-                        >
-                            <FaPlus className="size-5 mr-1" /> Register plant
-                        </Link>
+                        <RegisterPageLink type="plant" className="mx-auto" />
                     </div>
                 )}
             </div>

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
-import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import GroupCard from 'src/components/GroupCard';
 import { openErrorModal } from 'src/components/ErrorModal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
+import RegisterPageLink from 'src/components/RegisterPageLink';
 import { plantAddedToGroup } from './plantSlice';
 import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
-import { FaPlus } from 'react-icons/fa6';
 
 const Options = ({ options, close }) => {
     const dispatch = useDispatch();
@@ -50,16 +48,9 @@ const Options = ({ options, close }) => {
                 </div>
             ))}
             {!Object.keys(options).length && (
-                <div className="flex flex-col h-36 justify-center gap-4">
+                <div className="flex flex-col h-36 pb-4 justify-center gap-4">
                     <span>No groups</span>
-                    <Link
-                        className="btn btn-accent mb-4"
-                        to={`/manage/${uuidv4()}?type=group`}
-                        aria-label="Register new group"
-                        discover="none"
-                    >
-                        <FaPlus className="size-5 mr-1" /> Register group
-                    </Link>
+                    <RegisterPageLink type="group" />
                 </div>
             )}
         </>

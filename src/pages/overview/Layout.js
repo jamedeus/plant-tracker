@@ -10,13 +10,12 @@ import GroupsCol from 'src/components/GroupsCol';
 import { hideToast } from 'src/components/Toast';
 import DropdownMenu from 'src/components/DropdownMenu';
 import QrScannerButton from 'src/components/QrScannerButton';
+import RegisterPageLink from 'src/components/RegisterPageLink';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import { updatePlantLastEventTimes } from './overviewSlice';
 import clsx from 'clsx';
-import { v4 as uuidv4 } from 'uuid';
-import { FaPlus } from 'react-icons/fa6';
 
 // Render correct components for current state objects
 const Layout = () => {
@@ -194,14 +193,10 @@ const Layout = () => {
                             )}
                         >
                             {!archivedOverview && (
-                                <Link
-                                    className="btn btn-accent mx-auto mt-4"
-                                    to={`/manage/${uuidv4()}`}
-                                    aria-label="Register new plant"
-                                    discover="none"
-                                >
-                                    <FaPlus className="size-5 mr-1" /> Add plant
-                                </Link>
+                                <RegisterPageLink
+                                    type="plant"
+                                    className="mx-auto mt-4"
+                                />
                             )}
                         </PlantsCol>
                     </div>
@@ -223,14 +218,10 @@ const Layout = () => {
                             onOpenTitle={toggleEditing}
                         >
                             {!archivedOverview && (
-                                <Link
-                                    className="btn btn-accent mx-auto mt-4"
-                                    to={`/manage/${uuidv4()}?type=group`}
-                                    aria-label="Register new group"
-                                    discover="none"
-                                >
-                                    <FaPlus className="size-5 mr-1" /> Add group
-                                </Link>
+                                <RegisterPageLink
+                                    type="group"
+                                    className="mx-auto mt-4"
+                                />
                             )}
                         </GroupsCol>
                     </div>
