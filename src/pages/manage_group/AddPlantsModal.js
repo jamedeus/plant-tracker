@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import EditableNodeList from 'src/components/EditableNodeList';
@@ -8,12 +10,15 @@ import PlantCard from 'src/components/PlantCard';
 import { plantsAdded } from './groupSlice';
 import { openErrorModal } from 'src/components/ErrorModal';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import { FaPlus } from 'react-icons/fa6';
 
 const Options = ({ options, close }) => {
     const dispatch = useDispatch();
     const groupId = useSelector((state) => state.group.groupDetails.uuid);
     // Ref used to read selected items from EditableNodeList form
     const formRef = useRef(null);
+    // Show options if true, no plants message if false
+    const hasOptions = Object.keys(options).length > 0;
 
     // Parses array of selected plant UUIDs, passes to addPlants callback
     const submit = () => {
@@ -41,28 +46,40 @@ const Options = ({ options, close }) => {
     return (
         <>
             <div className="md:max-h-[50vh] max-w-94 w-full mx-auto overflow-y-auto pr-4 my-4">
-                {Object.keys(options).length > 0 ? (
+                {hasOptions ? (
                     <EditableNodeList editing={true} formRef={formRef}>
                         {Object.entries(options).map(([uuid, plant]) => (
                             <PlantCard key={uuid} { ...plant } />
                         ))}
                     </EditableNodeList>
                 ) : (
-                    <p className="my-4 pl-4">No plants</p>
+                    <div className="flex flex-col h-28 pl-4 justify-center gap-4">
+                        <span>No plants</span>
+                        <Link
+                            className="btn btn-accent mb-4 mx-auto"
+                            to={`/manage/${uuidv4()}`}
+                            aria-label="Register new plant"
+                            discover="none"
+                        >
+                            <FaPlus className="size-5 mr-1" /> Register plant
+                        </Link>
+                    </div>
                 )}
             </div>
 
-            <div className="modal-action">
-                <button className="btn btn-soft w-20" onClick={close}>
-                    Cancel
-                </button>
-                <button
-                    className="btn btn-accent w-20"
-                    onClick={submit}
-                >
-                    Add
-                </button>
-            </div>
+            {hasOptions &&
+                <div className="modal-action">
+                    <button className="btn btn-soft w-20" onClick={close}>
+                        Cancel
+                    </button>
+                    <button
+                        className="btn btn-accent w-20"
+                        onClick={submit}
+                    >
+                        Add
+                    </button>
+                </div>
+            }
         </>
     );
 };
@@ -93,15 +110,13 @@ const AddPlantsModal = memo(function AddPlantsModal({ close }) {
     }, []);
 
     return (
-        <>
+        <div className="flex flex-col items-center px-4 overflow-y-auto">
             {options ? (
                 <Options options={options} close={close} />
             ) : (
-                <div className="flex flex-col items-center">
-                    <LoadingAnimation />
-                </div>
+                <LoadingAnimation />
             )}
-        </>
+        </div>
     );
 });
 
