@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import DropdownButton from './DropdownButton';
 
@@ -8,7 +9,10 @@ const SectionCol = ({ title, titleOptions, onOpenTitle, headerChildren, colRef, 
         <div className="section" ref={colRef}>
             <div className="section-header">
                 {/* Title text + dropdown with titleOptions if prop used */}
-                <div className="flex dropdown dropdown-center min-h-[3.75rem]">
+                <div className={clsx(
+                    "flex min-h-[3.75rem]",
+                    titleOptions && "dropdown dropdown-center"
+                )}>
                     <DropdownButton
                         className="section-title btn btn-ghost cursor-pointer"
                         onClick={onOpenTitle}

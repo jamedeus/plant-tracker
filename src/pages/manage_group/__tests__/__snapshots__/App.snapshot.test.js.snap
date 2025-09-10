@@ -242,7 +242,7 @@ exports[`App matches snapshot 1`] = `
           class="section-header"
         >
           <div
-            class="flex dropdown dropdown-center min-h-[3.75rem]"
+            class="flex min-h-[3.75rem] dropdown dropdown-center"
           >
             <div
               class="section-title btn btn-ghost cursor-pointer"
@@ -1102,7 +1102,7 @@ exports[`App matches snapshot when group is archived 1`] = `
           class="section-header"
         >
           <div
-            class="flex dropdown dropdown-center min-h-[3.75rem]"
+            class="flex min-h-[3.75rem] dropdown dropdown-center"
           >
             <div
               class="section-title btn btn-ghost cursor-pointer"
@@ -2010,7 +2010,7 @@ exports[`App matches snapshot when no plants 1`] = `
           class="section-header"
         >
           <div
-            class="flex dropdown dropdown-center min-h-[3.75rem]"
+            class="flex min-h-[3.75rem]"
           >
             <div
               class="section-title btn btn-ghost cursor-pointer"

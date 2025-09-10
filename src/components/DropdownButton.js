@@ -9,7 +9,7 @@ const DropdownButton = memo(function DropdownButton({ className, title, onClick,
             className={className}
             title={title}
             aria-label={title}
-            onClick={onClick}
+            onPointerDown={onClick}
         >
             {children}
         </div>
