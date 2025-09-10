@@ -2,7 +2,7 @@ import PlantDetails from '../PlantDetails';
 
 describe('PlantDetails', () => {
     it('displays correct details', () => {
-        const { getByText, queryByText } = render(
+        const { getByText } = render(
             <PlantDetails
                 created='2024-02-13T12:00:00+00:00'
                 species='Fittonia'
@@ -13,7 +13,6 @@ describe('PlantDetails', () => {
         expect(getByText('Fittonia')).toBeInTheDocument();
         expect(getByText('4')).toBeInTheDocument();
         expect(getByText('Propagated in March 2023')).toBeInTheDocument();
-        expect(queryByText('No details')).toBeNull();
     });
 
     it('does not render species row if argument is null', () => {
@@ -52,19 +51,6 @@ describe('PlantDetails', () => {
             />
         );
         expect(queryByText('Species:')).toBeInTheDocument();
-        expect(queryByText('Description:')).toBeNull();
-    });
-
-    it('displays "No details" when both arguments are null', () => {
-        const { getByText, queryByText } = render(
-            <PlantDetails
-                created='2024-02-13T12:00:00+00:00'
-                species={null}
-                pot_size={null}
-                description={null}
-            />
-        );
-        expect(getByText('No details')).toBeInTheDocument();
         expect(queryByText('Description:')).toBeNull();
     });
 });

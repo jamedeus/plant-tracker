@@ -354,7 +354,7 @@ describe('FilterColumn', () => {
             name: "",
             display_name: "",
             uuid: "",
-            created: "",
+            created: "2023-12-27T03:51:32+00:00",
             species: "",
             description: "",
             pot_size: null,
