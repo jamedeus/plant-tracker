@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Setup from './Setup';
 import EditModeFooter from './EditModeFooter';
-import AddEventsFooter from 'src/components/AddEventsFooter';
 import Navbar from 'src/components/Navbar';
 import PlantsCol from 'src/components/PlantsCol';
 import GroupsCol from 'src/components/GroupsCol';
 import { hideToast } from 'src/components/Toast';
 import DropdownMenu from 'src/components/DropdownMenu';
+import AddEventsFooter from 'src/components/AddEventsFooter';
 import QrScannerButton from 'src/components/QrScannerButton';
 import RegisterPageLink from 'src/components/RegisterPageLink';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
@@ -36,7 +36,7 @@ const Layout = () => {
     const desktop = useIsBreakpointActive('md');
     // True if mobile layout with stacked plant and group columns
     // False if desktop layout (side by side columns) or only one column
-    const stackedColumns = !desktop && hasPlants && hasGroups;
+    const stackedColumns = !desktop && twoColumns;
 
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
@@ -153,18 +153,12 @@ const Layout = () => {
             />
 
             <div className={clsx(
-                'grid grid-cols-1 mx-auto px-4',
-                twoColumns && 'md:grid-cols-2'
+                'grid grid-cols-1 px-4 gap-y-8',
+                twoColumns && 'md:grid-cols-2 gap-x-24'
             )}>
                 {/* Render plants column if 1 or more plants exist */}
                 {hasPlants && (
-                    <div
-                        className={clsx(
-                            'scroll-mt-20',
-                            twoColumns && 'md:mr-12 mb-8 md:mb-0'
-                        )}
-                        ref={plantsColRef}
-                    >
+                    <div className='scroll-mt-20' ref={plantsColRef}>
                         <PlantsCol
                             plants={plants}
                             editing={editing || addingEvents}
@@ -203,13 +197,7 @@ const Layout = () => {
                 )}
                 {/* Render groups column if 1 or more groups exist */}
                 {hasGroups && (
-                    <div
-                        className={clsx(
-                            'scroll-mt-20 relative',
-                            twoColumns && 'md:ml-12'
-                        )}
-                        ref={groupsColRef}
-                    >
+                    <div className='scroll-mt-20' ref={groupsColRef}>
                         <GroupsCol
                             groups={groups}
                             editing={editing}

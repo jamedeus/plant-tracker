@@ -148,10 +148,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
       </div>
     </div>
     <div
-      class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
+      class="grid grid-cols-1 px-4 gap-y-8 md:grid-cols-2 gap-x-24"
     >
       <div
-        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20"
       >
         <div
           class="section"
@@ -433,7 +433,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         </div>
       </div>
       <div
-        class="scroll-mt-20 relative md:ml-12"
+        class="scroll-mt-20"
       >
         <div
           class="section"
@@ -834,7 +834,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
       </div>
     </div>
     <div
-      class="grid grid-cols-1 mx-auto px-4"
+      class="grid grid-cols-1 px-4 gap-y-8"
     >
       <div
         class="flex flex-col text-center my-auto px-8"
@@ -1167,10 +1167,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
       </div>
     </div>
     <div
-      class="grid grid-cols-1 mx-auto px-4"
+      class="grid grid-cols-1 px-4 gap-y-8"
     >
       <div
-        class="scroll-mt-20 relative"
+        class="scroll-mt-20"
       >
         <div
           class="section"
@@ -1692,7 +1692,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
       </div>
     </div>
     <div
-      class="grid grid-cols-1 mx-auto px-4"
+      class="grid grid-cols-1 px-4 gap-y-8"
     >
       <div
         class="scroll-mt-20"
@@ -2286,10 +2286,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
       </div>
     </div>
     <div
-      class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
+      class="grid grid-cols-1 px-4 gap-y-8 md:grid-cols-2 gap-x-24"
     >
       <div
-        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20"
       >
         <div
           class="section"
@@ -2615,7 +2615,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
         </div>
       </div>
       <div
-        class="scroll-mt-20 relative md:ml-12"
+        class="scroll-mt-20"
       >
         <div
           class="section"
@@ -3159,10 +3159,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
       </div>
     </div>
     <div
-      class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
+      class="grid grid-cols-1 px-4 gap-y-8 md:grid-cols-2 gap-x-24"
     >
       <div
-        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20"
       >
         <div
           class="section"
@@ -3488,7 +3488,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
         </div>
       </div>
       <div
-        class="scroll-mt-20 relative md:ml-12"
+        class="scroll-mt-20"
       >
         <div
           class="section"
