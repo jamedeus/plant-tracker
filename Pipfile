@@ -10,7 +10,7 @@ redis = "*"
 django-redis = "5.4.0"
 pillow = "~=11.0"
 pillow-heif = "*"
-django = "*"
+django = "~=5.2.6"
 segno = "*"
 django-unique-user-email = "*"
 psycopg = {extras = ["binary"], version = "*"}
