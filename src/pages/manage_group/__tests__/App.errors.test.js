@@ -53,6 +53,7 @@ describe('App', () => {
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").closest(".modal-box");
         await user.click(within(modal).getByText("Edit"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
@@ -76,6 +77,7 @@ describe('App', () => {
         // Ensure All plants tab active, click Water button
         await user.click(app.getByRole("tab", {name: "All plants"}));
         await user.click(app.getByRole("button", {name: "Water"}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
@@ -112,6 +114,7 @@ describe('App', () => {
         // Simulate user selecting first plant in modal and clicking add
         await user.click(app.getByLabelText('Select Another test plant'));
         await user.click(app.getByRole('button', {name: 'Add'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
@@ -138,6 +141,7 @@ describe('App', () => {
         // Simulate user selecting first plant and clicking remove
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByRole('button', {name: 'Remove'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();

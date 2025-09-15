@@ -2,6 +2,7 @@ import React from 'react';
 import { ErrorModal } from 'src/components/ErrorModal';
 import ChangeQrModal, { openChangeQrModal } from '../ChangeQrModal';
 import { postHeaders } from 'src/testUtils/headers';
+import { waitFor } from '@testing-library/react';
 
 /* eslint react/prop-types: 0 */
 
@@ -81,10 +82,12 @@ describe('ChangeQrModal', () => {
         await user.click(app.getByRole('button', {name: 'OK'}));
 
         // Confirm error modal appeared with arbitrary error text
-        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
-        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
-            'failed to cache UUID'
-        );
+        await waitFor(() => {
+            expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+            expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+                'failed to cache UUID'
+            );
+        });
 
         // Confirm did not close ChangeQrModal
         expect(mockClose).not.toHaveBeenCalled();
