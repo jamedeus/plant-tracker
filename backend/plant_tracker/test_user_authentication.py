@@ -1035,36 +1035,6 @@ class MultiUserModeTests(TestCase):
         # Ensure user logged out between tests
         self.client.logout()
 
-    def test_verify_email_endpoint_success(self):
-        # Ensure verification row exists and is unverified
-        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
-        verification.is_email_verified = False
-        verification.save()
-
-        uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
-        token = email_verification_token_generator.make_token(self.test_user)
-        response = self.client.get(f'/accounts/verify/{uidb64}/{token}/')
-
-        # Confirm redirected to overview page
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/')
-
-        verification.refresh_from_db()
-        self.assertTrue(verification.is_email_verified)
-
-    def test_verify_email_endpoint_invalid_token(self):
-        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
-        verification.is_email_verified = False
-        verification.save()
-
-        uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
-        response = self.client.get(f'/accounts/verify/{uidb64}/invalidtoken/')
-
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "invalid verification link"})
-        verification.refresh_from_db()
-        self.assertFalse(verification.is_email_verified)
-
     # pylint: disable-next=invalid-name
     def assertAuthenticationRequiredError(self, response):
         '''Takes response object, confirms received JSON response with status
@@ -1108,6 +1078,36 @@ class MultiUserModeTests(TestCase):
             response.json(),
             {"error": "group is owned by a different user"}
         )
+
+    def test_verify_email_endpoint_success(self):
+        # Ensure verification row exists and is unverified
+        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
+        verification.is_email_verified = False
+        verification.save()
+
+        uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
+        token = email_verification_token_generator.make_token(self.test_user)
+        response = self.client.get(f'/accounts/verify/{uidb64}/{token}/')
+
+        # Confirm redirected to overview page
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
+
+        verification.refresh_from_db()
+        self.assertTrue(verification.is_email_verified)
+
+    def test_verify_email_endpoint_invalid_token(self):
+        verification, _ = UserEmailVerification.objects.get_or_create(user=self.test_user)
+        verification.is_email_verified = False
+        verification.save()
+
+        uidb64 = urlsafe_base64_encode(force_bytes(self.test_user.pk))
+        response = self.client.get(f'/accounts/verify/{uidb64}/invalidtoken/')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "invalid verification link"})
+        verification.refresh_from_db()
+        self.assertFalse(verification.is_email_verified)
 
     def test_user_accounts_enabled_context(self):
         # Create test plant and group
