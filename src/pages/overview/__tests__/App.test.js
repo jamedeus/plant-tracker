@@ -418,6 +418,10 @@ describe('App', () => {
         expect(app.getByTestId('add-events-footer').classList).toContain(
             'floating-footer-visible'
         );
+
+        // Confirm number of selected plants changed to nothing selected message
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
+        expect(app.queryByText('No plants selected')).not.toBeNull();
     });
 
     it('updates AddEventsFooter text to show number of selected plants', async () => {

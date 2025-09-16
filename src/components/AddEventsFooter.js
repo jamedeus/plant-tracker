@@ -16,16 +16,16 @@ const AddEventsFooter = memo(function AddEventsFooter({
     plants,
     updatePlantLastEventTimes
 }) {
-    const [successMessage, setSuccessMessage] = useState(null);
-    const successMessageTimerRef = useRef(null);
+    const [alternateText, setAlternateText] = useState(null);
+    const alternateTextTimerRef = useRef(null);
 
-    // Replaces number of plants selected with success message for 3 seconds
-    const showSuccessMessage = (message) => {
-        clearTimeout(successMessageTimerRef.current);
-        setSuccessMessage(message);
-        successMessageTimerRef.current = setTimeout(() => {
-            setSuccessMessage(null);
-        }, 3000);
+    // Replaces number of plants selected with message for timeout milliseconds
+    const showAlternateTextMessage = (message, timeout) => {
+        clearTimeout(alternateTextTimerRef.current);
+        setAlternateText(message);
+        alternateTextTimerRef.current = setTimeout(() => {
+            setAlternateText(null);
+        }, timeout);
     };
 
     const handleAddEvents = async (eventType) => {
@@ -38,6 +38,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
 
         // Don't send empty request if nothing selected
         if (!selectedPlants.length) {
+            showAlternateTextMessage('No plants selected', 1500);
             return;
         }
 
@@ -57,7 +58,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
                 timestamp: data.timestamp
             });
             // Show success message in footer
-            showSuccessMessage(`Plants ${pastTense(eventType)}!`);
+            showAlternateTextMessage(`Plants ${pastTense(eventType)}!`, 3000);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -71,7 +72,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
             onClose={onClose}
             itemName="plant"
             initialText="Select plants to add events"
-            alternateText={successMessage}
+            alternateText={alternateText}
             closeButton={true}
             closeButtonAriaLabel="Stop adding events"
             testId="add-events-footer"
