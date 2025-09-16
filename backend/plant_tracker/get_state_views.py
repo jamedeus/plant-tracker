@@ -16,6 +16,7 @@ from django.db.models import Prefetch
 from django.core.exceptions import ValidationError
 
 from .models import Plant, Group
+from .plant_species_options import PLANT_SPECIES_OPTIONS
 from .view_decorators import get_user_token, find_model_type, get_plant_or_group_by_uuid
 
 
@@ -332,9 +333,11 @@ def get_manage_state(request, uuid, user):
 
 def get_plant_species_options(request):
     '''Returns list used to populate plant species combobox suggestions.'''
-    species = Plant.objects.all().values_list('species', flat=True)
-    options = sorted(list(set(i for i in species if i is not None)))
-    return JsonResponse({'options': options}, status=200)
+    options = set(Plant.objects.filter(
+        species__isnull=False
+    ).values_list('species', flat=True))
+    options.update(PLANT_SPECIES_OPTIONS)
+    return JsonResponse({'options': sorted(list(options))}, status=200)
 
 
 @get_user_token

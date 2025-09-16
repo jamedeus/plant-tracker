@@ -15,6 +15,7 @@ from django.test.client import MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
 
 from .view_decorators import get_default_user
+from .plant_species_options import PLANT_SPECIES_OPTIONS
 from .models import (
     Group,
     Plant,
@@ -1193,19 +1194,24 @@ class ManagePlantEndpointTests(TestCase):
         # Call endpoint with no plants in database with species set
         response = self.client.get('/get_plant_species_options')
 
-        # Confirm returns empty list (no species in database)
+        # Confirm returns default options (no species in database)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'options': []})
+        self.assertEqual(response.json(), {'options': PLANT_SPECIES_OPTIONS})
 
         # Create plants with species set
         user = get_default_user()
         Plant.objects.create(uuid=uuid4(), user=user, species='Calathea')
         Plant.objects.create(uuid=uuid4(), user=user, species='Fittonia')
 
-        # Call endpoint again, confirm list contains both species
+        # Call endpoint again, confirm contains both species + default options
         response = self.client.get('/get_plant_species_options')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'options': ['Calathea', 'Fittonia']})
+        self.assertEqual(
+            len(response.json()['options']),
+            len(PLANT_SPECIES_OPTIONS) + 2
+        )
+        self.assertIn('Calathea', response.json()['options'])
+        self.assertIn('Fittonia', response.json()['options'])
 
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species
