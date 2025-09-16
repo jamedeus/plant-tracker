@@ -145,7 +145,7 @@
 }
 
 @utility btn-soft {
-    &:not(:hover, :active:focus, :focus-visible, :disabled, [disabled]) {
+    &:not(:hover, :active, :disabled, [disabled]) {
         --btn-fg: var(--btn-color, var(--color-base-content));
         --btn-bg: color-mix(
             in oklab,
@@ -157,6 +157,23 @@
             var(--btn-color, var(--color-base-content)) 10%,
             var(--color-base-100)
         );
+    }
+
+    /* Mobile (prevents text color getting stuck after releasing click) */
+    @media (hover: none) {
+        &:hover:not(:active, :disabled, [disabled]) {
+            --btn-fg: var(--btn-color, var(--color-base-content));
+            --btn-bg: color-mix(
+                in oklab,
+                var(--btn-color, var(--color-base-content)) 8%,
+                var(--color-base-100)
+            );
+            --btn-border: color-mix(
+                in oklab,
+                var(--btn-color, var(--color-base-content)) 10%,
+                var(--color-base-100)
+            );
+        }
     }
 }
 
