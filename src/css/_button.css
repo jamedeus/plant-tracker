@@ -42,14 +42,18 @@
     --btn-p: 1rem;
     --btn-border: var(--btn-bg);
 
-    &:hover {
-        --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
+    /* Hover effect (desktop only, causes stuck background after click on mobile) */
+    @media (hover: hover) {
+        &:hover {
+            --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
+        }
     }
 
     /* Press animation */
     &:active:hover, &:active:focus {
         animation: button-pop 0s ease-out;
         transform: scale(0.95);
+        --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
     }
 
     &:focus-visible {
