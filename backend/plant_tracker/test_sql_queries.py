@@ -391,8 +391,8 @@ class SqlQueriesPerPageTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_get_plant_species_options_endpoint(self):
-        '''/get_plant_species_options should make 1 database query.'''
-        with self.assertNumQueries(1):
+        '''/get_plant_species_options should make 2 database queries.'''
+        with self.assertNumQueries(2):
             response = self.client.get('/get_plant_species_options')
             self.assertEqual(response.status_code, 200)
 

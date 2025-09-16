@@ -331,9 +331,13 @@ def get_manage_state(request, uuid, user):
     }, status=200)
 
 
-def get_plant_species_options(request):
-    '''Returns list used to populate plant species combobox suggestions.'''
+@get_user_token
+def get_plant_species_options(request, user):
+    '''Returns list used to populate plant species combobox suggestions.
+    List contains species of all plants owned by user plus default options.
+    '''
     options = set(Plant.objects.filter(
+        user=user,
         species__isnull=False
     ).values_list('species', flat=True))
     options.update(PLANT_SPECIES_OPTIONS)

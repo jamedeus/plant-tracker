@@ -18,6 +18,7 @@ from django.utils.http import urlsafe_base64_encode
 
 from .view_decorators import get_default_user
 from .models import Plant, Group, UserEmailVerification
+from .plant_species_options import PLANT_SPECIES_OPTIONS
 from .auth_views import email_verification_token_generator
 from .unit_test_helpers import (
     JSONClient,
@@ -826,6 +827,43 @@ class SingleUserModeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
 
+    def test_get_plant_species_options(self):
+        # Request species options, confirm returns default options
+        response = self.client.get('/get_plant_species_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'options': PLANT_SPECIES_OPTIONS})
+
+        # Create plants owned by a different user (not default user)
+        test_user = user_model.objects.create_user(
+            username='test',
+            password='123',
+            email='test@aol.com'
+        )
+        Plant.objects.create(uuid=uuid4(), user=test_user, species="Calathea")
+        Plant.objects.create(uuid=uuid4(), user=test_user, species="Fittonia")
+
+        # Request species options again, confirm still returns default options
+        response = self.client.get('/get_plant_species_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'options': PLANT_SPECIES_OPTIONS})
+        # Confirm options do NOT include species created by other user
+        self.assertNotIn('Calathea', response.json()['options'])
+        self.assertNotIn('Fittonia', response.json()['options'])
+
+        # Create plants owned by default user with same species as test user plants
+        Plant.objects.create(uuid=uuid4(), user=get_default_user(), species="Calathea")
+        Plant.objects.create(uuid=uuid4(), user=get_default_user(), species="Fittonia")
+
+        # Request species options again, confirm new species were added to response
+        response = self.client.get('/get_plant_species_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            len(response.json()['options']),
+            len(PLANT_SPECIES_OPTIONS) + 2
+        )
+        self.assertIn('Calathea', response.json()['options'])
+        self.assertIn('Fittonia', response.json()['options'])
+
     def test_manage_plant_page_user_owns_plant(self):
         # Create plant owned by default user
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
@@ -1108,6 +1146,42 @@ class MultiUserModeTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/accounts/login/?next=/')
 
+    def test_get_plant_species_options_signed_in(self):
+        # Request species options while signed in
+        self.client.login(username='unittest', password='12345')
+        response = self.client.get('/get_plant_species_options')
+
+        # Confirm returns default options (no species in database)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'options': PLANT_SPECIES_OPTIONS})
+
+        # Create plants owned by a different user (default user)
+        user = get_default_user()
+        Plant.objects.create(uuid=uuid4(), user=user, species='Calathea')
+        Plant.objects.create(uuid=uuid4(), user=user, species='Fittonia')
+
+        # Request species options again, confirm still returns default options
+        response = self.client.get('/get_plant_species_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'options': PLANT_SPECIES_OPTIONS})
+        # Confirm options do NOT include species created by other user
+        self.assertNotIn('Calathea', response.json()['options'])
+        self.assertNotIn('Fittonia', response.json()['options'])
+
+        # Create plants owned by test user with same species as default user plants
+        Plant.objects.create(uuid=uuid4(), user=self.test_user, species="Calathea")
+        Plant.objects.create(uuid=uuid4(), user=self.test_user, species="Fittonia")
+
+        # Request species options again, confirm new species were added to response
+        response = self.client.get('/get_plant_species_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            len(response.json()['options']),
+            len(PLANT_SPECIES_OPTIONS) + 2
+        )
+        self.assertIn('Calathea', response.json()['options'])
+        self.assertIn('Fittonia', response.json()['options'])
+
     def test_manage_plant_page_signed_in(self):
         # Create plant owned by test user
         plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
@@ -1209,6 +1283,9 @@ class MultiUserModeTests(TestCase):
                 'uuid': str(plant.uuid),
                 'new_id': str(uuid4())
             })
+        )
+        self.assertAuthenticationRequiredError(
+            self.client.get_json('/get_plant_species_options')
         )
         self.assertAuthenticationRequiredError(
             self.client.post('/edit_plant_details', {
