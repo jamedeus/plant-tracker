@@ -127,6 +127,15 @@
         }
     }
 
+    /* Mobile (prevents hover highlight applying when focused + unfocused) */
+    @media (hover: none) {
+        &:hover:not(:active, :focus-visible, :disabled, [disabled]) {
+            --btn-bg: #0000;
+            --btn-border: #0000;
+            --btn-fg: currentColor;
+        }
+    }
+
     /* v4 hover highlight color */
     /* Keep dropdown button hover highlight visible while dropdown is open */
     &:hover,
@@ -141,6 +150,15 @@
         --btn-bg: #0000;
         --btn-fg: var(--btn-color);
         --btn-border: var(--btn-color);
+    }
+
+    /* Mobile */
+    @media (hover: none) {
+        &:hover:not(:active, :focus-visible, :disabled, [disabled], :checked) {
+            --btn-bg: #0000;
+            --btn-fg: var(--btn-color);
+            --btn-border: var(--btn-color);
+        }
     }
 }
 
