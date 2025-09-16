@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
 import { XMarkIcon } from '@heroicons/react/16/solid';
+import { useCloseWithEscKey } from 'src/hooks/useCloseWithEscKey';
 import clsx from 'clsx';
 
 const FloatingFooter = ({
@@ -55,6 +56,9 @@ const FloatingFooter = ({
             trackMouse: true,
         },
     });
+
+    // Close footer by pressing escape key
+    useCloseWithEscKey(visible, onClose);
 
     return (
         <div
