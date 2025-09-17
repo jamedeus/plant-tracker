@@ -144,4 +144,27 @@ button.yarl__thumbnails_thumbnail {
 /* Top-left corner dropdown menu */
 .gallery-dropdown {
     @apply absolute top-0 left-0 p-2;
+
+    & > .yarl__button {
+        @apply rounded-full;
+        transition-property: color, background-color, opacity;
+        transition-duration: 250ms !important;
+
+        /* Hover/focus highlight matching other dropdown buttons */
+        &:hover,
+        .gallery-dropdown:focus-within > & {
+            background-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
+            opacity: 1;
+        }
+
+        /* Mobile (prevents highlight persisting after closing menu) */
+        @media (hover: none) {
+            &:hover:not(:active, :focus-visible, :disabled, [disabled]) {
+                background-color: #0000;
+                .focus-mode & {
+                    opacity: 0.3;
+                }
+            }
+        }
+    }
 }
