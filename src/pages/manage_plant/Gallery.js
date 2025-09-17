@@ -172,10 +172,7 @@ const GalleryDropdown = ({ currentSlide, focusMode, toggleFocusMode }) => {
                     <FaEllipsis className="size-8" />
                 </DropdownButton>
                 <DropdownMenu>
-                    <li><button
-                        className="flex justify-between"
-                        onClick={toggleFocusMode}
-                    >
+                    <li><button onClick={toggleFocusMode}>
                         {focusMode ? (
                             <>
                                 Focus mode off
@@ -188,24 +185,15 @@ const GalleryDropdown = ({ currentSlide, focusMode, toggleFocusMode }) => {
                             </>
                         )}
                     </button></li>
-                    <li><button
-                        className="flex justify-between"
-                        onClick={handleDownloadPhoto}
-                    >
+                    <li><button onClick={handleDownloadPhoto}>
                         Download photo
                         <ArrowDownTrayIcon className="size-4 ml-4" />
                     </button></li>
-                    <li><button
-                        className="flex justify-between"
-                        onClick={handleSetDefaultPhoto}
-                    >
+                    <li><button onClick={handleSetDefaultPhoto}>
                         Set default photo
                         <StarIcon className="size-4 ml-4" />
                     </button></li>
-                    <li><button
-                        className="flex justify-between"
-                        onClick={handleDeletePhotoOption}
-                    >
+                    <li><button onClick={handleDeletePhotoOption}>
                         Delete photo
                         <TrashIcon className="size-4 ml-4" />
                     </button></li>
