@@ -16,10 +16,27 @@
     border-top-right-radius: 20px;
 }
 
-/* Responsive hover/focus color */
+/* Next/Prev month buttons: Transition background color on hover/focus/click */
+.react-calendar__navigation button:enabled,
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
+    transition: background-color;
+    transition-duration: 200ms;
+}
+/* Disable built in hover/focus color */
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+    @apply bg-base-200;
+}
+/* Darker background when active (while clicking, not after release) */
+.react-calendar__navigation button:enabled:active {
     @apply bg-base-300;
+}
+/* Desktop: Also use darker background while hovering */
+@media (hover: hover) {
+    .react-calendar__navigation button:enabled:hover {
+        @apply bg-base-300;
+    }
 }
 
 /* Disabled colors */
@@ -64,11 +81,18 @@
     @apply bg-inherit text-inherit;
 }
 
+/* Day tiles: Transition background color on hover/focus/click */
+.react-calendar__tile {
+    @apply rounded-2xl;
+    transition: background-color;
+    transition-duration: 200ms;
+}
+/* Darker background when focused or hovered (stays after click) */
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus,
 .react-calendar__tile--active,
 .react-calendar__tile--hasActive {
-    @apply bg-base-300 text-base-content rounded-2xl;
+    @apply bg-base-300 text-base-content;
 }
 
 [data-theme="dark"] .react-calendar__month-view__days__day--neighboringMonth,
