@@ -48,12 +48,12 @@ describe('App', () => {
 
         // Open edit modal
         await act(async () => await jest.advanceTimersByTimeAsync(100));
-        await user.click(app.getByText("Edit"));
+        await user.click(app.getByText("Edit Details"));
 
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button inside edit modal
-        const modal = app.getByText("Edit Details").closest(".modal-box");
+        const modal = document.body.querySelector(".modal-box");
         await user.click(within(modal).getByText("Edit"));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 

@@ -17,7 +17,7 @@ import {
 import 'src/css/title-drawer.css';
 import clsx from 'clsx';
 
-const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
+const DetailsDrawer = ({ openGroupModal, openEditModal, openChangeQrModal }) => {
     // Get state shown in drawer
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
@@ -122,16 +122,20 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
                     description={plantDetails.description}
                 />
                 <button className="btn h-8 mt-4 w-full" onClick={openEditModal}>
-                    Edit
+                    Edit Details
                 </button>
             </div>
+            <button className="btn h-8 mt-4 w-full" onClick={openChangeQrModal}>
+                Change QR Code
+            </button>
         </TitleDrawer>
     );
 };
 
 DetailsDrawer.propTypes = {
     openGroupModal: PropTypes.func.isRequired,
-    openEditModal: PropTypes.func.isRequired
+    openEditModal: PropTypes.func.isRequired,
+    openChangeQrModal: PropTypes.func.isRequired
 };
 
 export default DetailsDrawer;

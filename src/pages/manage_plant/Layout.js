@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
 import DetailsDrawer from './DetailsDrawer';
 import DeleteModeFooter from './DeleteModeFooter';
+import { FaGear } from "react-icons/fa6";
+import { FaImages, FaLayerGroup } from "react-icons/fa";
 import {
     titleDrawerOpened,
     settingsMenuOpened,
@@ -65,20 +67,20 @@ function Layout() {
                     {plantDetails.group &&
                         <li><Link to={`/manage/${plantDetails.group.uuid}`} discover="none">
                             Go to group
+                            <FaLayerGroup className="size-4 ml-4" />
                         </Link></li>
                     }
-                    <li><button onClick={openChangeQrModal}>
-                        Change QR code
-                    </button></li>
                     <li><label
                         onClick={() => dispatch(settingsMenuOpened(true))}
                         data-testid='open-settings-menu'
                     >
                         Settings
+                        <FaGear className="size-4 ml-4" />
                     </label></li>
                     {hasPhotos &&
                         <li><button onClick={() => dispatch(photoGalleryOpened({open: true}))}>
                             Gallery
+                            <FaImages className="size-4 ml-4" />
                         </button></li>
                     }
                 </>
@@ -101,6 +103,7 @@ function Layout() {
             <DetailsDrawer
                 openGroupModal={openGroupModal}
                 openEditModal={openEditModal}
+                openChangeQrModal={openChangeQrModal}
             />
 
             {/* Don't render event buttons if plant is archived */}

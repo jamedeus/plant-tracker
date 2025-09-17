@@ -73,7 +73,7 @@ describe('App', () => {
         mockPlantSpeciesOptionsResponse();
 
         // Open edit modal, confirm fetched species options
-        await user.click(app.getByRole('button', {name: 'Edit'}));
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(global.fetch).toHaveBeenCalledWith('/get_plant_species_options');
 
@@ -90,7 +90,7 @@ describe('App', () => {
         }));
 
         // Click submit button inside edit modal
-        const modal = app.getByText("Edit Details").closest(".modal-box");
+        const modal = document.body.querySelector(".modal-box");
         await user.click(within(modal).getByText("Edit"));
 
         // Confirm correct data posted to /edit_plant_details endpoint
@@ -112,11 +112,11 @@ describe('App', () => {
         mockPlantSpeciesOptionsResponse();
 
         // Open edit modal
-        await user.click(app.getByRole('button', {name: 'Edit'}));
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Get fields with length limits + edit button
-        const modal = app.getByText("Edit Details").closest(".modal-box");
+        const modal = document.body.querySelector(".modal-box");
         const editButton = within(modal).getByRole("button", {name: "Edit"});
         const nameField = within(modal).getByRole('textbox', {name: 'Plant name'});
         const speciesField = within(modal).getByRole('combobox', {name: 'Plant species'});
@@ -466,7 +466,7 @@ describe('App', () => {
         expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).toBeNull();
 
         // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Change QR code'));
+        await user.click(app.getByText('Change QR Code'));
         await waitFor(() => {
             expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
         });
