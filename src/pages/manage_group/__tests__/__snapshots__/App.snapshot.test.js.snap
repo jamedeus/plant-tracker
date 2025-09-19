@@ -81,11 +81,6 @@ exports[`App matches snapshot 1`] = `
             </a>
           </li>
           <li>
-            <a>
-              Change QR code
-            </a>
-          </li>
-          <li>
             <button>
               Light mode
               <svg
@@ -217,7 +212,12 @@ exports[`App matches snapshot 1`] = `
         <button
           class="btn h-8 mt-4 w-full"
         >
-          Edit
+          Edit Details
+        </button>
+        <button
+          class="btn h-8 mt-4 w-full"
+        >
+          Change QR Code
         </button>
       </div>
     </div>
@@ -1031,11 +1031,6 @@ exports[`App matches snapshot when group is archived 1`] = `
             </a>
           </li>
           <li>
-            <a>
-              Change QR code
-            </a>
-          </li>
-          <li>
             <button>
               Light mode
               <svg
@@ -1167,7 +1162,12 @@ exports[`App matches snapshot when group is archived 1`] = `
         <button
           class="btn h-8 mt-4 w-full"
         >
-          Edit
+          Edit Details
+        </button>
+        <button
+          class="btn h-8 mt-4 w-full"
+        >
+          Change QR Code
         </button>
       </div>
     </div>
@@ -1933,11 +1933,6 @@ exports[`App matches snapshot when no plants 1`] = `
             </a>
           </li>
           <li>
-            <a>
-              Change QR code
-            </a>
-          </li>
-          <li>
             <button>
               Light mode
               <svg
@@ -2069,7 +2064,12 @@ exports[`App matches snapshot when no plants 1`] = `
         <button
           class="btn h-8 mt-4 w-full"
         >
-          Edit
+          Edit Details
+        </button>
+        <button
+          class="btn h-8 mt-4 w-full"
+        >
+          Change QR Code
         </button>
       </div>
     </div>

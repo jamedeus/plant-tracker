@@ -47,11 +47,11 @@ describe('App', () => {
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Open edit modal
-        await user.click(app.getByText("Edit"));
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button inside edit modal
-        const modal = app.getByText("Edit Details").closest(".modal-box");
+        const modal = document.body.querySelector(".modal-box");
         await user.click(within(modal).getByText("Edit"));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 

@@ -77,11 +77,11 @@ describe('App', () => {
         }));
 
         // Open edit modal
-        await user.click(app.getByRole('button', {name: 'Edit'}));
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click submit button inside edit modal
-        const modal = app.getByText("Edit Details").closest(".modal-box");
+        const modal = document.body.querySelector(".modal-box");
         await user.click(within(modal).getByText("Edit"));
 
         // Confirm correct data posted to /edit_group_details endpoint
@@ -99,11 +99,11 @@ describe('App', () => {
 
     it('disables edit modal submit button when fields are too long', async () => {
         // Open edit modal
-        await user.click(app.getByRole('button', {name: 'Edit'}));
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Get fields with length limits + edit button
-        const modal = app.getByText("Edit Details").closest(".modal-box");
+        const modal = document.body.querySelector(".modal-box");
         const editButton = within(modal).getByRole("button", {name: "Edit"});
         const nameField = within(modal).getByRole('textbox', {name: 'Group name'});
         const locationField = within(modal).getByRole('textbox', {name: 'Group location'});
@@ -476,7 +476,7 @@ describe('App', () => {
         expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).toBeNull();
 
         // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Change QR code'));
+        await user.click(app.getByText('Change QR Code'));
         await waitFor(() => {
             expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
         });

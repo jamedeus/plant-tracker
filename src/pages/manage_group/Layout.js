@@ -88,11 +88,7 @@ function Layout() {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
-        <NavbarDropdownOptions>
-            <li><a onClick={openChangeQrModal}>
-                Change QR code
-            </a></li>
-        </NavbarDropdownOptions>
+        <NavbarDropdownOptions />
     ), []);
 
     const PlantsColTitleOptions = useMemo(() => (
@@ -138,7 +134,10 @@ function Layout() {
                     />
                 </div>
                 <button className="btn h-8 mt-4 w-full" onClick={openEditModal}>
-                    Edit
+                    Edit Details
+                </button>
+                <button className="btn h-8 mt-4 w-full" onClick={openChangeQrModal}>
+                    Change QR Code
                 </button>
             </TitleDrawer>
 
