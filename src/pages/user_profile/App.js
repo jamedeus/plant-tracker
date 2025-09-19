@@ -10,6 +10,7 @@ import { showToast } from 'src/components/Toast';
 import QrScannerButton from 'src/components/QrScannerButton';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
+import { FaHome } from "react-icons/fa";
 import { FaCheck } from 'react-icons/fa6';
 import userDetailsProptypes from 'src/types/userDetailsPropTypes';
 import 'src/css/index.css';
@@ -302,6 +303,7 @@ function App({ initialState }) {
         <>
             <li><Link to='/' discover="none">
                 Overview
+                <FaHome className="size-4 ml-4" />
             </Link></li>
             <ToggleThemeOption />
         </>

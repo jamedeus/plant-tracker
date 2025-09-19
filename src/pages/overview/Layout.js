@@ -15,6 +15,8 @@ import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import { updatePlantLastEventTimes } from './overviewSlice';
+import { FaHome, FaUser } from "react-icons/fa";
+import { FaPrint, FaClockRotateLeft } from "react-icons/fa6";
 import clsx from 'clsx';
 
 // Render correct components for current state objects
@@ -89,24 +91,28 @@ const Layout = () => {
                 {(!archivedOverview && showArchive) && (
                     <li><Link to='/archived' discover="none">
                         Archived plants
+                        <FaClockRotateLeft className="size-4 ml-4" />
                     </Link></li>
                 )}
                 {/* Archive overview: Link back to main overview */}
                 {archivedOverview && (
                     <li><Link to='/' discover="none">
                         Main overview
+                        <FaHome className="size-4 ml-4" />
                     </Link></li>
                 )}
                 {/* Link to user profile unless accounts disabled */}
                 {globalThis.USER_ACCOUNTS_ENABLED && (
                     <li><Link to='/accounts/profile/' discover="none">
                         User profile
+                        <FaUser className="size-4 ml-4" />
                     </Link></li>
                 )}
                 {/* Main overview: Show Print QR Codes option */}
                 {!archivedOverview && (
                     <li><a onClick={openPrintModal}>
                         Print QR Codes
+                        <FaPrint className="size-4 ml-4" />
                     </a></li>
                 )}
                 <ToggleThemeOption />
