@@ -302,8 +302,8 @@ function App({ initialState }) {
     const DropdownMenuOptions = useMemo(() => (
         <>
             <li><Link to='/' discover="none">
+                <FaHome className="size-4 mr-2" />
                 Overview
-                <FaHome className="size-4 ml-4" />
             </Link></li>
             <ToggleThemeOption />
         </>

@@ -8,13 +8,13 @@ const NavbarDropdownOptions = ({ children }) => {
     return (
         <>
             <li><Link to='/' discover="none">
+                <FaHome className="size-4 mr-2" />
                 Overview
-                <FaHome className="size-4 ml-4" />
             </Link></li>
             {globalThis.USER_ACCOUNTS_ENABLED && (
                 <li><Link to="/accounts/profile/" discover="none">
+                    <FaUser className="size-4 mr-2" />
                     User profile
-                    <FaUser className="size-4 ml-4" />
                 </Link></li>
             )}
             {children}

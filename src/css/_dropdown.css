@@ -42,16 +42,6 @@
             pointer-events: none;
         }
     }
-
-    /* Option icon alignment (text left, icon right), no effect if no icon */
-    /* Does not apply to -end and -center (will break alignment if no icon) */
-    &:not(.dropdown-end, .dropdown-center) > .dropdown-content {
-        & > li > button,
-        & > li > label,
-        & > li > a {
-            @apply flex justify-between;
-        }
-    }
 }
 
 /* Position variants */

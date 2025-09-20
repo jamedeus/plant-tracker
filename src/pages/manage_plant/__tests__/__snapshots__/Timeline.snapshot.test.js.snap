@@ -9,7 +9,7 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
       class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
     >
       <div
-        class="justify-start w-12"
+        class="w-12"
       />
       <div
         class="mx-auto my-1"
@@ -48,7 +48,7 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
         </div>
       </div>
       <div
-        class="justify-end w-12 dropdown dropdown-end"
+        class="w-12 dropdown dropdown-end"
       >
         <div
           aria-label="More plant actions menu"
@@ -77,11 +77,9 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
           tabindex="0"
         >
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -98,11 +96,9 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -119,11 +115,9 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-5 mr-4"
+                class="size-5 mr-1"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -148,11 +142,9 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4 rotate-90"
+                class="size-4 mr-2 rotate-90"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -275,7 +267,7 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
       class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
     >
       <div
-        class="justify-start w-12"
+        class="w-12"
       />
       <div
         class="mx-auto my-1"
@@ -314,7 +306,7 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
         </div>
       </div>
       <div
-        class="justify-end w-12 dropdown dropdown-end"
+        class="w-12 dropdown dropdown-end"
       >
         <div
           aria-label="More plant actions menu"
@@ -343,11 +335,9 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           tabindex="0"
         >
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -364,11 +354,9 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -385,11 +373,9 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-5 mr-4"
+                class="size-5 mr-1"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -414,11 +400,9 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4 rotate-90"
+                class="size-4 mr-2 rotate-90"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -567,7 +551,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
       class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
     >
       <div
-        class="justify-start w-12"
+        class="w-12"
       />
       <div
         class="mx-auto my-1"
@@ -704,7 +688,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         </div>
       </div>
       <div
-        class="justify-end w-12 dropdown dropdown-end"
+        class="w-12 dropdown dropdown-end"
       />
     </div>
     <div
@@ -3656,7 +3640,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
       class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
     >
       <div
-        class="justify-start w-12"
+        class="w-12"
       />
       <div
         class="mx-auto my-1"
@@ -3793,7 +3777,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         </div>
       </div>
       <div
-        class="justify-end w-12 dropdown dropdown-end"
+        class="w-12 dropdown dropdown-end"
       >
         <div
           aria-label="More plant actions menu"
@@ -3822,11 +3806,9 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           tabindex="0"
         >
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -3843,11 +3825,9 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -3864,11 +3844,9 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-5 mr-4"
+                class="size-5 mr-1"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -3893,11 +3871,9 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4 rotate-90"
+                class="size-4 mr-2 rotate-90"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -3925,12 +3901,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
                 aria-hidden="true"
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 24 24"
@@ -6897,7 +6871,7 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
       class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
     >
       <div
-        class="justify-start w-12"
+        class="w-12"
       />
       <div
         class="mx-auto my-1"
@@ -6936,7 +6910,7 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
         </div>
       </div>
       <div
-        class="justify-end w-12 dropdown dropdown-end"
+        class="w-12 dropdown dropdown-end"
       >
         <div
           aria-label="More plant actions menu"
@@ -6965,11 +6939,9 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           tabindex="0"
         >
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -6986,11 +6958,9 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4"
+                class="size-4 mr-2"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -7007,11 +6977,9 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-5 mr-4"
+                class="size-5 mr-1"
                 fill="none"
                 height="1em"
                 stroke="currentColor"
@@ -7036,11 +7004,9 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
             </button>
           </li>
           <li>
-            <button
-              class="flex justify-between"
-            >
+            <button>
               <svg
-                class="size-4 mr-4 rotate-90"
+                class="size-4 mr-2 rotate-90"
                 fill="none"
                 height="1em"
                 stroke="currentColor"

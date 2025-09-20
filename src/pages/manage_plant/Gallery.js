@@ -175,27 +175,27 @@ const GalleryDropdown = ({ currentSlide, focusMode, toggleFocusMode }) => {
                     <li><button onClick={toggleFocusMode}>
                         {focusMode ? (
                             <>
+                                <FaEyeSlash className="size-4 mr-2" />
                                 Focus mode off
-                                <FaEyeSlash className="size-4 ml-4" />
                             </>
                         ) : (
                             <>
+                                <FaEye className="size-4 mr-2" />
                                 Focus mode on
-                                <FaEye className="size-4 ml-4" />
                             </>
                         )}
                     </button></li>
                     <li><button onClick={handleDownloadPhoto}>
+                        <ArrowDownTrayIcon className="size-4 mr-2" />
                         Download photo
-                        <ArrowDownTrayIcon className="size-4 ml-4" />
                     </button></li>
                     <li><button onClick={handleSetDefaultPhoto}>
+                        <StarIcon className="size-4 mr-2" />
                         Set default photo
-                        <StarIcon className="size-4 ml-4" />
                     </button></li>
                     <li><button onClick={handleDeletePhotoOption}>
+                        <TrashIcon className="size-4 mr-2" />
                         Delete photo
-                        <TrashIcon className="size-4 ml-4" />
                     </button></li>
                 </DropdownMenu>
             </div>

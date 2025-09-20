@@ -78,8 +78,8 @@ const Title = memo(function Title() {
 
     return (
         <div className="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1">
-            <div className="justify-start w-12">
-                {/* Spacer with same width as .navbar-end button */}
+            <div className="w-12">
+                {/* Spacer with same width as right side dropdown button */}
             </div>
             <div className="mx-auto my-1">
                 {hasNavigationOptions ? (
@@ -102,7 +102,7 @@ const Title = memo(function Title() {
                 )}
             </div>
 
-            <div className="justify-end w-12 dropdown dropdown-end">
+            <div className="w-12 dropdown dropdown-end">
                 {!archived &&
                     <>
                         <DropdownButton
@@ -112,41 +112,25 @@ const Title = memo(function Title() {
                             <FaEllipsis className="size-6" />
                         </DropdownButton>
                         <DropdownMenu>
-                            <li><button
-                                className="flex justify-between"
-                                onClick={() => openNoteModal()}
-                            >
-
-                                <FaPenToSquare className='size-4 mr-4' />
+                            <li><button onClick={() => openNoteModal()}>
+                                <FaPenToSquare className='size-4 mr-2' />
                                 Add note
                             </button></li>
-                            <li><button
-                                className="flex justify-between"
-                                onClick={openPhotoModal}
-                            >
-                                <FaCamera className='size-4 mr-4' />
+                            <li><button onClick={openPhotoModal}>
+                                <FaCamera className='size-4 mr-2' />
                                 Add photos
                             </button></li>
-                            <li><button
-                                className="flex justify-between"
-                                onClick={openRepotModal}
-                            >
-                                <TbShovel className='size-5 mr-4' />
+                            <li><button onClick={openRepotModal}>
+                                <TbShovel className='size-5 mr-1' />
                                 Repot plant
                             </button></li>
-                            <li><button
-                                className="flex justify-between"
-                                onClick={openDivisionModal}
-                            >
-                                <LuSplit className='size-4 mr-4 rotate-90' />
+                            <li><button onClick={openDivisionModal}>
+                                <LuSplit className='size-4 mr-2 rotate-90' />
                                 Divide plant
                             </button></li>
                             {(hasPhotos || hasEvents) &&
-                                <li><button
-                                    className="flex justify-between"
-                                    onClick={startDeleteMode}
-                                >
-                                    <TrashIcon className='size-4 mr-4' />
+                                <li><button onClick={startDeleteMode}>
+                                    <TrashIcon className='size-4 mr-2' />
                                     Edit timeline
                                 </button></li>
                             }

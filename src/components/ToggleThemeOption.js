@@ -29,13 +29,13 @@ const ToggleThemeOption = () => {
     switch(theme) {
         case('light'):
             return <li><button onClick={toggleTheme}>
+                <FaMoon className="size-4 mr-2" />
                 Dark mode
-                <FaMoon className="size-4 ml-4" />
             </button></li>;
         case('dark'):
             return <li><button onClick={toggleTheme}>
+                <FaSun className="size-4 mr-2" />
                 Light mode
-                <FaSun className="size-4 ml-4" />
             </button></li>;
     }
 };

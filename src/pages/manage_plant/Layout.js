@@ -66,21 +66,21 @@ function Layout() {
                 <>
                     {plantDetails.group &&
                         <li><Link to={`/manage/${plantDetails.group.uuid}`} discover="none">
+                            <FaLayerGroup className="size-4 mr-2" />
                             Go to group
-                            <FaLayerGroup className="size-4 ml-4" />
                         </Link></li>
                     }
                     <li><label
                         onClick={() => dispatch(settingsMenuOpened(true))}
                         data-testid='open-settings-menu'
                     >
+                        <FaGear className="size-4 mr-2" />
                         Settings
-                        <FaGear className="size-4 ml-4" />
                     </label></li>
                     {hasPhotos &&
                         <li><button onClick={() => dispatch(photoGalleryOpened({open: true}))}>
+                            <FaImages className="size-4 mr-2" />
                             Gallery
-                            <FaImages className="size-4 ml-4" />
                         </button></li>
                     }
                 </>

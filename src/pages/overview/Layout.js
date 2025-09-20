@@ -90,29 +90,29 @@ const Layout = () => {
                 {/* Main overview: Link to archive overview if it exists */}
                 {(!archivedOverview && showArchive) && (
                     <li><Link to='/archived' discover="none">
+                        <FaClockRotateLeft className="size-4 mr-2" />
                         Archived plants
-                        <FaClockRotateLeft className="size-4 ml-4" />
                     </Link></li>
                 )}
                 {/* Archive overview: Link back to main overview */}
                 {archivedOverview && (
                     <li><Link to='/' discover="none">
+                        <FaHome className="size-4 mr-2" />
                         Main overview
-                        <FaHome className="size-4 ml-4" />
                     </Link></li>
                 )}
                 {/* Link to user profile unless accounts disabled */}
                 {globalThis.USER_ACCOUNTS_ENABLED && (
                     <li><Link to='/accounts/profile/' discover="none">
+                        <FaUser className="size-4 mr-2" />
                         User profile
-                        <FaUser className="size-4 ml-4" />
                     </Link></li>
                 )}
                 {/* Main overview: Show Print QR Codes option */}
                 {!archivedOverview && (
                     <li><a onClick={openPrintModal}>
+                        <FaPrint className="size-4 mr-2" />
                         Print QR Codes
-                        <FaPrint className="size-4 ml-4" />
                     </a></li>
                 )}
                 <ToggleThemeOption />
