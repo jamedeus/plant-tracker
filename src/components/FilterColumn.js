@@ -104,7 +104,6 @@ const SortMenuOption = ({ display, isSelected, state, onClick }) => {
     return (
         <li>
             <a
-                className="flex justify-between"
                 onClick={onClick}
                 aria-label={isSelected && state.sortDirection === 1 ? (
                     `Sort by ${display} (reverse alphabetical)'`
@@ -140,7 +139,7 @@ SortMenuOption.propTypes = {
 // Only rendered if sortByKeys array is not empty
 const SortMenu = ({ sortByKeys, state, setSort }) => {
     return (
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-center">
             <DropdownButton
                 className="btn-close size-8"
                 title="Sort menu"

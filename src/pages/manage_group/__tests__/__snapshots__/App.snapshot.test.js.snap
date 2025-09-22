@@ -335,7 +335,7 @@ exports[`App matches snapshot 1`] = `
                 class="absolute flex top-2 right-2"
               >
                 <div
-                  class="dropdown dropdown-end"
+                  class="dropdown dropdown-center"
                 >
                   <div
                     aria-label="Sort menu"
@@ -366,7 +366,6 @@ exports[`App matches snapshot 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Added (reverse alphabetical)'"
-                        class="flex justify-between"
                       >
                         <svg
                           class="transition-transform duration-200 mr-2 rotate-0"
@@ -388,7 +387,6 @@ exports[`App matches snapshot 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Name (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
@@ -399,7 +397,6 @@ exports[`App matches snapshot 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Species (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
@@ -410,7 +407,6 @@ exports[`App matches snapshot 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Watered (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
@@ -1237,7 +1233,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                 class="absolute flex top-2 right-2"
               >
                 <div
-                  class="dropdown dropdown-end"
+                  class="dropdown dropdown-center"
                 >
                   <div
                     aria-label="Sort menu"
@@ -1268,7 +1264,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Added (reverse alphabetical)'"
-                        class="flex justify-between"
                       >
                         <svg
                           class="transition-transform duration-200 mr-2 rotate-0"
@@ -1290,7 +1285,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Name (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
@@ -1301,7 +1295,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Species (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
@@ -1312,7 +1305,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Watered (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
@@ -2165,7 +2157,7 @@ exports[`App matches snapshot when no plants 1`] = `
                 class="absolute flex top-2 right-2"
               >
                 <div
-                  class="dropdown dropdown-end"
+                  class="dropdown dropdown-center"
                 >
                   <div
                     aria-label="Sort menu"
@@ -2196,7 +2188,6 @@ exports[`App matches snapshot when no plants 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Added (reverse alphabetical)'"
-                        class="flex justify-between"
                       >
                         <svg
                           class="transition-transform duration-200 mr-2 rotate-0"
@@ -2218,7 +2209,6 @@ exports[`App matches snapshot when no plants 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Name (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
@@ -2229,7 +2219,6 @@ exports[`App matches snapshot when no plants 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Species (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
@@ -2240,7 +2229,6 @@ exports[`App matches snapshot when no plants 1`] = `
                     <li>
                       <a
                         aria-label="Sort by Watered (alphabetical)"
-                        class="flex justify-between"
                       >
                         <div
                           class="w-[14px] mr-2"
