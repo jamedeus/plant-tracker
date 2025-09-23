@@ -360,7 +360,7 @@ exports[`App matches snapshot 1`] = `
                     </svg>
                   </div>
                   <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                     tabindex="0"
                   >
                     <li>
@@ -1258,7 +1258,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                     </svg>
                   </div>
                   <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                     tabindex="0"
                   >
                     <li>
@@ -2182,7 +2182,7 @@ exports[`App matches snapshot when no plants 1`] = `
                     </svg>
                   </div>
                   <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                     tabindex="0"
                   >
                     <li>

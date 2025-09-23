@@ -256,7 +256,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                       tabindex="0"
                     >
                       <li>
@@ -534,7 +534,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                       tabindex="0"
                     >
                       <li>
@@ -1366,7 +1366,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                       tabindex="0"
                     >
                       <li>
@@ -1966,7 +1966,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                       tabindex="0"
                     >
                       <li>
@@ -2612,7 +2612,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                       tabindex="0"
                     >
                       <li>
@@ -2912,7 +2912,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                       tabindex="0"
                     >
                       <li>
@@ -3534,7 +3534,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                       tabindex="0"
                     >
                       <li>
@@ -3834,7 +3834,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2 scroll-mb-4"
                       tabindex="0"
                     >
                       <li>

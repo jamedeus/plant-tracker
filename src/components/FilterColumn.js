@@ -138,15 +138,29 @@ SortMenuOption.propTypes = {
 // Dropdown button rendered next to filter input, used to sort column
 // Only rendered if sortByKeys array is not empty
 const SortMenu = ({ sortByKeys, state, setSort }) => {
+    const menuRef = useRef(null);
+
+    // Scrolls page until all dropdown options are visible (runs when opened)
+    const scrollToMenu = () => {
+        const rect = menuRef.current.getBoundingClientRect();
+        // Only run if bottom of dropdown is outside viewport
+        if (rect.bottom >= window.innerHeight) {
+            menuRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "end"
+            });
+        }
+    };
+
     return (
-        <div className="dropdown dropdown-center">
+        <div className="dropdown dropdown-center" onFocus={scrollToMenu}>
             <DropdownButton
                 className="btn-close size-8"
                 title="Sort menu"
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />
             </DropdownButton>
-            <DropdownMenu className="mt-2">
+            <DropdownMenu className="mt-2 scroll-mb-4" menuRef={menuRef}>
                 {sortByKeys.map((key) => (
                     <SortMenuOption
                         key={key.key}
