@@ -7,7 +7,7 @@ import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 // Renders dropdown contents for ManageGroup details section
 const GroupDetails = ({ created, location, description }) => (
     <>
-        <div className="grid grid-cols-min-max gap-y-1">
+        <div className="grid grid-cols-min-max gap-2">
             <DetailsRow
                 label="Created"
                 value={timestampToReadable(created).split('-')[1]?.trim()}
@@ -15,12 +15,10 @@ const GroupDetails = ({ created, location, description }) => (
             {location && <DetailsRow label="Location" value={location} />}
         </div>
         {description &&
-            <div className='text-center'>
-                <p className="font-semibold mt-3">Description:</p>
-                <p className="text-sm line-clamp-6 break-anywhere">
-                    {description}
-                </p>
-            </div>
+            <p className="text-left mt-2 line-clamp-6 break-anywhere pl-2 -indent-2">
+                <span className="font-bold mr-2">Description:</span>
+                <span>{description}</span>
+            </p>
         }
     </>
 );

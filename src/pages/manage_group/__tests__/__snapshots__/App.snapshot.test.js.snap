@@ -185,25 +185,25 @@ exports[`App matches snapshot 1`] = `
           class="min-w-full"
         >
           <div
-            class="grid grid-cols-min-max gap-y-1"
+            class="grid grid-cols-min-max gap-2"
           >
             <span
-              class="font-semibold break-keep mr-4"
+              class="text-left font-bold break-keep"
             >
               Created:
             </span>
             <span
-              class="text-center line-clamp-1 break-all"
+              class="text-left line-clamp-1 break-all"
             >
               December 25, 2023
             </span>
             <span
-              class="font-semibold break-keep mr-4"
+              class="text-left font-bold break-keep"
             >
               Location:
             </span>
             <span
-              class="text-center line-clamp-1 break-all"
+              class="text-left line-clamp-1 break-all"
             >
               Middle shelf
             </span>
@@ -517,53 +517,51 @@ exports[`App matches snapshot 1`] = `
                       class="pt-4"
                     >
                       <div
-                        class="grid grid-cols-min-max gap-y-1"
+                        class="grid grid-cols-min-max gap-2"
                       >
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Created:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           December 25, 2023
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Species:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           Calathea
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Pot size:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           4
                         </span>
                       </div>
-                      <div
-                        class="text-center"
+                      <p
+                        class="text-left mt-2 line-clamp-6 break-anywhere pl-2 -indent-2"
                       >
-                        <p
-                          class="font-semibold mt-3"
+                        <span
+                          class="font-bold mr-2"
                         >
                           Description:
-                        </p>
-                        <p
-                          class="text-sm line-clamp-6 break-anywhere"
-                        >
+                        </span>
+                        <span>
                           This is a plant with a long description with
-                        </p>
-                      </div>
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </a>
@@ -675,35 +673,35 @@ exports[`App matches snapshot 1`] = `
                       class="pt-4"
                     >
                       <div
-                        class="grid grid-cols-min-max gap-y-1"
+                        class="grid grid-cols-min-max gap-2"
                       >
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Created:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           December 26, 2023
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Species:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           Spider Plant
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Pot size:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           2
                         </span>
@@ -791,25 +789,25 @@ exports[`App matches snapshot 1`] = `
                       class="pt-4"
                     >
                       <div
-                        class="grid grid-cols-min-max gap-y-1"
+                        class="grid grid-cols-min-max gap-2"
                       >
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Created:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           December 27, 2023
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Species:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           null
                         </span>
@@ -1131,25 +1129,25 @@ exports[`App matches snapshot when group is archived 1`] = `
           class="min-w-full"
         >
           <div
-            class="grid grid-cols-min-max gap-y-1"
+            class="grid grid-cols-min-max gap-2"
           >
             <span
-              class="font-semibold break-keep mr-4"
+              class="text-left font-bold break-keep"
             >
               Created:
             </span>
             <span
-              class="text-center line-clamp-1 break-all"
+              class="text-left line-clamp-1 break-all"
             >
               December 25, 2023
             </span>
             <span
-              class="font-semibold break-keep mr-4"
+              class="text-left font-bold break-keep"
             >
               Location:
             </span>
             <span
-              class="text-center line-clamp-1 break-all"
+              class="text-left line-clamp-1 break-all"
             >
               Middle shelf
             </span>
@@ -1415,53 +1413,51 @@ exports[`App matches snapshot when group is archived 1`] = `
                       class="pt-4"
                     >
                       <div
-                        class="grid grid-cols-min-max gap-y-1"
+                        class="grid grid-cols-min-max gap-2"
                       >
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Created:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           December 25, 2023
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Species:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           Calathea
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Pot size:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           4
                         </span>
                       </div>
-                      <div
-                        class="text-center"
+                      <p
+                        class="text-left mt-2 line-clamp-6 break-anywhere pl-2 -indent-2"
                       >
-                        <p
-                          class="font-semibold mt-3"
+                        <span
+                          class="font-bold mr-2"
                         >
                           Description:
-                        </p>
-                        <p
-                          class="text-sm line-clamp-6 break-anywhere"
-                        >
+                        </span>
+                        <span>
                           This is a plant with a long description with
-                        </p>
-                      </div>
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </a>
@@ -1573,35 +1569,35 @@ exports[`App matches snapshot when group is archived 1`] = `
                       class="pt-4"
                     >
                       <div
-                        class="grid grid-cols-min-max gap-y-1"
+                        class="grid grid-cols-min-max gap-2"
                       >
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Created:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           December 26, 2023
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Species:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           Spider Plant
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Pot size:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           2
                         </span>
@@ -1689,25 +1685,25 @@ exports[`App matches snapshot when group is archived 1`] = `
                       class="pt-4"
                     >
                       <div
-                        class="grid grid-cols-min-max gap-y-1"
+                        class="grid grid-cols-min-max gap-2"
                       >
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Created:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           December 27, 2023
                         </span>
                         <span
-                          class="font-semibold break-keep mr-4"
+                          class="text-left font-bold break-keep"
                         >
                           Species:
                         </span>
                         <span
-                          class="text-center line-clamp-1 break-all"
+                          class="text-left line-clamp-1 break-all"
                         >
                           null
                         </span>
@@ -2029,25 +2025,25 @@ exports[`App matches snapshot when no plants 1`] = `
           class="min-w-full"
         >
           <div
-            class="grid grid-cols-min-max gap-y-1"
+            class="grid grid-cols-min-max gap-2"
           >
             <span
-              class="font-semibold break-keep mr-4"
+              class="text-left font-bold break-keep"
             >
               Created:
             </span>
             <span
-              class="text-center line-clamp-1 break-all"
+              class="text-left line-clamp-1 break-all"
             >
               December 25, 2023
             </span>
             <span
-              class="font-semibold break-keep mr-4"
+              class="text-left font-bold break-keep"
             >
               Location:
             </span>
             <span
-              class="text-center line-clamp-1 break-all"
+              class="text-left line-clamp-1 break-all"
             >
               Middle shelf
             </span>

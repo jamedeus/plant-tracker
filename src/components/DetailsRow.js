@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 // Renders a single grid row in PlantDetails and GroupDetails
 const DetailsRow = ({ label, value }) => (
     <>
-        <span className="font-semibold break-keep mr-4">{`${label}:`}</span>
-        <span className="text-center line-clamp-1 break-all">{value}</span>
+        <span className="text-left font-bold break-keep">{`${label}:`}</span>
+        <span className="text-left line-clamp-1 break-all">{value}</span>
     </>
 );
 
