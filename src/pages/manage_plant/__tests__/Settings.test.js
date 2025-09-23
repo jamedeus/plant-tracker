@@ -170,6 +170,38 @@ describe('Settings menu', () => {
         // Confirm delete button no longer has hold-to-confirm (normal button)
         expect(button).not.toContain('hold-to-confirm');
     });
+
+    it('scrolls options dropdown into view when opened', async () => {
+        // Mock viewport height
+        Object.defineProperty(window, 'innerHeight', {
+            writable: true,
+            configurable: true,
+            value: 800,
+        });
+
+        // Mock dropdown fully visible (should not scroll)
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+            { top: 550, bottom: 650 }
+        );
+
+        // Open options dropdown
+        await user.click(app.getByLabelText('Set Closed note visible lines'));
+
+        // Confirm scrollIntoView was not called
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Mock bottom of dropdown behind reset button (should scroll into view)
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+            { top: 650, bottom: 750 }
+        );
+
+        // Close options dropdown, then open again
+        document.activeElement.blur();
+        await user.click(app.getByLabelText('Set Closed note visible lines'));
+
+        // Confirm scrollIntoView was called
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
 });
 
 describe('Settings default values', () => {

@@ -1,4 +1,4 @@
-import { memo, useState, useCallback, Fragment } from 'react';
+import { memo, useState, useRef, useCallback, Fragment } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
@@ -142,8 +142,21 @@ const SettingSection = memo(function SettingSection({
         opt.value === currentValue
     )).name;
 
-    return (
+    const menuRef = useRef(null);
 
+    // Scrolls menu until all dropdown options are visible (runs when opened)
+    const scrollToMenu = () => {
+        const rect = menuRef.current.getBoundingClientRect();
+        // Only run if bottom of dropdown is behind reset button
+        if (rect.bottom >= window.innerHeight - 112) {
+            menuRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "end"
+            });
+        }
+    };
+
+    return (
         <>
             {/* Setting short description, hover for full description */}
             <div
@@ -154,14 +167,17 @@ const SettingSection = memo(function SettingSection({
             </div>
             {/* Button shows current value, opens dropdown with options */}
             <div className="flex items-center">
-                <div className="dropdown dropdown-center mx-auto">
+                <div
+                    className="dropdown dropdown-center mx-auto"
+                    onFocus={scrollToMenu}
+                >
                     <DropdownButton
                         className="btn btn-ghost text-xl font-bold"
                         title={`Set ${settingText}`}
                     >
                         {currentValueName}
                     </DropdownButton>
-                    <DropdownMenu className="min-w-24 mt-2">
+                    <DropdownMenu className="min-w-24 mt-2" menuRef={menuRef}>
                         {settingOptions.map((option) =>  (
                             <li key={option.value}>
                                 <button
