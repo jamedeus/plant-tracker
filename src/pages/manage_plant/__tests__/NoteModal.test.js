@@ -44,11 +44,14 @@ describe('Add new note', () => {
     let app, user;
 
     beforeEach(async () => {
+        // Allow fast forwarding
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
 
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
                 <TestComponent />
@@ -60,6 +63,13 @@ describe('Add new note', () => {
         // Open modal in new note mode
         await user.click(app.getByText('Add New Note'));
     });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
+    });
+
 
     it('sends correct payload when note is saved', async () => {
         // Mock fetch function to return expected response
@@ -112,6 +122,7 @@ describe('Add new note', () => {
             'Some leaves turning yellow, probably watering too often'
         );
         await user.click(app.getByText('Save'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
