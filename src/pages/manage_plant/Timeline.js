@@ -64,6 +64,20 @@ const Title = memo(function Title() {
         document.activeElement.blur();
     };
 
+    // Top-right dropdown menu ref
+    const menuRef = useRef(null);
+    // Scrolls page until all dropdown options are visible (runs when opened)
+    const scrollToMenu = () => {
+        const rect = menuRef.current.getBoundingClientRect();
+        // Only run if bottom of dropdown is outside viewport
+        if (rect.bottom >= window.innerHeight) {
+            menuRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "end"
+            });
+        }
+    };
+
     const photoModal = useModal();
     const openPhotoModal = useCallback(() => {
         photoModal.open();
@@ -102,7 +116,7 @@ const Title = memo(function Title() {
                 )}
             </div>
 
-            <div className="w-12 dropdown dropdown-end">
+            <div className="w-12 dropdown dropdown-end" onFocus={scrollToMenu}>
                 {!archived &&
                     <>
                         <DropdownButton
@@ -111,7 +125,7 @@ const Title = memo(function Title() {
                         >
                             <FaEllipsis className="size-6" />
                         </DropdownButton>
-                        <DropdownMenu>
+                        <DropdownMenu className="scroll-mb-4" menuRef={menuRef}>
                             <li><button onClick={() => openNoteModal()}>
                                 <FaPenToSquare className='size-4 mr-2' />
                                 Add note

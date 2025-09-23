@@ -46,6 +46,38 @@ describe('Timeline', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
+    it('scrolls dropdown into view when dropdown is opened', async () => {
+        // Mock viewport height
+        Object.defineProperty(window, 'innerHeight', {
+            writable: true,
+            configurable: true,
+            value: 800,
+        });
+
+        // Mock dropdown inside viewport (should not scroll, already visible)
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+            { top: 550, bottom: 650 }
+        );
+
+        // Open timeline dropdown
+        await user.click(app.getByTitle('More plant actions menu'));
+
+        // Confirm scrollIntoView was not called
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Mock bottom of dropdown outside viewport (should scroll into view)
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+            { top: 750, bottom: 850 }
+        );
+
+        // Close dropdown, then open again
+        document.activeElement.blur();
+        await user.click(app.getByTitle('More plant actions menu'));
+
+        // Confirm scrollIntoView was called
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
+
     it('expands/collapses note text when clicked', async () => {
         // Get reference to note div, confirm is collapsed (default)
         const note = app.queryByText(

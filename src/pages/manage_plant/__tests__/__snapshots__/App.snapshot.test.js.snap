@@ -1242,7 +1242,7 @@ exports[`App matches snapshot 1`] = `
               </svg>
             </div>
             <ul
-              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
+              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box scroll-mb-4"
               tabindex="0"
             >
               <li>
