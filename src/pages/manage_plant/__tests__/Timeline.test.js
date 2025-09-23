@@ -78,6 +78,17 @@ describe('Timeline', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
+    it('scrolls timeline title into view when quick nav menu is opened', async () => {
+        // Confirm scrollIntoView has not been called
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Open quick nav menu
+        await user.click(app.getByTitle('Timeline quick navigation menu'));
+
+        // Confirm scrollIntoView was called
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
+
     it('expands/collapses note text when clicked', async () => {
         // Get reference to note div, confirm is collapsed (default)
         const note = app.queryByText(

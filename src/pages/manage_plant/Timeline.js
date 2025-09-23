@@ -64,6 +64,15 @@ const Title = memo(function Title() {
         document.activeElement.blur();
     };
 
+    // Timeline title ref
+    const titleRef = useRef(null);
+    // Scrolls page until timeline is aligned with top of page
+    // Runs when quick nav menu opened (ensure options are visible)
+    const scrollToTimeline = () => titleRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
     // Top-right dropdown menu ref
     const menuRef = useRef(null);
     // Scrolls page until all dropdown options are visible (runs when opened)
@@ -91,13 +100,22 @@ const Title = memo(function Title() {
     }, [divisionModal]);
 
     return (
-        <div className="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1">
+        <div
+            className={clsx(
+                "navbar sticky top-16 scroll-mt-16",
+                "bg-base-200 rounded-2xl px-4 z-1"
+            )}
+            ref={titleRef}
+        >
             <div className="w-12">
                 {/* Spacer with same width as right side dropdown button */}
             </div>
             <div className="mx-auto my-1">
                 {hasNavigationOptions ? (
-                    <div className="dropdown dropdown-center">
+                    <div
+                        className="dropdown dropdown-center"
+                        onFocus={scrollToTimeline}
+                    >
                         <DropdownButton
                             className="btn btn-ghost text-xl font-bold"
                             title="Timeline quick navigation menu"
