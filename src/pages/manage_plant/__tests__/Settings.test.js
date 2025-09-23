@@ -220,7 +220,7 @@ describe('Settings default values', () => {
 
     // Renders app (call in tests after mocking window size, localStorage, etc)
     const renderApp = () => {
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(<App initialState={mockContext} />);
     };
 
@@ -232,6 +232,15 @@ describe('Settings default values', () => {
     beforeEach(() => {
         // Clear localStorage (saved settings from last test)
         localStorage.clear();
+
+        // Allow fast forwarding
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('defaults collapsedNoteLines to 1 on desktop', async () => {
@@ -344,10 +353,9 @@ describe('Settings default values', () => {
         // Confirm localStorage was cleared
         expect(localStorage.getItem("manage_plant_settings")).toBeNull();
 
-        // Wait 1 second, confirm button text changes back
-        await waitFor(() => {
-            expect(defaultText.classList).toContain('opacity-100');
-            expect(activeText.classList).toContain('opacity-0');
-        });
+        // Fast forward 1 second, confirm button text changes back
+        await act(async () => await jest.advanceTimersByTimeAsync(1000));
+        expect(defaultText.classList).toContain('opacity-100');
+        expect(activeText.classList).toContain('opacity-0');
     });
 });
