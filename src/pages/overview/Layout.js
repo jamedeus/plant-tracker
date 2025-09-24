@@ -221,7 +221,7 @@ const Layout = () => {
                     </div>
                 )}
                 {/* Render setup instructions if database is empty */}
-                {!hasPlants && !hasGroups && (
+                {!hasPlants && !hasGroups && !archivedOverview && (
                     <Setup openPrintModal={openPrintModal} />
                 )}
             </div>
