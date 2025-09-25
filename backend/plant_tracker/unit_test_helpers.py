@@ -15,7 +15,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 class JSONClient(Client):
-    '''Subclass of django.test.Client that defaults to json content_type'''
+    '''Subclass of django.test.Client that defaults to json content_type.'''
 
     # pylint: disable-next=arguments-differ
     def post(self, path, data=None, content_type='application/json', **extra):

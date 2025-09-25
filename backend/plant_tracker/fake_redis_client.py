@@ -4,7 +4,7 @@ import fakeredis
 from django_redis.client import DefaultClient
 
 class FakeRedisClient(DefaultClient):
-    '''Mock client used to run unit tests without a redis server'''
+    '''Mock client used to run unit tests without a redis server.'''
 
     _client = None
 
