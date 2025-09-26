@@ -4,6 +4,7 @@ import base64
 from io import BytesIO
 from itertools import chain
 
+from ua_parser import parse
 from django.conf import settings
 from django.shortcuts import render
 from django.core.cache import cache
@@ -51,7 +52,7 @@ def serve_spa(request, **kwargs):
 
 
 @requires_json_post(["qr_per_row"])
-def get_qr_codes(data, **kwargs):
+def get_qr_codes(request, data, **kwargs):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG.
     QR codes point to manage endpoint, can be used for plants or groups.
     '''
@@ -60,8 +61,20 @@ def get_qr_codes(data, **kwargs):
     if not settings.URL_PREFIX:
         return JsonResponse({'error': 'URL_PREFIX not configured'}, status=501)
 
+    # Reduce page height if client is iOS Safari (fix issue where print preview
+    # overflows to 2 pages, even though it all fits on 1 page when printed)
     try:
-        qr_codes = generate_layout(int(data["qr_per_row"]))
+        ua = parse(request.META.get('HTTP_USER_AGENT'))
+        page_height = 3075 if ua.user_agent.family == 'Mobile Safari' else 3200
+    # No user agent, default to full page height
+    except TypeError:
+        page_height = 3200
+
+    try:
+        qr_codes = generate_layout(
+            qr_per_row=int(data["qr_per_row"]),
+            page_height=page_height
+        )
         image = BytesIO()
         qr_codes.save(image, format="PNG")
         image_base64 = base64.b64encode(image.getvalue()).decode()

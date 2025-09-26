@@ -58,6 +58,8 @@ class OverviewTests(TestCase):
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
+        # pylint: disable-next=line-too-long
+        self.client.defaults["HTTP_USER_AGENT"] = "Mozilla/5.0 (X11; Linux x86_64; rv:143.0) Gecko/20100101 Firefox/143.0"
 
     def test_overview_page(self):
         # Request overview, confirm returns SPA

@@ -17,6 +17,7 @@ psycopg = {extras = ["binary"], version = "*"}
 whitenoise = "*"
 django-storages = {extras = ["s3"], version = "*"}
 cryptography = "*"
+ua-parser = {extras = ["regex"], version = "*"}
 
 [dev-packages]
 pylint-django = "*"
