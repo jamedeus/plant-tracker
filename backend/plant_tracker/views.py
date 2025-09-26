@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import ensure_csrf_cookie
 from PIL import UnidentifiedImageError
 
-from generate_qr_code_grid import generate_layout
+from .generate_qr_code_grid import generate_layout
 from .models import (
     Group,
     Plant,
@@ -61,7 +61,7 @@ def get_qr_codes(data, **kwargs):
         return JsonResponse({'error': 'URL_PREFIX not configured'}, status=501)
 
     try:
-        qr_codes = generate_layout(settings.URL_PREFIX, int(data["qr_per_row"]))
+        qr_codes = generate_layout(int(data["qr_per_row"]))
         image = BytesIO()
         qr_codes.save(image, format="PNG")
         image_base64 = base64.b64encode(image.getvalue()).decode()

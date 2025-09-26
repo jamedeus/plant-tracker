@@ -7,28 +7,29 @@ from uuid import uuid4
 
 import segno
 from PIL import Image
+from django.conf import settings
 
 # Dimensions of 8.5 x 11 sheet of paper at 300 dpi
 # Height reduced 100px to accommodate timestamp added by browser
 PAGE_WIDTH, PAGE_HEIGHT = 2400, 3200
 
 
-def generate_random_qr(url_prefix):
-    '''Returns pyqrcode instance with url_prefix + random UUID.'''
-    return segno.make(f"{url_prefix}{uuid4().hex}", error="H", micro=False)
+def generate_random_qr():
+    '''Returns pyqrcode instance with URL_PREFIX + random UUID.'''
+    return segno.make(f"{settings.URL_PREFIX}{uuid4().hex}", error="H", micro=False)
 
 
-def get_qr_png(url_prefix, scale=5):
-    '''Returns PIL.Image containing QR code with url_prefix + random UUID.'''
+def get_qr_png(scale=5):
+    '''Returns PIL.Image containing QR code with URL_PREFIX + random UUID.'''
     image = io.BytesIO()
-    qr_data = generate_random_qr(url_prefix)
+    qr_data = generate_random_qr()
     qr_data.save(image, scale=scale, border=3, kind='png')
     return Image.open(image)
 
 
-def calculate_qr_width_and_scale(url_prefix, qr_per_row):
+def calculate_qr_width_and_scale(qr_per_row):
     '''Calculates largest QR code scale that will fit the requested grid size.
-    Takes url_prefix (determines minimum QR width) and qr_per_row (grid size).
+    Takes qr_per_row (grid size).
     Returns scaled QR code width (pixels) and scaling factor (get_qr_png arg).
     '''
 
@@ -36,7 +37,7 @@ def calculate_qr_width_and_scale(url_prefix, qr_per_row):
     max_width = int(PAGE_WIDTH / qr_per_row)
 
     # Generate test QR code (minimum size for URL), calculate scaling factor
-    test_qr = generate_random_qr(url_prefix)
+    test_qr = generate_random_qr()
     qr_scale = int(max_width / test_qr.symbol_size(border=3)[0])
     qr_width = test_qr.symbol_size(qr_scale, border=3)[0]
 
@@ -71,9 +72,9 @@ def calculate_grid_margin_sizes(qr_width, qr_per_row, qr_per_col):
     return row_margin_each, col_margin_each
 
 
-def generate_layout(url_prefix, qr_per_row=8):
+def generate_layout(qr_per_row=8):
     '''Returns PIL.Image containing an evenly spaced grid of QR codes.
-    Takes url_prefix (manage endpoint without UUID) and QR codes per row (int).
+    Takes QR codes per row (int).
     QR code dimensions vary based on URL length and number per row.
     '''
 
@@ -83,7 +84,7 @@ def generate_layout(url_prefix, qr_per_row=8):
         raise ValueError("qr_per_row must be an integer between 2 and 25")
 
     # Get max QR width that fits requested grid, scaling factor for max width
-    qr_width, qr_scale = calculate_qr_width_and_scale(url_prefix, qr_per_row)
+    qr_width, qr_scale = calculate_qr_width_and_scale(qr_per_row)
 
     # Calculate number of max-width QR codes per column
     qr_per_col = int(PAGE_HEIGHT / qr_width)
@@ -101,7 +102,7 @@ def generate_layout(url_prefix, qr_per_row=8):
     # Generate evenly-spaced grid of random QR codes
     for row in range(qr_per_col):
         for col in range(qr_per_row):
-            qr_img = get_qr_png(url_prefix, qr_scale)
+            qr_img = get_qr_png(qr_scale)
 
             # Calculate coordinates of QR code top-left corner
             x_position = col * (qr_width + row_margin_each)
