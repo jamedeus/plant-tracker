@@ -1,5 +1,6 @@
 # pylint: disable=missing-docstring,too-many-lines,R0801,global-statement
 
+import io
 import os
 import base64
 from uuid import uuid4
@@ -12,7 +13,7 @@ from django.utils import timezone
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.test.client import MULTIPART_CONTENT
-from PIL import UnidentifiedImageError
+from PIL import Image, UnidentifiedImageError
 
 from .view_decorators import get_default_user
 from .plant_species_options import PLANT_SPECIES_OPTIONS
@@ -58,8 +59,6 @@ class OverviewTests(TestCase):
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
-        # pylint: disable-next=line-too-long
-        self.client.defaults["HTTP_USER_AGENT"] = "Mozilla/5.0 (X11; Linux x86_64; rv:143.0) Gecko/20100101 Firefox/143.0"
 
     def test_overview_page(self):
         # Request overview, confirm returns SPA
@@ -199,14 +198,43 @@ class OverviewTests(TestCase):
     def test_get_qr_codes(self):
         # Mock URL_PREFIX env var
         settings.URL_PREFIX = 'mysite.com'
-        # Send request, confirm response contains base64 string
-        response = self.client.post('/get_qr_codes', {'qr_per_row': 8})
+        # Send request with desktop firefox user agent
+        response = self.client.post(
+            '/get_qr_codes',
+            {'qr_per_row': 8},
+            HTTP_USER_AGENT='Mozilla/5.0 (X11; Linux x86_64; rv:143.0) Gecko/20100101 Firefox/143.0'
+        )
         self.assertEqual(response.status_code, 200)
+        # Confirm response contains base64 string
         try:
-            base64.b64decode(response.json()['qr_codes'], validate=True)
+            data = base64.b64decode(response.json()['qr_codes'], validate=True)
         # pylint: disable-next=bare-except
         except:  # noqa
             self.fail('Failed to decode base64 string returned by /get_qr_codes')
+        # Confirm base64 png has 3200px height (all clients except iOS Safari)
+        with Image.open(io.BytesIO(data)) as img:
+            self.assertEqual(img.height, 3200)
+
+    def test_get_qr_codes_ios_safari(self):
+        # Mock URL_PREFIX env var
+        settings.URL_PREFIX = 'mysite.com'
+        # Send request with iOS Safari user agent
+        response = self.client.post(
+            '/get_qr_codes',
+            {'qr_per_row': 8},
+            # pylint: disable-next=line-too-long
+            HTTP_USER_AGENT='Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1'
+        )
+        self.assertEqual(response.status_code, 200)
+        # Confirm response contains base64 string
+        try:
+            data = base64.b64decode(response.json()['qr_codes'], validate=True)
+        # pylint: disable-next=bare-except
+        except:  # noqa
+            self.fail('Failed to decode base64 string returned by /get_qr_codes')
+        # Confirm base64 png has 3075px height (fixes Safari print preview bug)
+        with Image.open(io.BytesIO(data)) as img:
+            self.assertEqual(img.height, 3075)
 
     def test_get_qr_codes_with_long_url(self):
         # Mock URL_PREFIX env var with a very long URL
