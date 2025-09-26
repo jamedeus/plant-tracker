@@ -38,7 +38,6 @@ ENV PYTHONUNBUFFERED=1
 # Copy django app
 COPY backend/manage.py /mnt/backend/manage.py
 COPY backend/backend /mnt/backend/backend
-COPY backend/generate_qr_code_grid.py /mnt/backend/generate_qr_code_grid.py
 COPY backend/plant_tracker /mnt/backend/plant_tracker
 
 # Copy JS bundles from node build stage
