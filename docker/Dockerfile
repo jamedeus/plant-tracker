@@ -35,6 +35,11 @@ FROM python:3.13-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# Install SVG dependencies (QR code generation)
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends libcairo2
+RUN rm -rf /var/lib/apt/lists/*
+
 # Copy django app
 COPY backend/manage.py /mnt/backend/manage.py
 COPY backend/backend /mnt/backend/backend

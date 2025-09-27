@@ -30,6 +30,8 @@ test_backend:
   before_script:
     - pip3 install pipenv
     - pipenv install --dev
+    - apt-get update
+    - apt-get install -y --no-install-recommends libcairo2
     - cd backend/
   script:
     - pipenv run coverage run manage.py test --parallel 4

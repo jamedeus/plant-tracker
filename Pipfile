@@ -18,6 +18,7 @@ whitenoise = "*"
 django-storages = {extras = ["s3"], version = "*"}
 cryptography = "*"
 ua-parser = {extras = ["regex"], version = "*"}
+cairosvg = "*"
 
 [dev-packages]
 pylint-django = "*"

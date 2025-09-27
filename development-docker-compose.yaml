@@ -5,7 +5,9 @@ services:
     working_dir: /mnt/backend
     entrypoint: []
     command: >
-      sh -c "pip install --upgrade pip pipenv
+      sh -c "apt-get update
+             apt-get install -y --no-install-recommends libcairo2
+             pip install --upgrade pip pipenv
              pipenv requirements --dev > /tmp/requirements.txt
              pip install -r /tmp/requirements.txt
              python manage.py migrate

@@ -6,8 +6,26 @@ import io
 from uuid import uuid4
 
 import segno
-from PIL import Image
+import cairosvg
+from PIL import Image, ImageDraw
 from django.conf import settings
+
+
+LOGO_SVG_PATH = "plant_tracker/static/plant_tracker/favicon.svg"
+
+
+def get_scaled_logo(size):
+    '''Returns PIL.Image containing logo SVG scaled to requested size (px).'''
+    image = io.BytesIO()
+    cairosvg.svg2png(
+        url=LOGO_SVG_PATH,
+        write_to=image,
+        output_width=size,
+        output_height=size
+    )
+    image.seek(0)
+    # Convert SVG to RGBA PNG (preserve alpha channel)
+    return Image.open(image).convert("RGBA")
 
 
 def generate_random_qr():
@@ -20,7 +38,34 @@ def get_qr_png(scale=5):
     image = io.BytesIO()
     qr_data = generate_random_qr()
     qr_data.save(image, scale=scale, border=3, kind='png')
-    return Image.open(image)
+    image.seek(0)
+
+    # Convert QR code to PIL.Image
+    img = Image.open(image).convert('RGB')
+    img_width, img_height = img.size
+
+    # Create white circle background for logo (diameter = 40% of QR height)
+    circle_size = int(img_height * 0.4)
+    circle_mask = Image.new("L", (circle_size, circle_size), 0)
+    draw = ImageDraw.Draw(circle_mask)
+    draw.ellipse((0, 0, circle_size, circle_size), fill=255)
+    white_circle = Image.new("RGB", (circle_size, circle_size), "white")
+
+    # Convert SVG logo to PNG resized to 75% of circle diameter
+    logo_size = int(circle_size * 0.75)
+    logo_img = get_scaled_logo(logo_size)
+
+    # Paste white circle over center of QR code
+    circle_left = (img_width - circle_size) // 2
+    circle_top = (img_height - circle_size) // 2
+    img.paste(white_circle, (circle_left, circle_top), circle_mask)
+
+    # Paste logo over center of white circle
+    logo_left = (img_width - logo_size) // 2
+    logo_top = (img_height - logo_size) // 2
+    img.paste(logo_img, (logo_left, logo_top), logo_img)
+
+    return img
 
 
 def calculate_qr_width_and_scale(qr_per_row, page_width):
