@@ -28,14 +28,29 @@ def get_scaled_logo(size):
     return Image.open(image).convert("RGBA")
 
 
-def get_logo_overlay(qr_size):
-    '''Takes QR code size (px), returns logo overlay PNG as PIL.Image.'''
+def get_logo_overlay(qr_size, qr_scale):
+    '''Takes QR code size and scale (returned by calculate_qr_width_and_scale).
+    Returns PIL.Image with logo on white circle background with back border.
+    '''
 
-    # Create white circle background for logo (diameter = 40% of QR height)
+    # Circle diameter = 40% of QR height
     circle_size = int(qr_size * 0.4)
-    overlay = Image.new('RGBA', (circle_size, circle_size), (0, 0, 0, 0))
-    ImageDraw.Draw(overlay).ellipse(
-        (0, 0, circle_size - 1, circle_size - 1),
+    # Border scales with QR scale (roughly matches width of logo outline)
+    # border_size is total extra width, black line width is half of this
+    border_size = max(1, int(qr_scale / 2))
+    total_width = circle_size + border_size
+
+    # Create transparent background with black circle (border) filling width
+    overlay = Image.new('RGBA', (total_width, total_width), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(overlay)
+    draw.ellipse(
+        (0, 0, total_width - 1, total_width - 1),
+        fill=(0, 0, 0, 255)
+    )
+
+    # Draw white circle background centered inside black circle
+    draw.ellipse(
+        (border_size, border_size, circle_size - 1, circle_size - 1),
         fill=(255, 255, 255, 255)
     )
 
@@ -144,7 +159,7 @@ def generate_layout(qr_per_row=8, page_width=2400, page_height=3200):
     page = Image.new('RGB', (page_width, page_height), 'white')
 
     # Get logo for requested QR code size (added to center of each QR code)
-    logo = get_logo_overlay(qr_width)
+    logo = get_logo_overlay(qr_width, qr_scale)
     # Get logo margin width (top-left corner coordinates to center logo)
     logo_margin = (qr_width - logo.size[0]) // 2
 
