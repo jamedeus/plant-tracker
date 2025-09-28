@@ -35,7 +35,7 @@ def get_logo_overlay(qr_size):
     circle_size = int(qr_size * 0.4)
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw = ImageDraw.Draw(circle_mask)
-    draw.ellipse((0, 0, circle_size, circle_size), fill=255)
+    draw.ellipse((0, 0, circle_size - 1, circle_size - 1), fill=255)
     white_circle = Image.new("RGB", (circle_size, circle_size), "white")
     overlay = Image.new('RGBA', (circle_size, circle_size), (0, 0, 0, 0))
     overlay.paste(white_circle, (0, 0), circle_mask)
