@@ -33,12 +33,11 @@ def get_logo_overlay(qr_size):
 
     # Create white circle background for logo (diameter = 40% of QR height)
     circle_size = int(qr_size * 0.4)
-    circle_mask = Image.new("L", (circle_size, circle_size), 0)
-    draw = ImageDraw.Draw(circle_mask)
-    draw.ellipse((0, 0, circle_size - 1, circle_size - 1), fill=255)
-    white_circle = Image.new("RGB", (circle_size, circle_size), "white")
     overlay = Image.new('RGBA', (circle_size, circle_size), (0, 0, 0, 0))
-    overlay.paste(white_circle, (0, 0), circle_mask)
+    ImageDraw.Draw(overlay).ellipse(
+        (0, 0, circle_size - 1, circle_size - 1),
+        fill=(255, 255, 255, 255)
+    )
 
     # Convert SVG logo to PNG resized to 75% of circle diameter
     logo_size = int(circle_size * 0.75)
