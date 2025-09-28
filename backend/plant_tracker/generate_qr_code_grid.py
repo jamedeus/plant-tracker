@@ -28,6 +28,30 @@ def get_scaled_logo(size):
     return Image.open(image).convert("RGBA")
 
 
+def get_logo_overlay(qr_size):
+    '''Takes QR code size (px), returns logo overlay PNG as PIL.Image.'''
+
+    # Create white circle background for logo (diameter = 40% of QR height)
+    circle_size = int(qr_size * 0.4)
+    circle_mask = Image.new("L", (circle_size, circle_size), 0)
+    draw = ImageDraw.Draw(circle_mask)
+    draw.ellipse((0, 0, circle_size, circle_size), fill=255)
+    white_circle = Image.new("RGB", (circle_size, circle_size), "white")
+    overlay = Image.new('RGBA', (circle_size, circle_size), (0, 0, 0, 0))
+    overlay.paste(white_circle, (0, 0), circle_mask)
+
+    # Convert SVG logo to PNG resized to 75% of circle diameter
+    logo_size = int(circle_size * 0.75)
+    logo_img = get_scaled_logo(logo_size)
+
+    # Paste logo into center of white circle
+    logo_left = (circle_size - logo_size) // 2
+    logo_top = (circle_size - logo_size) // 2
+    overlay.paste(logo_img, (logo_left, logo_top), logo_img)
+
+    return overlay
+
+
 def generate_random_qr():
     '''Returns pyqrcode instance with URL_PREFIX + random UUID.'''
     return segno.make(f"{settings.URL_PREFIX}{uuid4().hex}", error="H", micro=False)
@@ -41,31 +65,7 @@ def get_qr_png(scale=5):
     image.seek(0)
 
     # Convert QR code to PIL.Image
-    img = Image.open(image).convert('RGB')
-    img_width, img_height = img.size
-
-    # Create white circle background for logo (diameter = 40% of QR height)
-    circle_size = int(img_height * 0.4)
-    circle_mask = Image.new("L", (circle_size, circle_size), 0)
-    draw = ImageDraw.Draw(circle_mask)
-    draw.ellipse((0, 0, circle_size, circle_size), fill=255)
-    white_circle = Image.new("RGB", (circle_size, circle_size), "white")
-
-    # Convert SVG logo to PNG resized to 75% of circle diameter
-    logo_size = int(circle_size * 0.75)
-    logo_img = get_scaled_logo(logo_size)
-
-    # Paste white circle over center of QR code
-    circle_left = (img_width - circle_size) // 2
-    circle_top = (img_height - circle_size) // 2
-    img.paste(white_circle, (circle_left, circle_top), circle_mask)
-
-    # Paste logo over center of white circle
-    logo_left = (img_width - logo_size) // 2
-    logo_top = (img_height - logo_size) // 2
-    img.paste(logo_img, (logo_left, logo_top), logo_img)
-
-    return img
+    return Image.open(image).convert('RGB')
 
 
 def calculate_qr_width_and_scale(qr_per_row, page_width):
@@ -144,10 +144,17 @@ def generate_layout(qr_per_row=8, page_width=2400, page_height=3200):
     # Create blank page
     page = Image.new('RGB', (page_width, page_height), 'white')
 
+    # Get logo for requested QR code size (added to center of each QR code)
+    logo = get_logo_overlay(qr_width)
+    # Get logo margin width (top-left corner coordinates to center logo)
+    logo_margin = (qr_width - logo.size[0]) // 2
+
     # Generate evenly-spaced grid of random QR codes
     for row in range(qr_per_col):
         for col in range(qr_per_row):
             qr_img = get_qr_png(qr_scale)
+            # Add logo to center of QR code
+            qr_img.paste(logo, (logo_margin, logo_margin), logo)
 
             # Calculate coordinates of QR code top-left corner
             x_position = col * (qr_width + row_margin_each)
