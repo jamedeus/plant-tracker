@@ -7,8 +7,8 @@ from uuid import uuid4
 
 import segno
 import cairosvg
-from PIL import Image, ImageDraw
 from django.conf import settings
+from PIL import Image, ImageDraw, ImageChops, ImageFilter
 
 
 LOGO_SVG_PATH = "plant_tracker/static/plant_tracker/favicon.svg"
@@ -30,38 +30,34 @@ def get_scaled_logo(size):
 
 def get_logo_overlay(qr_size, qr_scale):
     '''Takes QR code size and scale (returned by calculate_qr_width_and_scale).
-    Returns PIL.Image with logo on white circle background with back border.
+    Returns PIL.Image of logo with white border and transparent background.
     '''
 
-    # Circle diameter = 40% of QR height
-    circle_size = int(qr_size * 0.4)
-    # Border scales with QR scale (roughly matches width of logo outline)
-    # border_size is total extra width, black line width is half of this
-    border_size = max(1, int(qr_scale / 2))
-    total_width = circle_size + border_size
-
-    # Create transparent background with black circle (border) filling width
-    overlay = Image.new('RGBA', (total_width, total_width), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(overlay)
-    draw.ellipse(
-        (0, 0, total_width - 1, total_width - 1),
-        fill=(0, 0, 0, 255)
-    )
-
-    # Draw white circle background centered inside black circle
-    draw.ellipse(
-        (border_size, border_size, circle_size - 1, circle_size - 1),
-        fill=(255, 255, 255, 255)
-    )
-
-    # Convert SVG logo to PNG resized to 75% of circle diameter
-    logo_size = int(circle_size * 0.75)
+    # Convert SVG logo to PNG resized to 40% of QR height (will cover less
+    # than 40% of data, logo isn't square so only widest part covers 40%)
+    logo_size = int(qr_size * 0.40)
     logo_img = get_scaled_logo(logo_size)
 
-    # Paste logo into center of white circle
-    logo_left = (circle_size - logo_size) // 2
-    logo_top = (circle_size - logo_size) // 2
-    overlay.paste(logo_img, (logo_left, logo_top), logo_img)
+    # Calculate border width + total width
+    pad_px = max(1, qr_scale)
+    total = logo_size + 2 * pad_px
+
+    # Extract alpha channel (silhouette), convert semitransparent px to solid
+    base_mask = logo_img.split()[3].point(lambda p: 255 if p >= 1 else 0, mode='L')
+
+    # Create new image with mask centered, expand mask size to logo width + left
+    # and right padding (logo will be centered inside mask)
+    padded = Image.new('L', (total, total), 0)
+    padded.paste(base_mask, (pad_px, pad_px))
+    grown = padded.filter(ImageFilter.MaxFilter(size=(2 * pad_px + 1)))
+
+    # Convert inside of mask to solid white (border), outside to transparent
+    overlay = Image.new('RGBA', (total, total), (0, 0, 0, 0))
+    white = Image.new('RGBA', (total, total), (255, 255, 255, 255))
+    overlay.paste(white, (0, 0), grown)
+
+    # Paste logo into center of mask (same padding width on all sides)
+    overlay.paste(logo_img, (pad_px, pad_px), logo_img)
 
     return overlay
 
