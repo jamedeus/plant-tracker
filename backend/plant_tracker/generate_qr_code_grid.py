@@ -10,7 +10,7 @@ from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
 import cairosvg
 from django.conf import settings
-from PIL import Image, ImageFilter, ImageDraw
+from PIL import Image, ImageDraw
 
 
 LOGO_SVG_PATH = "qr-code-logo.svg"
@@ -106,7 +106,7 @@ def get_finder_pattern(qr_scale):
 
     # Draw 3 module diameter black circle in center of square
     center = size // 2
-    radius = (1.5 * qr_scale)
+    radius = int(1.5 * qr_scale)
     draw.ellipse(
         (
             center - radius, center - radius,
@@ -189,6 +189,7 @@ def calculate_grid_margin_sizes(qr_width, qr_per_row, qr_per_col, page_width, pa
 
 # Default dimensions are for 8.5 x 11 sheet of paper at 300 dpi
 # Height reduced 100px to accommodate timestamp added by browser
+# pylint: disable-next=too-many-locals
 def generate_layout(qr_per_row=8, page_width=2400, page_height=3200):
     '''Returns PIL.Image containing an evenly spaced grid of QR codes.
     Takes QR codes per row (int), page width (int), and page height (int).
