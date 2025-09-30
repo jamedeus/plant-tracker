@@ -10,7 +10,7 @@ from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
 import cairosvg
 from django.conf import settings
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageDraw
 
 
 LOGO_SVG_PATH = "qr-code-logo.svg"
@@ -83,6 +83,39 @@ def get_logo_overlay(qr_size, qr_scale):
     overlay.paste(logo_img, (qr_scale, qr_scale), logo_img)
 
     return overlay
+
+
+def get_finder_pattern(qr_scale):
+    '''Takes qr_scale (module width, px) and returns PIL.Image with a 7x7 module
+    finder pattern with rounded corners and circle in center.
+    '''
+
+    # Create image with white background
+    size = 7 * qr_scale
+    img = Image.new('RGBA', (size, size), (255, 255, 255, 255))
+    draw = ImageDraw.Draw(img)
+
+    # Draw 7x7 module black square (1 module thick) with rounded corners
+    corner_radius = 2 * qr_scale
+    draw.rounded_rectangle(
+        (0, 0, size - 1, size - 1),
+        radius=corner_radius,
+        outline=(0, 0, 0, 255),
+        width=qr_scale,
+    )
+
+    # Draw 3 module diameter black circle in center of square
+    center = size // 2
+    radius = (1.5 * qr_scale)
+    draw.ellipse(
+        (
+            center - radius, center - radius,
+            center + radius - 1, center + radius - 1
+        ),
+        fill=(0, 0, 0, 255)
+    )
+
+    return img
 
 
 def generate_random_qr():
@@ -189,6 +222,8 @@ def generate_layout(qr_per_row=8, page_width=2400, page_height=3200):
     logo = get_logo_overlay(qr_width, qr_scale)
     # Get logo margin width (top-left corner coordinates to center logo)
     logo_margin = (qr_width - logo.size[0]) // 2
+    # Get rounded finder pattern for requested QR code size (added to corners)
+    finder = get_finder_pattern(qr_scale)
 
     # Generate evenly-spaced grid of random QR codes
     for row in range(qr_per_col):
@@ -196,6 +231,10 @@ def generate_layout(qr_per_row=8, page_width=2400, page_height=3200):
             qr_img = get_qr_png(qr_scale)
             # Add logo to center of QR code
             qr_img.paste(logo, (logo_margin, logo_margin), logo)
+            # Overwrite square finder patterns with round
+            qr_img.paste(finder, (qr_scale * 3, qr_scale * 3), finder)
+            qr_img.paste(finder, (qr_width - 10 * qr_scale, qr_scale * 3), finder)
+            qr_img.paste(finder, (qr_scale * 3, qr_width - 10 * qr_scale), finder)
 
             # Calculate coordinates of QR code top-left corner
             x_position = col * (qr_width + row_margin_each)
