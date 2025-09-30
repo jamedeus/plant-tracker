@@ -54,16 +54,30 @@ def get_logo_overlay(qr_size, qr_scale):
     # Extract alpha channel (silhouette), convert semitransparent px to solid
     base_mask = logo_img.split()[3].point(lambda p: 255 if p >= 1 else 0, mode='L')
 
-    # Create new image with alpha mask centered, expand mask size to add 1
-    # module width padding on all sides (logo will be centered inside)
-    padded = Image.new('L', (total_width, total_width), 0)
-    padded.paste(base_mask, (qr_scale, qr_scale))
-    scaled = padded.filter(ImageFilter.MaxFilter(size=(2 * qr_scale + 1)))
+    # Expand mask with disk dilation to add padding (radius = width of 1 module)
+    dilated_mask = Image.new('L', (total_width, total_width), 0)
+    radius = qr_scale
+    radius_sq = radius * radius
+    for offset_y in range(-radius, radius + 1):
+        offset_y_sq = offset_y * offset_y
+        for offset_x in range(-radius, radius + 1):
+            # Skip if offset is outside the disk
+            if offset_x * offset_x + offset_y_sq > radius_sq:
+                continue
+
+            # Paste silhouette onto dilated mask shifted by (offset_x, offset_y)
+            # Only paste pixels that are white (255) in the shifted mask (don't
+            # overwrite px from previous iteration when black shifts over them)
+            dilated_mask.paste(
+                255,
+                box=(radius + offset_x, radius + offset_y),
+                mask=base_mask
+            )
 
     # Convert inside of mask to solid white (border), outside to transparent
     overlay = Image.new('RGBA', (total_width, total_width), (0, 0, 0, 0))
     white = Image.new('RGBA', (total_width, total_width), (255, 255, 255, 255))
-    overlay.paste(white, (0, 0), scaled)
+    overlay.paste(white, (0, 0), dilated_mask)
 
     # Paste logo into center of mask (same padding width on all sides)
     overlay.paste(logo_img, (qr_scale, qr_scale), logo_img)
