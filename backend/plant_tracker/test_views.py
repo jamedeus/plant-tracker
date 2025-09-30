@@ -197,7 +197,7 @@ class OverviewTests(TestCase):
 
     def test_get_qr_codes(self):
         # Mock URL_PREFIX env var
-        settings.URL_PREFIX = 'mysite.com'
+        settings.URL_PREFIX = 'https://mysite.com/manage/'
         # Send request with desktop firefox user agent
         response = self.client.post(
             '/get_qr_codes',
@@ -217,7 +217,7 @@ class OverviewTests(TestCase):
 
     def test_get_qr_codes_ios_safari(self):
         # Mock URL_PREFIX env var
-        settings.URL_PREFIX = 'mysite.com'
+        settings.URL_PREFIX = 'https://mysite.com/manage/'
         # Send request with iOS Safari user agent
         response = self.client.post(
             '/get_qr_codes',
@@ -238,7 +238,7 @@ class OverviewTests(TestCase):
 
     def test_get_qr_codes_with_long_url(self):
         # Mock URL_PREFIX env var with a very long URL
-        settings.URL_PREFIX = 'planttracker.several.more.subdomains.mysite.com'
+        settings.URL_PREFIX = 'https://planttracker.several.more.subdomains.mysite.com/manage/'
         # Send request, confirm response contains base64 string
         response = self.client.post('/get_qr_codes', {'qr_per_row': 8})
         self.assertEqual(response.status_code, 200)
@@ -285,7 +285,7 @@ class OverviewTests(TestCase):
         # Mock excessively long URL_PREFIX, will not be possible to generate QR
         # codes with width less than max_width
         # pylint: disable-next=line-too-long
-        settings.URL_PREFIX = 'https://excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.longdomainname.com/'  # noqa
+        settings.URL_PREFIX = 'https://excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.longdomainname.com/manage/'  # noqa
 
         # Send request with qr_per_row = 25 (worst case), confirm correct error
         response = self.client.post('/get_qr_codes', {'qr_per_row': 25})
