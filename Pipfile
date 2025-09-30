@@ -11,7 +11,6 @@ django-redis = "5.4.0"
 pillow = "~=11.0"
 pillow-heif = "*"
 django = "~=5.2.6"
-segno = "*"
 django-unique-user-email = "*"
 psycopg = {extras = ["binary"], version = "*"}
 whitenoise = "*"
@@ -19,6 +18,7 @@ django-storages = {extras = ["s3"], version = "*"}
 cryptography = "*"
 ua-parser = {extras = ["regex"], version = "*"}
 cairosvg = "*"
+qrcode = {extras = ["pil"], version = "*"}
 
 [dev-packages]
 pylint-django = "*"

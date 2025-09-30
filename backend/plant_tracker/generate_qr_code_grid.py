@@ -5,10 +5,12 @@ same URL prefix followed by a random UUID. Used by /get_qr_codes endpoint.
 import io
 from uuid import uuid4
 
-import segno
+import qrcode
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
 import cairosvg
 from django.conf import settings
-from PIL import Image, ImageDraw, ImageChops, ImageFilter
+from PIL import Image, ImageFilter
 
 
 LOGO_SVG_PATH = "plant_tracker/static/plant_tracker/favicon.svg"
@@ -63,34 +65,42 @@ def get_logo_overlay(qr_size, qr_scale):
 
 
 def generate_random_qr():
-    '''Returns pyqrcode instance with URL_PREFIX + random UUID.'''
-    return segno.make(f"{settings.URL_PREFIX}{uuid4().hex}", error="H", micro=False)
+    '''Returns qrcode.QRCode instance with URL_PREFIX + random UUID.'''
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
+    qr.add_data(f"{settings.URL_PREFIX}{uuid4().hex}")
+    qr.make(fit=True)
+    return qr
 
 
 def get_qr_png(scale=5):
     '''Returns PIL.Image containing QR code with URL_PREFIX + random UUID.'''
-    image = io.BytesIO()
-    qr_data = generate_random_qr()
-    qr_data.save(image, scale=scale, border=3, kind='png')
-    image.seek(0)
-
-    # Convert QR code to PIL.Image
-    return Image.open(image).convert('RGB')
+    qr = generate_random_qr()
+    qr.box_size = scale
+    qr.border = 3
+    # Apply rounded module style, convert to PIL.Image
+    styled = qr.make_image(
+        image_factory=StyledPilImage,
+        module_drawer=RoundedModuleDrawer()
+    )
+    return styled.get_image().convert("RGB")
 
 
 def calculate_qr_width_and_scale(qr_per_row, page_width):
     '''Calculates largest QR code scale that will fit the requested grid size.
     Takes qr_per_row (grid size) and page width (int).
-    Returns scaled QR code width (pixels) and scaling factor (get_qr_png arg).
+    Returns scaled QR code width (pixels) and scaling factor (px per module).
     '''
 
     # Get absolute max width for configured page dimensions
     max_width = int(page_width / qr_per_row)
 
-    # Generate test QR code (minimum size for URL), calculate scaling factor
+    # Generate test QR code, get number of modules + 3 module border per side
     test_qr = generate_random_qr()
-    qr_scale = int(max_width / test_qr.symbol_size(border=3)[0])
-    qr_width = test_qr.symbol_size(qr_scale, border=3)[0]
+    modules = test_qr.modules_count + 6
+
+    # Calculate max module scale (px) that fits in max_width, total width (px)
+    qr_scale = int(max_width / modules)
+    qr_width = qr_scale * modules
 
     # Prevent ZeroDivisionError when URL_PREFIX is extremely long
     # Happens when test_qr exceeds max_width, resulting in qr_scale of 0
