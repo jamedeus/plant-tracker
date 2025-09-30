@@ -13,7 +13,7 @@ from django.conf import settings
 from PIL import Image, ImageFilter
 
 
-LOGO_SVG_PATH = "plant_tracker/static/plant_tracker/favicon.svg"
+LOGO_SVG_PATH = "qr-code-logo.svg"
 
 
 def get_scaled_logo(size):
@@ -35,9 +35,9 @@ def get_logo_overlay(qr_size, qr_scale):
     Returns PIL.Image of logo with white border and transparent background.
     '''
 
-    # Convert SVG logo to PNG resized to 40% of QR height (will cover less
-    # than 40% of data, logo isn't square so only widest part covers 40%)
-    logo_size = int(qr_size * 0.40)
+    # Convert SVG logo to PNG resized to 35% of QR height (will cover less
+    # than 35% of data, logo isn't square so only widest part covers 35%)
+    logo_size = int(qr_size * 0.35)
     logo_img = get_scaled_logo(logo_size)
 
     # Calculate border width + total width

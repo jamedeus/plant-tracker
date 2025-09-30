@@ -44,6 +44,7 @@ RUN rm -rf /var/lib/apt/lists/*
 COPY backend/manage.py /mnt/backend/manage.py
 COPY backend/backend /mnt/backend/backend
 COPY backend/plant_tracker /mnt/backend/plant_tracker
+COPY backend/qr-code-logo.svg /mnt/backend/qr-code-logo.svg
 
 # Copy JS bundles from node build stage
 COPY --from=node_build /build/backend/plant_tracker/static/plant_tracker/* /mnt/backend/plant_tracker/static/plant_tracker/
