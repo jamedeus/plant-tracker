@@ -52,6 +52,10 @@ test_frontend:
   script:
     - npm test -- --coverage
   coverage: '/All files[^\|]*\|[^\|]*\s+([\d\.]+)/'
+  rules:
+    - changes:
+        - 'src/**/*'
+        - 'jest.config.js'
 
 # Update pylint badge
 pylint:
