@@ -35,31 +35,38 @@ def get_logo_overlay(qr_size, qr_scale):
     Returns PIL.Image of logo with white border and transparent background.
     '''
 
-    # Convert SVG logo to PNG resized to 35% of QR height (will cover less
-    # than 35% of data, logo isn't square so only widest part covers 35%)
-    logo_size = int(qr_size * 0.35)
+    # Get logo size that is a multiple of qr_scale with approximately 35% of QR
+    # code width (allows logo to align to grid without slicing adjacent modules)
+    logo_modules = round(int(qr_size * 0.35) / qr_scale)
+    # Ensure logo and QR code both have either even or odd number of modules
+    # (otherwise edge of centered logo will slice adjacent modules in half)
+    if qr_size / qr_scale % 2 != logo_modules % 2:
+        logo_modules += 1
+    logo_size = logo_modules * qr_scale
+
+    # Convert SVG logo to PNG with size calculated above (will cover less than
+    # 35% of modules since logo isn't square and background is transparent)
     logo_img = get_scaled_logo(logo_size)
 
-    # Calculate border width + total width
-    pad_px = max(1, qr_scale)
-    total = logo_size + 2 * pad_px
+    # Calculate total width with 1 module padding all the way around logo
+    total_width = logo_size + 2 * qr_scale
 
     # Extract alpha channel (silhouette), convert semitransparent px to solid
     base_mask = logo_img.split()[3].point(lambda p: 255 if p >= 1 else 0, mode='L')
 
-    # Create new image with mask centered, expand mask size to logo width + left
-    # and right padding (logo will be centered inside mask)
-    padded = Image.new('L', (total, total), 0)
-    padded.paste(base_mask, (pad_px, pad_px))
-    grown = padded.filter(ImageFilter.MaxFilter(size=(2 * pad_px + 1)))
+    # Create new image with alpha mask centered, expand mask size to add 1
+    # module width padding on all sides (logo will be centered inside)
+    padded = Image.new('L', (total_width, total_width), 0)
+    padded.paste(base_mask, (qr_scale, qr_scale))
+    scaled = padded.filter(ImageFilter.MaxFilter(size=(2 * qr_scale + 1)))
 
     # Convert inside of mask to solid white (border), outside to transparent
-    overlay = Image.new('RGBA', (total, total), (0, 0, 0, 0))
-    white = Image.new('RGBA', (total, total), (255, 255, 255, 255))
-    overlay.paste(white, (0, 0), grown)
+    overlay = Image.new('RGBA', (total_width, total_width), (0, 0, 0, 0))
+    white = Image.new('RGBA', (total_width, total_width), (255, 255, 255, 255))
+    overlay.paste(white, (0, 0), scaled)
 
     # Paste logo into center of mask (same padding width on all sides)
-    overlay.paste(logo_img, (pad_px, pad_px), logo_img)
+    overlay.paste(logo_img, (qr_scale, qr_scale), logo_img)
 
     return overlay
 
