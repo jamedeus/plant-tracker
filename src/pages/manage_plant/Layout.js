@@ -43,20 +43,17 @@ function Layout() {
     const editModal = useModal();
     const openEditModal = useCallback(() => {
         editModal.open();
-        document.activeElement.blur();
     }, [editModal]);
 
     const changeQrModal = useModal();
     const openChangeQrModal = useCallback(() => {
         changeQrModal.open({uuid: plantDetails.uuid});
-        document.activeElement.blur();
     }, [changeQrModal]);
     setChangeQrModalHandle(changeQrModal);
 
     const groupModal = useModal();
     const openGroupModal = useCallback(() => {
         groupModal.open();
-        document.activeElement.blur();
     }, [groupModal]);
 
     // Top left corner dropdown options

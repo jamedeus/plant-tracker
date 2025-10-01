@@ -35,5 +35,4 @@ export const setChangeQrModalHandle = (handle) => {
 
 export const openChangeQrModal = (uuid) => {
     changeQrModalHandle?.open({ uuid: uuid });
-    document.activeElement.blur();
 };

@@ -36,6 +36,7 @@ const DetailsDrawer = ({ openGroupModal, openEditModal, openChangeQrModal }) => 
 
     // Opens default photo in gallery
     const openGallery = () => {
+        closeDrawer();
         dispatch(photoGalleryIndexChanged({index: defaultPhotoIndex}));
         dispatch(photoGalleryOpened({open: true}));
     };
@@ -52,6 +53,12 @@ const DetailsDrawer = ({ openGroupModal, openEditModal, openChangeQrModal }) => 
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
+    };
+
+    // Close drawer and open change QR modal
+    const handleChangeQr = () => {
+        closeDrawer();
+        openChangeQrModal();
     };
 
     return (
@@ -125,7 +132,7 @@ const DetailsDrawer = ({ openGroupModal, openEditModal, openChangeQrModal }) => 
                     Edit Details
                 </button>
             </div>
-            <button className="btn h-8 mt-4 w-full" onClick={openChangeQrModal}>
+            <button className="btn h-8 mt-4 w-full" onClick={handleChangeQr}>
                 Change QR Code
             </button>
         </TitleDrawer>

@@ -71,13 +71,12 @@ function Layout() {
     const editModal = useModal();
     const openEditModal = useCallback(() => {
         editModal.open();
-        document.activeElement.blur();
     }, [editModal]);
 
     const changeQrModal = useModal();
     const openChangeQrModal = useCallback(() => {
         changeQrModal.open({uuid: groupDetails.uuid});
-        document.activeElement.blur();
+        closeTitleDrawer();
     }, [changeQrModal]);
 
     const addPlantsModal = useModal();
