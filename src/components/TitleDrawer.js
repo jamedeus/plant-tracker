@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useCloseWithEscKey } from 'src/hooks/useCloseWithEscKey';
 import 'src/css/title-drawer.css';
@@ -8,21 +8,35 @@ const TitleDrawer = ({ open, onClose, children }) => {
     // Close drawer by pressing escape key
     useCloseWithEscKey(open, onClose);
 
+    const ref = useRef(null);
+    useEffect(() => {
+        if (!open) {
+            return;
+        }
+
+        // Close if user clicks body outside drawer
+        // Keep open if click is inside a modal (ie if user opens edit modal and
+        // then submits we want the drawer to stay open so they can see changes)
+        const handleClickOutside = (e) => {
+            const insideDrawer = ref.current?.contains(e.target);
+            const insideModal = e.target.closest('.modal-box');
+            if (!insideDrawer && !insideModal) {
+                onClose();
+            }
+        };
+        document.addEventListener('click', handleClickOutside, true);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+    }, [ref, open, onClose]);
+
     return (
         <div
             className={clsx("title-drawer", open && "title-drawer-open")}
             data-testid="title-drawer"
+            ref={ref}
         >
-            {/* Full screen overlay when open (click outside to close) */}
-            <div
-                onClick={onClose}
-                className={clsx(
-                    "fixed inset-0 cursor-pointer z-98",
-                    !open && "hidden"
-                )}
-                data-testid="title-drawer-overlay"
-            />
-            {/* Contents */}
             <div className="title-drawer-contents">
                 {children}
             </div>

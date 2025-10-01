@@ -76,7 +76,6 @@ function Layout() {
     const changeQrModal = useModal();
     const openChangeQrModal = useCallback(() => {
         changeQrModal.open({uuid: groupDetails.uuid});
-        closeTitleDrawer();
     }, [changeQrModal]);
 
     const addPlantsModal = useModal();

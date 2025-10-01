@@ -60,7 +60,7 @@ describe('App', () => {
         expect(titleDrawer.classList).toContain('title-drawer-open');
 
         // Click page outside of drawer, confirm drawer closes
-        await user.click(app.getByTestId('title-drawer-overlay'));
+        await user.click(app.getByText("Plants (3)"));
         expect(titleDrawer.classList).not.toContain('title-drawer-open');
     });
 

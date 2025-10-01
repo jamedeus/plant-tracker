@@ -231,10 +231,6 @@ exports[`App matches snapshot 1`] = `
       data-testid="title-drawer"
     >
       <div
-        class="fixed inset-0 cursor-pointer z-98 hidden"
-        data-testid="title-drawer-overlay"
-      />
-      <div
         class="title-drawer-contents"
       >
         <div
@@ -2414,10 +2410,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
       class="title-drawer"
       data-testid="title-drawer"
     >
-      <div
-        class="fixed inset-0 cursor-pointer z-98 hidden"
-        data-testid="title-drawer-overlay"
-      />
       <div
         class="title-drawer-contents"
       >
