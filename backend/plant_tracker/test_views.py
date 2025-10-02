@@ -488,6 +488,31 @@ class RegistrationTests(TestCase):
 
         self.default_user = get_default_user()
 
+    def test_is_uuid_available(self):
+        # Check UUID that does not exist in database, confirm available
+        response = self.client.post('/is_uuid_available', {
+            'uuid': uuid4()
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'available': True})
+
+        # Create plant
+        plant = Plant.objects.create(user=self.default_user, uuid=uuid4())
+
+        # Check if plant UUID is available, confirm not available
+        response = self.client.post('/is_uuid_available', {
+            'uuid': plant.uuid
+        })
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.json(), {'available': False})
+
+        # Check if invalid UUID is available, confirm expected error
+        response = self.client.post('/is_uuid_available', {
+            'uuid': 'invalid'
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "uuid key is not a valid UUID"})
+
     def test_register_plant_endpoint(self):
         # Confirm no plants or groups in database
         self.assertEqual(len(Plant.objects.all()), 0)

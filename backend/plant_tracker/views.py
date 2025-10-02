@@ -26,6 +26,7 @@ from .models import (
 from .view_decorators import (
     events_map,
     get_user_token,
+    find_model_type,
     requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
@@ -89,6 +90,21 @@ def get_qr_codes(request, data, **kwargs):
             {'error': 'failed to generate, try a shorter URL_PREFIX'},
             status=500
         )
+
+
+@get_user_token
+@requires_json_post(["uuid"])
+def is_uuid_available(request, data, **kwargs):
+    '''Returns True if uuid is available, False if not.
+    Requires JSON POST with uuid (uuid) key.
+    '''
+    uuid = data["uuid"]
+    try:
+        if find_model_type(uuid):
+            return JsonResponse({'available': False}, status=409)
+        return JsonResponse({'available': True}, status=200)
+    except ValidationError:
+        return JsonResponse({"error": "uuid key is not a valid UUID"}, status=400)
 
 
 @get_user_token

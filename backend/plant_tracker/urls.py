@@ -38,6 +38,7 @@ urlpatterns = [
 
     # Plant and group management endpoints
     path('get_qr_codes', views.get_qr_codes, name='get_qr_codes'),
+    path('is_uuid_available', views.is_uuid_available, name='is_uuid_available'),
     path('register_plant', views.register_plant, name='register_plant'),
     path('register_group', views.register_group, name='register_group'),
     path('edit_plant_details', views.edit_plant_details, name='edit_plant_details'),

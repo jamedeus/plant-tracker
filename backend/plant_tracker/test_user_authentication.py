@@ -1285,6 +1285,11 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertAuthenticationRequiredError(
+            self.client.post('/is_uuid_available', {
+                'uuid': '5c256d96-ec7d-408a-83c7-3f86d63968b2'
+            })
+        )
+        self.assertAuthenticationRequiredError(
             self.client.get_json('/get_plant_species_options')
         )
         self.assertAuthenticationRequiredError(
