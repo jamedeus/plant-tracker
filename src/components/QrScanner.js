@@ -5,6 +5,7 @@ import { Scanner } from '@yudiel/react-qr-scanner';
 import useSound from 'use-sound';
 import error from 'src/sounds/error.mp3';
 import completed from 'src/sounds/completed.mp3';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import 'src/css/qrscanner.css';
 import clsx from 'clsx';
 
@@ -12,6 +13,8 @@ const GREEN_FILL = 'oklch(0.7451 0.167 183.61 / 0.35)';
 const GREEN_OUTLINE = 'oklch(0.7451 0.167 183.61 / 1)';
 const RED_FILL = 'oklch(0.7176 0.221 22.18 / 0.35)';
 const RED_OUTLINE = 'oklch(0.7176 0.221 22.18 / 1)';
+const GREY_FILL = 'oklch(0.469 0.021108 254.139175 / 0.35)';
+const GREY_OUTLINE = 'oklch(0.469 0.021108 254.139175 / 1)';
 
 // Returns true if URL has same domain as current URL, false if not part of app
 const urlIsSupported = (url) => {
@@ -21,6 +24,53 @@ const urlIsSupported = (url) => {
     } catch (e) {
         return false;
     }
+};
+
+// Takes scanned URL, returns true if UUID is available, false if already used
+const urlIsAvailable = async (url) => {
+    const uuid = url.split('/manage/')[1];
+    const response = await sendPostRequest('/is_uuid_available', {uuid: uuid});
+    return response.ok;
+};
+
+// Caches availability object for each scanned URL
+const availabilityCache = new Map();
+
+// Returns object with valid key (true, false, undefined if waiting on promise)
+// and promise key (sets valid key and returns value once resolved)
+//
+// When availableOnly is true promise is an API call that handleScan can await
+// (returns available status). Otherwise it's a placeholder that returns valid.
+const urlIsValid = (url) => {
+    let entry = availabilityCache.get(url);
+    if (entry) return entry;
+
+    // Unsupported URLs are immediately false
+    if (!urlIsSupported(url)) {
+        entry = { valid: false, promise: Promise.resolve(false) };
+
+    // If not checking availability, immediately true
+    } else if (!QrScanner.availableOnlyFlag) {
+        entry = { valid: true, promise: Promise.resolve(true) };
+
+    // If checking availability start API call, cache with pending promise
+    } else {
+        entry = { valid: undefined, promise: (async () => {
+            try {
+                const available = await urlIsAvailable(url);
+                entry.valid = available;
+                entry.promise = Promise.resolve(available);
+                return available;
+            } catch {
+                entry.valid = false;
+                entry.promise = Promise.resolve(false);
+                return false;
+            }
+        })()};
+    }
+
+    availabilityCache.set(url, entry);
+    return entry;
 };
 
 const highlightQrCodes = (codes, ctx) => {
@@ -37,20 +87,32 @@ const highlightQrCodes = (codes, ctx) => {
         }
         ctx.closePath();
 
-        // Green outline if URL is part of app, red if unsupported
-        const match = urlIsSupported(code.rawValue);
-        ctx.strokeStyle = match ? GREEN_OUTLINE : RED_OUTLINE;
+        // Set outline colors (solid border, fill same color semi-transparent)
+        // Green if supported, red if unsupported, grey if waiting on request
+        switch (urlIsValid(code.rawValue).valid) {
+            case true:
+                ctx.fillStyle = GREEN_FILL;
+                ctx.strokeStyle = GREEN_OUTLINE;
+                break;
+            case false:
+                ctx.fillStyle = RED_FILL;
+                ctx.strokeStyle = RED_OUTLINE;
+                break;
+            default:
+                ctx.fillStyle = GREY_FILL;
+                ctx.strokeStyle = GREY_OUTLINE;
+                break;
+        }
         ctx.lineWidth = 4;
         ctx.stroke();
-        // Fill with same color, semi-transparent
-        ctx.fillStyle = match ? GREEN_FILL : RED_FILL;
         ctx.fill();
     });
 };
 
-// Full-screen QR scanner overlay
+// Full-screen QR scanner overlay, highlights QR codes with valid URLs green
+// When availableOnly is true only highlights QR codes with unused UUIDs
 // Lower Z index than navbar (keep close button visible)
-const QrScanner = ({ onExit }) => {
+const QrScanner = ({ onExit, availableOnly = false }) => {
     const [scannedUrl, setScannedUrl] = useState(null);
     // Get notification sounds
     const [playMatch] = useSound(completed);
@@ -59,9 +121,12 @@ const QrScanner = ({ onExit }) => {
     const matchedUrls = useRef([]);
     const matchedErrorUrls = useRef([]);
 
+    // Let urlIsValid access availableOnly arg
+    QrScanner.availableOnlyFlag = availableOnly;
+
     const handleScan = (result) => {
-        result.forEach(code => {
-            if (urlIsSupported(code.rawValue)) {
+        result.forEach(async code => {
+            if(await urlIsValid(code.rawValue).promise) {
                 // Show button to open scanned URL
                 setScannedUrl(new URL(code.rawValue).pathname);
                 // Play sound first time valid QR code is scanned
@@ -120,6 +185,7 @@ const QrScanner = ({ onExit }) => {
 
 QrScanner.propTypes = {
     onExit: PropTypes.func.isRequired,
+    availableOnly: PropTypes.bool,
 };
 
 export default QrScanner;
