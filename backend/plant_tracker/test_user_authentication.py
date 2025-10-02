@@ -1293,6 +1293,23 @@ class MultiUserModeTests(TestCase):
             self.client.get_json('/get_plant_species_options')
         )
         self.assertAuthenticationRequiredError(
+            self.client.post('/register_plant', {
+                'uuid': uuid4(),
+                'name': 'test plant',
+                'species': 'Giant Sequoia',
+                'description': '300 feet and a few thousand years old',
+                'pot_size': '4'
+            })
+        )
+        self.assertAuthenticationRequiredError(
+            self.client.post('/register_group', {
+                'uuid': uuid4(),
+                'name': 'test group',
+                'location': 'middle shelf',
+                'description': 'This group is used for propagation'
+            })
+        )
+        self.assertAuthenticationRequiredError(
             self.client.post('/edit_plant_details', {
                 'plant_id': plant.uuid,
                 'name': 'test plant    ',
@@ -1307,6 +1324,17 @@ class MultiUserModeTests(TestCase):
                 'name': 'test group    ',
                 'location': '    middle shelf',
                 'description': 'This group is used for propagation'
+            })
+        )
+        self.assertAuthenticationRequiredError(
+            self.client.post('/bulk_delete_plants_and_groups', {
+                'uuids': [str(uuid4()), str(uuid4())]
+            })
+        )
+        self.assertAuthenticationRequiredError(
+            self.client.post('/bulk_archive_plants_and_groups', {
+                'uuids': [str(uuid4()), str(uuid4())],
+                'archived': True
             })
         )
         self.assertAuthenticationRequiredError(
@@ -1382,6 +1410,12 @@ class MultiUserModeTests(TestCase):
                 'plant_id': plant.uuid,
                 'timestamp': '2024-02-06T03:06:26.000Z',
                 'new_pot_size': 6
+            })
+        )
+        self.assertAuthenticationRequiredError(
+            self.client.post('/divide_plant', {
+                'plant_id': uuid4(),
+                'timestamp': '2024-02-06T03:06:26.000Z'
             })
         )
         self.assertAuthenticationRequiredError(
