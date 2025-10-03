@@ -49,6 +49,9 @@ function Layout() {
 
     const updateUuid = useCallback((newUuid) => {
         dispatch(groupDetailsUpdateed({uuid: newUuid}));
+        // Update URL to new UUID
+        const newUrl = window.location.pathname.replace(groupDetails.uuid, newUuid);
+        window.history.replaceState(window.history.state, '', newUrl);
     }, [dispatch]);
 
     // Buttons add events to all plants if 0, only selected plants if 1

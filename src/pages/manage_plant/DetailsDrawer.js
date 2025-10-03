@@ -43,6 +43,9 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
 
     const updateUuid = useCallback((newUuid) => {
         dispatch(plantDetailsUpdated({uuid: newUuid}));
+        // Update URL to new UUID
+        const newUrl = window.location.pathname.replace(plantDetails.uuid, newUuid);
+        window.history.replaceState(window.history.state, '', newUrl);
     }, [dispatch]);
 
     const closeDrawer = useCallback(() => {
