@@ -1,6 +1,6 @@
 import React from 'react';
 import QrScanner from 'src/components/QrScanner';
-import QrScannerButton from 'src/components/QrScannerButton';
+import QrScannerButton, { ScannedUrlButton } from 'src/components/QrScannerButton';
 import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
@@ -174,7 +174,11 @@ describe('QrScanner availableOnly mode', () => {
         jest.useFakeTimers({ doNotFake: ['Date'] });
 
         // Render component with availableOnly = true
-        component = render(<QrScanner onExit={jest.fn()} availableOnly={true} />);
+        component = render(<QrScanner
+            onExit={jest.fn()}
+            availableOnly={true}
+            ScannedUrlButton={ScannedUrlButton}
+        />);
     });
 
     // Clean up pending timers after each test

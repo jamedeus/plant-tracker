@@ -1,13 +1,11 @@
 import { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import useSound from 'use-sound';
 import error from 'src/sounds/error.mp3';
 import completed from 'src/sounds/completed.mp3';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import 'src/css/qrscanner.css';
-import clsx from 'clsx';
 
 const GREEN_FILL = 'oklch(0.7451 0.167 183.61 / 0.35)';
 const GREEN_OUTLINE = 'oklch(0.7451 0.167 183.61 / 1)';
@@ -33,10 +31,18 @@ const urlIsAvailable = async (url) => {
     return response.ok;
 };
 
-// Full-screen QR scanner overlay, highlights QR codes with valid URLs green
+// Full-screen QR scanner overlay, lower Z index than navbar (keep nav visible)
+// Highlights QR codes with same domain as app with green outline, others red
 // When availableOnly is true only highlights QR codes with unused UUIDs
-// Lower Z index than navbar (keep close button visible)
-const QrScanner = ({ onExit, availableOnly = false }) => {
+// Renders ScannedUrlButton component when QR code detected withURL and onExit
+// callback as props (use ScannedUrlButtonProps to pass additional props)
+const QrScanner = ({
+    onExit,
+    ScannedUrlButton,
+    ScannedUrlButtonProps = {},
+    availableOnly = false,
+    instructionsText = 'Point the camera at a QR code'
+}) => {
     const [scannedUrl, setScannedUrl] = useState(null);
     // Get notification sounds
     const [playMatch] = useSound(completed);
@@ -157,32 +163,30 @@ const QrScanner = ({ onExit, availableOnly = false }) => {
                 }}
                 sound={false}
             />
-            {scannedUrl ? (
-                <Link
-                    to={scannedUrl}
-                    className={clsx(
-                        'absolute bottom-8 btn btn-accent rounded-full text-lg',
-                        'left-1/2 -translate-x-1/2'
-                    )}
-                    data-testid="scanned-url"
-                    key={scannedUrl}
-                    onClick={onExit}
-                    discover="none"
-                >
-                    Open
-                </Link>
-            ) : (
-                <div className="qr-scanner-instructions">
-                    Point the camera at a QR code
-                </div>
-            )}
+            <div className='absolute bottom-8 left-1/2 -translate-x-1/2'>
+                {scannedUrl ? (
+                    <ScannedUrlButton
+                        scannedUrl={scannedUrl}
+                        key={scannedUrl}
+                        onExit={onExit}
+                        {...ScannedUrlButtonProps}
+                    />
+                ) : (
+                    <div className="qr-scanner-instructions">
+                        {instructionsText}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
 
 QrScanner.propTypes = {
     onExit: PropTypes.func.isRequired,
+    ScannedUrlButton: PropTypes.elementType.isRequired,
+    ScannedUrlButtonProps: PropTypes.object,
     availableOnly: PropTypes.bool,
+    instructionsText: PropTypes.string
 };
 
 export default QrScanner;

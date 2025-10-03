@@ -1,5 +1,7 @@
 import { useState, memo, lazy, Suspense } from 'react';
+import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import { LuScanSearch } from "react-icons/lu";
 import LoadingAnimation from './LoadingAnimation';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
@@ -9,6 +11,27 @@ import clsx from 'clsx';
 const QrScanner = lazy(
     () => import(/* webpackChunkName: "qr-scanner" */ './QrScanner')
 );
+
+// Button shown at bottom of scanner when URL detected (navigates to URL)
+export const ScannedUrlButton = ({ scannedUrl, onExit }) => {
+    return (
+        <Link
+            to={scannedUrl}
+            className='btn btn-accent rounded-full text-lg'
+            data-testid="scanned-url"
+            key={scannedUrl}
+            onClick={onExit}
+            discover="none"
+        >
+            Open
+        </Link>
+    );
+};
+
+ScannedUrlButton.propTypes = {
+    scannedUrl: PropTypes.string.isRequired,
+    onExit: PropTypes.func.isRequired
+};
 
 // Button that toggles QR scanner visibility (rendered in portal)
 const QrScannerButton = memo(function QrScannerButton() {
@@ -45,7 +68,10 @@ const QrScannerButton = memo(function QrScannerButton() {
                         <LoadingAnimation />
                     </div>
                 }>
-                    <QrScanner onExit={closeScanner} />
+                    <QrScanner
+                        onExit={closeScanner}
+                        ScannedUrlButton={ScannedUrlButton}
+                    />
                 </Suspense>,
                 document.body
             )}
