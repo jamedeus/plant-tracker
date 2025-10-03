@@ -15,7 +15,7 @@ const QrScanner = lazy(
 );
 
 // Button shown at bottom of scanner when URL detected (navigates to URL)
-const ScannedUrlButton = ({ scannedUrl, onExit, oldUuid }) => {
+const ScannedUrlButton = ({ scannedUrl, onExit, oldUuid, updateUuid }) => {
     // Makes /change_uuid call to confirm new QR code
     const handleAcceptNewQrCode = async () => {
         const response = await sendPostRequest('/change_uuid', {
@@ -26,6 +26,8 @@ const ScannedUrlButton = ({ scannedUrl, onExit, oldUuid }) => {
         if (response.ok) {
             onExit();
             showToast('QR code changed!', 'green', 3000);
+            const data = await response.json();
+            updateUuid(data.new_uuid);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -46,7 +48,8 @@ const ScannedUrlButton = ({ scannedUrl, onExit, oldUuid }) => {
 ScannedUrlButton.propTypes = {
     scannedUrl: PropTypes.string.isRequired,
     onExit: PropTypes.func.isRequired,
-    oldUuid: uuidPropType.isRequired
+    oldUuid: uuidPropType.isRequired,
+    updateUuid: PropTypes.func.isRequired
 };
 
 // Button that closes QR scanner (replaces top-right navbar button)
@@ -68,7 +71,7 @@ CloseChangeQrScannerButton.propTypes = {
 };
 
 // Button that opens QR scanner (rendered in portal)
-const ChangeQrScannerButton = memo(function ChangeQrScannerButton({ oldUuid, isOpen, onOpen, onClose }) {
+const ChangeQrScannerButton = memo(function ChangeQrScannerButton({ oldUuid, updateUuid, isOpen, onOpen, onClose }) {
     return (
         <>
             <button className="btn h-8 mt-4 w-full" onClick={onOpen}>
@@ -86,7 +89,7 @@ const ChangeQrScannerButton = memo(function ChangeQrScannerButton({ oldUuid, isO
                     <QrScanner
                         onExit={onClose}
                         ScannedUrlButton={ScannedUrlButton}
-                        ScannedUrlButtonProps={{oldUuid: oldUuid}}
+                        ScannedUrlButtonProps={{oldUuid: oldUuid, updateUuid: updateUuid}}
                         availableOnly={true}
                         instructionsText='Scan the new QR code'
                     />

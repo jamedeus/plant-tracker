@@ -135,7 +135,7 @@ describe('Group ChangeQrScanner', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'
+                new_uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'
             })
         }));
 
@@ -210,5 +210,120 @@ describe('Group ChangeQrScanner', () => {
         expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'failed to change QR code'
         );
+    });
+
+    // Regression test, when first implemented the old UUID was not updated in
+    // redux, so any subsequent actions which post UUID to backend (editing
+    // details etc) would fail (UUID no longer matches any plant in database)
+    it('updates UUID in redux store when user changes QR code', async () => {
+        // Mock fetch function to return expected response when details edited
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                name: "Test group",
+                location: "Middle shelf",
+                description: "",
+                display_name: "Test group"
+            })
+        }));
+
+        // Open edit modal, click submit button
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+        // const modal = document.body.querySelector(".modal-box");
+        // await user.click(within(modal).getByText("Edit"));
+
+        // Confirm correct data posted to /edit_group_details endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/edit_group_details', {
+            method: 'POST',
+            body: JSON.stringify({
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                name: "Test group",
+                location: "Middle shelf",
+                description: "",
+            }),
+            headers: postHeaders
+        });
+
+        // Mock barcode-detector to simulate detecting a QR code with a domain
+        // that matches the current URL
+        mockCurrentURL('https://plants.lan/');
+        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
+            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
+            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
+            cornerPoints: [
+                { x: 0,   y: 0   },
+                { x: 200, y: 0   },
+                { x: 200, y: 100 },
+                { x: 0,   y: 100 }
+            ],
+            format: 'qr_code',
+        }]);
+
+        // Mock fetch function to simulate available URL
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                available: true
+            })
+        }));
+
+        // Open scanner, fast forward until QR code detected
+        await user.click(app.getByText('Change QR Code'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Mock fetch function to return expected response when confirm clicked
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                new_uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'
+            })
+        }));
+        // Click confirm button, confirm request made + overlay closed
+        await user.click(app.getByTestId('confirm-new-qr-code-button'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm correct data posted to /change_uuid endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/change_uuid', {
+            method: 'POST',
+            body: JSON.stringify({
+                uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be14',
+                new_id: '5c256d96-ec7d-408a-83c7-3f86d63968b2'
+            }),
+            headers: postHeaders
+        });
+        expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
+
+        // Mock fetch function to return expected response when details edited
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                name: "Test group",
+                location: "Middle shelf",
+                description: "",
+                display_name: "Test group"
+            })
+        }));
+
+        // Open edit modal, click submit button
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+        // const modal = document.body.querySelector(".modal-box");
+        // await user.click(within(modal).getByText("Edit"));
+
+        // Confirm payload contains updated UUID (not old)
+        expect(global.fetch).toHaveBeenCalledWith('/edit_group_details', {
+            method: 'POST',
+            body: JSON.stringify({
+                group_id: "5c256d96-ec7d-408a-83c7-3f86d63968b2",
+                name: "Test group",
+                location: "Middle shelf",
+                description: "",
+            }),
+            headers: postHeaders
+        });
     });
 });

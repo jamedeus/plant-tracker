@@ -17,7 +17,7 @@ import { Tab } from '@headlessui/react';
 import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
 import 'src/css/index.css';
-import { updatePlantLastEventTimes } from './groupSlice';
+import { groupDetailsUpdateed, updatePlantLastEventTimes } from './groupSlice';
 import EventButtons from './EventButtons';
 
 function Layout() {
@@ -46,6 +46,10 @@ function Layout() {
     const closeChangeQrScanner = useCallback(() => {
         setChangeQrScannerOpen(false);
     }, []);
+
+    const updateUuid = useCallback((newUuid) => {
+        dispatch(groupDetailsUpdateed({uuid: newUuid}));
+    }, [dispatch]);
 
     // Buttons add events to all plants if 0, only selected plants if 1
     // Set with tabs above event timestamp input
@@ -148,6 +152,7 @@ function Layout() {
                 </button>
                 <ChangeQrScannerButton
                     oldUuid={groupDetails.uuid}
+                    updateUuid={updateUuid}
                     isOpen={changeQrScannerOpen}
                     onOpen={openChangeQrScanner}
                     onClose={closeChangeQrScanner}
