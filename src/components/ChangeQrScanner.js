@@ -102,6 +102,7 @@ const ChangeQrScannerButton = memo(function ChangeQrScannerButton({ oldUuid, upd
 
 ChangeQrScannerButton.propTypes = {
     oldUuid: uuidPropType.isRequired,
+    updateUuid: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onOpen: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired

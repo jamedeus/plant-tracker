@@ -10,7 +10,6 @@ jest.mock('src/navigate', () => ({
     setNavigate: jest.fn(),
 }));
 import { navigate as globalMockNavigate } from 'src/navigate';
-import { waitFor } from '@testing-library/react';
 
 describe('App', () => {
     let app, user;

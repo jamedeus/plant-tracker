@@ -1,7 +1,6 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 import { mockContext } from './mockContext';
-import { waitFor } from '@testing-library/react';
 
 describe('Settings menu', () => {
     let app, user;
