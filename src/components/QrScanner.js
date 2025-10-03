@@ -163,7 +163,10 @@ const QrScanner = ({
                 }}
                 sound={false}
             />
-            <div className='absolute bottom-8 left-1/2 -translate-x-1/2'>
+            <div
+                id="qr-scanner-footer"
+                className='absolute bottom-8 left-1/2 -translate-x-1/2'
+            >
                 {scannedUrl ? (
                     <ScannedUrlButton
                         scannedUrl={scannedUrl}

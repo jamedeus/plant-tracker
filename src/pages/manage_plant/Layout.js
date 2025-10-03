@@ -10,12 +10,14 @@ import { setChangeQrModalHandle } from './modals';
 import Timeline from './Timeline';
 import { useSelector, useDispatch } from 'react-redux';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
+import { CloseChangeQrScannerButton } from 'src/components/ChangeQrScanner';
 import DetailsDrawer from './DetailsDrawer';
 import DeleteModeFooter from './DeleteModeFooter';
 import { FaGear } from "react-icons/fa6";
 import { FaImages, FaLayerGroup } from "react-icons/fa";
 import {
     titleDrawerOpened,
+    changeQrScannerOpened,
     settingsMenuOpened,
     photoGalleryOpened,
 } from './interfaceSlice';
@@ -40,15 +42,17 @@ function Layout() {
         dispatch(titleDrawerOpened(!titleDrawerOpen));
     }, [titleDrawerOpen, dispatch]);
 
+    const changeQrScannerOpen = useSelector((state) => state.interface.changeQrScannerOpen);
+    const closeChangeQrScanner = useCallback(() => {
+        dispatch(changeQrScannerOpened(false));
+    } , [dispatch]);
+
     const editModal = useModal();
     const openEditModal = useCallback(() => {
         editModal.open();
     }, [editModal]);
 
     const changeQrModal = useModal();
-    const openChangeQrModal = useCallback(() => {
-        changeQrModal.open({uuid: plantDetails.uuid});
-    }, [changeQrModal]);
     setChangeQrModalHandle(changeQrModal);
 
     const groupModal = useModal();
@@ -94,13 +98,16 @@ function Layout() {
                 menuOptions={DropdownMenuOptions}
                 title={plantDetails.display_name}
                 onTitleClick={toggleDetailsDrawerOpen}
-                topRightButton={<QrScannerButton />}
+                topRightButton={changeQrScannerOpen ? (
+                    <CloseChangeQrScannerButton onClose={closeChangeQrScanner} />
+                ) : (
+                    <QrScannerButton />
+                )}
             />
 
             <DetailsDrawer
                 openGroupModal={openGroupModal}
                 openEditModal={openEditModal}
-                openChangeQrModal={openChangeQrModal}
             />
 
             {/* Don't render event buttons if plant is archived */}

@@ -6,18 +6,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import TitleDrawer from 'src/components/TitleDrawer';
 import PlantDetails from 'src/components/PlantDetails';
 import { openErrorModal } from 'src/components/ErrorModal';
+import ChangeQrScannerButton from 'src/components/ChangeQrScanner';
 import { FaPlus } from 'react-icons/fa6';
 import { IoMdCloseCircle } from "react-icons/io";
 import { plantRemovedFromGroup } from './plantSlice';
 import {
     titleDrawerOpened,
+    changeQrScannerOpened,
     photoGalleryOpened,
     photoGalleryIndexChanged
 } from './interfaceSlice';
 import 'src/css/title-drawer.css';
 import clsx from 'clsx';
 
-const DetailsDrawer = ({ openGroupModal, openEditModal, openChangeQrModal }) => {
+const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
     // Get state shown in drawer
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
@@ -29,6 +31,15 @@ const DetailsDrawer = ({ openGroupModal, openEditModal, openChangeQrModal }) => 
     // Get index of default photo (used to open in gallery)
     const open = useSelector((state) => state.interface.titleDrawerOpen);
     const dispatch = useDispatch();
+
+    // Controls change QR scanner overlay open/close state
+    const changeQrScannerOpen = useSelector((state) => state.interface.changeQrScannerOpen);
+    const openChangeQrScanner = useCallback(() => {
+        dispatch(changeQrScannerOpened(true));
+    } , [dispatch]);
+    const closeChangeQrScanner = useCallback(() => {
+        dispatch(changeQrScannerOpened(false));
+    } , [dispatch]);
 
     const closeDrawer = useCallback(() => {
         dispatch(titleDrawerOpened(false));
@@ -125,17 +136,19 @@ const DetailsDrawer = ({ openGroupModal, openEditModal, openChangeQrModal }) => 
                     Edit Details
                 </button>
             </div>
-            <button className="btn h-8 mt-4 w-full" onClick={openChangeQrModal}>
-                Change QR Code
-            </button>
+            <ChangeQrScannerButton
+                oldUuid={plantDetails.uuid}
+                isOpen={changeQrScannerOpen}
+                onOpen={openChangeQrScanner}
+                onClose={closeChangeQrScanner}
+            />
         </TitleDrawer>
     );
 };
 
 DetailsDrawer.propTypes = {
     openGroupModal: PropTypes.func.isRequired,
-    openEditModal: PropTypes.func.isRequired,
-    openChangeQrModal: PropTypes.func.isRequired
+    openEditModal: PropTypes.func.isRequired
 };
 
 export default DetailsDrawer;

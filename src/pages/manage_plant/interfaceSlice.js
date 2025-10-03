@@ -6,6 +6,8 @@ export const interfaceSlice = createSlice({
     initialState: {
         // Navbar title drawer open state
         titleDrawerOpen: false,
+        // Fullscreen scanner used to change QR code open state
+        changeQrScannerOpen: false,
         // Settings side menu open state
         settingsMenuOpen: false,
         // Fullscreen lightbox gallery open state
@@ -32,6 +34,13 @@ export const interfaceSlice = createSlice({
         titleDrawerOpened(state, action) {
             state.titleDrawerOpen = action.payload;
         },
+
+        // Takes true or false
+        changeQrScannerOpened(state, action) {
+            state.changeQrScannerOpen = action.payload;
+            state.titleDrawerOpen = false;
+        },
+
         // Takes true or false
         settingsMenuOpened(state, action) {
             state.settingsMenuOpen = action.payload;
@@ -109,6 +118,7 @@ export const interfaceSlice = createSlice({
 
 export const {
     titleDrawerOpened,
+    changeQrScannerOpened,
     settingsMenuOpened,
     photoGalleryOpened,
     photoGalleryIndexChanged,

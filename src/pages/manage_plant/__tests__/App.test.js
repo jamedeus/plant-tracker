@@ -461,17 +461,6 @@ describe('App', () => {
         );
     });
 
-    it('opens ChangeQrModal when dropdown option clicked', async () => {
-        // Confirm modal is not open
-        expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).toBeNull();
-
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Change QR Code'));
-        await waitFor(() => {
-            expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
-        });
-    });
-
     it('opens PhotoModal when dropdown option clicked', async () => {
         // Confirm modal is not open
         expect(app.queryByTestId('photo-input')).toBeNull();

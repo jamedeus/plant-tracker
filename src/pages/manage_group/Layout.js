@@ -10,6 +10,9 @@ import RemovePlantsFooter from './RemovePlantsFooter';
 import AddEventsFooter from 'src/components/AddEventsFooter';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
+import ChangeQrScannerButton, {
+    CloseChangeQrScannerButton
+} from 'src/components/ChangeQrScanner';
 import { Tab } from '@headlessui/react';
 import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
@@ -32,6 +35,16 @@ function Layout() {
     }, [titleDrawerOpen]);
     const closeTitleDrawer = useCallback(() => {
         setTitleDrawerOpen(false);
+    }, []);
+
+    // Controls change QR scanner overlay open/close state
+    const [changeQrScannerOpen, setChangeQrScannerOpen] = useState(false);
+    const openChangeQrScanner = useCallback(() => {
+        setChangeQrScannerOpen(true);
+        closeTitleDrawer();
+    }, []);
+    const closeChangeQrScanner = useCallback(() => {
+        setChangeQrScannerOpen(false);
     }, []);
 
     // Buttons add events to all plants if 0, only selected plants if 1
@@ -73,11 +86,6 @@ function Layout() {
         editModal.open();
     }, [editModal]);
 
-    const changeQrModal = useModal();
-    const openChangeQrModal = useCallback(() => {
-        changeQrModal.open({uuid: groupDetails.uuid});
-    }, [changeQrModal]);
-
     const addPlantsModal = useModal();
     const openAddPlantsModal = useCallback(() => {
         addPlantsModal.open();
@@ -117,7 +125,11 @@ function Layout() {
                 menuOptions={DropdownMenuOptions}
                 title={groupDetails.display_name}
                 onTitleClick={toggleTitleDrawerOpen}
-                topRightButton={<QrScannerButton />}
+                topRightButton={changeQrScannerOpen ? (
+                    <CloseChangeQrScannerButton onClose={closeChangeQrScanner} />
+                ) : (
+                    <QrScannerButton />
+                )}
             />
 
             <TitleDrawer open={titleDrawerOpen} onClose={closeTitleDrawer}>
@@ -134,9 +146,12 @@ function Layout() {
                 <button className="btn h-8 mt-4 w-full" onClick={openEditModal}>
                     Edit Details
                 </button>
-                <button className="btn h-8 mt-4 w-full" onClick={openChangeQrModal}>
-                    Change QR Code
-                </button>
+                <ChangeQrScannerButton
+                    oldUuid={groupDetails.uuid}
+                    isOpen={changeQrScannerOpen}
+                    onOpen={openChangeQrScanner}
+                    onClose={closeChangeQrScanner}
+                />
             </TitleDrawer>
 
             {/* Don't render event buttons if group is archived */}
@@ -172,7 +187,6 @@ function Layout() {
                     <EventButtons />
                 </div>
             )}
-
 
             <div className="px-4 relative">
                 <PlantsCol
@@ -221,13 +235,6 @@ function Layout() {
                 ariaLabel="Edit group details"
                 className="max-w-[25rem]"
                 load={() => import(/* webpackChunkName: "manage_group_edit-modal" */ "./EditGroupModal")}
-            />
-
-            <LazyModal
-                ref={changeQrModal.ref}
-                title="Change QR Code"
-                ariaLabel="Change group QR code"
-                load={() => import(/* webpackChunkName: "change-qr-modal" */ "src/components/ChangeQrModal")}
             />
 
             <LazyModal
