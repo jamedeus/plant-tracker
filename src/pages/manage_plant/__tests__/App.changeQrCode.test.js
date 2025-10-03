@@ -1,12 +1,23 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
-import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
+import { mockQrCodeInViewport } from 'src/testUtils/mockBarcodeDetector';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 import 'jest-canvas-mock';
+
+// Mocks fetch function to simulate /is_uuid_available response (true or false)
+const mockIsUuidAvailableResponse = (available) => {
+    global.fetch = jest.fn(() => Promise.resolve({
+        ok: true,
+        status: available ? 200 : 409,
+        json: () => Promise.resolve({
+            available: available
+        })
+    }));
+};
 
 describe('Plant ChangeQrScanner', () => {
     let app, user;
@@ -67,29 +78,9 @@ describe('Plant ChangeQrScanner', () => {
     });
 
     it('shows confirm button when available QR code is scanned', async () => {
-        // Mock barcode-detector to simulate detecting a QR code with a domain
-        // that matches the current URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
-
-        // Mock fetch function to simulate available URL
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                available: true
-            })
-        }));
+        // Simulate valid QR code with available UUID entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockIsUuidAvailableResponse(true);
 
         // Open scanner, confirm instructions are visible, confirm button is not
         await user.click(app.getByText('Change QR Code'));
@@ -103,29 +94,9 @@ describe('Plant ChangeQrScanner', () => {
     });
 
     it('sends correct payload when confirm button clicked after scanning QR code', async () => {
-        // Mock barcode-detector to simulate detecting a QR code with a domain
-        // that matches the current URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
-
-        // Mock fetch function to simulate available URL
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                available: true
-            })
-        }));
+        // Simulate valid QR code with available UUID entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockIsUuidAvailableResponse(true);
 
         // Open scanner, fast forward until QR code detected
         await user.click(app.getByText('Change QR Code'));
@@ -162,29 +133,9 @@ describe('Plant ChangeQrScanner', () => {
     });
 
     it('shows error modal if error received after confirm button clicked', async() => {
-        // Mock barcode-detector to simulate detecting a QR code with a domain
-        // that matches the current URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
-
-        // Mock fetch function to simulate available URL
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                available: true
-            })
-        }));
+        // Simulate valid QR code with available UUID entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockIsUuidAvailableResponse(true);
 
         // Open scanner, fast forward until QR code detected
         await user.click(app.getByText('Change QR Code'));
@@ -238,29 +189,9 @@ describe('Plant ChangeQrScanner', () => {
             headers: postHeaders
         });
 
-        // Mock barcode-detector to simulate detecting a QR code with a domain
-        // that matches the current URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
-
-        // Mock fetch function to simulate available URL
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                available: true
-            })
-        }));
+        // Simulate valid QR code with available UUID entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockIsUuidAvailableResponse(true);
 
         // Open scanner, fast forward until QR code detected
         await user.click(app.getByText('Change QR Code'));
