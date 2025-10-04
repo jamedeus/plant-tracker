@@ -37,12 +37,15 @@ describe('PhotoModal', () => {
     const mockClose = jest.fn();
 
     beforeEach(async () => {
+        // Allow fast forwarding
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
         mockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
                 <TestComponent close={mockClose} />
@@ -53,6 +56,12 @@ describe('PhotoModal', () => {
 
         // Open modal
         await user.click(app.getByText('Open photo modal'));
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.clearAllTimers();
+        jest.useRealTimers();
     });
 
     it('sends correct payload when photos are uploaded', async () => {
@@ -171,6 +180,7 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm error modal appeared with failed photo names
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
         expect(app.queryByText(/Failed to upload 2 photo(s)/)).not.toBeNull();
         expect(app.queryByText(/photo2.heic/)).not.toBeNull();
@@ -204,12 +214,11 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with error message
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
         expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Your upload was too big to process.'
         );
-        // Confirm file input was cleared
-        expect(fileInput.files.length).toBe(0);
     });
 
     it('shows error in modal when API call fails', async () => {
@@ -226,12 +235,11 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with arbitrary error text
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
         expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'failed to upload photos'
         );
-        // Confirm file input was cleared
-        expect(fileInput.files.length).toBe(0);
     });
 
     it('shows error modal when API response does not contain JSON', async () => {
@@ -254,12 +262,11 @@ describe('PhotoModal', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with unexpected response string
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
         expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Unexpected response from backend'
         );
-        // Confirm file input was cleared
-        expect(fileInput.files.length).toBe(0);
     });
 
     // Note: this response can only be received if SINGLE_USER_MODE is disabled

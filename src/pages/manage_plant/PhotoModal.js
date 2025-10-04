@@ -56,16 +56,6 @@ const PhotoModal = ({ close }) => {
         ]);
     };
 
-    const resetSelection = () => {
-        // Clear selectedFiles state
-        setSelectedFiles([]);
-        // Replace file input value with empty FileList
-        if (inputRef.current) {
-            const data = new DataTransfer();
-            inputRef.current.files = data.files;
-        }
-    };
-
     const handleSubmit = async () => {
         // Start loading animation
         setUploading(true);
@@ -94,15 +84,8 @@ const PhotoModal = ({ close }) => {
                 dispatch(photosAdded(data.urls));
             }
 
-            // Close modal, wait for close animation to complete then stop
-            // loading animation and remove selected files from input/state
+            // Close modal, show error if any photos failed
             close();
-            setTimeout(() => {
-                setUploading(false);
-                resetSelection();
-            }, 150);
-
-            // Show error if any photos failed
             if (data.failed.length) {
                 const num = data.failed.length;
                 const list = data.failed.join('\n');
@@ -110,7 +93,6 @@ const PhotoModal = ({ close }) => {
             }
         } else {
             setUploading(false);
-            resetSelection();
             // Redirect to login page if user not signed in/session expired
             if (response.status === 401) {
                 navigate('/accounts/login/');
