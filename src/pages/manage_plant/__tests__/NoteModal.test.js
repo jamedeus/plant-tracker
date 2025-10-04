@@ -63,6 +63,7 @@ describe('Add new note', () => {
 
         // Open modal in new note mode
         await user.click(app.getByText('Add New Note'));
+        await act(async () => await jest.advanceTimersByTimeAsync(1000));
     });
 
     // Clean up pending timers after each test
@@ -171,7 +172,7 @@ describe('Edit existing note', () => {
 
         // Open modal in edit mode
         await user.click(app.getByText('Edit Existing Note'));
-        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await act(async () => await jest.advanceTimersByTimeAsync(1000));
     });
 
     // Clean up pending timers after each test
