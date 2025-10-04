@@ -1,4 +1,5 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -36,12 +37,7 @@ describe('App', () => {
 
     it('shows error modal if error received while editing details', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to edit plant details"
-            })
-        }));
+        mockFetchResponse({error: "failed to edit plant details"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -66,12 +62,7 @@ describe('App', () => {
 
     it('shows error modal if error received while creating event', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to create event"
-            })
-        }));
+        mockFetchResponse({error: "failed to create event"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -89,12 +80,7 @@ describe('App', () => {
 
     it('shows error modal if error received while removing from group', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to remove plant from group"
-            })
-        }));
+        mockFetchResponse({error: "failed to remove plant from group"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -112,12 +98,7 @@ describe('App', () => {
 
     it('shows error modal if error received while repotting plant', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to repot plant"
-            })
-        }));
+        mockFetchResponse({error: "failed to repot plant"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -136,12 +117,7 @@ describe('App', () => {
 
     it('shows error modal if error received while dividing plant', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "Event with same timestamp already exists"
-            })
-        }));
+        mockFetchResponse({error: "Event with same timestamp already exists"}, 409);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -160,14 +136,10 @@ describe('App', () => {
 
     it('shows error modal if error received while adding to group', async() => {
         // Mock "Remove from group" response (must remove before add button appears)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                action: "remove_plant_from_group",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "remove_plant_from_group",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click "Remove from group" button in details dropdown
         await user.click(app.getByTitle(/Remove plant from group/));
@@ -180,21 +152,13 @@ describe('App', () => {
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Mock fetch to return group options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockGroupOptions })
-        }));
+        mockFetchResponse({ options: mockGroupOptions });
 
         // Open AddToGroupModal
         await user.click(addButton);
 
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to add plant to group"
-            })
-        }));
+        mockFetchResponse({error: "failed to add plant to group"}, 400);
 
         // Simulate user clicking group option (nextSibling targets transparent
         // absolute-positioned div with click listener that covers group card)

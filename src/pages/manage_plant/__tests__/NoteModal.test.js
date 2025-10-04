@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import NoteModal from '../NoteModal';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import { setNoteModalHandle, openNoteModal } from '../modals';
@@ -73,16 +74,12 @@ describe('Add new note', () => {
 
     it('sends correct payload when note is saved', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                action: "add_note",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-02-13T12:00:00+00:00",
-                note_text: "Some leaves turning yellow, probably watering too often"
-            })
-        }));
+        mockFetchResponse({
+            action: "add_note",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-02-13T12:00:00+00:00",
+            note_text: "Some leaves turning yellow, probably watering too often"
+        });
 
         // Simulate user entering note text and clicking save
         await user.type(
@@ -105,13 +102,7 @@ describe('Add new note', () => {
 
     it('shows error in modal when API call fails', async () => {
         // Mock fetch function to return arbitrary error message
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 500,
-            json: () => Promise.resolve({
-                error: "failed to save note"
-            })
-        }));
+        mockFetchResponse({error: "failed to save note"}, 500);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -133,13 +124,7 @@ describe('Add new note', () => {
 
     it('shows error toast if duplicate note error received', async() => {
         // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 409,
-            json: () => Promise.resolve({
-                error: "note with same timestamp already exists"
-            })
-        }));
+        mockFetchResponse({error: "note with same timestamp already exists"}, 409);
 
         // Simulate user typing note and clicking save
         await user.type(
@@ -197,15 +182,11 @@ describe('Edit existing note', () => {
 
     it('sends correct payload when note is deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: ['2024-02-13T12:00:00'],
-                failed: [],
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            deleted: ['2024-02-13T12:00:00'],
+            failed: [],
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
@@ -226,16 +207,12 @@ describe('Edit existing note', () => {
 
     it('sends correct payload when note is edited', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                action: "edit_note",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-02-13T12:00:00+00:00",
-                note_text: "this is an existing note some more details"
-            })
-        }));
+        mockFetchResponse({
+            action: "edit_note",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-02-13T12:00:00+00:00",
+            note_text: "this is an existing note some more details"
+        });
 
         // Simulate user adding more note text and clicking save
         await user.type(app.getByRole('textbox'), ' some more details');
@@ -255,13 +232,7 @@ describe('Edit existing note', () => {
 
     it('shows error in modal when delete API call fails', async () => {
         // Mock fetch function to return arbitrary error message
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 500,
-            json: () => Promise.resolve({
-                error: "failed to delete note"
-            })
-        }));
+        mockFetchResponse({error: "failed to delete note"}, 500);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -281,13 +252,7 @@ describe('Edit existing note', () => {
 
     it('shows error in modal when edit API call fails', async () => {
         // Mock fetch function to return arbitrary error message
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 500,
-            json: () => Promise.resolve({
-                error: "failed to edit note"
-            })
-        }));
+        mockFetchResponse({error: "failed to edit note"}, 500);
 
         // Confirm arbitrary error does not appear on page
         expect(app.queryByTestId('error-modal-body')).toBeNull();

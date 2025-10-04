@@ -1,4 +1,5 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { fireEvent } from '@testing-library/react';
 import App from '../App';
 import { mockContext } from './mockContext';
@@ -52,30 +53,26 @@ describe('Plant with no photos (no default photo set)', () => {
         expect(app.queryByTestId('defaultPhotoThumbnail')).toBeNull();
 
         // Mock fetch to return expected response when 2 photos are uploaded
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "2 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2024-03-21T10:52:03+00:00",
-                        photo: "/media/images/photo1.jpg",
-                        thumbnail: "/media/images/photo1_thumb.webp",
-                        preview: "/media/images/photo1_preview.webp",
-                        key: 1774
-                    },
-                    {
-                        timestamp: "2024-03-22T10:52:03+00:00",
-                        photo: "/media/images/photo2.jpg",
-                        thumbnail: "/media/images/photo2_thumb.webp",
-                        preview: "/media/images/photo2_preview.webp",
-                        key: 1775
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "2 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-03-21T10:52:03+00:00",
+                    photo: "/media/images/photo1.jpg",
+                    thumbnail: "/media/images/photo1_thumb.webp",
+                    preview: "/media/images/photo1_preview.webp",
+                    key: 1774
+                },
+                {
+                    timestamp: "2024-03-22T10:52:03+00:00",
+                    photo: "/media/images/photo2.jpg",
+                    thumbnail: "/media/images/photo2_thumb.webp",
+                    preview: "/media/images/photo2_preview.webp",
+                    key: 1775
+                }
+            ]
+        });
 
         // Simulate user uploading 2 photos with PhotoModal
         await user.click(app.getByText('Add photos'));
@@ -140,23 +137,19 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Mock fetch to return expected response when a new photo is uploaded
         // Timestamp is more recent than any existing photos
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "1 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2025-03-21T10:52:03+00:00",
-                        photo: "/media/images/photo_new.jpg",
-                        thumbnail: "/media/images/photo_new_thumb.webp",
-                        preview: "/media/images/photo_new_preview.webp",
-                        key: 1774
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "1 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2025-03-21T10:52:03+00:00",
+                    photo: "/media/images/photo_new.jpg",
+                    thumbnail: "/media/images/photo_new_thumb.webp",
+                    preview: "/media/images/photo_new_preview.webp",
+                    key: 1774
+                }
+            ]
+        });
 
         // Simulate user uploading newer photo with PhotoModal
         await user.click(app.getByText('Add photos'));
@@ -180,14 +173,10 @@ describe('Plant with photos but no configured default photo', () => {
         );
 
         // Mock fetch to return expected response when 2 newest photos are deleted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: [2, 3],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [2, 3],
+            failed: []
+        });
 
         // Simulate user entering delete mode, selecting first 2 photos
         await user.click(app.getByText('Edit timeline'));
@@ -212,14 +201,10 @@ describe('Plant with photos but no configured default photo', () => {
         );
 
         // Mock fetch to return expected response when all 3 photos are deleted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: [1, 2, 3],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [1, 2, 3],
+            failed: []
+        });
 
         // Simulate user entering delete mode, selecting all 3 photos
         await user.click(app.getByText('Edit timeline'));
@@ -275,23 +260,19 @@ describe('Plant with default photo configured', () => {
 
         // Mock fetch to return expected response when a new photo is uploaded
         // Timestamp is more recent than any existing photos
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "1 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2025-03-21T10:52:03+00:00",
-                        photo: "/media/images/photo_new.jpg",
-                        thumbnail: "/media/images/photo_new_thumb.webp",
-                        preview: "/media/images/photo_new_preview.webp",
-                        key: 1774
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "1 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2025-03-21T10:52:03+00:00",
+                    photo: "/media/images/photo_new.jpg",
+                    thumbnail: "/media/images/photo_new_thumb.webp",
+                    preview: "/media/images/photo_new_preview.webp",
+                    key: 1774
+                }
+            ]
+        });
 
         // Simulate user uploading newer photo with PhotoModal
         await user.click(app.getByText('Add photos'));
@@ -315,14 +296,10 @@ describe('Plant with default photo configured', () => {
         );
 
         // Mock fetch to return expected response when default photo is deleted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: [3],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [3],
+            failed: []
+        });
 
         // Simulate user entering delete mode, selecting default photo
         await user.click(app.getByText('Edit timeline'));

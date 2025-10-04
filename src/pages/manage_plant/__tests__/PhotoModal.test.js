@@ -1,5 +1,6 @@
 import React from 'react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
 import { ReduxProvider } from '../store';
@@ -56,30 +57,26 @@ describe('PhotoModal', () => {
 
     it('sends correct payload when photos are uploaded', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "2 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2024-03-21T10:52:03+00:00",
-                        image: "/media/images/photo1.jpg",
-                        thumbnail: "/media/images/photo1_thumb.webp",
-                        preview: "/media/images/photo1_preview.webp",
-                        key: 12
-                    },
-                    {
-                        timestamp: "2024-03-22T10:52:03+00:00",
-                        image: "/media/images/photo2.jpg",
-                        thumbnail: "/media/images/photo2_thumb.webp",
-                        preview: "/media/images/photo2_preview.webp",
-                        key: 13
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "2 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-03-21T10:52:03+00:00",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: "/media/images/photo1_thumb.webp",
+                    preview: "/media/images/photo1_preview.webp",
+                    key: 12
+                },
+                {
+                    timestamp: "2024-03-22T10:52:03+00:00",
+                    image: "/media/images/photo2.jpg",
+                    thumbnail: "/media/images/photo2_thumb.webp",
+                    preview: "/media/images/photo2_preview.webp",
+                    key: 13
+                }
+            ]
+        });
 
         // Create 2 mock files
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -110,23 +107,19 @@ describe('PhotoModal', () => {
 
     it('removes selected files in PhotoModal when X buttons are clicked', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "1 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2024-03-21T10:52:03",
-                        image: "/media/images/photo1.jpg",
-                        thumbnail: "/media/images/photo1_thumb.webp",
-                        preview: "/media/images/photo1_preview.webp",
-                        key: 12
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "1 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-03-21T10:52:03",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: "/media/images/photo1_thumb.webp",
+                    preview: "/media/images/photo1_preview.webp",
+                    key: 12
+                }
+            ]
+        });
 
         // Create 2 mock files
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -154,18 +147,14 @@ describe('PhotoModal', () => {
     it('shows error modal when photo uploads fail', async () => {
         // Mock fetch function to return expected response when photos have
         // unsupported file type
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "0 photo(s)",
-                failed: [
-                    "photo1.heic",
-                    "photo2.heic"
-                ],
-                urls: []
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "0 photo(s)",
+            failed: [
+                "photo1.heic",
+                "photo2.heic"
+            ],
+            urls: []
+        });
 
         // Create 2 mock files
         const file1 = new File(['file1'], 'file1.heic', { type: 'image/heic' });
@@ -225,13 +214,7 @@ describe('PhotoModal', () => {
 
     it('shows error in modal when API call fails', async () => {
         // Mock fetch function to return arbitrary error message
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 500,
-            json: () => Promise.resolve({
-                error: "failed to upload photos"
-            })
-        }));
+        mockFetchResponse({error: "failed to upload photos"}, 500);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -282,13 +265,7 @@ describe('PhotoModal', () => {
     // Note: this response can only be received if SINGLE_USER_MODE is disabled
     it('redirects to login page if user is not signed in', async () => {
         // Mock fetch function to simulate user with an expired session
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 401,
-            json: () => Promise.resolve({
-                error: "authentication required"
-            })
-        }));
+        mockFetchResponse({error: "authentication required"}, 401);
 
         // Simulate user selecting a file and clicking upload
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });

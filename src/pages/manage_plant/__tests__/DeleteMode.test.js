@@ -1,4 +1,5 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { postHeaders } from 'src/testUtils/headers';
 import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
@@ -109,18 +110,15 @@ describe('Delete mode', () => {
 
     it('sends correct payload when events are deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: ["2024-03-01T15:45:44+00:00"],
-                    fertilize: ["2024-03-01T15:45:44+00:00"],
-                    prune: ["2024-01-01T15:45:44+00:00"],
-                    repot: ["2024-01-01T15:45:44+00:00"]
-                },
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: ["2024-03-01T15:45:44+00:00"],
+                fertilize: ["2024-03-01T15:45:44+00:00"],
+                prune: ["2024-01-01T15:45:44+00:00"],
+                repot: ["2024-01-01T15:45:44+00:00"]
+            },
+            failed: []
+        });
 
         // Enter delete mode
         await user.click(app.getByText('Edit timeline'));
@@ -173,14 +171,10 @@ describe('Delete mode', () => {
 
     it('sends correct payload when notes are deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: ["2024-03-01T15:45:44+00:00"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: ["2024-03-01T15:45:44+00:00"],
+            failed: []
+        });
 
         // Enter delete mode
         await user.click(app.getByText('Edit timeline'));
@@ -211,14 +205,10 @@ describe('Delete mode', () => {
 
     it('sends correct payload when photos are deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: [2],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [2],
+            failed: []
+        });
 
         // Enter delete mode
         await user.click(app.getByText('Edit timeline'));
@@ -345,18 +335,15 @@ describe('Delete mode', () => {
         );
 
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: ["2024-02-29T10:20:15+00:00"],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                },
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: ["2024-02-29T10:20:15+00:00"],
+                fertilize: [],
+                prune: [],
+                repot: []
+            },
+            failed: []
+        });
 
         // Hold delete button, confirm only second newest event (selected in
         // current session) posted (confirms first session selection was cleared)
@@ -382,12 +369,7 @@ describe('Delete mode', () => {
 
     it('shows error modal if error received while deleting event', async () => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to delete event"
-            })
-        }));
+        mockFetchResponse({error: "failed to delete event"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -411,12 +393,7 @@ describe('Delete mode', () => {
 
     it('shows error modal if error received while deleting photo', async () => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to delete photos"
-            })
-        }));
+        mockFetchResponse({error: "failed to delete photos"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -438,12 +415,7 @@ describe('Delete mode', () => {
 
     it('shows error modal if error received while deleting note', async () => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to delete note"
-            })
-        }));
+        mockFetchResponse({error: "failed to delete note"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();

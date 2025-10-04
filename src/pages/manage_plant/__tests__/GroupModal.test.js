@@ -1,5 +1,6 @@
 import React from 'react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import GroupModal from '../GroupModal';
 import { ReduxProvider } from '../store';
 import { mockContext, mockGroupOptions } from './mockContext';
@@ -25,10 +26,7 @@ describe('GroupModal', () => {
 
     it('renders card for each object in /get_add_to_group_options response', async () => {
         // Mock fetch to return group options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockGroupOptions })
-        }));
+        mockFetchResponse({ options: mockGroupOptions });
 
         // Render modal
         const component = render(
@@ -51,10 +49,7 @@ describe('GroupModal', () => {
 
     it('renders "No groups" if /get_add_to_group_options response is empty', async () => {
         // Mock fetch to return empty group options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: {} })
-        }));
+        mockFetchResponse({ options: {} });
 
         // Render modal
         const component = render(
@@ -130,10 +125,7 @@ describe('GroupModal', () => {
 
     it('sends the correct payload when "Add to group" modal submitted', async () => {
         // Mock fetch to return group options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockGroupOptions })
-        }));
+        mockFetchResponse({ options: mockGroupOptions });
 
         // Render modal, fast forward so options load
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });

@@ -1,4 +1,5 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
 import DeleteModeFooter from '../DeleteModeFooter';
@@ -162,18 +163,15 @@ describe('Timeline regressions', () => {
         expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toHaveTextContent('Repoted');
 
         // Mock fetch to return response when repot event is deleted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: [],
-                    fertilize: [],
-                    prune: [],
-                    repot: ["2024-02-11T04:19:23+00:00"]
-                },
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: [],
+                fertilize: [],
+                prune: [],
+                repot: ["2024-02-11T04:19:23+00:00"]
+            },
+            failed: []
+        });
 
         // Enter delete mode, select repot event
         await user.click(app.getByText('Edit timeline'));
@@ -231,18 +229,15 @@ describe('Timeline regressions', () => {
         expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toHaveTextContent('Repoted');
 
         // Mock fetch to return response when repot event is deleted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: [],
-                    fertilize: [],
-                    prune: [],
-                    repot: ["2024-02-11T04:19:23+00:00"]
-                },
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: [],
+                fertilize: [],
+                prune: [],
+                repot: ["2024-02-11T04:19:23+00:00"]
+            },
+            failed: []
+        });
 
         // Enter delete mode, select repot event
         await user.click(app.getByText('Edit timeline'));

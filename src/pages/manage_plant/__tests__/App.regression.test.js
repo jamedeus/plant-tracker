@@ -1,5 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -42,14 +43,11 @@ describe('App', () => {
     // both would update when plant was watered (fertilized should not update)
     it('updates correct relative time when plant is watered', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:01+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Confirm both relative times show "never"
         expect(app.getByText("Never watered")).not.toBeNull();
@@ -67,14 +65,11 @@ describe('App', () => {
     // neither would update when plant was fertilzized (fertilized should update)
     it('updates correct relative time when plant is fertilized', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "fertilize",
-                timestamp: "2024-03-01T20:00:01+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "fertilize",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Confirm both relative times show "never"
         expect(app.getByText("Never watered")).not.toBeNull();
@@ -92,15 +87,12 @@ describe('App', () => {
     // refreshed because the submit listener did not add them to history state
     it('updates calendar when repot modal is submitted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "repot",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                pot_size: 8
-            })
-        }));
+        mockFetchResponse({
+            action: "repot",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-03-01T20:00:00+00:00",
+            pot_size: 8
+        });
 
         // Confirm no repot events are shown on calendar
         const calendar = app.getByText('March 2024').closest('.react-calendar');
@@ -121,30 +113,26 @@ describe('App', () => {
     // after uploading photos, confusing UX and easy to upload duplicates
     it('clears the PhotoModal file input after uploading photos', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "2 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2024-03-21T10:52:03.123+00:00",
-                        image: "/media/images/photo1.jpg",
-                        thumbnail: "/media/images/photo1_thumb.webp",
-                        preview: "/media/images/photo1_preview.webp",
-                        key: 1
-                    },
-                    {
-                        timestamp: "2024-03-22T10:52:04.123+00:00",
-                        image: "/media/images/photo2.jpg",
-                        thumbnail: "/media/images/photo2_thumb.webp",
-                        preview: "/media/images/photo2_preview.webp",
-                        key: 2
-                    },
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "2 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-03-21T10:52:03.123+00:00",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: "/media/images/photo1_thumb.webp",
+                    preview: "/media/images/photo1_preview.webp",
+                    key: 12
+                },
+                {
+                    timestamp: "2024-03-22T10:52:04.123+00:00",
+                    image: "/media/images/photo2.jpg",
+                    thumbnail: "/media/images/photo2_thumb.webp",
+                    preview: "/media/images/photo2_preview.webp",
+                    key: 13
+                }
+            ]
+        });
 
         // Create 2 mock files
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -177,14 +165,11 @@ describe('App', () => {
     // the layout to break if duplicate events were created.
     it('only shows one dot for each event type per calendar day', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:01+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click water button, confirm only 1 WaterEvent is displayed
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -199,16 +184,12 @@ describe('App', () => {
     // newly created note had a timestamp earlier than existing notes
     it('renders multiple notes on the same day in chronological order', async () => {
         // Simulate a new note added on April 1 with text the "Later timestamp"
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                action: "add_note",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-04-01T12:00:00+00:00",
-                note_text: "Later timestamp"
-            })
-        }));
+        mockFetchResponse({
+            action: "add_note",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-04-01T12:00:00+00:00",
+            note_text: "Later timestamp"
+        });
 
         // Open Note Modal, enter text (doesn't matter, will render text from
         // mock API response above), save first note
@@ -219,16 +200,12 @@ describe('App', () => {
 
         // Simulate a second note with an earlier timestamp on the same day
         // with the text "Earlier timestamp"
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                action: "add_note",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-04-01T10:00:00+00:00",
-                note_text: "Earlier timestamp"
-            })
-        }));
+        mockFetchResponse({
+            action: "add_note",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-04-01T10:00:00+00:00",
+            note_text: "Earlier timestamp"
+        });
 
         // Save second note (created later, but earlier timestamp)
         await user.click(app.getByText('Add note'));
@@ -253,36 +230,27 @@ describe('App', () => {
     // order on every day of the timeline for readability).
     it('renders EventMarkers in a predictable order', async () => {
         // Simulate user creating prune event
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "prune",
-                timestamp: "2024-03-01T20:00:01+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "prune",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
         await user.click(app.getByRole("button", {name: "Prune"}));
 
         // Simulate user creating fertilize event
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "fertilize",
-                timestamp: "2024-03-01T20:00:01+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "fertilize",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
         await user.click(app.getByRole("button", {name: "Fertilize"}));
 
         // Simulate user creating water event
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:01+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Get div containing both EventMarkers, confirm "Watered" is first
@@ -291,6 +259,7 @@ describe('App', () => {
         expect(eventMarkers.children[1].textContent).toContain('Fertilized');
         expect(eventMarkers.children[2].textContent).toContain('Pruned');
     });
+
     // Original bug: timelineSlice.eventDeleted assumed there was only 1 event
     // of each type per day. If there were multiple water events at different
     // times on the same day and only 1 was deleted eventDeleted would remove
@@ -312,27 +281,21 @@ describe('App', () => {
             dateTimeInput,
             {target: {value: '2024-03-01T12:00:00'}}
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:00+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
         await user.click(app.getByRole("button", {name: "Water"}));
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-03-01T12:00:01'}}
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:01+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm dot appeared on calendar, EventMarker appeared in timeline
@@ -344,23 +307,20 @@ describe('App', () => {
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: ["2024-03-01T20:00:01+00:00"],
-                    fertilize: [],
-                    prune: [],
-                    repot: [],
-                },
-                failed: {
-                    water: [],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                }
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: ["2024-03-01T20:00:01+00:00"],
+                fertilize: [],
+                prune: [],
+                repot: [],
+            },
+            failed: {
+                water: [],
+                fertilize: [],
+                prune: [],
+                repot: []
+            }
+        });
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);
@@ -387,14 +347,11 @@ describe('App', () => {
 
         // Create 2 water events at 10pm February 29 and 2am March 1 (different
         // days in PST but same day in UTC)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T06:00:00+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T06:00:00+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
         const dateTimeInput = app.container.querySelector('input');
         fireEvent.input(
             dateTimeInput,
@@ -403,14 +360,11 @@ describe('App', () => {
         // First event (February 29)
         await user.click(app.getByRole("button", {name: "Water"}));
 
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T10:00:00+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T10:00:00+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-03-01T02:00:00'}}
@@ -427,23 +381,20 @@ describe('App', () => {
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: ["2024-03-01T10:00:00+00:00"],
-                    fertilize: [],
-                    prune: [],
-                    repot: [],
-                },
-                failed: {
-                    water: [],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                }
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: ["2024-03-01T10:00:00+00:00"],
+                fertilize: [],
+                prune: [],
+                repot: [],
+            },
+            failed: {
+                water: [],
+                fertilize: [],
+                prune: [],
+                repot: []
+            }
+        });
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);
@@ -463,30 +414,26 @@ describe('App', () => {
     // This prevented the event from rendering to the timeline or calendar.
     it('does not fail to add first event to day with existing photos/notes', async () => {
         // Mock expected API response when 2 photos are uploaded
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "2 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2024-03-01T20:52:03+00:00",
-                        image: "/media/images/photo1.jpg",
-                        thumbnail: "/media/images/photo1_thumb.webp",
-                        preview: "/media/images/photo1_preview.webp",
-                        key: 12
-                    },
-                    {
-                        timestamp: "2024-03-01T20:54:03+00:00",
-                        image: "/media/images/photo2.jpg",
-                        thumbnail: "/media/images/photo2_thumb.webp",
-                        preview: "/media/images/photo2_preview.webp",
-                        key: 13
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "2 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-03-01T20:52:03+00:00",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: "/media/images/photo1_thumb.webp",
+                    preview: "/media/images/photo1_preview.webp",
+                    key: 12
+                },
+                {
+                    timestamp: "2024-03-01T20:54:03+00:00",
+                    image: "/media/images/photo2.jpg",
+                    thumbnail: "/media/images/photo2_thumb.webp",
+                    preview: "/media/images/photo2_preview.webp",
+                    key: 13
+                }
+            ]
+        });
 
         // Simulate user opening photo modal, selecting 2 files, and submitting
         await user.click(app.getByText('Add photos'));
@@ -503,14 +450,11 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
 
         // Mock fetch function to return expected response when water event added
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:54:03+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:54:03+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click water button (datetime input contains same day as photos)
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -530,30 +474,26 @@ describe('App', () => {
     // in the last photo being deleted from the array.
     it('removes the correct photo from timelineDays state when photos are deleted', async () => {
         // Mock expected API response when 2 photos are uploaded
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "2 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2024-03-01T20:54:03+00:00",
-                        image: "/media/images/photo1.jpg",
-                        thumbnail: "/media/images/photo1_thumb.webp",
-                        preview: "/media/images/photo1_preview.webp",
-                        key: 12
-                    },
-                    {
-                        timestamp: "2024-03-01T20:52:03+00:00",
-                        image: "/media/images/photo2.jpg",
-                        thumbnail: "/media/images/photo2_thumb.webp",
-                        preview: "/media/images/photo2_preview.webp",
-                        key: 13
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "2 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-03-01T20:54:03+00:00",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: "/media/images/photo1_thumb.webp",
+                    preview: "/media/images/photo1_preview.webp",
+                    key: 12
+                },
+                {
+                    timestamp: "2024-03-01T20:52:03+00:00",
+                    image: "/media/images/photo2.jpg",
+                    thumbnail: "/media/images/photo2_thumb.webp",
+                    preview: "/media/images/photo2_preview.webp",
+                    key: 13
+                }
+            ]
+        });
 
         // Simulate user opening photo modal, selecting 2 files, and submitting
         await user.click(app.getByText('Add photos'));
@@ -570,14 +510,10 @@ describe('App', () => {
         expect(app.getByTitle('12:54 PM - March 1, 2024')).not.toBeNull();
 
         // Mock fetch to return expected response when newest photo is deleted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: [12],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [12],
+            failed: []
+        });
 
         // Simulate user entering delete mode, selecting first photo
         await user.click(app.getByText('Edit timeline'));
@@ -601,23 +537,19 @@ describe('App', () => {
         expect(app.queryByText('Edit timeline')).toBeNull();
 
         // Mock expected API response when photo is uploaded
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "1 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2024-06-21T20:52:03+00:00",
-                        image: "/media/images/photo1.jpg",
-                        thumbnail: "/media/images/photo1_thumb.webp",
-                        preview: "/media/images/photo1_preview.webp",
-                        key: 1
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "1 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-06-21T20:52:03+00:00",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: "/media/images/photo1_thumb.webp",
+                    preview: "/media/images/photo1_preview.webp",
+                    key: 1
+                }
+            ]
+        });
 
         // Simulate user opening photo modal, selecting 1 photo, and submitting
         await user.click(app.getByText('Add photos'));
@@ -633,14 +565,10 @@ describe('App', () => {
         expect(app.queryByText('Edit timeline')).not.toBeNull();
 
         // Mock fetch function to return expected response when photo is deleted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: [1],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [1],
+            failed: []
+        });
 
         // Simulate user entering delete mode, selecting photo
         await user.click(app.getByText('Edit timeline'));
@@ -661,14 +589,11 @@ describe('App', () => {
         expect(app.queryByText('Edit timeline')).toBeNull();
 
         // Mock fetch function to return expected response when water event added
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T15:45:44+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T15:45:44+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click water button
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -677,46 +602,40 @@ describe('App', () => {
         expect(app.queryByText('Edit timeline')).not.toBeNull();
 
         // Mock fetch function to return expected response when water event deleted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: ["2024-03-01T15:45:44+00:00"],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                },
-                failed: {
-                    water: [],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                }
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: ["2024-03-01T15:45:44+00:00"],
+                fertilize: [],
+                prune: [],
+                repot: []
+            },
+            failed: {
+                water: [],
+                fertilize: [],
+                prune: [],
+                repot: []
+            }
+        });
 
         // Start deleting events, select water event
         await user.click(app.getByText('Edit timeline'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: ["2024-03-01T15:45:44+00:00"],
-                    fertilize: [],
-                    prune: [],
-                    repot: [],
-                },
-                failed: {
-                    water: [],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                }
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: ["2024-03-01T15:45:44+00:00"],
+                fertilize: [],
+                prune: [],
+                repot: [],
+            },
+            failed: {
+                water: [],
+                fertilize: [],
+                prune: [],
+                repot: []
+            }
+        });
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);

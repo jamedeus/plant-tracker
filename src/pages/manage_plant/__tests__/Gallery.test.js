@@ -1,4 +1,5 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -240,20 +241,16 @@ describe('Gallery', () => {
         );
 
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                default_photo: {
-                    set: true,
-                    timestamp: '2024-03-23T10:52:03+00:00',
-                    image: '/media/images/photo3.jpg',
-                    thumbnail: '/media/thumbnails/photo3_thumb.webp',
-                    preview: '/media/previews/photo3_preview.webp',
-                    key: 3
-                }
-            })
-        }));
+        mockFetchResponse({
+            default_photo: {
+                set: true,
+                timestamp: '2024-03-23T10:52:03+00:00',
+                image: '/media/images/photo3.jpg',
+                thumbnail: '/media/thumbnails/photo3_thumb.webp',
+                preview: '/media/previews/photo3_preview.webp',
+                key: 3
+            }
+        });
 
         // Simulate user opening dropdown and clicking "Set default photo"
         await user.click(app.getByLabelText('Gallery options'));
@@ -281,11 +278,7 @@ describe('Gallery', () => {
         );
 
         // Mock fetch function to return expected error message
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 404,
-            json: () => Promise.resolve({error: "unable to find photo"})
-        }));
+        mockFetchResponse({error: "unable to find photo"}, 404);
 
         // Confirm error toast is not visible
         expect(app.queryByText("Failed to set default photo")).toBeNull();
@@ -456,14 +449,10 @@ describe('Gallery', () => {
 
     it('deletes photo when user clicks delete on confirmation overlay', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: [3],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [3],
+            failed: []
+        });
 
         // Click gallery dropdown option, confirm gallery appears
         await user.click(app.getByRole('button', {name: 'Gallery'}));
@@ -513,13 +502,7 @@ describe('Gallery', () => {
 
     it('shows error toast when delete photo clicked if request fails', async () => {
         // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 404,
-            json: () => Promise.resolve({
-                error: "failed to delete photo"
-            })
-        }));
+        mockFetchResponse({error: "failed to delete photo"}, 404);
 
         // Click gallery dropdown option, confirm gallery appears
         await user.click(app.getByRole('button', {name: 'Gallery'}));

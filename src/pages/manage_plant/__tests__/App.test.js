@@ -2,6 +2,7 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -78,16 +79,13 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/get_plant_species_options');
 
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                name: "Test Plant",
-                species: "Calathea",
-                pot_size: 4,
-                description: "This is a plant with a long description",
-                display_name: "Test Plant"
-            })
-        }));
+        mockFetchResponse({
+            name: "Test Plant",
+            species: "Calathea",
+            pot_size: 4,
+            description: "This is a plant with a long description",
+            display_name: "Test Plant"
+        });
 
         // Click submit button inside edit modal
         const modal = document.body.querySelector(".modal-box");
@@ -142,14 +140,11 @@ describe('App', () => {
 
     it('sends correct payload when plant is watered', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:00+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click water button
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -168,14 +163,11 @@ describe('App', () => {
 
     it('sends correct payload when plant is fertilized', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "fertilize",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "fertilize",
+            timestamp: "2024-03-01T20:00:00+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click fertilize button
         await user.click(app.getByRole("button", {name: "Fertilize"}));
@@ -194,14 +186,11 @@ describe('App', () => {
 
     it('sends correct payload when plant is pruned', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "prune",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "prune",
+            timestamp: "2024-03-01T20:00:00+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click prune button
         await user.click(app.getByRole("button", {name: "Prune"}));
@@ -220,13 +209,7 @@ describe('App', () => {
 
     it('shows error toast if duplicate event error received', async() => {
         // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 409,
-            json: () => Promise.resolve({
-                error: "event with same timestamp already exists"
-            })
-        }));
+        mockFetchResponse({error: "event with same timestamp already exists"}, 409);
 
         // Click water button
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -235,13 +218,7 @@ describe('App', () => {
     // Note: this response can only be received if SINGLE_USER_MODE is disabled
     it('redirects to login page if events added while user not signed in', async () => {
         // Mock fetch function to simulate user with an expired session
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 401,
-            json: () => Promise.resolve({
-                error: "authentication required"
-            })
-        }));
+        mockFetchResponse({error: "authentication required"}, 401);
 
         // Click water button
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -252,14 +229,10 @@ describe('App', () => {
 
     it('sends correct payload when "Remove from group" clicked', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                action: "remove_plant_from_group",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "remove_plant_from_group",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click "Remove from group" button in details dropdown
         await user.click(app.getByTitle(/Remove plant from group/));
@@ -276,15 +249,12 @@ describe('App', () => {
 
     it('sends correct payload when RepotModal is submitted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "repot",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                pot_size: 8
-            })
-        }));
+        mockFetchResponse({
+            action: "repot",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-03-01T20:00:00+00:00",
+            pot_size: 8
+        });
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
@@ -310,15 +280,12 @@ describe('App', () => {
 
     it('detects when custom pot size is selected in RepotModal', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "repot",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-03-01T20:00:00+00:00",
-                pot_size: 5
-            })
-        }));
+        mockFetchResponse({
+            action: "repot",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-03-01T20:00:00+00:00",
+            pot_size: 5
+        });
 
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
@@ -367,13 +334,10 @@ describe('App', () => {
 
     it('sends correct payload when DivisionModal is submitted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "divide",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "divide",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Click "Divide plant" dropdown option (open modal)
         await user.click(app.getByText(/Divide plant/));
@@ -480,10 +444,7 @@ describe('App', () => {
         await user.click(app.getByTitle(/Remove plant from group/));
 
         // Mock fetch to return group options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockGroupOptions })
-        }));
+        mockFetchResponse({ options: mockGroupOptions });
 
         // Click "Add to group" button in details dropdown
         await user.click(app.getByTitle(/Add plant to group/));
@@ -494,26 +455,23 @@ describe('App', () => {
 
     it('removes event markers from timeline when events are deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: [
-                        "2024-03-01T15:45:44+00:00",
-                        "2024-02-29T10:20:15+00:00",
-                    ],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                },
-                failed: {
-                    water: [],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                }
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: [
+                    "2024-03-01T15:45:44+00:00",
+                    "2024-02-29T10:20:15+00:00",
+                ],
+                fertilize: [],
+                prune: [],
+                repot: []
+            },
+            failed: {
+                water: [],
+                fertilize: [],
+                prune: [],
+                repot: []
+            }
+        });
 
         // Confirm 2 water event icons exist
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
@@ -548,16 +506,12 @@ describe('App', () => {
 
     it('renders new notes in the timeline', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                action: "add_note",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-03-01T12:00:00+00:00",
-                note_text: "Started flowering"
-            })
-        }));
+        mockFetchResponse({
+            action: "add_note",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-03-01T12:00:00+00:00",
+            note_text: "Started flowering"
+        });
 
         // Get reference to timeline div (excluding NoteModal)
         const timeline = app.container.querySelector('.timeline-layout');
@@ -583,16 +537,12 @@ describe('App', () => {
 
     it('updates note text in timeline when note is edited', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                action: "edit_note",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-02-26T12:44:12+00:00",
-                note_text: "One of the older leaves is starting to turn yellow, pinched it off"
-            })
-        }));
+        mockFetchResponse({
+            action: "edit_note",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-02-26T12:44:12+00:00",
+            note_text: "One of the older leaves is starting to turn yellow, pinched it off"
+        });
 
         // Get reference to timeline div (excluding NoteModal)
         const timeline = app.container.querySelector('.timeline-layout');
@@ -621,15 +571,11 @@ describe('App', () => {
 
     it('removes notes from timeline when deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                deleted: ['2024-03-01T15:45:44+00:00'],
-                failed: [],
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            deleted: ['2024-03-01T15:45:44+00:00'],
+            failed: [],
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
 
         // Get reference to timeline div (excluding NoteModal)
         const timeline = app.container.querySelector('.timeline-layout');
@@ -661,30 +607,26 @@ describe('App', () => {
 
     it('renders new photos in the timeline', async () => {
         // Mock expected API response when 2 photos are uploaded
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                uploaded: "2 photo(s)",
-                failed: [],
-                urls: [
-                    {
-                        timestamp: "2024-06-21T20:52:03+00:00",
-                        image: "/media/images/photo1.jpg",
-                        thumbnail: "/media/images/photo1_thumb.webp",
-                        preview: "/media/images/photo1_preview.webp",
-                        key: 12
-                    },
-                    {
-                        timestamp: "2024-06-21T20:54:03+00:00",
-                        image: "/media/images/photo2.jpg",
-                        thumbnail: "/media/images/photo2_thumb.webp",
-                        preview: "/media/images/photo2_preview.webp",
-                        key: 13
-                    }
-                ]
-            })
-        }));
+        mockFetchResponse({
+            uploaded: "2 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-06-21T20:52:03+00:00",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: "/media/images/photo1_thumb.webp",
+                    preview: "/media/images/photo1_preview.webp",
+                    key: 12
+                },
+                {
+                    timestamp: "2024-06-21T20:54:03+00:00",
+                    image: "/media/images/photo2.jpg",
+                    thumbnail: "/media/images/photo2_thumb.webp",
+                    preview: "/media/images/photo2_preview.webp",
+                    key: 13
+                }
+            ]
+        });
 
         // Get reference to timeline div
         const timeline = app.container.querySelector('.timeline-layout');
@@ -721,14 +663,11 @@ describe('App', () => {
             dateTimeInput,
             {target: {value: '2025-02-20T12:00:00'}}
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: '2025-02-20T20:00:00+00:00',
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: '2025-02-20T20:00:00+00:00',
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm 2025 menu option was added
@@ -741,23 +680,20 @@ describe('App', () => {
         await user.click(
             within(app.getByTestId("2025-02-20-events")).getByText("Watered")
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: {
-                    water: ["2025-02-20T20:00:00+00:00"],
-                    fertilize: [],
-                    prune: [],
-                    repot: [],
-                },
-                failed: {
-                    water: [],
-                    fertilize: [],
-                    prune: [],
-                    repot: []
-                }
-            })
-        }));
+        mockFetchResponse({
+            deleted: {
+                water: ["2025-02-20T20:00:00+00:00"],
+                fertilize: [],
+                prune: [],
+                repot: [],
+            },
+            failed: {
+                water: [],
+                fertilize: [],
+                prune: [],
+                repot: []
+            }
+        });
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);
