@@ -1,4 +1,4 @@
-import { useState, memo, lazy, Suspense } from 'react';
+import { useState, useEffect, memo, lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
@@ -48,6 +48,13 @@ const QrScannerButton = memo(function QrScannerButton({ otherScannerOpen, closeO
     const closeScanner = () => {
         setIsOpen(false);
     };
+
+    // Close scanner if user opens the other scanner
+    useEffect(() => {
+        if (isOpen && otherScannerOpen) {
+            closeScanner();
+        }
+    }, [isOpen, otherScannerOpen]);
 
     return (
         <>

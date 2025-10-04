@@ -188,4 +188,31 @@ describe('Plant ChangeQrScanner', () => {
             { replace: true }
         );
     });
+
+    // Regresssion test, was possible to open navigation scanner (top right
+    // button) then open change QR scanner (button inside title drawer) on top
+    // of it. When close button was clicked only change QR scanner closed
+    // (confusing UX, looks like nothing happened, have to close second one).
+    it('closes navigation scanner if user opens change QR scanner', async () => {
+        // Confirm qr-scanner-overlay is not visible
+        expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
+
+        // Click top right corner button to open navigation scanner
+        await user.click(app.getByTitle('Open QR scanner'));
+
+        // Confirm qr-scanner-overlay appeared
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(app.getByTestId('qr-scanner-overlay')).toBeInTheDocument();
+
+        // Open change QR scanner
+        await user.click(app.getByText('Change QR Code'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        // Confirm scanner open (replaced original scanner)
+        expect(app.getByTestId('qr-scanner-overlay')).toBeInTheDocument();
+
+        // Click close button, confirm neither scanner is open
+        await user.click(app.getByTitle('Close QR scanner'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
+    });
 });
