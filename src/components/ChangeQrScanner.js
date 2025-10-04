@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { showToast } from './Toast';
 import { openErrorModal } from './ErrorModal';
-import CloseButtonIcon from './CloseButtonIcon';
 import LoadingAnimation from './LoadingAnimation';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import uuidPropType from 'src/types/uuidPropType';
@@ -50,24 +49,6 @@ ScannedUrlButton.propTypes = {
     onExit: PropTypes.func.isRequired,
     oldUuid: uuidPropType.isRequired,
     updateUuid: PropTypes.func.isRequired
-};
-
-// Button that closes QR scanner (replaces top-right navbar button)
-export const CloseChangeQrScannerButton = memo(function CloseChangeQrScannerButton({ onClose }) {
-    return (
-        <button
-            className="btn btn-ghost btn-circle size-12"
-            title={'Close QR scanner'}
-            aria-label={'Close QR scanner'}
-            onClick={onClose}
-        >
-            <CloseButtonIcon />
-        </button>
-    );
-});
-
-CloseChangeQrScannerButton.propTypes = {
-    onClose: PropTypes.func.isRequired
 };
 
 // Button that opens QR scanner (rendered in portal)

@@ -10,9 +10,7 @@ import RemovePlantsFooter from './RemovePlantsFooter';
 import AddEventsFooter from 'src/components/AddEventsFooter';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
-import ChangeQrScannerButton, {
-    CloseChangeQrScannerButton
-} from 'src/components/ChangeQrScanner';
+import ChangeQrScannerButton from 'src/components/ChangeQrScanner';
 import { Tab } from '@headlessui/react';
 import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
@@ -132,11 +130,10 @@ function Layout() {
                 menuOptions={DropdownMenuOptions}
                 title={groupDetails.display_name}
                 onTitleClick={toggleTitleDrawerOpen}
-                topRightButton={changeQrScannerOpen ? (
-                    <CloseChangeQrScannerButton onClose={closeChangeQrScanner} />
-                ) : (
-                    <QrScannerButton />
-                )}
+                topRightButton={<QrScannerButton
+                    otherScannerOpen={changeQrScannerOpen}
+                    closeOtherScanner={closeChangeQrScanner}
+                />}
             />
 
             <TitleDrawer open={titleDrawerOpen} onClose={closeTitleDrawer}>

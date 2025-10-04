@@ -10,7 +10,6 @@ import { setChangeQrModalHandle } from './modals';
 import Timeline from './Timeline';
 import { useSelector, useDispatch } from 'react-redux';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
-import { CloseChangeQrScannerButton } from 'src/components/ChangeQrScanner';
 import DetailsDrawer from './DetailsDrawer';
 import DeleteModeFooter from './DeleteModeFooter';
 import { FaGear } from "react-icons/fa6";
@@ -98,11 +97,10 @@ function Layout() {
                 menuOptions={DropdownMenuOptions}
                 title={plantDetails.display_name}
                 onTitleClick={toggleDetailsDrawerOpen}
-                topRightButton={changeQrScannerOpen ? (
-                    <CloseChangeQrScannerButton onClose={closeChangeQrScanner} />
-                ) : (
-                    <QrScannerButton />
-                )}
+                topRightButton={<QrScannerButton
+                    otherScannerOpen={changeQrScannerOpen}
+                    closeOtherScanner={closeChangeQrScanner}
+                />}
             />
 
             <DetailsDrawer

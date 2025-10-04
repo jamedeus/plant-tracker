@@ -34,8 +34,13 @@ ScannedUrlButton.propTypes = {
 };
 
 // Button that toggles QR scanner visibility (rendered in portal)
-const QrScannerButton = memo(function QrScannerButton() {
+// If optional otherScannerOpen prop is true button becomes close button that
+// calls closeOtherScanner (use to close ChangeQrScanner with navbar button)
+const QrScannerButton = memo(function QrScannerButton({ otherScannerOpen, closeOtherScanner}) {
     const [isOpen, setIsOpen] = useState(false);
+
+    // Change to close button if either scanner is open
+    const closeButton = isOpen || otherScannerOpen;
 
     const toggleScanner = () => {
         setIsOpen(!isOpen);
@@ -49,11 +54,11 @@ const QrScannerButton = memo(function QrScannerButton() {
         <>
             <button
                 className="btn btn-ghost btn-circle size-12"
-                title={isOpen ? 'Close QR scanner' : 'Open QR scanner'}
-                aria-label={isOpen ? 'Close QR scanner' : 'Open QR scanner'}
-                onClick={toggleScanner}
+                title={closeButton ? 'Close QR scanner' : 'Open QR scanner'}
+                aria-label={closeButton ? 'Close QR scanner' : 'Open QR scanner'}
+                onClick={otherScannerOpen ? closeOtherScanner : toggleScanner}
             >
-                {isOpen ? (
+                {closeButton ? (
                     <CloseButtonIcon />
                 ) : (
                     <LuScanSearch className="size-6" />
@@ -78,5 +83,10 @@ const QrScannerButton = memo(function QrScannerButton() {
         </>
     );
 });
+
+QrScannerButton.propTypes = {
+    otherScannerOpen: PropTypes.bool,
+    closeOtherScanner: PropTypes.func
+};
 
 export default QrScannerButton;
