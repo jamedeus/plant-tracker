@@ -41,6 +41,7 @@ function Layout() {
         dispatch(titleDrawerOpened(!titleDrawerOpen));
     }, [titleDrawerOpen, dispatch]);
 
+    // Controls change QR scanner overlay open/close state
     const changeQrScannerOpen = useSelector((state) => state.interface.changeQrScannerOpen);
     const closeChangeQrScanner = useCallback(() => {
         dispatch(changeQrScannerOpened(false));

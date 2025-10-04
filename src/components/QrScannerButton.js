@@ -13,13 +13,12 @@ const QrScanner = lazy(
 );
 
 // Button shown at bottom of scanner when URL detected (navigates to URL)
-export const ScannedUrlButton = ({ scannedUrl, onExit }) => {
+export const ScannedUrlButton = ({ onExit, scannedUrl }) => {
     return (
         <Link
             to={scannedUrl}
             className='btn btn-accent rounded-full text-lg'
             data-testid="scanned-url"
-            key={scannedUrl}
             onClick={onExit}
             discover="none"
         >
@@ -29,8 +28,8 @@ export const ScannedUrlButton = ({ scannedUrl, onExit }) => {
 };
 
 ScannedUrlButton.propTypes = {
-    scannedUrl: PropTypes.string.isRequired,
-    onExit: PropTypes.func.isRequired
+    onExit: PropTypes.func.isRequired,
+    scannedUrl: PropTypes.string.isRequired
 };
 
 // Button that toggles QR scanner visibility (rendered in portal)

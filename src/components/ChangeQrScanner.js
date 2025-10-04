@@ -14,14 +14,16 @@ const QrScanner = lazy(
 );
 
 // Button shown at bottom of scanner when URL detected (navigates to URL)
-const ScannedUrlButton = ({ scannedUrl, onExit, oldUuid, updateUuid }) => {
+// Takes scannedUrl and onExit from QrScanner, oldUuid and updateUuid from
+// ChangeQrScannerButton (passed down from Layout component that owns state)
+const ScannedUrlButton = ({ onExit, scannedUrl, oldUuid, updateUuid }) => {
     // Makes /change_uuid call to confirm new QR code
     const handleAcceptNewQrCode = async () => {
         const response = await sendPostRequest('/change_uuid', {
             uuid: oldUuid,
             new_id: scannedUrl.split('/manage/')[1]
         });
-        // Close scanner and show success toast
+        // Close scanner, show success toast, call updateUuid with new UUID
         if (response.ok) {
             onExit();
             showToast('QR code changed!', 'green', 3000);
@@ -45,14 +47,20 @@ const ScannedUrlButton = ({ scannedUrl, onExit, oldUuid, updateUuid }) => {
 };
 
 ScannedUrlButton.propTypes = {
-    scannedUrl: PropTypes.string.isRequired,
     onExit: PropTypes.func.isRequired,
+    scannedUrl: PropTypes.string.isRequired,
     oldUuid: uuidPropType.isRequired,
     updateUuid: PropTypes.func.isRequired
 };
 
-// Button that opens QR scanner (rendered in portal)
-const ChangeQrScannerButton = memo(function ChangeQrScannerButton({ oldUuid, updateUuid, isOpen, onOpen, onClose }) {
+// Button that opens QR scanner in change QR mode (rendered in portal)
+const ChangeQrScannerButton = memo(function ChangeQrScannerButton({
+    isOpen,
+    onOpen,
+    onClose,
+    oldUuid,
+    updateUuid
+}) {
     return (
         <>
             <button className="btn h-8 mt-4 w-full" onClick={onOpen}>
@@ -70,7 +78,10 @@ const ChangeQrScannerButton = memo(function ChangeQrScannerButton({ oldUuid, upd
                     <QrScanner
                         onExit={onClose}
                         ScannedUrlButton={ScannedUrlButton}
-                        ScannedUrlButtonProps={{oldUuid: oldUuid, updateUuid: updateUuid}}
+                        ScannedUrlButtonProps={{
+                            oldUuid: oldUuid,
+                            updateUuid: updateUuid
+                        }}
                         availableOnly={true}
                         instructionsText='Scan the new QR code'
                     />
@@ -82,11 +93,11 @@ const ChangeQrScannerButton = memo(function ChangeQrScannerButton({ oldUuid, upd
 });
 
 ChangeQrScannerButton.propTypes = {
-    oldUuid: uuidPropType.isRequired,
-    updateUuid: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onOpen: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    oldUuid: uuidPropType.isRequired,
+    updateUuid: PropTypes.func.isRequired,
 };
 
 export default ChangeQrScannerButton;

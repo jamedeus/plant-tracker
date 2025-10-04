@@ -45,6 +45,7 @@ function Layout() {
         setChangeQrScannerOpen(false);
     }, []);
 
+    // Takes new UUID from /change_uuid response after user confirms new QR code
     const updateUuid = useCallback((newUuid) => {
         dispatch(groupDetailsUpdateed({uuid: newUuid}));
         // Update URL to new UUID
@@ -151,11 +152,11 @@ function Layout() {
                     Edit Details
                 </button>
                 <ChangeQrScannerButton
-                    oldUuid={groupDetails.uuid}
-                    updateUuid={updateUuid}
                     isOpen={changeQrScannerOpen}
                     onOpen={openChangeQrScanner}
                     onClose={closeChangeQrScanner}
+                    oldUuid={groupDetails.uuid}
+                    updateUuid={updateUuid}
                 />
             </TitleDrawer>
 

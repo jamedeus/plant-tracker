@@ -169,9 +169,9 @@ const QrScanner = ({
             >
                 {scannedUrl ? (
                     <ScannedUrlButton
-                        scannedUrl={scannedUrl}
                         key={scannedUrl}
                         onExit={onExit}
+                        scannedUrl={scannedUrl}
                         {...ScannedUrlButtonProps}
                     />
                 ) : (

@@ -41,6 +41,7 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
         dispatch(changeQrScannerOpened(false));
     } , [dispatch]);
 
+    // Takes new UUID from /change_uuid response after user confirms new QR code
     const updateUuid = useCallback((newUuid) => {
         dispatch(plantDetailsUpdated({uuid: newUuid}));
         // Update URL to new UUID
@@ -144,11 +145,11 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
                 </button>
             </div>
             <ChangeQrScannerButton
-                oldUuid={plantDetails.uuid}
-                updateUuid={updateUuid}
                 isOpen={changeQrScannerOpen}
                 onOpen={openChangeQrScanner}
                 onClose={closeChangeQrScanner}
+                oldUuid={plantDetails.uuid}
+                updateUuid={updateUuid}
             />
         </TitleDrawer>
     );
