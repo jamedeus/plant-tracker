@@ -9,7 +9,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import ChangeQrScannerButton from 'src/components/ChangeQrScanner';
 import { FaPlus } from 'react-icons/fa6';
 import { IoMdCloseCircle } from "react-icons/io";
-import { plantDetailsUpdated, plantRemovedFromGroup } from './plantSlice';
+import { plantRemovedFromGroup } from './plantSlice';
 import {
     titleDrawerOpened,
     changeQrScannerOpened,
@@ -40,14 +40,6 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
     const closeChangeQrScanner = useCallback(() => {
         dispatch(changeQrScannerOpened(false));
     } , [dispatch]);
-
-    // Takes new UUID from /change_uuid response after user confirms new QR code
-    const updateUuid = useCallback((newUuid) => {
-        dispatch(plantDetailsUpdated({uuid: newUuid}));
-        // Update URL to new UUID
-        const newUrl = window.location.pathname.replace(plantDetails.uuid, newUuid);
-        window.history.replaceState(window.history.state, '', newUrl);
-    }, [dispatch]);
 
     const closeDrawer = useCallback(() => {
         dispatch(titleDrawerOpened(false));
@@ -149,7 +141,6 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
                 onOpen={openChangeQrScanner}
                 onClose={closeChangeQrScanner}
                 oldUuid={plantDetails.uuid}
-                updateUuid={updateUuid}
             />
         </TitleDrawer>
     );

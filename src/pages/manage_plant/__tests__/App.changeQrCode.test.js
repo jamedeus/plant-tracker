@@ -7,16 +7,25 @@ import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
+import { useNavigate } from 'react-router-dom';
 import 'jest-canvas-mock';
 
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
+    return { ...actual, useNavigate: jest.fn() };
+});
+
 describe('Plant ChangeQrScanner', () => {
-    let app, user;
+    let app, user, mockNavigate;
 
     beforeAll(() => {
         // Simulate SINGLE_USER_MODE disabled on backend
         globalThis.USER_ACCOUNTS_ENABLED = true;
         // Mock all browser APIs used by QrScanner
         applyQrScannerMocks();
+        // Mock react-router navigate (confirm revalidated with new UUID)
+        mockNavigate = jest.fn();
+        useNavigate.mockReturnValue(mockNavigate);
     });
 
     beforeEach(() => {
@@ -144,28 +153,10 @@ describe('Plant ChangeQrScanner', () => {
     });
 
     // Regression test, when first implemented the old UUID was not updated in
-    // redux, so any subsequent actions which post UUID to backend (creating
-    // events etc) would fail (UUID no longer matches any plant in database)
-    it('updates UUID in redux store when user changes QR code', async () => {
-        // Mock fetch function to return expected response when plant watered
-        mockFetchResponse({
-            action: "water",
-            timestamp: "2024-03-01T20:00:00+00:00",
-            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-        });
-
-        // Click water button, confirm payload contains current UUID
-        await user.click(app.getByRole("button", {name: "Water"}));
-        expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
-            method: 'POST',
-            body: JSON.stringify({
-                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                event_type: "water",
-                timestamp: "2024-03-01T20:00:00.000Z"
-            }),
-            headers: postHeaders
-        });
-
+    // react-router history, so navigating with back button and then forward
+    // button would return to old UUID (now registration page). Now calls
+    // navigate to replace the URL and revalidate (updates UUID in redux).
+    it('updates UUID in current URL when user changes QR code', async () => {
         // Simulate valid QR code with available UUID entering the viewport
         mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
         mockFetchResponse({available: true});
@@ -191,24 +182,10 @@ describe('Plant ChangeQrScanner', () => {
         });
         expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
 
-        // Mock fetch function to return expected response when plant watered (new UUID)
-        mockFetchResponse({
-            action: "water",
-            timestamp: "2024-03-01T20:00:00+00:00",
-            plant: "5c256d96-ec7d-408a-83c7-3f86d63968b2"
-        });
-        await act(async () => await jest.advanceTimersByTimeAsync(100));
-
-        // Click water button, confirm payload contains updated UUID (not old)
-        await user.click(app.getByRole("button", {name: "Water"}));
-        expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
-            method: 'POST',
-            body: JSON.stringify({
-                plant_id: "5c256d96-ec7d-408a-83c7-3f86d63968b2",
-                event_type: "water",
-                timestamp: "2024-03-01T20:00:00.000Z"
-            }),
-            headers: postHeaders
-        });
+        // Confirm URL was updated to new UUID (revalidates page, updates redux)
+        expect(mockNavigate).toHaveBeenCalledWith(
+            `/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2`,
+            { replace: true }
+        );
     });
 });

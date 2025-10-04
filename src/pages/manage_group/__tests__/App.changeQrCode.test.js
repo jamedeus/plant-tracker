@@ -7,16 +7,25 @@ import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
+import { useNavigate } from 'react-router-dom';
 import 'jest-canvas-mock';
 
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
+    return { ...actual, useNavigate: jest.fn() };
+});
+
 describe('Group ChangeQrScanner', () => {
-    let app, user;
+    let app, user, mockNavigate;
 
     beforeAll(() => {
         // Simulate SINGLE_USER_MODE disabled on backend
         globalThis.USER_ACCOUNTS_ENABLED = true;
         // Mock all browser APIs used by QrScanner
         applyQrScannerMocks();
+        // Mock react-router navigate (confirm revalidated with new UUID)
+        mockNavigate = jest.fn();
+        useNavigate.mockReturnValue(mockNavigate);
     });
 
     beforeEach(() => {
@@ -144,36 +153,10 @@ describe('Group ChangeQrScanner', () => {
     });
 
     // Regression test, when first implemented the old UUID was not updated in
-    // redux, so any subsequent actions which post UUID to backend (editing
-    // details etc) would fail (UUID no longer matches any plant in database)
+    // react-router history, so navigating with back button and then forward
+    // button would return to old UUID (now registration page). Now calls
+    // navigate to replace the URL and revalidate (updates UUID in redux).
     it('updates UUID in redux store when user changes QR code', async () => {
-        // Mock fetch function to return expected response when details edited
-        mockFetchResponse({
-            name: "Test group",
-            location: "Middle shelf",
-            description: "",
-            display_name: "Test group"
-        });
-
-        // Open edit modal, click submit button
-        await user.click(app.getByRole('button', {name: 'Edit Details'}));
-        await act(async () => await jest.advanceTimersByTimeAsync(100));
-        await user.click(app.getByRole('button', {name: 'Edit'}));
-        // const modal = document.body.querySelector(".modal-box");
-        // await user.click(within(modal).getByText("Edit"));
-
-        // Confirm correct data posted to /edit_group_details endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/edit_group_details', {
-            method: 'POST',
-            body: JSON.stringify({
-                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                name: "Test group",
-                location: "Middle shelf",
-                description: "",
-            }),
-            headers: postHeaders
-        });
-
         // Simulate valid QR code with available UUID entering the viewport
         mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
         mockFetchResponse({available: true});
@@ -199,31 +182,10 @@ describe('Group ChangeQrScanner', () => {
         });
         expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
 
-        // Mock fetch function to return expected response when details edited
-        mockFetchResponse({
-            name: "Test group",
-            location: "Middle shelf",
-            description: "",
-            display_name: "Test group"
-        });
-
-        // Open edit modal, click submit button
-        await user.click(app.getByRole('button', {name: 'Edit Details'}));
-        await act(async () => await jest.advanceTimersByTimeAsync(100));
-        await user.click(app.getByRole('button', {name: 'Edit'}));
-        // const modal = document.body.querySelector(".modal-box");
-        // await user.click(within(modal).getByText("Edit"));
-
-        // Confirm payload contains updated UUID (not old)
-        expect(global.fetch).toHaveBeenCalledWith('/edit_group_details', {
-            method: 'POST',
-            body: JSON.stringify({
-                group_id: "5c256d96-ec7d-408a-83c7-3f86d63968b2",
-                name: "Test group",
-                location: "Middle shelf",
-                description: "",
-            }),
-            headers: postHeaders
-        });
+        // Confirm URL was updated to new UUID (revalidates page, updates redux)
+        expect(mockNavigate).toHaveBeenCalledWith(
+            `/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2`,
+            { replace: true }
+        );
     });
 });

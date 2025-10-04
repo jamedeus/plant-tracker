@@ -15,7 +15,7 @@ import { Tab } from '@headlessui/react';
 import { FaPlus } from 'react-icons/fa6';
 import clsx from 'clsx';
 import 'src/css/index.css';
-import { groupDetailsUpdateed, updatePlantLastEventTimes } from './groupSlice';
+import { updatePlantLastEventTimes } from './groupSlice';
 import EventButtons from './EventButtons';
 
 function Layout() {
@@ -44,14 +44,6 @@ function Layout() {
     const closeChangeQrScanner = useCallback(() => {
         setChangeQrScannerOpen(false);
     }, []);
-
-    // Takes new UUID from /change_uuid response after user confirms new QR code
-    const updateUuid = useCallback((newUuid) => {
-        dispatch(groupDetailsUpdateed({uuid: newUuid}));
-        // Update URL to new UUID
-        const newUrl = window.location.pathname.replace(groupDetails.uuid, newUuid);
-        window.history.replaceState(window.history.state, '', newUrl);
-    }, [dispatch]);
 
     // Buttons add events to all plants if 0, only selected plants if 1
     // Set with tabs above event timestamp input
@@ -156,7 +148,6 @@ function Layout() {
                     onOpen={openChangeQrScanner}
                     onClose={closeChangeQrScanner}
                     oldUuid={groupDetails.uuid}
-                    updateUuid={updateUuid}
                 />
             </TitleDrawer>
 

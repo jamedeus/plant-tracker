@@ -1,4 +1,5 @@
 import { memo, lazy, Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { showToast } from './Toast';
@@ -14,21 +15,25 @@ const QrScanner = lazy(
 );
 
 // Button shown at bottom of scanner when URL detected (navigates to URL)
-// Takes scannedUrl and onExit from QrScanner, oldUuid and updateUuid from
-// ChangeQrScannerButton (passed down from Layout component that owns state)
-const ScannedUrlButton = ({ onExit, scannedUrl, oldUuid, updateUuid }) => {
+// Gets scannedUrl and onExit from QrScanner, oldUuid from ScannedUrlButtonProps
+// (must be passed to ChangeQrScannerButton by parent)
+const ScannedUrlButton = ({ onExit, scannedUrl, oldUuid }) => {
+    const navigate = useNavigate();
     // Makes /change_uuid call to confirm new QR code
     const handleAcceptNewQrCode = async () => {
         const response = await sendPostRequest('/change_uuid', {
             uuid: oldUuid,
             new_id: scannedUrl.split('/manage/')[1]
         });
-        // Close scanner, show success toast, call updateUuid with new UUID
+        // Close scanner, show success toast, update current URL (revalidates)
         if (response.ok) {
             onExit();
             showToast('QR code changed!', 'green', 3000);
             const data = await response.json();
-            updateUuid(data.new_uuid);
+            navigate(
+                window.location.pathname.replace(oldUuid, data.new_uuid),
+                { replace: true }
+            );
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -49,8 +54,7 @@ const ScannedUrlButton = ({ onExit, scannedUrl, oldUuid, updateUuid }) => {
 ScannedUrlButton.propTypes = {
     onExit: PropTypes.func.isRequired,
     scannedUrl: PropTypes.string.isRequired,
-    oldUuid: uuidPropType.isRequired,
-    updateUuid: PropTypes.func.isRequired
+    oldUuid: uuidPropType.isRequired
 };
 
 // Button that opens QR scanner in change QR mode (rendered in portal)
@@ -58,8 +62,7 @@ const ChangeQrScannerButton = memo(function ChangeQrScannerButton({
     isOpen,
     onOpen,
     onClose,
-    oldUuid,
-    updateUuid
+    oldUuid
 }) {
     return (
         <>
@@ -78,10 +81,7 @@ const ChangeQrScannerButton = memo(function ChangeQrScannerButton({
                     <QrScanner
                         onExit={onClose}
                         ScannedUrlButton={ScannedUrlButton}
-                        ScannedUrlButtonProps={{
-                            oldUuid: oldUuid,
-                            updateUuid: updateUuid
-                        }}
+                        ScannedUrlButtonProps={{ oldUuid: oldUuid }}
                         availableOnly={true}
                         instructionsText='Scan the new QR code'
                     />
@@ -96,8 +96,7 @@ ChangeQrScannerButton.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onOpen: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
-    oldUuid: uuidPropType.isRequired,
-    updateUuid: PropTypes.func.isRequired,
+    oldUuid: uuidPropType.isRequired
 };
 
 export default ChangeQrScannerButton;
