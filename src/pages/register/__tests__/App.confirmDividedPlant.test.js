@@ -1,6 +1,7 @@
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
-import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext, mockDividingFrom } from './mockContext';
@@ -114,13 +115,7 @@ describe('Register page while plant division in progress', () => {
         await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Baby test plant');
 
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                success: 'plant registered'
-            })
-        }));
+        mockFetchResponse({success: 'plant registered'});
 
         // Click Save button
         await user.click(app.getByText('Save'));
@@ -153,13 +148,7 @@ describe('Register page while plant division in progress', () => {
         await user.type(app.getByLabelText('Pot size'), '6');
 
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                success: 'plant registered'
-            })
-        }));
+        mockFetchResponse({success: 'plant registered'});
 
         // Click Save button
         await user.click(app.getByText('Save'));

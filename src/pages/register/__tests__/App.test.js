@@ -1,5 +1,6 @@
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { postHeaders } from 'src/testUtils/headers';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -79,13 +80,7 @@ describe('App', () => {
 
     it('sends the correct payload when plant form is submitted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                success: 'plant registered'
-            })
-        }));
+        mockFetchResponse({success: 'plant registered'});
 
         // Fill in form fields
         await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Test plant');
@@ -112,13 +107,7 @@ describe('App', () => {
 
     it('sends the correct payload when group form is submitted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                success: 'group registered'
-            })
-        }));
+        mockFetchResponse({success: 'group registered'});
 
         // Click Group button
         await user.click(app.getByText('Group'));
@@ -146,13 +135,7 @@ describe('App', () => {
 
     it('shows error modal if registration fails', async () => {
         // Mock fetch function to return error response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            redirected: false,
-            json: () => Promise.resolve({
-                error: "Failed to register plant"
-            })
-        }));
+        mockFetchResponse({error: "Failed to register plant"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -242,13 +225,7 @@ describe('App', () => {
     // Note: this response can only be received if SINGLE_USER_MODE is disabled
     it('redirects to login page if user is not signed in', async () => {
         // Mock fetch function to simulate user with an expired session
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 401,
-            json: () => Promise.resolve({
-                error: "authentication required"
-            })
-        }));
+        mockFetchResponse({error: "authentication required"}, 401);
 
         // Fill in form fields
         await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Test plant');

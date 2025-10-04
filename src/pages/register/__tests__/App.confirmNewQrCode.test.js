@@ -1,6 +1,7 @@
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
-import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext, mockChangingPlantQrCode } from './mockContext';
@@ -88,12 +89,7 @@ describe('Register page while changing QR code in progress', () => {
 
     it('sends correct payload when confirm button is clicked', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                uuid: '07919189-514d-4ec1-a967-8af553dfa7e8'
-            })
-        }));
+        mockFetchResponse({uuid: '07919189-514d-4ec1-a967-8af553dfa7e8'});
 
         // Mock window.location to simulate register new QR code page
         mockCurrentURL('https://plants.lan/manage/07919189-514d-4ec1-a967-8af553dfa7e8');
@@ -117,12 +113,7 @@ describe('Register page while changing QR code in progress', () => {
 
     it('shows error modal if error received after confirm button clicked', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to change QR code"
-            })
-        }));
+        mockFetchResponse({error: "failed to change QR code"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -140,13 +131,7 @@ describe('Register page while changing QR code in progress', () => {
     // Note: this response can only be received if SINGLE_USER_MODE is disabled
     it('redirects to login page when confirm button clicked if user is not signed in', async () => {
         // Mock fetch function to simulate user with an expired session
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 401,
-            json: () => Promise.resolve({
-                error: "authentication required"
-            })
-        }));
+        mockFetchResponse({error: "authentication required"}, 401);
 
         // Click confirm button
         await user.click(app.getByTitle('Change QR code'));

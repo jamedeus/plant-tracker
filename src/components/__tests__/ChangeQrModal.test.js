@@ -2,7 +2,7 @@ import React from 'react';
 import { ErrorModal } from 'src/components/ErrorModal';
 import ChangeQrModal, { openChangeQrModal } from '../ChangeQrModal';
 import { postHeaders } from 'src/testUtils/headers';
-import { waitFor } from '@testing-library/react';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 
 /* eslint react/prop-types: 0 */
 
@@ -40,13 +40,7 @@ describe('ChangeQrModal', () => {
 
     it('sends correct payload when OK button is clicked', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                success: "scan new QR code within 15 minutes to confirm"
-            })
-        }));
+        mockFetchResponse({success: "scan new QR code within 15 minutes to confirm"});
 
         // Click OK button
         await user.click(app.getByRole('button', {name: 'OK'}));
@@ -66,13 +60,7 @@ describe('ChangeQrModal', () => {
 
     it('shows error in modal when API call fails', async () => {
         // Mock fetch function to return arbitrary error message
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 500,
-            json: () => Promise.resolve({
-                error: "failed to cache UUID"
-            })
-        }));
+        mockFetchResponse({error: "failed to cache UUID"}, 500);
 
         // Confirm arbitrary error does not appear on page
         expect(app.queryByTestId('error-modal-body')).toBeNull();

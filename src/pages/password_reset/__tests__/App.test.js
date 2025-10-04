@@ -1,5 +1,6 @@
 import { Toast } from 'src/components/Toast';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 
 // Mock useNavigate to return a mock (confirm redirected to correct page)
@@ -41,11 +42,7 @@ describe('App', () => {
 
     it('sends expected payload when password is changed', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: "password_changed"})
-        }));
+        mockFetchResponse({success: "password_changed"});
 
         // Confirm submit button says "Change Password"
         expect(app.getByTestId('submit-button')).toHaveTextContent('Change Password');
@@ -76,11 +73,7 @@ describe('App', () => {
 
     it('submits change password form when user presses enter key', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: "password_changed"})
-        }));
+        mockFetchResponse({success: "password_changed"});
 
         // Simulate user entering new password twice
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
@@ -123,15 +116,13 @@ describe('App', () => {
 
     it('highlights new password fields if new passwords do not match', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({errors: {
+        mockFetchResponse({
+            errors: {
                 new_password2: [
                     "The two password fields didn\u2019t match."
                 ]
-            }})
-        }));
+            }
+        }, 400);
 
         // Confirm error text is not rendered
         expect(app.queryByText("The two password fields didn’t match.")).toBeNull();
@@ -150,11 +141,7 @@ describe('App', () => {
 
     it('shows generic error message if password change fails', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({errors: {__all__: ["Unexpected error."]}})
-        }));
+        mockFetchResponse({errors: {__all__: ["Unexpected error."]}}, 400);
 
         // Confirm error text is not rendered
         expect(app.queryByText("Failed to change password.")).toBeNull();

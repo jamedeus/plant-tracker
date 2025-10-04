@@ -2,6 +2,7 @@ import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 
 // Mock useNavigate to return a mock (confirm redirected to correct page)
@@ -55,11 +56,7 @@ describe('App', () => {
 
     it('sends correct payload when user logs in', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: "logged in"})
-        }));
+        mockFetchResponse({success: "logged in"});
 
         // Simulate user typing username and password
         await user.type(app.getByLabelText('Username'), 'carlosdanger');
@@ -83,11 +80,7 @@ describe('App', () => {
 
     it('redirects to URL in querystring after successful login', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: "logged in"})
-        }));
+        mockFetchResponse({success: "logged in"});
 
         // Add user profile url to "next" querystring parameter
         mockCurrentURL('https://plants.lan/accounts/login/?next=/accounts/profile/');
@@ -103,17 +96,13 @@ describe('App', () => {
 
     it('shows error if credentials are not accepted', async () => {
         // Mock fetch function to return invalid credentials error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({
-                errors: {
-                    __all__: [
-                        "Please enter a correct username and password. Note that both fields may be case-sensitive."
-                    ]
-                }
-            })
-        }));
+        mockFetchResponse({
+            errors: {
+                __all__: [
+                    "Please enter a correct username and password. Note that both fields may be case-sensitive."
+                ]
+            }
+        }, 400);
 
         // Confirm error text is not rendered
         expect(app.queryByText("Invalid username or password")).toBeNull();
@@ -134,17 +123,13 @@ describe('App', () => {
 
     it('sends correct payload when user requests password reset', async () => {
         // Mock fetch function to return invalid credentials error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({
-                errors: {
-                    __all__: [
-                        "Please enter a correct username and password. Note that both fields may be case-sensitive."
-                    ]
-                }
-            })
-        }));
+        mockFetchResponse({
+            errors: {
+                __all__: [
+                    "Please enter a correct username and password. Note that both fields may be case-sensitive."
+                ]
+            }
+        }, 400);
 
         // Simulate user typing credentials and logging in
         await user.type(app.getByLabelText('Username'), 'carlosdanger');
@@ -157,13 +142,7 @@ describe('App', () => {
         expect(app.queryByText(/Forgot password/)).not.toBeNull();
 
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                "success": "password reset email sent"
-            })
-        }));
+        mockFetchResponse({success: "password reset email sent"});
 
         // Confirm toast message is not visible
         expect(app.queryByText('Password reset email sent.')).toBeNull();
@@ -188,11 +167,7 @@ describe('App', () => {
 
     it('sends correct payload when user registers account', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: "account created"})
-        }));
+        mockFetchResponse({success: "account created"});
 
         // Click "Create account" link under login form
         await user.click(app.getByText('Create account'));
@@ -226,11 +201,7 @@ describe('App', () => {
 
     it('shows error text under username when backend rejects username', async () => {
         // Mock fetch function to return expected error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 409,
-            json: () => Promise.resolve({error: ["username already exists"]})
-        }));
+        mockFetchResponse({error: ["username already exists"]}, 409);
 
         // Click "Create account" link under login form
         await user.click(app.getByText('Create account'));
@@ -257,11 +228,7 @@ describe('App', () => {
 
     it('shows error text under email when backend rejects email', async () => {
         // Mock fetch function to return expected error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 409,
-            json: () => Promise.resolve({error: ["email already exists"]})
-        }));
+        mockFetchResponse({error: ["email already exists"]}, 409);
 
         // Click "Create account" link under login form
         await user.click(app.getByText('Create account'));
@@ -288,11 +255,7 @@ describe('App', () => {
 
     it('shows error text under password when backend rejects password', async () => {
         // Mock fetch function to return expected error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({error: ["This password is too common."]})
-        }));
+        mockFetchResponse({error: ["This password is too common."]}, 400);
 
         // Click "Create account" link under login form
         await user.click(app.getByText('Create account'));
@@ -319,11 +282,7 @@ describe('App', () => {
 
     it('highlights all required fields when a generic error is received', async () => {
         // Mock fetch function to return expected error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({error: ["failed to create account"]})
-        }));
+        mockFetchResponse({error: ["failed to create account"]}, 400);
 
         // Click "Create account" link under login form
         await user.click(app.getByText('Create account'));

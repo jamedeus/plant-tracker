@@ -1,6 +1,7 @@
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { postHeaders } from 'src/testUtils/headers';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 
 describe('App', () => {
@@ -32,20 +33,16 @@ describe('App', () => {
 
     it('sends expected payload when user details are edited', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                success: "details updated",
-                user_details: {
-                    username: "cdanger",
-                    email: "totally.not.anthony.weiner@gmail.com",
-                    first_name: "Bob",
-                    last_name: "Smith",
-                    date_joined: "2025-04-06T00:08:53.392806+00:00"
-                }
-            })
-        }));
+        mockFetchResponse({
+            success: "details updated",
+            user_details: {
+                username: "cdanger",
+                email: "totally.not.anthony.weiner@gmail.com",
+                first_name: "Bob",
+                last_name: "Smith",
+                date_joined: "2025-04-06T00:08:53.392806+00:00"
+            }
+        });
 
         // Confirm success toast is not rendered
         expect(app.queryByText('Details updated!')).toBeNull();
@@ -76,20 +73,16 @@ describe('App', () => {
 
     it('submits user details form when user presses enter key', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                success: "details updated",
-                user_details: {
-                    username: "cdanger",
-                    email: "totally.not.anthony.weiner@gmail.com",
-                    first_name: "Bob",
-                    last_name: "Smith",
-                    date_joined: "2025-04-06T00:08:53.392806+00:00"
-                }
-            })
-        }));
+        mockFetchResponse({
+            success: "details updated",
+            user_details: {
+                username: "cdanger",
+                email: "totally.not.anthony.weiner@gmail.com",
+                first_name: "Bob",
+                last_name: "Smith",
+                date_joined: "2025-04-06T00:08:53.392806+00:00"
+            }
+        });
 
         // Simulate user changing first and last name
         await user.clear(app.getByTestId('first_name_input'));
@@ -114,11 +107,7 @@ describe('App', () => {
 
     it('shows error toast when unable to update user details', async () => {
         // Mock fetch function to return expected error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({error: "failed to update details"})
-        }));
+        mockFetchResponse({error: "failed to update details"}, 400);
 
         // Confirm error toast is not rendered
         expect(app.queryByText('Unable to update details')).toBeNull();
@@ -136,11 +125,7 @@ describe('App', () => {
 
     it('sends expected payload when password is changed', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: "password_changed"})
-        }));
+        mockFetchResponse({success: "password_changed"});
 
         // Confirm success toast is not rendered
         expect(app.queryByText('Password changed!')).toBeNull();
@@ -169,11 +154,7 @@ describe('App', () => {
 
     it('submits change password form when user presses enter key', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: "password_changed"})
-        }));
+        mockFetchResponse({success: "password_changed"});
 
         // Simulate user entering old password and new password twice
         await user.type(app.getByLabelText('Old password'), 'password123');
@@ -192,15 +173,13 @@ describe('App', () => {
 
     it('highlights old password field if old password is incorrect', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({errors: {
+        mockFetchResponse({
+            errors: {
                 old_password: [
                     "Your old password was entered incorrectly. Please enter it again."
                 ]
-            }})
-        }));
+            }
+        }, 400);
 
         // Confirm error text is not rendered
         expect(app.queryByText('Old password incorrect')).toBeNull();
@@ -220,15 +199,13 @@ describe('App', () => {
 
     it('highlights new password fields if new passwords do not match', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({errors: {
+        mockFetchResponse({
+            errors: {
                 new_password2: [
                     "The two password fields didn\u2019t match."
                 ]
-            }})
-        }));
+            }
+        }, 400);
 
         // Confirm error text is not rendered
         expect(app.queryByText("The two password fields didn’t match.")).toBeNull();
@@ -249,11 +226,7 @@ describe('App', () => {
 
     it('sends request to resend verification email when link clicked', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: 'verification email sent'})
-        }));
+        mockFetchResponse({success: "verification email sent"});
 
         // Confirm toast is not visible
         expect(app.queryByText('Verification email sent!')).toBeNull();
@@ -268,11 +241,7 @@ describe('App', () => {
 
     it('shows error toast when unable to resend verification email', async () => {
         // Mock fetch function to return expected error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({error: "failed to send verification email"})
-        }));
+        mockFetchResponse({error: "failed to send verification email"}, 400);
 
         // Confirm toast is not visible
         expect(app.queryByText('Unable to send verification email')).toBeNull();
