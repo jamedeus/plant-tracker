@@ -2,7 +2,7 @@ import AppRoot from 'src/AppRoot';
 import { routes } from 'src/routes';
 import { createMemoryRouter } from 'react-router-dom';
 import { render, waitFor, cleanup } from '@testing-library/react';
-import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
+import FakeBarcodeDetector, { mockQrCodeInViewport } from 'src/testUtils/mockBarcodeDetector';
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
@@ -68,17 +68,7 @@ describe('SPA integration tests', () => {
         // Mock barcode-detector to simulate detecting a QR code with a domain
         // that matches the current URL
         mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
 
         // Click button to open scanner, confirm scanner appeared
         await user.click(getByTitle('Open QR scanner'));

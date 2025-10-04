@@ -1,10 +1,11 @@
 import React from 'react';
 import QrScanner from 'src/components/QrScanner';
 import QrScannerButton, { ScannedUrlButton } from 'src/components/QrScannerButton';
-import FakeBarcodeDetector from 'src/testUtils/mockBarcodeDetector';
-import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import { postHeaders } from 'src/testUtils/headers';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
+import FakeBarcodeDetector, { mockQrCodeInViewport } from 'src/testUtils/mockBarcodeDetector';
 import 'jest-canvas-mock';
 
 describe('QrScanner', () => {
@@ -16,6 +17,8 @@ describe('QrScanner', () => {
     });
 
     beforeEach(() => {
+        mockCurrentURL('https://plants.lan/');
+
         // Allow fast forwarding (skip debounce)
         jest.useFakeTimers({ doNotFake: ['Date'] });
 
@@ -69,20 +72,8 @@ describe('QrScanner', () => {
     });
 
     it('shows link to scanned URL when QR code detected', async () => {
-        // Mock barcode-detector to simulate detecting a QR code with a domain
-        // that matches the current URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
+        // Simulate QR code with a domain matching current URL entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
 
         // Open scanner, confirm instructions div is visible
         await user.click(component.getByRole('button'));
@@ -111,20 +102,8 @@ describe('QrScanner', () => {
     });
 
     it('does not show link to scanned URL if QR code domain is not part of app', async () => {
-        // Mock barcode-detector to simulate detecting a QR code with a domain
-        // that does NOT match the current URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
+        // Simulate QR code with a domain that does NOT match current URL entering the viewport
+        mockQrCodeInViewport('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 
         // Open scanner, fast forward until QR code detected
         await user.click(component.getByRole('button'));
@@ -138,20 +117,8 @@ describe('QrScanner', () => {
     });
 
     it('does not show scanned link when QR code does not contain a URL', async () => {
-        // Mock barcode-detector to simulate detecting a QR code that does not
-        // contain a URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'this QR code just contains text',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
+        // Simulate QR code that contains text (no URL) entering the viewport
+        mockQrCodeInViewport('this QR code just contains text');
 
         // Open scanner, fast forward until QR code detected
         await user.click(component.getByRole('button'));
@@ -170,6 +137,8 @@ describe('QrScanner availableOnly mode', () => {
     let component;
 
     beforeEach(() => {
+        mockCurrentURL('https://plants.lan/');
+
         // Allow fast forwarding (skip debounce)
         jest.useFakeTimers({ doNotFake: ['Date'] });
 
@@ -188,29 +157,10 @@ describe('QrScanner availableOnly mode', () => {
     });
 
     it('shows link to scanned URL when QR code with available UUID detected', async () => {
-        // Mock barcode-detector to simulate detecting a QR code with a domain
-        // that matches the current URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
-
+        // Simulate QR code with a domain matching current URL entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
         // Mock fetch function to simulate available URL
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                available: true
-            })
-        }));
+        mockFetchResponse({available: true});
 
         // Confirm instructions div is visible
         expect(component.getByText('Point the camera at a QR code')).toBeInTheDocument();
@@ -239,29 +189,10 @@ describe('QrScanner availableOnly mode', () => {
     });
 
     it('does not show link to scanned URL if QR code UUID is already registered', async () => {
-        // Mock barcode-detector to simulate detecting a QR code with a domain
-        // that matches the current URL
-        mockCurrentURL('https://plants.lan/');
-        jest.spyOn(FakeBarcodeDetector.prototype, 'detect').mockResolvedValue([{
-            rawValue: 'https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2',
-            boundingBox: { x: 0, y: 0, width: 200, height: 100 },
-            cornerPoints: [
-                { x: 0,   y: 0   },
-                { x: 200, y: 0   },
-                { x: 200, y: 100 },
-                { x: 0,   y: 100 }
-            ],
-            format: 'qr_code',
-        }]);
-
+        // Simulate QR code with a domain matching current URL entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
         // Mock fetch function to simulate URL already registered
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 409,
-            json: () => Promise.resolve({
-                available: false
-            })
-        }));
+        mockFetchResponse({available: false}, 409);
 
         // Confirm instructions div is visible
         expect(component.getByText('Point the camera at a QR code')).toBeInTheDocument();

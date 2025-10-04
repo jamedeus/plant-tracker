@@ -1,5 +1,6 @@
-import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import { mockQrCodeInViewport } from 'src/testUtils/mockBarcodeDetector';
 import App from '../App';
@@ -7,17 +8,6 @@ import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
 import 'jest-canvas-mock';
-
-// Mocks fetch function to simulate /is_uuid_available response (true or false)
-const mockIsUuidAvailableResponse = (available) => {
-    global.fetch = jest.fn(() => Promise.resolve({
-        ok: true,
-        status: available ? 200 : 409,
-        json: () => Promise.resolve({
-            available: available
-        })
-    }));
-};
 
 describe('Group ChangeQrScanner', () => {
     let app, user;
@@ -80,7 +70,7 @@ describe('Group ChangeQrScanner', () => {
     it('shows confirm button when available QR code is scanned', async () => {
         // Simulate valid QR code with available UUID entering the viewport
         mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
-        mockIsUuidAvailableResponse(true);
+        mockFetchResponse({available: true});
 
         // Open scanner, confirm instructions are visible, confirm button is not
         await user.click(app.getByText('Change QR Code'));
@@ -96,19 +86,14 @@ describe('Group ChangeQrScanner', () => {
     it('sends correct payload when confirm button clicked after scanning QR code', async () => {
         // Simulate valid QR code with available UUID entering the viewport
         mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
-        mockIsUuidAvailableResponse(true);
+        mockFetchResponse({available: true});
 
         // Open scanner, fast forward until QR code detected
         await user.click(app.getByText('Change QR Code'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return expected response when confirm clicked
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                new_uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'
-            })
-        }));
+        mockFetchResponse({new_uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'});
 
         // Confirm success message is not rendered
         expect(app.queryByText('QR code changed!')).toBeNull();
@@ -135,19 +120,14 @@ describe('Group ChangeQrScanner', () => {
     it('shows error modal if error received after confirm button clicked', async() => {
         // Simulate valid QR code with available UUID entering the viewport
         mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
-        mockIsUuidAvailableResponse(true);
+        mockFetchResponse({available: true});
 
         // Open scanner, fast forward until QR code detected
         await user.click(app.getByText('Change QR Code'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to change QR code"
-            })
-        }));
+        mockFetchResponse({error: "failed to change QR code"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -168,15 +148,12 @@ describe('Group ChangeQrScanner', () => {
     // details etc) would fail (UUID no longer matches any plant in database)
     it('updates UUID in redux store when user changes QR code', async () => {
         // Mock fetch function to return expected response when details edited
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                name: "Test group",
-                location: "Middle shelf",
-                description: "",
-                display_name: "Test group"
-            })
-        }));
+        mockFetchResponse({
+            name: "Test group",
+            location: "Middle shelf",
+            description: "",
+            display_name: "Test group"
+        });
 
         // Open edit modal, click submit button
         await user.click(app.getByRole('button', {name: 'Edit Details'}));
@@ -199,19 +176,14 @@ describe('Group ChangeQrScanner', () => {
 
         // Simulate valid QR code with available UUID entering the viewport
         mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
-        mockIsUuidAvailableResponse(true);
+        mockFetchResponse({available: true});
 
         // Open scanner, fast forward until QR code detected
         await user.click(app.getByText('Change QR Code'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return expected response when confirm clicked
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                new_uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'
-            })
-        }));
+        mockFetchResponse({new_uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'});
         // Click confirm button, confirm request made + overlay closed
         await user.click(app.getByTestId('confirm-new-qr-code-button'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
@@ -228,15 +200,12 @@ describe('Group ChangeQrScanner', () => {
         expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
 
         // Mock fetch function to return expected response when details edited
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                name: "Test group",
-                location: "Middle shelf",
-                description: "",
-                display_name: "Test group"
-            })
-        }));
+        mockFetchResponse({
+            name: "Test group",
+            location: "Middle shelf",
+            description: "",
+            display_name: "Test group"
+        });
 
         // Open edit modal, click submit button
         await user.click(app.getByRole('button', {name: 'Edit Details'}));
