@@ -1,5 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
@@ -71,16 +72,13 @@ describe('App', () => {
     // issues on the frontend but did cause unnecessary database queries.
     it('does not submit UUIDs that have already been deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            ],
+            failed: []
+        });
 
         // Enter edit mode, select first plant and first group checkboxes
         await user.click(app.getByTestId('edit_plants_option'));
@@ -128,16 +126,13 @@ describe('App', () => {
     // issues on the frontend but did cause unnecessary database queries.
     it('does not submit UUIDs that have already been archived', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            archived: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            ],
+            failed: []
+        });
 
         // Enter edit mode, select first plant and first group checkboxes
         await user.click(app.getByTestId('edit_plants_option'));
@@ -180,13 +175,10 @@ describe('App', () => {
         expect(app.queryByText('Archived plants')).toBeNull();
 
         // Mock fetch function to return expected response when plant is archived
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+            failed: []
+        });
 
         // Enter edit mode, click first checkbox, click archive button
         await user.click(app.getByTestId('edit_plants_option'));

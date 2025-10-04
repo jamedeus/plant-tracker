@@ -1,5 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
@@ -80,13 +81,10 @@ describe('App', () => {
 
     it('sends correct payload when plants are deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+            failed: []
+        });
 
         // Enter edit mode, click first checkbox (plant)
         await user.click(app.getByTestId('edit_plants_option'));
@@ -113,13 +111,10 @@ describe('App', () => {
 
     it('sends correct payload when plants are archived', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+            failed: []
+        });
 
         // Enter edit mode, click first checkbox (plant)
         await user.click(app.getByTestId('edit_plants_option'));
@@ -141,13 +136,10 @@ describe('App', () => {
 
     it('sends correct payload when groups are deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+            failed: []
+        });
 
         // Enter edit mode, select first group checkbox
         await user.click(app.getByTestId('edit_plants_option'));
@@ -174,13 +166,10 @@ describe('App', () => {
 
     it('sends correct payload when groups are archived', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+            failed: []
+        });
 
         // Enter edit mode, select first group checkbox
         await user.click(app.getByTestId('edit_plants_option'));
@@ -202,14 +191,10 @@ describe('App', () => {
 
     it('shows error modal when unable to delete plant or group', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({
-                deleted: [],
-                failed: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
-            })
-        }));
+        mockFetchResponse({
+            deleted: [],
+            failed: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+        }, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -236,14 +221,10 @@ describe('App', () => {
 
     it('shows error modal when unable to archive plant or group', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({
-                archived: [],
-                failed: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
-            })
-        }));
+        mockFetchResponse({
+            archived: [],
+            failed: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+        }, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -282,17 +263,14 @@ describe('App', () => {
 
     it('sends correct payload when selected plants are watered', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            ],
+            failed: []
+        });
 
         // Confirm plants were last watered 4 and 5 days ago respectively
         expect(app.queryAllByText(/5 days ago/).length).toBe(1);
@@ -332,17 +310,14 @@ describe('App', () => {
 
     it('sends correct payload when selected plants are fertilized', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "fertilize",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "fertilize",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            ],
+            failed: []
+        });
 
         // Click add events option, select first plant, click fertilize button
         await user.click(app.getByTestId('add_plants_option'));
@@ -370,17 +345,14 @@ describe('App', () => {
 
     it('sends correct payload when selected plants are pruned', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "prune",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "prune",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            ],
+            failed: []
+        });
 
         // Click add events option, select first plant, click prune button
         await user.click(app.getByTestId('add_plants_option'));
@@ -450,17 +422,14 @@ describe('App', () => {
 
     it('changes AddEventsFooter number selected to success message when request made', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "fertilize",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "fertilize",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            ],
+            failed: []
+        });
 
         // Click add events option, select both plants, confirm correct text
         await user.click(app.getByTestId('add_plants_option'));
@@ -488,12 +457,7 @@ describe('App', () => {
 
     it('shows error modal if error received while bulk adding events', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to bulk add events"
-            })
-        }));
+        mockFetchResponse({error: "failed to bulk add events"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();

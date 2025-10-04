@@ -1,6 +1,7 @@
 import { fireEvent } from '@testing-library/react';
-import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
@@ -83,13 +84,10 @@ describe('App', () => {
 
     it('sends correct payload when plants are deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+            failed: []
+        });
 
         // Click plants column title, click first checkbox (plant)
         await user.click(app.getByText('Plants (2)'));
@@ -116,13 +114,10 @@ describe('App', () => {
 
     it('sends correct payload when plants are un-archived', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+            failed: []
+        });
 
         // Click plants column title, click first checkbox (plant)
         await user.click(app.getByText('Plants (2)'));
@@ -144,13 +139,10 @@ describe('App', () => {
 
     it('sends correct payload when groups are deleted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+            failed: []
+        });
 
         // Click groups column title, select first group checkbox
         await user.click(app.getByText('Groups (2)'));
@@ -189,13 +181,10 @@ describe('App', () => {
 
     it('sends correct payload when groups are un-archived', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+            failed: []
+        });
 
         // Click groups column title, select first group checkbox
         await user.click(app.getByText('Groups (2)'));
@@ -217,18 +206,15 @@ describe('App', () => {
 
     it('redirects to overview when last plant/group is un-archived', async () => {
         // Mock fetch to simulate successfully un-archiving all plants and groups
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                archived: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            archived: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+            ],
+            failed: []
+        });
 
         // Click groups column title, click all checkboxes (2 plants 2 groups)
         await user.click(app.getByText('Groups (2)'));
@@ -246,16 +232,13 @@ describe('App', () => {
 
     it('redirects to overview when last plant/group is deleted', async () => {
         // Mock fetch to simulate successfully deleting all groups
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+            ],
+            failed: []
+        });
 
         // Click groups column title, click both group checkboxes
         await user.click(app.getByText('Groups (2)'));
@@ -275,16 +258,13 @@ describe('App', () => {
         expect(globalMockNavigate).not.toHaveBeenCalled();
 
         // Mock fetch to simulate successfully deleting all plants
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                deleted: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            deleted: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
+            ],
+            failed: []
+        });
 
         // Click plants column title, click both plant checkboxes
         await user.click(app.getByText('Plants (2)'));
