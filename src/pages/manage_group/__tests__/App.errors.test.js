@@ -2,6 +2,7 @@ import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext, mockPlantOptions } from './mockContext';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { act } from 'react';
 
 describe('App', () => {
@@ -36,12 +37,7 @@ describe('App', () => {
 
     it('shows error modal if error received while editing details', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to edit group details"
-            })
-        }));
+        mockFetchResponse({error: "failed to edit group details"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -64,12 +60,7 @@ describe('App', () => {
 
     it('shows error modal if error received while bulk add events', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to bulk add events"
-            })
-        }));
+        mockFetchResponse({error: "failed to bulk add events"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
@@ -91,10 +82,7 @@ describe('App', () => {
         expect(app.queryByText(/failed to add plants to group/)).toBeNull();
 
         // Mock fetch to return options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockPlantOptions })
-        }));
+        mockFetchResponse({ options: mockPlantOptions });
 
         // Open AddPlantsModal modal
         await user.click(app.getByTestId("add_plants_option"));
@@ -104,12 +92,7 @@ describe('App', () => {
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to add plants to group"
-            })
-        }));
+        mockFetchResponse({error: "failed to add plants to group"}, 400);
 
         // Simulate user selecting first plant in modal and clicking add
         await user.click(app.getByLabelText('Select Another test plant'));
@@ -125,12 +108,7 @@ describe('App', () => {
 
     it('shows error modal if error received while removing plants from group', async() => {
         // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                error: "failed to remove plants from group"
-            })
-        }));
+        mockFetchResponse({error: "failed to remove plants from group"}, 400);
 
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();

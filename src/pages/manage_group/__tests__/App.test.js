@@ -1,4 +1,5 @@
 import { postHeaders } from 'src/testUtils/headers';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -65,15 +66,12 @@ describe('App', () => {
 
     it('sends correct payload when edit modal is submitted', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                name: "Test group",
-                location: "Middle shelf",
-                description: "",
-                display_name: "Test group"
-            })
-        }));
+        mockFetchResponse({
+            name: "Test group",
+            location: "Middle shelf",
+            description: "",
+            display_name: "Test group"
+        });
 
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit Details'}));
@@ -128,18 +126,15 @@ describe('App', () => {
 
     it('sends correct payload when all plants are watered', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+            ],
+            failed: []
+        });
 
         // Ensure "All plants" tab is active, click Water button
         await user.click(app.getByRole("tab", {name: "All plants"}));
@@ -163,18 +158,15 @@ describe('App', () => {
 
     it('sends correct payload when Fertilize All button clicked', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "fertilize",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "fertilize",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+            ],
+            failed: []
+        });
 
         // Ensure "All plants" tab is active, click Fertilize button
         await user.click(app.getByRole("tab", {name: "All plants"}));
@@ -199,13 +191,7 @@ describe('App', () => {
     // Note: this response can only be received if SINGLE_USER_MODE is disabled
     it('redirects to login page if events added while user not signed in', async () => {
         // Mock fetch function to simulate user with an expired session
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 401,
-            json: () => Promise.resolve({
-                error: "authentication required"
-            })
-        }));
+        mockFetchResponse({error: "authentication required"}, 401);
 
         // Click Water button
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -232,17 +218,14 @@ describe('App', () => {
 
     it('sends correct payload when only 1 plant is watered', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            ],
+            failed: []
+        });
 
         // Click Select plants tab, select first plant, click water
         await user.click(app.getByRole("tab", {name: "Select plants"}));
@@ -266,17 +249,14 @@ describe('App', () => {
 
     it('sends correct payload when only 1 plant is fertilized', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "fertilize",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "fertilize",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+            ],
+            failed: []
+        });
 
         // Click Select plants tab, select third plant, click fertilize
         await user.click(app.getByRole("tab", {name: "Select plants"}));
@@ -300,17 +280,14 @@ describe('App', () => {
 
     it('sends correct payload when only 1 plant is pruned', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "prune",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "prune",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+            ],
+            failed: []
+        });
 
         // Click Select plants tab, select third plant, click prune
         await user.click(app.getByRole("tab", {name: "Select plants"}));
@@ -338,25 +315,19 @@ describe('App', () => {
         expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
 
         // Mock fetch to return options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockPlantOptions })
-        }));
+        mockFetchResponse({ options: mockPlantOptions });
 
         // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return expected response when submitted
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                added: [
-                    mockPlantOptions[Object.keys(mockPlantOptions)[0]]
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            added: [
+                mockPlantOptions[Object.keys(mockPlantOptions)[0]]
+            ],
+            failed: []
+        });
 
         // Get reference to modal, confirm contains 2 plant options
         const modal = app.getByText("Add Plants").closest(".modal-box");
@@ -392,28 +363,25 @@ describe('App', () => {
 
     it('sends correct payload when plants are removed from group', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                removed: [
-                    {
-                        name: "Test Plant",
-                        display_name: "Test Plant",
-                        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                        created: "2023-12-26T01:25:12+00:00",
-                        species: "Calathea",
-                        description: "This is a plant with a long description with",
-                        pot_size: 4,
-                        last_watered: "2024-02-29T12:45:44+00:00",
-                        last_fertilized: "2024-03-01T05:45:44+00:00",
-                        thumbnail: null,
-                        archived: false,
-                        group: null
-                    }
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            removed: [
+                {
+                    name: "Test Plant",
+                    display_name: "Test Plant",
+                    uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    created: "2023-12-26T01:25:12+00:00",
+                    species: "Calathea",
+                    description: "This is a plant with a long description with",
+                    pot_size: 4,
+                    last_watered: "2024-02-29T12:45:44+00:00",
+                    last_fertilized: "2024-03-01T05:45:44+00:00",
+                    thumbnail: null,
+                    archived: false,
+                    group: null
+                }
+            ],
+            failed: []
+        });
 
         // Confirm plant list contains 3 cards, floating footer not visible
         const plantsCol = app.getByText("Plants (3)").closest('.section');

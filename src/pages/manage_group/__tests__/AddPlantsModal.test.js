@@ -1,5 +1,6 @@
 import AddPlantsModal from '../AddPlantsModal';
 import { mockContext, mockPlantOptions } from './mockContext';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { ReduxProvider } from '../store';
 
 /* eslint react/prop-types: 0 */
@@ -28,10 +29,7 @@ describe('AddPlantsModal', () => {
 
     it('renders a card for each plant option in /get_plant_options response', async () => {
         // Mock fetch to return options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockPlantOptions })
-        }));
+        mockFetchResponse({ options: mockPlantOptions });
 
         // Render modal
         const component = render(<TestComponent mockClose={mockClose} />);
@@ -52,10 +50,7 @@ describe('AddPlantsModal', () => {
 
     it('renders "No plants" when /get_plant_options response is empty', async () => {
         // Mock fetch to return empty options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: {} })
-        }));
+        mockFetchResponse({ options: {} });
 
         // Render modal
         const component = render(<TestComponent mockClose={mockClose} />);

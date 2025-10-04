@@ -1,6 +1,7 @@
 import { fireEvent, within } from '@testing-library/react';
 import { mockContext, mockPlantOptions } from './mockContext';
 import { postHeaders } from 'src/testUtils/headers';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -53,19 +54,16 @@ describe('App', () => {
             dateTimeInput,
             {target: {value: '2024-02-28T04:45:00'}}
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-02-28T12:45:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-02-28T12:45:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+            ],
+            failed: []
+        });
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm last_watered for first 2 plants didn't change (new timestamp
@@ -78,19 +76,16 @@ describe('App', () => {
             dateTimeInput,
             {target: {value: '2024-03-01T11:45:00'}}
         );
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T19:45:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T19:45:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+            ],
+            failed: []
+        });
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm all last_watered changed (new timestamp newer than existing)
@@ -129,18 +124,15 @@ describe('App', () => {
     // archived plants by selecting them with the FilterColumn radio buttons
     it('does not create water or fertilize events for archived plants', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                timestamp: "2024-03-01T20:00:00.000+00:00",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:00.000+00:00",
+            plants: [
+                "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+            ],
+            failed: []
+        });
 
         // Click Select plants tab, select all plants, click water
         await user.click(app.getByRole("tab", {name: "Select plants"}));
@@ -170,10 +162,7 @@ describe('App', () => {
     // plant2 was added a duplicate card for plant1 would also be added.
     it('does not add duplicates when AddPlantsModal used twice', async () => {
         // Mock fetch to return options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockPlantOptions })
-        }));
+        mockFetchResponse({ options: mockPlantOptions });
 
         // Click Add plants dropdown option, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
@@ -181,15 +170,12 @@ describe('App', () => {
         await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
 
         // Mock fetch function to return expected response when first option added
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                added: [
-                    mockPlantOptions[Object.keys(mockPlantOptions)[0]]
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            added: [
+                mockPlantOptions[Object.keys(mockPlantOptions)[0]]
+            ],
+            failed: []
+        });
 
         // Select first plant option in modal, click add button
         await user.click(app.getByLabelText('Select Another test plant'));
@@ -213,25 +199,19 @@ describe('App', () => {
         // Mock fetch to return remaining option (remove uuid that was already
         // added, simulate options returned by backend)
         const remainingOption = Object.keys(mockPlantOptions)[1];
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: {
-                [remainingOption]: mockPlantOptions[remainingOption]
-            } })
-        }));
+        mockFetchResponse({ options: {
+            [remainingOption]: mockPlantOptions[remainingOption]
+        } });
 
         // Open modal again, wait until rendered
         await user.click(app.getByTestId("add_plants_option"));
         await waitFor(() => expect(app.getByText('Add Plants')).toBeInTheDocument());
 
         // Mock fetch function to return expected response when no UUIDs received
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                added: [],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            added: [],
+            failed: []
+        });
 
         // Click add button without selecting anything
         await user.click(app.getByRole('button', {name: 'Add'}));
@@ -252,28 +232,25 @@ describe('App', () => {
     // and plant2 was removed the second payload would still include plant1
     it('does not remove plant twice when RemovePlantsModal used twice', async () => {
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                removed: [
-                    {
-                        name: "Test Plant",
-                        display_name: "Test Plant",
-                        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                        created: "2023-12-26T01:25:12+00:00",
-                        species: "Calathea",
-                        description: "This is a plant with a long description with",
-                        pot_size: 4,
-                        last_watered: "2024-02-29T12:45:44+00:00",
-                        last_fertilized: "2024-03-01T05:45:44+00:00",
-                        thumbnail: null,
-                        archived: false,
-                        group: null
-                    }
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            removed: [
+                {
+                    name: "Test Plant",
+                    display_name: "Test Plant",
+                    uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    created: "2023-12-26T01:25:12+00:00",
+                    species: "Calathea",
+                    description: "This is a plant with a long description with",
+                    pot_size: 4,
+                    last_watered: "2024-02-29T12:45:44+00:00",
+                    last_fertilized: "2024-03-01T05:45:44+00:00",
+                    thumbnail: null,
+                    archived: false,
+                    group: null
+                }
+            ],
+            failed: []
+        });
 
         // Click Remove plants dropdown option (replaced RemovePlantsModal
         // since test written, plants now selected from main PlantsCol)
@@ -327,41 +304,35 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Test Plant'));
 
         // Mock fetch function to return expected response, click Remove button
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                removed: [
-                    {
-                        name: "Test Plant",
-                        display_name: "Test Plant",
-                        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                        created: "2023-12-26T01:25:12+00:00",
-                        species: "Calathea",
-                        description: "This is a plant with a long description with",
-                        pot_size: 4,
-                        last_watered: "2024-02-29T12:45:44+00:00",
-                        last_fertilized: "2024-03-01T05:45:44+00:00",
-                        thumbnail: null,
-                        archived: false
-                    }
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            removed: [
+                {
+                    name: "Test Plant",
+                    display_name: "Test Plant",
+                    uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    created: "2023-12-26T01:25:12+00:00",
+                    species: "Calathea",
+                    description: "This is a plant with a long description with",
+                    pot_size: 4,
+                    last_watered: "2024-02-29T12:45:44+00:00",
+                    last_fertilized: "2024-03-01T05:45:44+00:00",
+                    thumbnail: null,
+                    archived: false
+                }
+            ],
+            failed: []
+        });
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Mock fetch function to return expected response when third plant is
         // watered (first and third were selected but then first was removed)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                plants: [
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            action: "water",
+            plants: [
+                "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+            ],
+            failed: []
+        });
 
         // Click water button, confirm payload only includes the third plant
         // uuid (first plant was removed from group after selecting)
@@ -387,10 +358,7 @@ describe('App', () => {
     // on load, not removed on add, added again on remove).
     it('does not add duplicate options to AddPlantsModal if plant added and removed', async () => {
         // Mock fetch to return options (requested when modal opened)
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ options: mockPlantOptions })
-        }));
+        mockFetchResponse({ options: mockPlantOptions });
 
         // Open AddPlantsModal, confirm "Another test plant" option exists
         await user.click(app.getByTestId("add_plants_option"));
@@ -400,15 +368,12 @@ describe('App', () => {
 
         // Mock fetch function to return expected response when "Another test
         // plant" added to group
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                added: [
-                    mockPlantOptions[Object.keys(mockPlantOptions)[0]]
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            added: [
+                mockPlantOptions[Object.keys(mockPlantOptions)[0]]
+            ],
+            failed: []
+        });
 
         // Select "Another test plant" option, click Add button
         await user.click(app.getByLabelText('Select Another test plant'));
@@ -416,27 +381,24 @@ describe('App', () => {
 
         // Mock fetch function to return expected response when "Another test
         // plant" is removed from group
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                removed: [
-                    {
-                        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
-                        created: "2024-02-26T01:25:12+00:00",
-                        name: "Another test plant",
-                        display_name: "Another test plant",
-                        species: null,
-                        description: null,
-                        pot_size: 4,
-                        last_watered: null,
-                        last_fertilized: null,
-                        thumbnail: "/media/thumbnails/photo2_thumb.webp",
-                        archived: false
-                    }
-                ],
-                failed: []
-            })
-        }));
+        mockFetchResponse({
+            removed: [
+                {
+                    uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
+                    created: "2024-02-26T01:25:12+00:00",
+                    name: "Another test plant",
+                    display_name: "Another test plant",
+                    species: null,
+                    description: null,
+                    pot_size: 4,
+                    last_watered: null,
+                    last_fertilized: null,
+                    thumbnail: "/media/thumbnails/photo2_thumb.webp",
+                    archived: false
+                }
+            ],
+            failed: []
+        });
 
         // Click Remove plants dropdown option
         await user.click(app.getByTestId("remove_plants_option"));
