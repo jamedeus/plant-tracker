@@ -15,6 +15,16 @@
     }
 }
 
+/* Matches diameter and stroke width of LoadingAnimation spinner */
+.checkmark-lg {
+    height: 3.75rem;
+    width: 3.75rem;
+
+    & > circle:first-of-type {
+        stroke-width: 11;
+    }
+}
+
 .checkmark__circle {
     stroke-dasharray: 166;
     stroke-dashoffset: 166;
