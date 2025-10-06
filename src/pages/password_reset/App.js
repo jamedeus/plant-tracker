@@ -5,6 +5,7 @@ import Checkmark from 'src/components/Checkmark';
 import Navbar from 'src/components/Navbar';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
+import { MdLogin } from "react-icons/md";
 import 'src/css/index.css';
 
 function App() {
@@ -62,8 +63,9 @@ function App() {
 
     const DropdownMenuOptions = useMemo(() => (
         <>
-            <li><Link to='/' discover="none">
-                Overview
+            <li><Link to='/accounts/login/' discover="none">
+                <MdLogin className="size-4 mr-2" />
+                Login
             </Link></li>
             <ToggleThemeOption />
         </>
