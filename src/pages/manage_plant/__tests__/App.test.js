@@ -264,7 +264,7 @@ describe('App', () => {
         await user.click(app.getByTitle('8 inch pot'));
 
         // Click submit button
-        await user.click(app.getByRole('button', {name: 'Repot'}));
+        await user.click(app.getByRole('button', {name: 'Repot Plant'}));
 
         // Confirm correct data posted to /repot_plant endpoint
         expect(global.fetch).toHaveBeenCalledWith('/repot_plant', {
@@ -296,7 +296,7 @@ describe('App', () => {
         await user.type(app.getByPlaceholderText('custom'), '5');
 
         // Click submit button
-        await user.click(app.getByRole('button', {name: 'Repot'}));
+        await user.click(app.getByRole('button', {name: 'Repot Plant'}));
 
         // Confirm payload includes custom pot size
         expect(global.fetch).toHaveBeenCalledWith('/repot_plant', {
@@ -320,7 +320,7 @@ describe('App', () => {
 
         // Click custom pot size option, click submit without entering value
         await user.click(app.getByPlaceholderText('custom'));
-        await user.click(app.getByRole('button', {name: 'Repot'}));
+        await user.click(app.getByRole('button', {name: 'Repot Plant'}));
 
         // Confirm error modal appeared with instructions
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();

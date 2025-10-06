@@ -106,7 +106,7 @@ describe('App', () => {
         // Simulate user submitting repot modal
         await user.click(app.getAllByText('Repot plant')[0]);
         await act(async () => await jest.advanceTimersByTimeAsync(100));
-        await user.click(app.getByRole('button', {name: 'Repot'}));
+        await user.click(app.getByRole('button', {name: 'Repot Plant'}));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();

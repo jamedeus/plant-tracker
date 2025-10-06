@@ -26,13 +26,3 @@ export const openRepotModal = () => {
     repotModalHandle?.open();
     document.activeElement.blur();
 };
-
-let changeQrModalHandle;
-
-export const setChangeQrModalHandle = (handle) => {
-    changeQrModalHandle = handle;
-};
-
-export const openChangeQrModal = (uuid) => {
-    changeQrModalHandle?.open({ uuid: uuid });
-};

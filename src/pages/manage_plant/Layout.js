@@ -6,7 +6,6 @@ import EventButtons from './EventButtons';
 import EventCalendar from './EventCalendar';
 import LazyModal, { useModal } from 'src/components/LazyModal';
 import QrScannerButton from 'src/components/QrScannerButton';
-import { setChangeQrModalHandle } from './modals';
 import Timeline from './Timeline';
 import { useSelector, useDispatch } from 'react-redux';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
@@ -51,9 +50,6 @@ function Layout() {
     const openEditModal = useCallback(() => {
         editModal.open();
     }, [editModal]);
-
-    const changeQrModal = useModal();
-    setChangeQrModalHandle(changeQrModal);
 
     const groupModal = useModal();
     const openGroupModal = useCallback(() => {
@@ -132,13 +128,6 @@ function Layout() {
                 ariaLabel="Edit plant details"
                 className="max-w-[25rem]"
                 load={() => import(/* webpackChunkName: "manage_plant_edit-modal" */ "./EditPlantModal")}
-            />
-
-            <LazyModal
-                ref={changeQrModal.ref}
-                title="Change QR Code"
-                ariaLabel="Change plant QR code"
-                load={() => import(/* webpackChunkName: "change-qr-modal" */ "src/components/ChangeQrModal")}
             />
 
             <LazyModal

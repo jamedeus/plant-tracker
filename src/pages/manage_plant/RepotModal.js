@@ -4,10 +4,15 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
+import Checkmark from 'src/components/Checkmark';
+import LoadingAnimation from 'src/components/LoadingAnimation';
+import ModalPages from 'src/components/ModalPages';
 import { useSelector, useDispatch } from 'react-redux';
 import { eventAdded } from './timelineSlice';
 import { plantRepotted } from './plantSlice';
-import { openChangeQrModal } from './modals';
+import { changeQrScannerOpened } from './interfaceSlice';
+import { TbShovel } from "react-icons/tb";
+import { LuScanSearch } from "react-icons/lu";
 import 'src/css/repot_modal.css';
 import clsx from 'clsx';
 
@@ -54,9 +59,14 @@ const RepotModal = ({ close }) => {
 
     const [customPotSize, setCustomPotSize] = useState('');
 
+    // Must be "prompt" (show prompt pages), "loading" (spinner), or "done"
+    const [modalContents, setModalContents] = useState("prompt");
+
     // Post user selection to backend, create RepotEvent in database
     const submit = async () => {
+        // Read inputs before they unmount
         const new_pot_size = selected === 'custom' ? customPotSize : selected;
+        const timestamp = localToUTC(repotTimeRef.current.value);
 
         // Don't submit with blank custom pot size
         if (!new_pot_size) {
@@ -66,69 +76,117 @@ const RepotModal = ({ close }) => {
             return;
         }
 
+        // Replace contents with loading spinner
+        setModalContents("loading");
+
         const response = await sendPostRequest('/repot_plant', {
             plant_id: plantID,
             new_pot_size: parseInt(new_pot_size),
-            timestamp: localToUTC(repotTimeRef.current.value)
+            timestamp: timestamp
         });
         if (response.ok) {
             const data = await response.json();
             // Update plantDetails state, add event to events state
             dispatch(plantRepotted(data.pot_size));
             dispatch(eventAdded({timestamp: data.timestamp, type: 'repot'}));
-            // Close repot modal, open modal with instructions to change QR code
-            close();
-            openChangeQrModal(plantID);
+            // Show success animation + change QR code button
+            setModalContents("done");
         } else {
+            // Go back to prompt, show error in modal
+            setModalContents("prompt");
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
     };
 
-    return (
-        <>
-            <div className="mt-4">
-                <p>Repot time</p>
-                <DatetimeInput inputRef={repotTimeRef} />
-            </div>
+    // Change QR Code button handler, closes modal and opens change QR scanner
+    const changeQrCode = () => {
+        dispatch(changeQrScannerOpened(true));
+        close();
+    };
 
-            <div className="flex flex-col my-8">
-                <p className="text-md mb-2">New pot size</p>
-                <div className="grid grid-cols-5 mx-auto">
-                    {POT_SIZES.map((option) => (
-                        <PotSizeOption
-                            key={option}
-                            option={option}
-                            isSelected={selected === option}
-                            setSelected={setSelected}
-                        />
-                    ))}
+    switch(modalContents) {
+        case("prompt"):
+            return (
+                <ModalPages>
+                    {/* Page 1 */}
+                    <div className="flex flex-col h-full justify-center gap-2">
+                        <span>When did you repot your plant?</span>
+                        <div className="mx-auto">
+                            <DatetimeInput inputRef={repotTimeRef} />
+                        </div>
+                    </div>
+
+                    {/* Page 2 */}
+                    <>
+                        <div className="flex flex-col gap-2">
+                            <p className="text-md">Select new pot size</p>
+                            <div className="grid grid-cols-5 mx-auto">
+                                {POT_SIZES.map((option) => (
+                                    <PotSizeOption
+                                        key={option}
+                                        option={option}
+                                        isSelected={selected === option}
+                                        setSelected={setSelected}
+                                    />
+                                ))}
+                            </div>
+                            <input
+                                className={clsx(
+                                    "pot-size w-32 h-10 md:h-12 p-2 mx-auto",
+                                    selected === "custom" && "pot-size-selected"
+                                )}
+                                placeholder="custom"
+                                type="text"
+                                inputMode="numeric"
+                                value={customPotSize}
+                                onFocus={() => setSelected("custom")}
+                                onInput={(e) => {
+                                    setCustomPotSize(e.target.value.replace(
+                                        /\D+/g, ''
+                                    ).slice(0, 2));
+                                }}
+                            />
+                        </div>
+                    </>
+
+                    {/* Page 3 */}
+                    <div className="flex flex-col h-full justify-center">
+                        <button
+                            className="btn btn-accent text-base mx-auto mt-2"
+                            onClick={submit}
+                        >
+                            <TbShovel className='size-6' />
+                            Repot Plant
+                        </button>
+                    </div>
+                </ModalPages>
+            );
+        case("loading"):
+            return (
+                <div className="flex flex-col h-68 md:h-74 justify-evenly">
+                    <LoadingAnimation className="mb-6 mx-auto" />
                 </div>
-                <input
-                    className={clsx(
-                        "pot-size w-32 h-10 md:h-12 p-2 mx-auto my-2",
-                        selected === "custom" && "pot-size-selected"
-                    )}
-                    placeholder="custom"
-                    type="text"
-                    inputMode="numeric"
-                    value={customPotSize}
-                    onFocus={() => setSelected("custom")}
-                    onInput={(e) => {
-                        setCustomPotSize(e.target.value.replace(
-                            /\D+/g, ''
-                        ).slice(0, 2));
-                    }}
-                />
-            </div>
-
-            <div className="modal-action mt-0">
-                <button className="btn btn-accent" onClick={submit}>
-                    Repot
-                </button>
-            </div>
-        </>
-    );
+            );
+        default:
+            return (
+                <div className="flex flex-col h-68 md:h-74 justify-evenly">
+                    <div className="text-lg font-bold">
+                        Plant repotted!
+                    </div>
+                    <div className="mx-auto">
+                        <Checkmark className="w-16" />
+                    </div>
+                    <button
+                        className="btn btn-accent text-base mx-auto"
+                        onClick={changeQrCode}
+                    >
+                        <LuScanSearch className="size-6" />
+                        Change QR Code
+                    </button>
+                </div>
+            );
+    }
 };
 
 RepotModal.propTypes = {

@@ -103,7 +103,7 @@ describe('App', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Click Repot Modal submit button
-        await user.click(app.getByRole('button', {name: 'Repot'}));
+        await user.click(app.getByRole('button', {name: 'Repot Plant'}));
 
         // Repot event should appear on calendar
         expect(calendar.querySelector('.dot > .bg-repot')).not.toBeNull();
