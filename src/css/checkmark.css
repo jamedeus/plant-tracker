@@ -1,56 +1,64 @@
-.checkmark {
-    height: 2rem;
-    width: 2rem;
-    border-radius: 50%;
-    display: block;
-    stroke: currentColor;
-    stroke-miterlimit: 10;
-    stroke-width: 5;
-    box-shadow: inset 0px 0px 0px #fff;
-    animation: scale .3s ease-in-out .9s both;
+@layer components {
+    .checkmark {
+        --checkmark-stroke-width: 2.6;
+        width: calc(var(--checkmark-size, 0.25rem) * 6);
+        aspect-ratio: 1 / 1;
+        height: auto;
+        display: inline-block;
+        color: currentColor;
+        vertical-align: middle;
+        pointer-events: none;
+        animation: checkmark-scale 0.3s ease-in-out 0.9s both;
+    }
 
-    & > circle:first-of-type {
-        stroke-width: 8;
+    .checkmark__circle,
+    .checkmark__check {
         stroke: currentColor;
+        stroke-width: var(--checkmark-stroke-width);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
     }
-}
 
-/* Matches diameter and stroke width of LoadingAnimation spinner */
-.checkmark-lg {
-    height: 3.75rem;
-    width: 3.75rem;
-
-    & > circle:first-of-type {
-        stroke-width: 11;
+    .checkmark__circle {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        animation: checkmark-circle-draw 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
     }
-}
 
-.checkmark__circle {
-    stroke-dasharray: 166;
-    stroke-dashoffset: 166;
-    stroke-miterlimit: 10;
-    fill: none;
-    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-}
-
-.checkmark__check {
-    transform-origin: 50% 50%;
-    stroke-dasharray: 48;
-    stroke-dashoffset: 48;
-    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
-}
-
-@keyframes stroke {
-    100% {
-        stroke-dashoffset: 0;
+    @keyframes checkmark-circle-draw {
+        100% {
+            stroke-dashoffset: 0;
+        }
     }
-}
 
-@keyframes scale {
-    0%, 100% {
-        transform: none;
+    .checkmark__check {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        opacity: 0;
+        animation: checkmark-check-draw 0.32s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
     }
-    50% {
-        transform: scale3d(1.1, 1.1, 1);
+
+    @keyframes checkmark-check-draw {
+        0% {
+            stroke-dashoffset: 100;
+            opacity: 0;
+        }
+        1% {
+            opacity: 1;
+        }
+        100% {
+            stroke-dashoffset: 0;
+            opacity: 1;
+        }
+    }
+
+    @keyframes checkmark-scale {
+        0%, 100% {
+            transform: none;
+        }
+        50% {
+            transform: scale3d(1.1, 1.1, 1);
+        }
     }
 }

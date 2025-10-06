@@ -2,21 +2,23 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import 'src/css/checkmark.css';
 
-const Checkmark = ({ size='sm' }) => {
-    return (
-        <svg
-            className={clsx('checkmark', size === 'lg' && 'checkmark-lg')}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 52 52"
-        >
-            <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-            <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-        </svg>
-    );
-};
+const Checkmark = ({ className }) => (
+    <svg
+        className={clsx('checkmark', className)}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-hidden="true"
+    >
+        <circle className="checkmark__circle" cx="12" cy="12" r="9.5" pathLength="100" />
+        <path className="checkmark__check" d="M7.6 12.6 10.3 15.4 15.8 9.8" pathLength="100" />
+    </svg>
+);
 
 Checkmark.propTypes = {
-    size: PropTypes.oneOf(['sm', 'lg'])
+    className: PropTypes.string,
+    style: PropTypes.object
 };
 
 export default Checkmark;
