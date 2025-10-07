@@ -29,7 +29,7 @@ const ModalPages = ({ children }) => {
     const nextHidden = index === pageCount - 1;
 
     return (
-        <div className='flex flex-col overflow-hidden'>
+        <div className='modal-pages flex flex-col overflow-hidden'>
             {/* Track renders all pages, horizontally slides to current page */}
             <div
                 className="flex transition-transform duration-300 ease-out"
@@ -40,6 +40,7 @@ const ModalPages = ({ children }) => {
                 {pages.map((content, i) => (
                     <div
                         key={`page-${i}`}
+                        data-current-page={i === index}
                         className="flex-shrink-0 w-full box-border my-4"
                     >
                         {content}
@@ -50,6 +51,7 @@ const ModalPages = ({ children }) => {
             {/* Nav buttons, fades out back on first page, next on last page */}
             <div className="flex w-full justify-between">
                 <button
+                    id="modal-pages-back"
                     className={clsx(
                         'btn transition-opacity duration-300',
                         backHidden && 'opacity-0 pointer-events-none'
@@ -61,6 +63,7 @@ const ModalPages = ({ children }) => {
                 </button>
 
                 <button
+                    id="modal-pages-next"
                     className={clsx(
                         'btn btn-accent transition-opacity duration-300',
                         nextHidden && 'opacity-0 pointer-events-none'

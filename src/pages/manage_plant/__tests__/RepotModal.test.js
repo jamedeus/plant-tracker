@@ -192,4 +192,15 @@ describe('RepotModal', () => {
         expect(mockClose).toHaveBeenCalled();
         expect(mockDispatch).toHaveBeenCalledWith(changeQrScannerOpened(true));
     });
+
+    it('disables next page button if custom pot size selected and input empty', async () => {
+        // Confirm next button is not disabled
+        expect(app.getByTestId('pot-size-options').getAttribute('data-next-button')).toBeNull();
+
+        // Click custom pot size option, don't fill in input
+        await user.click(app.getByPlaceholderText('custom'));
+
+        // Confirm next button is disabled
+        expect(app.getByTestId('pot-size-options').getAttribute('data-next-button')).toBe('disabled');
+    });
 });

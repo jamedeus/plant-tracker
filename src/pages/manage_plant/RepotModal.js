@@ -119,7 +119,15 @@ const RepotModal = ({ close }) => {
 
                     {/* Page 2 */}
                     <>
-                        <div className="flex flex-col gap-2">
+                        <div
+                            className="flex flex-col gap-2"
+                            data-testid="pot-size-options"
+                            data-next-button={
+                                selected === 'custom' && !customPotSize
+                                    ? 'disabled'
+                                    : null
+                            }
+                        >
                             <p className="text-md">Select new pot size</p>
                             <div className="grid grid-cols-5 mx-auto">
                                 {POT_SIZES.map((option) => (
