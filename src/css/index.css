@@ -122,6 +122,11 @@
     @apply rounded-lg object-cover;
 }
 
+/* Fix modal shifting horizontally on chromium when close animation starts */
+.modal {
+    scrollbar-gutter: stable;
+}
+
 .modal-box {
     /* Fix modal filling full height on iOS safari when address bar visible */
     max-height: calc(100svh - 2em);
