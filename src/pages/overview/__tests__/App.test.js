@@ -211,6 +211,7 @@ describe('App', () => {
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm error modal appeared
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
@@ -466,6 +467,7 @@ describe('App', () => {
         await user.click(app.getByTestId('add_plants_option'));
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByTestId('water-button'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();

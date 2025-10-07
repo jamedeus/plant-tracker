@@ -107,6 +107,7 @@ describe('App', () => {
         await user.click(app.getByText(/Divide plant/));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         await user.click(app.getByRole('button', {name: 'OK'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
@@ -144,6 +145,7 @@ describe('App', () => {
         // Simulate user clicking group option (nextSibling targets transparent
         // absolute-positioned div with click listener that covers group card)
         await user.click(app.getByLabelText('Go to Test group page').nextSibling);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();

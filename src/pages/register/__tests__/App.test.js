@@ -23,6 +23,9 @@ describe('App', () => {
     });
 
     beforeEach(async () => {
+        // Allow fast forwarding
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Mock /get_plant_species_options response (requested when page loads)
         mockPlantSpeciesOptionsResponse();
 
@@ -31,7 +34,7 @@ describe('App', () => {
         globalMockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
                 <App initialState={mockContext} />
@@ -44,6 +47,12 @@ describe('App', () => {
         await waitFor(() => {
             expect(global.fetch).toHaveBeenCalled();
         });
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.clearAllTimers();
+        jest.useRealTimers();
     });
 
     it('shows the correct form when buttons are clicked', async () => {
@@ -142,12 +151,11 @@ describe('App', () => {
 
         // Click Save button, confirm error modal appears
         await user.click(app.getByText('Save'));
-        await waitFor(() => {
-            expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
-            expect(app.getByTestId('error-modal-body')).toHaveTextContent(
-                'Failed to register plant'
-            );
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
+            'Failed to register plant'
+        );
     });
 
     it('disables the save button when plant fields exceed max length', async () => {

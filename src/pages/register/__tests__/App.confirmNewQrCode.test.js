@@ -32,19 +32,28 @@ describe('Register page while changing QR code in progress', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
         mockNavigate.mockReset();
         globalMockNavigate.mockReset();
 
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
                 <App initialState={{ ...mockContext, ...mockChangingPlantQrCode }} />
                 <ErrorModal />
             </>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.clearAllTimers();
+        jest.useRealTimers();
     });
 
     it('shows both forms if user clicks red button', async () => {
@@ -120,6 +129,7 @@ describe('Register page while changing QR code in progress', () => {
 
         // Click confirm button
         await user.click(app.getByTitle('Change QR code'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();

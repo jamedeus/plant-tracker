@@ -383,6 +383,7 @@ describe('Delete mode', () => {
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
@@ -405,6 +406,7 @@ describe('Delete mode', () => {
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
@@ -427,6 +429,7 @@ describe('Delete mode', () => {
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
