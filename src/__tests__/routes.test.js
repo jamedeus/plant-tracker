@@ -1,3 +1,5 @@
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+
 // Mock bundles to render div with testid to confirm which bundle was rendered
 jest.mock('src/bundles', () => {
     const React = require('react');
@@ -35,20 +37,10 @@ export function renderRouter({ routes, initialEntries = ['/'] }) {
     return { router, ...utils };
 }
 
-// Takes JSON response and status code, mocks global fetch function
-const mockFetchJSONResponse = (json, status=200) => {
-    global.fetch = jest.fn(() => Promise.resolve({
-        ok: status >= 200 && status < 300,
-        status,
-        headers: new Map([['content-type', 'application/json']]),
-        json: () => Promise.resolve(json),
-    }));
-};
-
 describe('SPA routes', () => {
     it('renders correct bundle when user navigates between pages', async () => {
         // Mock fetch function to return overview page state
-        mockFetchJSONResponse({ title: 'Plant Overview' });
+        mockFetchResponse({ title: 'Plant Overview' });
 
         // Render overview page
         const { router, getByTestId } = renderRouter({
@@ -69,7 +61,7 @@ describe('SPA routes', () => {
 
         // Mock fetch function to return archived overview page state
         jest.clearAllMocks();
-        mockFetchJSONResponse({ title: 'Archived' });
+        mockFetchResponse({ title: 'Archived' });
 
         // Simulate user navigating to archived page
         await act(() => router.navigate('/archived'));
@@ -87,7 +79,7 @@ describe('SPA routes', () => {
 
         // Mock fetch function to return user profile page state
         jest.clearAllMocks();
-        mockFetchJSONResponse({ title: 'User Profile' });
+        mockFetchResponse({ title: 'User Profile' });
 
         // Simulate user navigating to user profile page
         await act(() => router.navigate('/accounts/profile/'));
@@ -106,7 +98,7 @@ describe('SPA routes', () => {
 
     it('renders correct manage bundle based on backend response', async () => {
         // Mock fetch function to return manage_plant page state
-        mockFetchJSONResponse({ title: 'Manage Plant', page: 'manage_plant', state: {} });
+        mockFetchResponse({ title: 'Manage Plant', page: 'manage_plant', state: {} });
 
         // Render manage page
         const { router, getByTestId } = renderRouter({
@@ -126,7 +118,7 @@ describe('SPA routes', () => {
 
         // Mock fetch function to return manage_group page state
         jest.clearAllMocks();
-        mockFetchJSONResponse({ title: 'Manage Group', page: 'manage_group', state: {} });
+        mockFetchResponse({ title: 'Manage Group', page: 'manage_group', state: {} });
 
         // Simulate user navigating to manage_group page
         await act(() => router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b3'));
@@ -143,7 +135,7 @@ describe('SPA routes', () => {
 
         // Mock fetch function to return register page state
         jest.clearAllMocks();
-        mockFetchJSONResponse({ title: 'Register New Plant', page: 'register', state: {} });
+        mockFetchResponse({ title: 'Register New Plant', page: 'register', state: {} });
 
         // Simulate user navigating to register page
         await act(() => router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b4'));
@@ -161,7 +153,7 @@ describe('SPA routes', () => {
 
     it('redirects to login page when loader receives 401', async () => {
         // Simulate response when user is not authenticated
-        mockFetchJSONResponse({ error: 'authentication required' }, 401);
+        mockFetchResponse({ error: 'authentication required' }, 401);
 
         // Simulate user loading profile page
         const { router, getByTestId } = renderRouter({
@@ -226,7 +218,7 @@ describe('SPA routes', () => {
 
     it('shows error page when loader receives 403', async () => {
         // Simulate login page response when user accounts are disabled
-        mockFetchJSONResponse({ error: 'user accounts are disabled' }, 403);
+        mockFetchResponse({ error: 'user accounts are disabled' }, 403);
         // Simulate user loading profile page
         const { router, getByTestId } = renderRouter({
             routes: routes,
@@ -241,7 +233,7 @@ describe('SPA routes', () => {
         });
 
         // Simulate 403 response missing error parameter
-        mockFetchJSONResponse({ denied: 'user accounts are disabled' }, 403);
+        mockFetchResponse({ denied: 'user accounts are disabled' }, 403);
 
         // Navigate to overview page
         await act(() => router.navigate('/'));
@@ -313,7 +305,7 @@ describe('SPA routes', () => {
 
     it('falls back to overview page when user navigates to an unknown route', async () => {
         // Mock fetch function to return overview page state
-        mockFetchJSONResponse({ title: 'Plant Overview' });
+        mockFetchResponse({ title: 'Plant Overview' });
 
         // Render overview page
         const { router, getByTestId } = renderRouter({
@@ -346,7 +338,7 @@ describe('SPA routes', () => {
 
     it('falls back to generic title if missing from backend response', async () => {
         // Render overview page with mock fetchJSON response missing title
-        mockFetchJSONResponse({});
+        mockFetchResponse({});
         const { router, getByTestId } = renderRouter({
             routes: routes,
             initialEntries: ['/']
@@ -359,7 +351,7 @@ describe('SPA routes', () => {
         });
 
         // Navigate to manage_plant page with mock fetchJSON response missing title
-        mockFetchJSONResponse({ page: 'manage_plant' });
+        mockFetchResponse({ page: 'manage_plant' });
         await act(() => router.navigate('/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'));
         // Confirm fell back to generic title
         await waitFor(() => {

@@ -5,22 +5,13 @@ import { render, waitFor, cleanup } from '@testing-library/react';
 import FakeBarcodeDetector, { mockQrCodeInViewport } from 'src/testUtils/mockBarcodeDetector';
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import 'jest-canvas-mock';
 import { mockContext as mockOverviewContext } from 'src/pages/overview/__tests__/mockContext';
 import { mockContext as mockRegisterContext } from 'src/pages/register/__tests__/mockContext';
 import { mockContext as mockPlantContext } from 'src/pages/manage_plant/__tests__/mockContext';
 import { mockContext as mockGroupContext } from 'src/pages/manage_group/__tests__/mockContext';
-
-// Takes JSON response and status code, mocks global fetch function
-const mockFetchJSONResponse = (json, status=200) => {
-    global.fetch = jest.fn(() => Promise.resolve({
-        ok: status >= 200 && status < 300,
-        status,
-        headers: new Map([['content-type', 'application/json']]),
-        json: () => Promise.resolve(json),
-    }));
-};
 
 describe('SPA integration tests', () => {
     beforeAll(() => {
@@ -43,7 +34,7 @@ describe('SPA integration tests', () => {
 
     it('replaces current page when user scans a QR code', async () => {
         // Mock fetch function to return overview page state
-        mockFetchJSONResponse(mockOverviewContext);
+        mockFetchResponse(mockOverviewContext);
 
         // Render SPA on overview page
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
@@ -87,7 +78,7 @@ describe('SPA integration tests', () => {
         );
 
         // Mock fetch function to return manage_plant page state
-        mockFetchJSONResponse({
+        mockFetchResponse({
             page: 'manage_plant',
             title: 'Manage Plant',
             state: mockPlantContext
@@ -222,7 +213,7 @@ describe('SPA integration tests', () => {
 
     it('navigates from archived overview page to main overview when last plant/group is un-archived', async () => {
         // Mock fetch function to return archived overview page state
-        mockFetchJSONResponse({
+        mockFetchResponse({
             ...mockOverviewContext,
             plants: Object.fromEntries(
                 Object.entries(mockOverviewContext.plants).map(
@@ -329,11 +320,7 @@ describe('SPA integration tests', () => {
         });
 
         // Mock fetch function to return expected response when password is changed
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({success: "password_changed"})
-        }));
+        mockFetchResponse({success: "password_changed"});
 
         // Simulate user entering new password twice and clicking change password
         await user.type(getByLabelText('New password'), 'thispasswordisbetter');
@@ -342,7 +329,7 @@ describe('SPA integration tests', () => {
         expect(global.fetch).toHaveBeenCalled();
 
         // Mock fetch function to return user profile page state
-        mockFetchJSONResponse({
+        mockFetchResponse({
             user_details: {
                 username: "cdanger",
                 email: "totally.not.anthony.weiner@gmail.com",
@@ -365,7 +352,7 @@ describe('SPA integration tests', () => {
 
     it('fetches new state for current route when user navigates to SPA with back button', async () => {
         // Mock fetch function to return overview page state
-        mockFetchJSONResponse(mockOverviewContext);
+        mockFetchResponse(mockOverviewContext);
 
         // Render SPA on overview page, confirm rendered + fetched overview state
         const router = createMemoryRouter(routes, { initialEntries: ['/'] });
@@ -399,7 +386,7 @@ describe('SPA integration tests', () => {
 
     it('does not fetch new state when other pageshow events are triggered', async () => {
         // Mock fetch function to return overview page state
-        mockFetchJSONResponse(mockOverviewContext);
+        mockFetchResponse(mockOverviewContext);
 
         // Render SPA on overview page, confirm rendered + fetched overview state
         const router = createMemoryRouter(routes, { initialEntries: ['/'] });
@@ -429,7 +416,7 @@ describe('SPA integration tests', () => {
 
     it('switches pages if different state received after user navigates to SPA with back button', async () => {
         // Mock fetch function to return manage_group page state
-        mockFetchJSONResponse({
+        mockFetchResponse({
             page: 'manage_group',
             title: 'Manage Group',
             state: mockGroupContext
@@ -509,7 +496,7 @@ describe('SPA integration tests', () => {
 
     it('follows redirects on initial page load', async () => {
         // Simulate redirect to login page when loader requests page state
-        mockFetchJSONResponse({ 'redirect': '/accounts/login' }, 302);
+        mockFetchResponse({ 'redirect': '/accounts/login' }, 302);
 
         // Render SPA on overview page
         const router = createMemoryRouter(routes, { initialEntries: ['/'] });
@@ -528,7 +515,7 @@ describe('SPA integration tests', () => {
 
     it('renders login page if initial state request receives 401', async () => {
         // Simulate get state response when user is not authenticated
-        mockFetchJSONResponse({ error: 'authentication required' }, 401);
+        mockFetchResponse({ error: 'authentication required' }, 401);
 
         // Render SPA on overview page
         const router = createMemoryRouter(routes, { initialEntries: ['/'] });
@@ -553,7 +540,7 @@ describe('SPA integration tests', () => {
 
     it('redirects to login page if user session expired', async () => {
         // Render SPA on overview page
-        mockFetchJSONResponse(mockOverviewContext);
+        mockFetchResponse(mockOverviewContext);
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         const router = createMemoryRouter(routes, { initialEntries: ['/'] });
         const { getByLabelText, getByTestId, queryByTestId } = render(
@@ -565,7 +552,7 @@ describe('SPA integration tests', () => {
         });
 
         // Simulate response when user is not authenticated
-        mockFetchJSONResponse({ error: 'authentication required' }, 401);
+        mockFetchResponse({ error: 'authentication required' }, 401);
 
         // Simulate user clicking plant link
         await user.click(getByLabelText('Go to Test Plant page'));
@@ -582,7 +569,7 @@ describe('SPA integration tests', () => {
 
     it('redirects to login page if user with expired session sends POST request', async () => {
         // Render SPA on manage_plant page
-        mockFetchJSONResponse({
+        mockFetchResponse({
             page: 'manage_plant',
             title: 'Manage Plant',
             state: mockPlantContext
@@ -600,7 +587,7 @@ describe('SPA integration tests', () => {
         });
 
         // Simulate response when user is not authenticated
-        mockFetchJSONResponse({ error: 'authentication required' }, 401);
+        mockFetchResponse({ error: 'authentication required' }, 401);
 
         // Simulate user clicking water button
         await user.click(getByRole('button', {name: 'Water'}));
@@ -625,7 +612,7 @@ describe('SPA integration tests', () => {
 
     it('redirects to error page if loader receives 403', async () => {
         // Render SPA on overview page
-        mockFetchJSONResponse(mockOverviewContext);
+        mockFetchResponse(mockOverviewContext);
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         const router = createMemoryRouter(routes, { initialEntries: ['/'] });
         const { getByText, getByLabelText, getByTestId, queryByTestId } = render(
@@ -637,7 +624,7 @@ describe('SPA integration tests', () => {
         });
 
         // Simulate /get_manage_state response when user does not own plant
-        mockFetchJSONResponse({"error": "plant is owned by a different user"}, 403);
+        mockFetchResponse({"error": "plant is owned by a different user"}, 403);
 
         // Simulate user clicking plant link
         await user.click(getByLabelText('Go to Test Plant page'));
