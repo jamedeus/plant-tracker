@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, memo, useMemo, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -69,7 +69,7 @@ SlideshowProgressBar.propTypes = {
 };
 
 // Top-right corner dropdown menu
-const GalleryDropdown = ({ currentSlide, focusMode, toggleFocusMode }) => {
+const GalleryDropdown = memo(function GalleryDropdown({ currentSlide, focusMode, toggleFocusMode }) {
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const dispatch = useDispatch();
 
@@ -227,7 +227,7 @@ const GalleryDropdown = ({ currentSlide, focusMode, toggleFocusMode }) => {
             )}
         </>
     );
-};
+});
 
 GalleryDropdown.propTypes = {
     currentSlide: PropTypes.object,
