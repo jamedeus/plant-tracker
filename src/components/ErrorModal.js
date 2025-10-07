@@ -9,8 +9,8 @@ const ErrorModalBody = ({ close, error }) => {
         <>
             <div
                 className={clsx(
-                    'flex-1 min-h-36 max-w-full mx-auto overflow-y-auto',
-                    'whitespace-pre-line break-words'
+                    'flex flex-col flex-1 justify-center max-w-full mx-auto',
+                    'min-h-36 overflow-y-auto whitespace-pre-line break-words'
                 )}
                 data-testid="error-modal-body"
             >
