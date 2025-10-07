@@ -164,13 +164,19 @@ const RepotModal = ({ close }) => {
             );
         case("loading"):
             return (
-                <div className="flex flex-col h-68 md:h-74 justify-evenly">
+                <div
+                    className="flex flex-col h-68 md:h-74 justify-evenly"
+                    data-testid="repot-modal-loading"
+                >
                     <LoadingAnimation className="mb-6 mx-auto" />
                 </div>
             );
         default:
             return (
-                <div className="flex flex-col h-68 md:h-74 justify-evenly">
+                <div
+                    className="flex flex-col h-68 md:h-74 justify-evenly"
+                    data-testid="repot-modal-success"
+                >
                     <div className="text-lg font-bold">
                         Plant repotted!
                     </div>

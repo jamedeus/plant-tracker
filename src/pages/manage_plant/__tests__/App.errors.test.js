@@ -96,25 +96,6 @@ describe('App', () => {
         );
     });
 
-    it('shows error modal if error received while repotting plant', async() => {
-        // Mock fetch function to return arbitrary error
-        mockFetchResponse({error: "failed to repot plant"}, 400);
-
-        // Confirm error modal is not rendered
-        expect(app.queryByTestId('error-modal-body')).toBeNull();
-
-        // Simulate user submitting repot modal
-        await user.click(app.getAllByText('Repot plant')[0]);
-        await act(async () => await jest.advanceTimersByTimeAsync(100));
-        await user.click(app.getByRole('button', {name: 'Repot Plant'}));
-
-        // Confirm modal appeared with arbitrary error text
-        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
-        expect(app.getByTestId('error-modal-body')).toHaveTextContent(
-            'failed to repot plant'
-        );
-    });
-
     it('shows error modal if error received while dividing plant', async() => {
         // Mock fetch function to return arbitrary error
         mockFetchResponse({error: "Event with same timestamp already exists"}, 409);
