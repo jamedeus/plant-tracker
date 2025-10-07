@@ -2,13 +2,11 @@ import React from 'react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { fireEvent } from '@testing-library/react';
-import PhotoModal, { openPhotoModal } from '../PhotoModal';
+import PhotoModal from '../PhotoModal';
 import { ReduxProvider } from '../store';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
-
-/* eslint react/prop-types: 0 */
 
 // Mock useNavigate to return a mock (confirm redirected to correct page)
 const mockNavigate = jest.fn();
@@ -20,21 +18,8 @@ jest.mock('react-router-dom', () => {
     };
 });
 
-const TestComponent = ({ close }) => {
-    // Render app
-    return (
-        <ReduxProvider initialState={mockContext}>
-            <PhotoModal close={close} />
-            <button onClick={openPhotoModal}>
-                Open photo modal
-            </button>
-        </ReduxProvider>
-    );
-};
-
 describe('PhotoModal', () => {
-    let app, user;
-    const mockClose = jest.fn();
+    let app, user, mockClose;
 
     beforeEach(async () => {
         // Allow fast forwarding
@@ -44,18 +29,19 @@ describe('PhotoModal', () => {
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
         mockNavigate.mockReset();
 
-        // Render app + create userEvent instance to use in tests
+        mockClose = jest.fn();
+
+        // Render modal + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <>
-                <TestComponent close={mockClose} />
+                <ReduxProvider initialState={mockContext}>
+                    <PhotoModal close={mockClose} />
+                </ReduxProvider>
                 <Toast />
                 <ErrorModal />
             </>
         );
-
-        // Open modal
-        await user.click(app.getByText('Open photo modal'));
     });
 
     // Clean up pending timers after each test
@@ -112,6 +98,9 @@ describe('PhotoModal', () => {
         const formData = fetch.mock.calls[0][1].body;
         expect(formData.get('photo_0')).toEqual(file1);
         expect(formData.get('photo_1')).toEqual(file2);
+
+        // Confirm modal closed
+        expect(mockClose).toHaveBeenCalled();
     });
 
     it('removes selected files in PhotoModal when X buttons are clicked', async () => {
