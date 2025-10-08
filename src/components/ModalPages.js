@@ -42,6 +42,8 @@ const ModalPages = ({ children }) => {
                         key={`page-${i}`}
                         data-current-page={i === index}
                         className="flex-shrink-0 w-full box-border my-4"
+                        // Prevent tab key moving focus to non-current page
+                        {...(i === index ? {} : { inert: '' })}
                     >
                         {content}
                     </div>
