@@ -21,16 +21,16 @@ const POT_SIZES = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
 
 const PotSizeOption = memo(function PotSizeOption({ option, isSelected, setSelected }) {
     return (
-        <div
+        <button
             className={clsx(
-                "pot-size size-10 md:size-12 m-2",
+                "pot-size size-10! md:size-12!",
                 isSelected && "pot-size-selected"
             )}
             title={`${option} inch pot`}
             onClick={() => setSelected(option)}
         >
             <span className="m-auto">{option}</span>
-        </div>
+        </button>
     );
 });
 
@@ -129,7 +129,7 @@ const RepotModal = ({ close }) => {
                             }
                         >
                             <p className="text-md">Select new pot size</p>
-                            <div className="grid grid-cols-5 mx-auto">
+                            <div className="grid grid-cols-5 gap-4 my-2 mx-auto">
                                 {POT_SIZES.map((option) => (
                                     <PotSizeOption
                                         key={option}
@@ -141,7 +141,7 @@ const RepotModal = ({ close }) => {
                             </div>
                             <input
                                 className={clsx(
-                                    "pot-size w-32 h-10 md:h-12 p-2 mx-auto",
+                                    "pot-size w-32 h-10! md:h-12! p-2 mx-auto",
                                     selected === "custom" && "pot-size-selected"
                                 )}
                                 placeholder="custom"

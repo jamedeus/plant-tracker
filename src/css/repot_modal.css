@@ -2,13 +2,12 @@
 
 /* Repot modal pot size option */
 .pot-size {
-    @apply text-xl md:text-2xl text-center font-bold;
-    @apply flex rounded-full bg-base-300 focus:outline-hidden;
+    @apply btn bg-base-300 border-0 text-xl md:text-2xl font-bold rounded-full;
 }
 
 /* Repot modal selected pot size option */
 .pot-size-selected {
-    @apply bg-primary text-white;
+    @apply btn-primary bg-primary text-white;
 }
 
 /* Dark mode custom pot size placeholder text */

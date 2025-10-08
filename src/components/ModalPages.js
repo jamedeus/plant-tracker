@@ -53,7 +53,7 @@ const ModalPages = ({ children }) => {
                 <button
                     id="modal-pages-back"
                     className={clsx(
-                        'btn transition-opacity duration-300',
+                        'btn',
                         backHidden && 'opacity-0 pointer-events-none'
                     )}
                     aria-disabled={backHidden}
@@ -65,7 +65,7 @@ const ModalPages = ({ children }) => {
                 <button
                     id="modal-pages-next"
                     className={clsx(
-                        'btn btn-accent transition-opacity duration-300',
+                        'btn btn-accent',
                         nextHidden && 'opacity-0 pointer-events-none'
                     )}
                     aria-disabled={nextHidden}
