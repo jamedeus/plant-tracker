@@ -407,6 +407,7 @@ describe('SPA integration tests', () => {
                 timestamp: "2024-02-11T04:19:23+00:00"
             }
         });
+        const replaceStateSpy = jest.spyOn(window.history, 'replaceState');
 
         // Simulate user clicking division event marker
         await user.click(getByText('Child plant 1'));
@@ -425,6 +426,12 @@ describe('SPA integration tests', () => {
         // Confirm called scrollIntoView (division event link has scrollToDate param)
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+        // Confirm querystring was removed from URL after scrolling
+        expect(replaceStateSpy).toHaveBeenCalledWith(
+            null,
+            "",
+            expect.not.stringContaining('scrollToDate')
+        );
     });
 
     it('fetches new state for current route when user navigates to SPA with back button', async () => {

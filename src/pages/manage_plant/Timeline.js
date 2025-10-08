@@ -739,7 +739,8 @@ const Timeline = memo(function Timeline() {
 
     // Scroll to date specified in qurystring parameter if present
     useEffect(() => {
-        const params = new URL(window.location.href).searchParams;
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
         const scrollToDate = params.get('scrollToDate');
         if (scrollToDate) {
             const timer = setTimeout(() => {
@@ -750,6 +751,15 @@ const Timeline = memo(function Timeline() {
                     behavior: "smooth",
                     block: "start"
                 });
+                // Remove scrollToDate param from URL after scrolling
+                // (should only run once, not when navigating through history)
+                url.searchParams.delete("scrollToDate");
+                const search = url.searchParams.toString();
+                window.history.replaceState(
+                    null,
+                    "",
+                    `${url.pathname}${search ? `?${search}` : ''}${url.hash}`
+                );
             }, 100);
             return () => clearTimeout(timer);
         }
