@@ -32,7 +32,10 @@ const ModalPages = ({ children }) => {
         <div className='modal-pages flex flex-col overflow-hidden'>
             {/* Track renders all pages, horizontally slides to current page */}
             <div
-                className="flex transition-transform duration-300 ease-out"
+                className={clsx(
+                    "flex transition-transform duration-300 ease-out",
+                    "transform-gpu will-change-transform"
+                )}
                 style={{ transform: `translateX(-${index * 100}%)` }}
                 onTransitionEnd={onTransitionEnd}
                 data-testid="modal-pages-track"
