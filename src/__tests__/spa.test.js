@@ -6,6 +6,7 @@ import FakeBarcodeDetector, { mockQrCodeInViewport } from 'src/testUtils/mockBar
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockManagePlantFetch from 'src/testUtils/mockManagePlantFetch';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import 'jest-canvas-mock';
 import { mockContext as mockOverviewContext } from 'src/pages/overview/__tests__/mockContext';
@@ -348,6 +349,82 @@ describe('SPA integration tests', () => {
             expect(getByTestId('user-profile-page')).toBeInTheDocument();
             expect(queryByTestId('password-reset-page')).toBeNull();
         });
+    });
+
+    it('navigates between 2 manage_plant pages when user clicks division event marker', async () => {
+        // Mock fetch function to return manage_plant page state with a division event
+        mockFetchResponse({
+            page: 'manage_plant',
+            title: 'Manage Plant',
+            state: {
+                ...mockPlantContext,
+                division_events: {
+                    "2024-02-11T04:19:23+00:00": [
+                        {
+                            name: "Child plant 1",
+                            uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                        },
+                    ]
+                }
+            }
+        });
+
+        // Render SPA on manage_plant page
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        mockCurrentURL('https://plants.lan/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12');
+        const router = createMemoryRouter(routes, { initialEntries: [
+            '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        ] });
+        const { getByText, getByTestId } = render(
+            <AppRoot router={router} />
+        );
+        // Confirm rendered manage_plant page, set correct title
+        await waitFor(() => {
+            expect(document.title).toBe('Manage Plant');
+            expect(getByTestId('manage-plant-layout')).toBeInTheDocument();
+            expect(getByText(/Divided into/)).toBeInTheDocument();
+        });
+        // Confirm fetched correct state
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_manage_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12',
+            {headers: {Accept: "application/json"}}
+        );
+        // Confirm did NOT call scrollIntoView
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+        jest.clearAllMocks();
+
+        // Mock fetch function to return manage_plant page state for child plant
+        mockManagePlantFetch({
+            ...mockPlantContext,
+            plant_details: {
+                ...mockPlantContext.plant_details,
+                display_name: "Child plant 1",
+                uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+            },
+            divided_from: {
+                name: "Test Plant",
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-02-11T04:19:23+00:00"
+            }
+        });
+
+        // Simulate user clicking division event marker
+        await user.click(getByText('Child plant 1'));
+
+        // Confirm rendered manage_plant page, set correct title
+        await waitFor(() => {
+            expect(document.title).toBe('Manage Plant');
+            expect(getByTestId('manage-plant-layout')).toBeInTheDocument();
+            expect(getByText(/Divided from/)).toBeInTheDocument();
+        });
+        // Confirm fetched correct state
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_manage_state/cc3fcb4f-120a-4577-ac87-ac6b5bea8968',
+            {headers: {Accept: "application/json"}}
+        );
+        // Confirm called scrollIntoView (division event link has scrollToDate param)
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
     it('fetches new state for current route when user navigates to SPA with back button', async () => {
