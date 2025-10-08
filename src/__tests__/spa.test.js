@@ -6,7 +6,6 @@ import FakeBarcodeDetector, { mockQrCodeInViewport } from 'src/testUtils/mockBar
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
-import mockManagePlantFetch from 'src/testUtils/mockManagePlantFetch';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import 'jest-canvas-mock';
 import { mockContext as mockOverviewContext } from 'src/pages/overview/__tests__/mockContext';
@@ -394,19 +393,27 @@ describe('SPA integration tests', () => {
         jest.clearAllMocks();
 
         // Mock fetch function to return manage_plant page state for child plant
-        mockManagePlantFetch({
-            ...mockPlantContext,
-            plant_details: {
-                ...mockPlantContext.plant_details,
-                display_name: "Child plant 1",
-                uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
-            },
-            divided_from: {
-                name: "Test Plant",
-                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-02-11T04:19:23+00:00"
+        mockFetchResponse({
+            page: 'manage_plant',
+            title: 'Manage Plant',
+            state: {
+                ...mockPlantContext,
+                plant_details: {
+                    ...mockPlantContext.plant_details,
+                    display_name: "Child plant 1",
+                    uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                },
+                divided_from: {
+                    name: "Test Plant",
+                    uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    timestamp: "2024-02-11T04:19:23+00:00"
+                }
             }
         });
+        // Mock current URL to division event marker destination (clicking link
+        // will update react-router history but not window.location in tests)
+        mockCurrentURL(`https://plants.lan/manage/cc3fcb4f-120a-4577-ac87-ac6b5bea8968?scrollToDate=2024-02-10`);
+        // Spy on replaceState (confirm querystring removed after scroll)
         const replaceStateSpy = jest.spyOn(window.history, 'replaceState');
 
         // Simulate user clicking division event marker
