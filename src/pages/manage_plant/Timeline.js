@@ -731,6 +731,7 @@ TimelineDay.propTypes = {
 };
 
 const Timeline = memo(function Timeline() {
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const timelineDays = useSelector((state) => state.timeline.timelineDays);
 
     // Get array of yyyy-mm-dd keys sorted chronologically (recent first)
@@ -752,7 +753,7 @@ const Timeline = memo(function Timeline() {
             }, 100);
             return () => clearTimeout(timer);
         }
-    }, []);
+    }, [plantID]);
 
     return (
         <div className='section max-w-full'>
