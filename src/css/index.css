@@ -156,14 +156,14 @@
 /* Paged modal: disable back/next buttons if current page has data attribute */
 .modal-pages {
     &:has([data-current-page="true"] [data-next-button="disabled"]) {
-        & #modal-pages-next {
+        & [data-testid="modal-pages-next"] {
             @apply bg-base-content/10 pointer-events-none;
             --btn-border: #0000;
             --btn-fg: color-mix(in oklch, var(--color-base-content) 20%, #0000);
         }
     }
     &:has([data-current-page="true"] [data-back-button="disabled"]) {
-        & #modal-pages-back {
+        & [data-testid="modal-pages-back"] {
             @apply bg-base-content/10 pointer-events-none;
             --btn-border: #0000;
             --btn-fg: color-mix(in oklch, var(--color-base-content) 20%, #0000);

@@ -23,8 +23,8 @@ describe('ModalPages', () => {
         );
 
         const track = component.getByTestId('modal-pages-track');
-        const backButton = component.getByRole('button', { name: 'Back' });
-        const nextButton = component.getByRole('button', { name: 'Next' });
+        const backButton = component.getByTestId('modal-pages-back');
+        const nextButton = component.getByTestId('modal-pages-next');
 
         return {
             ...component,

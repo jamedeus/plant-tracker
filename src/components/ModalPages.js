@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import clsx from 'clsx';
 
 // Reusable pager component, intended to be rendered as a child of LazyModal
@@ -56,27 +57,27 @@ const ModalPages = ({ children }) => {
             {/* Nav buttons, fades out back on first page, next on last page */}
             <div className="flex w-full justify-between">
                 <button
-                    id="modal-pages-back"
+                    data-testid="modal-pages-back"
                     className={clsx(
-                        'btn',
+                        'btn h-10',
                         backHidden && 'opacity-0 pointer-events-none'
                     )}
                     aria-disabled={backHidden}
                     onClick={() => goToPage(index - 1)}
                 >
-                    Back
+                    <FaArrowLeftLong className="size-5" />
                 </button>
 
                 <button
-                    id="modal-pages-next"
+                    data-testid="modal-pages-next"
                     className={clsx(
-                        'btn btn-accent',
+                        'btn btn-accent h-10',
                         nextHidden && 'opacity-0 pointer-events-none'
                     )}
                     aria-disabled={nextHidden}
                     onClick={() => goToPage(index + 1)}
                 >
-                    Next
+                    <FaArrowRightLong className="size-5" />
                 </button>
             </div>
         </div>

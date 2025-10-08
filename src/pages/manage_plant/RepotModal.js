@@ -173,7 +173,7 @@ const RepotModal = ({ close }) => {
         case("loading"):
             return (
                 <div
-                    className="flex flex-col h-68 md:h-74 justify-evenly"
+                    className="flex flex-col h-66 md:h-72 justify-evenly"
                     data-testid="repot-modal-loading"
                 >
                     <LoadingAnimation className="mb-6 mx-auto" />
@@ -182,7 +182,7 @@ const RepotModal = ({ close }) => {
         default:
             return (
                 <div
-                    className="flex flex-col h-68 md:h-74 justify-evenly"
+                    className="flex flex-col h-66 md:h-72 justify-evenly"
                     data-testid="repot-modal-success"
                 >
                     <div className="text-lg font-bold">
