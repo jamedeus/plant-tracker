@@ -26,9 +26,14 @@ const urlIsSupported = (url) => {
 
 // Takes scanned URL, returns true if UUID is available, false if already used
 const urlIsAvailable = async (url) => {
-    const uuid = url.split('/manage/')[1];
-    const response = await sendPostRequest('/is_uuid_available', {uuid: uuid});
-    return response.ok;
+    try {
+        const scannedUrl = new URL(url);
+        const uuid = scannedUrl.pathname.split('/manage/')[1];
+        const response = await sendPostRequest('/is_uuid_available', {uuid: uuid});
+        return response.ok;
+    } catch (e) {
+        return false;
+    }
 };
 
 // Full-screen QR scanner overlay, lower Z index than navbar (keep nav visible)

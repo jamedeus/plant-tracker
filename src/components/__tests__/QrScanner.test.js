@@ -213,4 +213,25 @@ describe('QrScanner availableOnly mode', () => {
             headers: postHeaders
         });
     });
+
+    it('removes querystring parameters from URLs in scanned QR codes', async () => {
+        // Simulate QR code with querystring parameter in URL entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2?scrollToDate=2024-02-10');
+        // Mock fetch function to simulate available URL
+        mockFetchResponse({available: true});
+
+        // Fast forward to detect QR code, confirm link to scanned URL appears
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(100);
+        });
+
+        // Confirm only posted UUID to backend (removed querystring)
+        expect(global.fetch).toHaveBeenCalledWith('/is_uuid_available', {
+            method: 'POST',
+            body: JSON.stringify({
+                uuid: "5c256d96-ec7d-408a-83c7-3f86d63968b2"
+            }),
+            headers: postHeaders
+        });
+    });
 });
