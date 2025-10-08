@@ -204,3 +204,43 @@ describe('RepotModal', () => {
         expect(app.getByTestId('pot-size-options').getAttribute('data-next-button')).toBe('disabled');
     });
 });
+
+describe('RepotModal default size option', () => {
+    const renderWithCurrentPotSize = (currentPotSize) => {
+        return render(
+            <>
+                <ReduxProvider initialState={{
+                    ...mockContext,
+                    plant_details: {
+                        ...mockContext.plant_details,
+                        pot_size: currentPotSize
+                    }
+                }}>
+                    <RepotModal close={jest.fn()} />
+                </ReduxProvider>
+                <ErrorModal />
+            </>
+        );
+    };
+
+    it('defaults to 2 inch pot size if currentPotSize not set', async () => {
+        // Render RepotModal with no currentPotSize
+        const component = renderWithCurrentPotSize(null);
+        // Confirm 2 inch pot size is selected by default
+        expect(component.getByTitle('2 inch pot').classList).toContain('pot-size-selected');
+    });
+
+    it('defaults to next size option if currentPotSize is set', async () => {
+        // Render RepotModal with 4 inch currentPotSize
+        const component = renderWithCurrentPotSize(4);
+        // Confirm 6 inch pot size is selected by default
+        expect(component.getByTitle('6 inch pot').classList).toContain('pot-size-selected');
+    });
+
+    it('defaults to custom pot size if currentPotSize is largest option', async () => {
+        // Render RepotModal with 21 inch currentPotSize
+        const component = renderWithCurrentPotSize(21);
+        // Confirm 6 inch pot size is selected by default
+        expect(component.getByPlaceholderText('custom').classList).toContain('pot-size-selected');
+    });
+});

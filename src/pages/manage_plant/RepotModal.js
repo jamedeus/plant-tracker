@@ -48,10 +48,13 @@ const RepotModal = ({ close }) => {
     // Ref to access timestamp input
     const repotTimeRef = useRef(null);
 
-    // Default to next size if currentPotSize set, otherwise default to 2 inch
+    // If currentPotSize is set default to next option in POT_SIZES
+    // If currentPotSize is last item in POT_SIZES default to custom pot size
+    // Otherwise default to 2 inch
     const [selected, setSelected] = useState((() => {
         if (currentPotSize && POT_SIZES.includes(parseInt(currentPotSize))) {
-            return POT_SIZES[POT_SIZES.indexOf(parseInt(currentPotSize)) + 1];
+            const nextIndex = POT_SIZES.indexOf(parseInt(currentPotSize)) + 1;
+            return POT_SIZES[nextIndex] || "custom";
         } else {
             return 2;
         }
