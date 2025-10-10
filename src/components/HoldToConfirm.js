@@ -93,6 +93,7 @@ const HoldToConfirm = ({
                 onMouseLeave={handleRelease}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleRelease}
+                onTouchCancel={handleRelease}
                 // Only add onClick if timeout is 0 (no confirmation)
                 onClick={!timeout ? handleHold : null}
                 ref={buttonRef}
