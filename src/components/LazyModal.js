@@ -9,6 +9,7 @@ import React, {
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
+import { useSwipeable } from 'react-swipeable';
 import LoadingAnimation from './LoadingAnimation';
 import CloseButtonIcon from './CloseButtonIcon';
 import { useCloseWithEscKey } from 'src/hooks/useCloseWithEscKey';
@@ -35,6 +36,8 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref)
     const [isOpen, setIsOpen] = useState(false);
     // Adds modal-open class if true (starts open animation)
     const [active, setActive] = useState(false);
+    // Adds translate down to close animation if true (user closed with swipe)
+    const [isSwipeClosing, setIsSwipeClosing] = useState(false);
     // Props passed to lazy loaded contents component (pass to open in parent)
     const [contentProps, setContentProps] = useState({});
     // Stores lazy loaded contents component
@@ -61,10 +64,28 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref)
         // Unmount after animation completes (300ms + 50ms buffer)
         const timer = setTimeout(() => {
             setIsOpen(false);
+            // Prevent sliding up next time modal opened (if closed with swipe)
+            setIsSwipeClosing(false);
             onCloseRef.current = null;
         }, 350);
         return () => clearTimeout(timer);
     }, []);
+
+    // Closes modal with slide down animation in addition to fade
+    const closeWithSwipe = useCallback(() => {
+        setIsSwipeClosing(true);
+        close();
+    }, []);
+
+    // Close modal by swiping down from title
+    const handlers = useSwipeable({
+        onSwipedDown: closeWithSwipe,
+        ...{
+            delta: 50,
+            preventScrollOnSwipe: true,
+            trackMouse: true,
+        },
+    });
 
     // Close modal by pressing escape key
     useCloseWithEscKey(isOpen, close);
@@ -85,8 +106,15 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref)
         >
             <div className={clsx(
                 "modal-box text-center flex flex-col pt-4",
+                isSwipeClosing && "translate-y-1/3 md:translate-y-full",
                 className
             )}>
+                {/* Swipe to close hitbox (top 4rem of modal, full width) */}
+                <div
+                    className="absolute inset-0 h-16"
+                    data-testid="modal-swipe-hitbox"
+                    {...handlers}
+                ></div>
                 {/* Close button */}
                 <button
                     className="btn-close absolute right-4 top-4"

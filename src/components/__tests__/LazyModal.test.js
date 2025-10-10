@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { fireEvent } from '@testing-library/react';
 import LazyModal, { useModal } from '../LazyModal';
 
 /* eslint react/prop-types: 0 */
@@ -207,6 +208,39 @@ describe('LazyModal', () => {
 
         // Simulate user pressing Backspace key, confirm setOnClose callback did NOT run
         await user.keyboard('{Backspace}');
+        expect(TestBody.onCloseSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('closes when user swipes down from title, but not from body', async () => {
+        // Get mock function passed to setOnClose to check if it was called
+        TestBody.onCloseSpy = jest.fn();
+        // Render TestBody component inside LazyModal
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const component = render(<TestComponent loader={immediateLoader} />);
+
+        // Open modal by clicking button rendered by parent, confirm rendered
+        await user.click(component.getByText('Open LazyModal'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(component.getByTestId('lazy-loaded-body')).toBeInTheDocument();
+        // Confirm modal has modal-open class (starts open animation)
+        expect(document.querySelector('.modal-open')).not.toBeNull();
+
+        // Simulate user swiping down from modal body
+        const body = component.getByTestId('lazy-loaded-body');
+        fireEvent.touchStart(body, {touches: [{ clientX: 50, clientY: 0 }]});
+        fireEvent.touchMove(body, {touches: [{ clientX:  50, clientY: 50 }]});
+        fireEvent.touchEnd(body, {changedTouches: [{ clientX:  50, clientY: 50 }]});
+
+        // Confirm setOnClose callback did NOT run
+        expect(TestBody.onCloseSpy).toHaveBeenCalledTimes(0);
+
+        // Simulate user swiping down from modal title
+        const title = component.getByTestId('modal-swipe-hitbox');
+        fireEvent.touchStart(title, {touches: [{ clientX: 50, clientY: 0 }]});
+        fireEvent.touchMove(title, {touches: [{ clientX:  50, clientY: 50 }]});
+        fireEvent.touchEnd(title, {changedTouches: [{ clientX:  50, clientY: 50 }]});
+
+        // Confirm setOnClose callback ran
         expect(TestBody.onCloseSpy).toHaveBeenCalledTimes(1);
     });
 });
