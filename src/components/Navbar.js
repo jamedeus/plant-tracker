@@ -101,6 +101,7 @@ const Navbar = memo(function Navbar({ menuOptions, title, titleOptions, onTitleC
             {/* Title */}
             <div
                 className="mx-auto shrink min-w-0"
+                data-title-click-listener={onTitleClick ? '' : undefined}
                 onClick={onTitleClick ? onTitleClick : (
                     titleOptions ? null : jumpToTop
                 )}

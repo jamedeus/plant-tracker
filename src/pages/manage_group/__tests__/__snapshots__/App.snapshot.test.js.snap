@@ -103,6 +103,7 @@ exports[`App matches snapshot 1`] = `
       </div>
       <div
         class="mx-auto shrink min-w-0"
+        data-title-click-listener=""
       >
         <div
           class="dropdown dropdown-center w-full"
@@ -1043,6 +1044,7 @@ exports[`App matches snapshot when group is archived 1`] = `
       </div>
       <div
         class="mx-auto shrink min-w-0"
+        data-title-click-listener=""
       >
         <div
           class="dropdown dropdown-center w-full"
@@ -1935,6 +1937,7 @@ exports[`App matches snapshot when no plants 1`] = `
       </div>
       <div
         class="mx-auto shrink min-w-0"
+        data-title-click-listener=""
       >
         <div
           class="dropdown dropdown-center w-full"

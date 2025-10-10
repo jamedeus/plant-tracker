@@ -14,13 +14,15 @@ const TitleDrawer = ({ open, onClose, children }) => {
             return;
         }
 
-        // Close if user clicks body outside drawer
+        // Close if user clicks body outside drawer.
         // Keep open if click is inside a modal (ie if user opens edit modal and
-        // then submits we want the drawer to stay open so they can see changes)
+        // then submits the drawer should stay open so they can see changes).
+        // Ignore click on title button (let title button toggle visibility).
         const handleClickOutside = (e) => {
             const insideDrawer = ref.current?.contains(e.target);
             const insideModal = e.target.closest('.modal-box');
-            if (!insideDrawer && !insideModal) {
+            const titleButton = e.target.closest('[data-title-click-listener]');
+            if (!insideDrawer && !insideModal && !titleButton) {
                 onClose();
             }
         };
