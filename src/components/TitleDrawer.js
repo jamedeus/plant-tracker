@@ -26,10 +26,10 @@ const TitleDrawer = ({ open, onClose, children }) => {
                 onClose();
             }
         };
-        document.addEventListener('click', handleClickOutside, true);
+        document.addEventListener('pointerdown', handleClickOutside, true);
 
         return () => {
-            document.removeEventListener('click', handleClickOutside, true);
+            document.removeEventListener('pointerdown', handleClickOutside, true);
         };
     }, [ref, open, onClose]);
 
