@@ -5,6 +5,7 @@ import useSound from 'use-sound';
 import error from 'src/sounds/error.mp3';
 import completed from 'src/sounds/completed.mp3';
 import sendPostRequest from 'src/utils/sendPostRequest';
+import { showToast } from 'src/components/Toast';
 import 'src/css/qrscanner.css';
 
 const GREEN_FILL = 'oklch(0.7451 0.167 183.61 / 0.35)';
@@ -150,6 +151,16 @@ const QrScanner = ({
         });
     }, []);
 
+    // Show toast and exit if camera permission is denied
+    const handleError = useCallback(() => {
+        showToast(
+            'Unable to open camera, please allow camera access and try again',
+            'red',
+            3000
+        );
+        onExit();
+    }, []);
+
     return (
         <div
             className="fixed inset-0 bg-black z-90 overscroll-none touch-none"
@@ -157,7 +168,7 @@ const QrScanner = ({
         >
             <Scanner
                 onScan={handleScan}
-                onError={onExit}
+                onError={handleError}
                 formats={["qr_code"]}
                 components={{
                     tracker: highlightQrCodes,
