@@ -148,7 +148,6 @@ describe('QrScanner', () => {
     });
 });
 
-
 describe('QrScanner availableOnly mode', () => {
     let component;
 

@@ -1,21 +1,42 @@
 const JsdomEnv = require('jest-environment-jsdom').TestEnvironment;
 
+const EXCEPTION_TYPES = [
+    'unhandledRejection',
+    'uncaughtException',
+    'uncaughtExceptionMonitor'
+];
+
 // Prevents unhandled rejections and uncaught exceptions from failing jest tests
 // Useful for testing situations where an exception is expected
 class IgnoreExceptionEnv extends JsdomEnv {
     async setup() {
         await super.setup();
-        this._origEmit = process.emit.bind(process);
+        const origEmit = process.emit.bind(process);
+        const origOn = process.on.bind(process);
+
+        process.on = (event, listener) => {
+            if (EXCEPTION_TYPES.includes(event)) {
+                // Prevent jest from registering its exception listeners
+                return process;
+            }
+            return origOn(event, listener);
+        };
+
         process.emit = (event, ...args) => {
-            if (event === 'unhandledRejection' || event === 'uncaughtException') {
+            if (EXCEPTION_TYPES.includes(event)) {
                 // Ignore exception, prevent jest from failing test
                 return true;
             }
-            return this._origEmit(event, ...args);
+            return origEmit(event, ...args);
+        };
+
+        this._restore = () => {
+            process.on = origOn;
+            process.emit = origEmit;
         };
     }
     async teardown() {
-        if (this._origEmit) process.emit = this._origEmit;
+        if (this._restore) this._restore();
         await super.teardown();
     }
 }

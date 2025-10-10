@@ -6,7 +6,6 @@ import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import 'jest-canvas-mock';
 
 describe('QrScanner no camera permission', () => {
-
     beforeAll(() => {
         // Mock all browser APIs used by QrScanner
         applyQrScannerMocks();
