@@ -6,6 +6,7 @@ import error from 'src/sounds/error.mp3';
 import completed from 'src/sounds/completed.mp3';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { showToast } from 'src/components/Toast';
+import { useCloseWithEscKey } from 'src/hooks/useCloseWithEscKey';
 import 'src/css/qrscanner.css';
 
 const GREEN_FILL = 'oklch(0.7451 0.167 183.61 / 0.35)';
@@ -160,6 +161,9 @@ const QrScanner = ({
         );
         onExit();
     }, []);
+
+    // Close scanner by pressing escape key
+    useCloseWithEscKey(true, onExit);
 
     return (
         <div

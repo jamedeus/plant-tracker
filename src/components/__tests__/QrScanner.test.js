@@ -56,6 +56,22 @@ describe('QrScanner', () => {
         expect(component.queryByTestId('qr-scanner-overlay')).toBeNull();
     });
 
+    it('closes scanner when user presses escape key', async () => {
+        // Click button to open scanner
+        await user.click(component.getByRole('button'));
+
+        // Confirm qr-scanner-overlay appeared
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(component.getByTestId('qr-scanner-overlay')).toBeInTheDocument();
+
+        // Simulate user pressing Escape key
+        await user.keyboard('{Escape}');
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm qr-scanner-overlay disappeared
+        expect(component.queryByTestId('qr-scanner-overlay')).toBeNull();
+    });
+
     it('changes button title and aria-label when clicked', async () => {
         const button = component.getByRole('button');
 
