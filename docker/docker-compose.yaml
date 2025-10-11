@@ -11,16 +11,58 @@ services:
         condition: service_healthy
         restart: true
     environment:
+      # See docs/docker_env_vars.md for more details
+      #
+      # ## BASIC SETUP ##
+      # The variables in this section are relevant for all deployments
+      #
       # Base URL where the app is accessed (all others will be blocked)
       # Will be used to generate QR code URLs (adds /manage/<uuid>)
       - BASE_URL=plants.lan
-      # Optional: Serve static files (JS bundles) from CDN if set
+      # Persistent key between sessions
+      # If blank a new key will be generated each time (not recommended)
+      - SECRET_KEY="xxxxxxxxxxxxxxxxxxxxxx"
+      # Postgres database password (must match container below)
+      - DATABASE_PASSWORD=supersecretpassword
+      # Optional: Disables user accounts and authentication if True
+      - SINGLE_USER_MODE=False
+      # Optional: Admin interface credentials, will be created if
+      # username and password are set (email is optional)
+      - DJANGO_SUPERUSER_USERNAME=myusername
+      - DJANGO_SUPERUSER_PASSWORD=mypassword
+      # - DJANGO_SUPERUSER_EMAIL=
+      # Optional: Number of gunicorn workers (defaults to 2 if not set)
+      # Increase if there are a lot of users, should not exceed CPU core count
+      # - GUNICORN_WORKERS=2
+      #
+      #
+      # ## EMAIL SETUP ##
+      # AWS SES credentials used to send user verification emails in public deployments
+      #
+      # - SES_SMTP_USER=
+      # - SES_SMTP_PASSWORD=
+      # - DEFAULT_FROM_EMAIL=
+      #
+      #
+      # ## STATIC FILE CDN SETUP ##
+      # Used to serve static files (JS + CSS bundles) in public deployments
+      #
+      # # Cloudfront CDN distribution URL
       # - STATIC_URL=https://static.plants.joshmedeiros.dev
-      # Optional: Store user-uploaded files in S3 if all variables set
-      # Photos will be stored locally if any AWS variables are missing
+      #
+      #
+      # ## S3 PHOTO STORAGE SETUP ##
+      # AWS S3 configuration used to store user-uploaded photos
+      # Serves photos behind cloudfront with signed cookies for access control
+      # All variables in this section are required, will store locally if any missing
+      #
+      # # IAM user public access key ID
       # - AWS_ACCESS_KEY_ID=
+      # # IAM user private access key ID
       # - AWS_SECRET_ACCESS_KEY=
+      # # Name of the S3 bucket to store photos
       # - AWS_STORAGE_BUCKET_NAME=
+      # # AWS region where the S3 bucket is located
       # - AWS_S3_REGION_NAME=
       # # Cloudfront alternate domain used for photos (subdomain of BASE_URL)
       # # Can be the same as STATIC_URL or different, cannot have protocol
@@ -29,27 +71,22 @@ services:
       # - CLOUDFRONT_KEY_ID=
       # # Optional (only if mounting privkey to different location)
       # - CLOUDFRONT_PRIVKEY_PATH=/mnt/backend/private_key.pem
-      # Postgres database password (must match container below)
-      - DATABASE_PASSWORD=supersecretpassword
-      # Optional: All postgres settings can be overridden with env vars
+      #
+      #
+      # ## DATABASE + CACHE OVERRIDES (development only) ##
+      #
+      # # Postgres database host (only set if postgres container below modified)
+      # - DATABASE_HOST=plant-tracker-db
+      # # Redis connection settings (only set if redis container below modified)
+      # - REDIS_HOST=plant-tracker-redis
+      # - REDIS_PORT=6379
+      # # Optional: All postgres settings can be overridden with env vars
       # - DATABASE_NAME=
       # - DATABASE_USER=
       # - DATABASE_HOST=
       # - DATABASE_PORT=
-      # Optional: Disables user accounts and authentication if True
-      - SINGLE_USER_MODE=False
-      # Optional: Persistent key between sessions
-      # If blank a new key will be generated each time
-      - SECRET_KEY="xxxxxxxxxxxxxxxxxxxxxx"
-      # Optional: Admin interface credentials, will be created if
-      # username and password are set (email is optional)
-      - DJANGO_SUPERUSER_USERNAME=myusername
-      - DJANGO_SUPERUSER_PASSWORD=mypassword
-      # - DJANGO_SUPERUSER_EMAIL=
-      # Optional: Number of gunicorn workers (defaults to 2 if not set)
-      # - GUNICORN_WORKERS=2
     volumes:
-      # Persistent storage between sessions (if not using AWS S3)
+      # Persistent photo storage between sessions (if not using AWS S3)
       - plant-tracker-data:/mnt/backend/data/
       # Cloudfront private key for signed URLs (if using AWS S3)
       # - ./private_key.pem:/mnt/backend/private_key.pem
@@ -71,6 +108,7 @@ services:
     environment:
       POSTGRES_DB: plant_tracker
       POSTGRES_USER: postgres
+      # Must match DATABASE_PASSWORD env var in plant-tracker container
       POSTGRES_PASSWORD: supersecretpassword
     volumes:
       - plant-tracker-database:/var/lib/postgresql/data
