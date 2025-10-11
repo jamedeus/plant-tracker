@@ -63,6 +63,11 @@ RUN useradd -r -g celery celery
 RUN pip install --no-cache-dir gunicorn
 ENV GUNICORN_WORKERS=2
 
+# Default postgres + redis connection settings (matches docker-compose example)
+ENV DATABASE_HOST=plant-tracker-db
+ENV REDIS_HOST=plant-tracker-redis
+ENV REDIS_PORT=6379
+
 # Run migrations, start dev server
 COPY docker/entrypoint.sh /mnt/entrypoint.sh
 CMD ["/mnt/entrypoint.sh"]

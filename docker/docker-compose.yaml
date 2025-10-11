@@ -29,13 +29,8 @@ services:
       # - CLOUDFRONT_KEY_ID=
       # # Optional (only if mounting privkey to different location)
       # - CLOUDFRONT_PRIVKEY_PATH=/mnt/backend/private_key.pem
-      # Postgres database host (must match container below)
-      - DATABASE_HOST=plant-tracker-db
       # Postgres database password (must match container below)
       - DATABASE_PASSWORD=supersecretpassword
-      # Redis connection settings (must match container below)
-      - REDIS_HOST=plant-tracker-redis
-      - REDIS_PORT=6379
       # Optional: All postgres settings can be overridden with env vars
       # - DATABASE_NAME=
       # - DATABASE_USER=
