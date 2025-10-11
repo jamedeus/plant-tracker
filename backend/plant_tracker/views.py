@@ -847,7 +847,15 @@ def divide_plant(user, plant, timestamp, **kwargs):
             'divided_from_plant_uuid': str(plant.uuid),
             'division_event_key': str(event.pk)
         }, 900)
-        return JsonResponse({"action": "divide", "plant": plant.uuid}, status=200)
+        return JsonResponse(
+            {
+                "action": "divide",
+                "plant": plant.uuid,
+                "plant_key": plant.pk,
+                "division_event_key": event.pk
+            },
+            status=200
+        )
 
     except IntegrityError:
         return JsonResponse(

@@ -1433,17 +1433,24 @@ class ManagePlantEndpointTests(TestCase):
             'timestamp': '2024-02-06T03:06:26.000Z'
         })
 
-        # Confirm response, confirm DivisionEvent created
+        # Confirm succeeded, get DivisionEvent entry
         self.assertEqual(response.status_code, 200)
+        division_event = self.plant.divisionevent_set.all().first()
+
+        # Confirm response contains plant and DivisionEvent primary keys
         self.assertEqual(
             response.json(),
-            {"action": "divide", "plant": str(self.plant.uuid)}
+            {
+                "action": "divide",
+                "plant": str(self.plant.uuid),
+                "plant_key": self.plant.pk,
+                "division_event_key": division_event.pk
+            }
         )
         self._refresh_test_models()
         self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
 
         # Confirm cache key contains UUID of divided plant + pk of DivisionEvent
-        division_event = self.plant.divisionevent_set.all().first()
         self.assertEqual(
             cache.get(f'division_in_progress_{get_default_user().pk}'),
             {
