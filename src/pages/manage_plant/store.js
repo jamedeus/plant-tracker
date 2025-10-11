@@ -186,6 +186,7 @@ export function ReduxProvider({ children, initialState }) {
             interface: {
                 titleDrawerOpen: false,
                 changeQrScannerOpen: false,
+                divisionScannerOpen: false,
                 settingsMenuOpen: false,
                 photoGalleryOpen: false,
                 photoGalleryIndex: 0,

@@ -55,6 +55,8 @@ const Title = memo(function Title() {
         (state) => state.timeline.navigationOptions
     );
     const hasNavigationOptions = Object.keys(navigationOptions).length > 0;
+    // Hides DivisionModal while scanner is open (don't cover scanner)
+    const divisionScannerOpen = useSelector((state) => state.interface.divisionScannerOpen);
 
     const dispatch = useDispatch();
 
@@ -179,8 +181,10 @@ const Title = memo(function Title() {
 
             <LazyModal
                 ref={divisionModal.ref}
-                title="Divide Plant"
                 ariaLabel="Divide plant"
+                // Hide modal + backdrop while scanner open so backdrop doesn't
+                // cover close button in navbar (temp, need better solution)
+                backdropClassName={divisionScannerOpen ? "hidden" : ""}
                 load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}
             />
         </div>

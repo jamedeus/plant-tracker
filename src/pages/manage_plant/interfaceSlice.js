@@ -8,6 +8,8 @@ export const interfaceSlice = createSlice({
         titleDrawerOpen: false,
         // Fullscreen scanner used to change QR code open state
         changeQrScannerOpen: false,
+        // Fullscreen scanner used to get QR code for child plant open state
+        divisionScannerOpen: false,
         // Settings side menu open state
         settingsMenuOpen: false,
         // Fullscreen lightbox gallery open state
@@ -38,6 +40,12 @@ export const interfaceSlice = createSlice({
         // Takes true or false
         changeQrScannerOpened(state, action) {
             state.changeQrScannerOpen = action.payload;
+            state.titleDrawerOpen = false;
+        },
+
+        // Takes true or false
+        divisionScannerOpened(state, action) {
+            state.divisionScannerOpen = action.payload;
             state.titleDrawerOpen = false;
         },
 
@@ -119,6 +127,7 @@ export const interfaceSlice = createSlice({
 export const {
     titleDrawerOpened,
     changeQrScannerOpened,
+    divisionScannerOpened,
     settingsMenuOpened,
     photoGalleryOpened,
     photoGalleryIndexChanged,

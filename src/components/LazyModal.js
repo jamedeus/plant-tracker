@@ -31,7 +31,7 @@ export function useModal() {
 //
 // Contents component will receive any props passed to open as well as the close
 // callback (closes modal) and setOnClose (takes function to call on close).
-const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref) {
+const LazyModal = forwardRef(function LazyModal({ load, title, className, backdropClassName }, ref) {
     // Renders modal in portal if true
     const [isOpen, setIsOpen] = useState(false);
     // Adds modal-open class if true (starts open animation)
@@ -100,7 +100,7 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref)
 
     return createPortal(
         <div
-            className={clsx("modal", active && "modal-open")}
+            className={clsx("modal", active && "modal-open", backdropClassName)}
             aria-modal="true"
             role="dialog"
         >
@@ -155,7 +155,8 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className }, ref)
 LazyModal.propTypes = {
     load: PropTypes.func.isRequired,
     title: PropTypes.string,
-    className: PropTypes.string
+    className: PropTypes.string,
+    backdropClassName: PropTypes.string
 };
 
 export default LazyModal;

@@ -16,6 +16,7 @@ import { FaImages, FaLayerGroup } from "react-icons/fa";
 import {
     titleDrawerOpened,
     changeQrScannerOpened,
+    divisionScannerOpened,
     settingsMenuOpened,
     photoGalleryOpened,
 } from './interfaceSlice';
@@ -40,11 +41,15 @@ function Layout() {
         dispatch(titleDrawerOpened(!titleDrawerOpen));
     }, [titleDrawerOpen, dispatch]);
 
-    // Controls change QR scanner overlay open/close state
-    const changeQrScannerOpen = useSelector((state) => state.interface.changeQrScannerOpen);
-    const closeChangeQrScanner = useCallback(() => {
+    // Change top-right scanner button to close button if either scanner is open
+    const otherScannerOpen = useSelector((state) =>
+        state.interface.changeQrScannerOpen || state.interface.divisionScannerOpen
+    );
+    // Closes either alternate scanner (QrScannerButton callback)
+    const closeOtherScanner = useCallback(() => {
         dispatch(changeQrScannerOpened(false));
-    } , [dispatch]);
+        dispatch(divisionScannerOpened(false));
+    }, [dispatch]);
 
     const editModal = useModal();
     const openEditModal = useCallback(() => {
@@ -95,8 +100,8 @@ function Layout() {
                 title={plantDetails.display_name}
                 onTitleClick={toggleDetailsDrawerOpen}
                 topRightButton={<QrScannerButton
-                    otherScannerOpen={changeQrScannerOpen}
-                    closeOtherScanner={closeChangeQrScanner}
+                    otherScannerOpen={otherScannerOpen}
+                    closeOtherScanner={closeOtherScanner}
                 />}
             />
 
