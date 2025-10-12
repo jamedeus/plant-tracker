@@ -78,7 +78,7 @@ describe('Group ChangeQrScanner', () => {
 
     it('shows confirm button when available QR code is scanned', async () => {
         // Simulate valid QR code with available UUID entering the viewport
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
         mockFetchResponse({available: true});
 
         // Open scanner, confirm instructions are visible, confirm button is not
@@ -94,7 +94,7 @@ describe('Group ChangeQrScanner', () => {
 
     it('sends correct payload when confirm button clicked after scanning QR code', async () => {
         // Simulate valid QR code with available UUID entering the viewport
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
         mockFetchResponse({available: true});
 
         // Open scanner, fast forward until QR code detected
@@ -102,7 +102,7 @@ describe('Group ChangeQrScanner', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return expected response when confirm clicked
-        mockFetchResponse({new_uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'});
+        mockFetchResponse({new_uuid: '5c256d96ec7d408a83c73f86d63968b2'});
 
         // Confirm success message is not rendered
         expect(app.queryByText('QR code changed!')).toBeNull();
@@ -116,7 +116,7 @@ describe('Group ChangeQrScanner', () => {
             method: 'POST',
             body: JSON.stringify({
                 uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be14',
-                new_id: '5c256d96-ec7d-408a-83c7-3f86d63968b2'
+                new_id: '5c256d96ec7d408a83c73f86d63968b2'
             }),
             headers: postHeaders
         });
@@ -128,7 +128,7 @@ describe('Group ChangeQrScanner', () => {
 
     it('shows error modal if error received after confirm button clicked', async() => {
         // Simulate valid QR code with available UUID entering the viewport
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
         mockFetchResponse({available: true});
 
         // Open scanner, fast forward until QR code detected
@@ -158,7 +158,7 @@ describe('Group ChangeQrScanner', () => {
     // navigate to replace the URL and revalidate (updates UUID in redux).
     it('updates UUID in redux store when user changes QR code', async () => {
         // Simulate valid QR code with available UUID entering the viewport
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
         mockFetchResponse({available: true});
 
         // Open scanner, fast forward until QR code detected
@@ -166,7 +166,7 @@ describe('Group ChangeQrScanner', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Mock fetch function to return expected response when confirm clicked
-        mockFetchResponse({new_uuid: '5c256d96-ec7d-408a-83c7-3f86d63968b2'});
+        mockFetchResponse({new_uuid: '5c256d96ec7d408a83c73f86d63968b2'});
         // Click confirm button, confirm request made + overlay closed
         await user.click(app.getByTestId('confirm-new-qr-code-button'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
@@ -176,7 +176,7 @@ describe('Group ChangeQrScanner', () => {
             method: 'POST',
             body: JSON.stringify({
                 uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be14',
-                new_id: '5c256d96-ec7d-408a-83c7-3f86d63968b2'
+                new_id: '5c256d96ec7d408a83c73f86d63968b2'
             }),
             headers: postHeaders
         });
@@ -184,7 +184,7 @@ describe('Group ChangeQrScanner', () => {
 
         // Confirm URL was updated to new UUID (revalidates page, updates redux)
         expect(mockNavigate).toHaveBeenCalledWith(
-            `/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2`,
+            `/manage/5c256d96ec7d408a83c73f86d63968b2`,
             { replace: true }
         );
     });

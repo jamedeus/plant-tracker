@@ -59,7 +59,7 @@ describe('SPA integration tests', () => {
         // Mock barcode-detector to simulate detecting a QR code with a domain
         // that matches the current URL
         mockCurrentURL('https://plants.lan/');
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
 
         // Click button to open scanner, confirm scanner appeared
         await user.click(getByTitle('Open QR scanner'));
@@ -74,7 +74,7 @@ describe('SPA integration tests', () => {
         expect(getByTestId('scanned-url')).toBeInTheDocument();
         expect(getByTestId('scanned-url')).toHaveAttribute(
             'href',
-            '/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'
+            '/manage/5c256d96ec7d408a83c73f86d63968b2'
         );
 
         // Mock fetch function to return manage_plant page state
@@ -97,7 +97,7 @@ describe('SPA integration tests', () => {
         expect(document.title).toBe('Manage Plant');
         // Confirm fetched manage_plant state
         expect(global.fetch).toHaveBeenCalledWith(
-            '/get_manage_state/5c256d96-ec7d-408a-83c7-3f86d63968b2',
+            '/get_manage_state/5c256d96ec7d408a83c73f86d63968b2',
             {headers: {Accept: "application/json"}}
         );
     });

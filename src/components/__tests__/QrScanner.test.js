@@ -89,7 +89,7 @@ describe('QrScanner', () => {
 
     it('shows link to scanned URL when QR code detected', async () => {
         // Simulate QR code with a domain matching current URL entering the viewport
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
 
         // Open scanner, confirm instructions div is visible
         await user.click(component.getByRole('button'));
@@ -103,7 +103,7 @@ describe('QrScanner', () => {
         expect(component.getByTestId('scanned-url')).toBeInTheDocument();
         expect(component.getByTestId('scanned-url')).toHaveAttribute(
             'href',
-            '/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'
+            '/manage/5c256d96ec7d408a83c73f86d63968b2'
         );
         // Confirm instructions div is no longer visible
         expect(component.queryByText('Point the camera at a QR code')).toBeNull();
@@ -173,7 +173,7 @@ describe('QrScanner availableOnly mode', () => {
 
     it('shows link to scanned URL when QR code with available UUID detected', async () => {
         // Simulate QR code with a domain matching current URL entering the viewport
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
         // Mock fetch function to simulate available URL
         mockFetchResponse({available: true});
 
@@ -188,7 +188,7 @@ describe('QrScanner availableOnly mode', () => {
         expect(component.getByTestId('scanned-url')).toBeInTheDocument();
         expect(component.getByTestId('scanned-url')).toHaveAttribute(
             'href',
-            '/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2'
+            '/manage/5c256d96ec7d408a83c73f86d63968b2'
         );
         // Confirm instructions div is no longer visible
         expect(component.queryByText('Point the camera at a QR code')).toBeNull();
@@ -197,7 +197,7 @@ describe('QrScanner availableOnly mode', () => {
         expect(global.fetch).toHaveBeenCalledWith('/is_uuid_available', {
             method: 'POST',
             body: JSON.stringify({
-                uuid: "5c256d96-ec7d-408a-83c7-3f86d63968b2"
+                uuid: "5c256d96ec7d408a83c73f86d63968b2"
             }),
             headers: postHeaders
         });
@@ -205,7 +205,7 @@ describe('QrScanner availableOnly mode', () => {
 
     it('does not show link to scanned URL if QR code UUID is already registered', async () => {
         // Simulate QR code with a domain matching current URL entering the viewport
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
         // Mock fetch function to simulate URL already registered
         mockFetchResponse({available: false}, 409);
 
@@ -223,7 +223,7 @@ describe('QrScanner availableOnly mode', () => {
         expect(global.fetch).toHaveBeenCalledWith('/is_uuid_available', {
             method: 'POST',
             body: JSON.stringify({
-                uuid: "5c256d96-ec7d-408a-83c7-3f86d63968b2"
+                uuid: "5c256d96ec7d408a83c73f86d63968b2"
             }),
             headers: postHeaders
         });
@@ -231,7 +231,7 @@ describe('QrScanner availableOnly mode', () => {
 
     it('removes querystring parameters from URLs in scanned QR codes', async () => {
         // Simulate QR code with querystring parameter in URL entering the viewport
-        mockQrCodeInViewport('https://plants.lan/manage/5c256d96-ec7d-408a-83c7-3f86d63968b2?scrollToDate=2024-02-10');
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2?scrollToDate=2024-02-10');
         // Mock fetch function to simulate available URL
         mockFetchResponse({available: true});
 
@@ -244,7 +244,7 @@ describe('QrScanner availableOnly mode', () => {
         expect(global.fetch).toHaveBeenCalledWith('/is_uuid_available', {
             method: 'POST',
             body: JSON.stringify({
-                uuid: "5c256d96-ec7d-408a-83c7-3f86d63968b2"
+                uuid: "5c256d96ec7d408a83c73f86d63968b2"
             }),
             headers: postHeaders
         });
