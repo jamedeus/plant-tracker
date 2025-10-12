@@ -215,4 +215,49 @@ describe('Plant ChangeQrScanner', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
     });
+
+    // Regression test, related to issue #25. QR codes contain UUIDs with no
+    // hyphens, but the redux state has hyphens. After QR code was changed the
+    // current URL was updated with window.location.pathname.replace, using the
+    // UUID from redux state. If the user navigated to plant from overview this
+    // worked (URL has hyphens, matches redux state). But if the user scanned a
+    // QR code to load the plant page pathname.replace would not find a match in
+    // the URL (no hyphens), so the URL would not update. This caused a refresh
+    // of the old URL which is now a registration page (UUID changed).
+    it('updates UUID in URL even if format does not match redux state', async () => {
+        // Mock window.location to the same UUID in mockContext with no hyphens
+        // Simulates loading plant page by scanning QR code
+        mockCurrentURL('https://plants.lan/manage/0640ec3b1bed4b15a078d6e7ec66be12');
+
+        // Simulate valid QR code with available UUID entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
+        mockFetchResponse({available: true});
+
+        // Open scanner, fast forward until QR code detected
+        await user.click(app.getByText('Change QR Code'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Mock fetch function to return expected response when confirm clicked
+        mockFetchResponse({new_uuid: '5c256d96ec7d408a83c73f86d63968b2'});
+        // Click confirm button, confirm request made + overlay closed
+        await user.click(app.getByTestId('confirm-new-qr-code-button'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm correct data posted to /change_uuid endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/change_uuid', {
+            method: 'POST',
+            body: JSON.stringify({
+                uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
+                new_id: '5c256d96ec7d408a83c73f86d63968b2'
+            }),
+            headers: postHeaders
+        });
+        expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
+
+        // Confirm URL was updated to new UUID (revalidates page, updates redux)
+        expect(mockNavigate).toHaveBeenCalledWith(
+            `/manage/5c256d96ec7d408a83c73f86d63968b2`,
+            { replace: true }
+        );
+    });
 });

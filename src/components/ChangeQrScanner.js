@@ -30,10 +30,7 @@ const ScannedUrlButton = ({ onExit, scannedUrl, oldUuid }) => {
             onExit();
             showToast('QR code changed!', 'green', 3000);
             const data = await response.json();
-            navigate(
-                window.location.pathname.replace(oldUuid, data.new_uuid),
-                { replace: true }
-            );
+            navigate(`/manage/${data.new_uuid}`, { replace: true });
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
