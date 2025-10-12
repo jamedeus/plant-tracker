@@ -96,26 +96,6 @@ describe('App', () => {
         );
     });
 
-    // it('shows error modal if error received while dividing plant', async() => {
-    //     // Mock fetch function to return arbitrary error
-    //     mockFetchResponse({error: "Event with same timestamp already exists"}, 409);
-
-    //     // Confirm error modal is not rendered
-    //     expect(app.queryByTestId('error-modal-body')).toBeNull();
-
-    //     // Simulate user submitting division modal
-    //     await user.click(app.getByText(/Divide plant/));
-    //     await act(async () => await jest.advanceTimersByTimeAsync(100));
-    //     await user.click(app.getByRole('button', {name: 'OK'}));
-    //     await act(async () => await jest.advanceTimersByTimeAsync(100));
-
-    //     // Confirm modal appeared with arbitrary error text
-    //     expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
-    //     expect(app.getByTestId('error-modal-body')).toHaveTextContent(
-    //         'Event with same timestamp already exists'
-    //     );
-    // });
-
     it('shows error modal if error received while adding to group', async() => {
         // Mock "Remove from group" response (must remove before add button appears)
         mockFetchResponse({

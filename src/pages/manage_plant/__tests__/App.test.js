@@ -247,31 +247,6 @@ describe('App', () => {
         });
     });
 
-    // it('sends correct payload when DivisionModal is submitted', async () => {
-    //     // Mock fetch function to return expected response
-    //     mockFetchResponse({
-    //         action: "divide",
-    //         plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-    //     });
-
-    //     // Click "Divide plant" dropdown option (open modal)
-    //     await user.click(app.getByText(/Divide plant/));
-    //     await act(async () => await jest.advanceTimersByTimeAsync(100));
-
-    //     // Click submit button
-    //     await user.click(app.getByRole('button', {name: 'OK'}));
-
-    //     // Confirm correct data posted to /divide_plant endpoint
-    //     expect(global.fetch).toHaveBeenCalledWith('/divide_plant', {
-    //         method: 'POST',
-    //         body: JSON.stringify({
-    //             plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-    //             timestamp: "2024-03-01T20:00:00.000Z"
-    //         }),
-    //         headers: postHeaders
-    //     });
-    // });
-
     it('scrolls to timeline when calendar day with events is clicked', async () => {
         // Click calendar day with no events, confirm scrollIntoView NOT called
         await user.click(app.getByLabelText('March 10, 2024'));
