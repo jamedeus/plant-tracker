@@ -319,10 +319,21 @@ describe('App', () => {
         // Confirm modal is not open
         expect(app.queryByTestId('photo-input')).toBeNull();
 
-        // Click button, confirm HTMLDialogElement method was called
+        // Click button in dropdown, confirm modal appears
         await user.click(app.getByText('Add photos'));
         await waitFor(() => {
             expect(app.queryByTestId('photo-input')).not.toBeNull();
+        });
+    });
+
+    it('opens DivisionModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.queryByText('When did you divide your plant?')).toBeNull();
+
+        // Click button in dropdown, confirm modal appears
+        await user.click(app.getByText('Divide plant'));
+        await waitFor(() => {
+            expect(app.queryByText('When did you divide your plant?')).not.toBeNull();
         });
     });
 
