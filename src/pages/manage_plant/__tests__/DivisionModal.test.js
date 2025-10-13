@@ -1,5 +1,6 @@
 import React, { act } from 'react';
 import { postHeaders } from 'src/testUtils/headers';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { v4 as mockUuidv4 } from 'uuid';
@@ -7,6 +8,9 @@ import DivisionModal from '../DivisionModal';
 import { ReduxProvider } from '../store';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { mockContext } from './mockContext';
+import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
+import FakeBarcodeDetector, { mockQrCodeInViewport } from 'src/testUtils/mockBarcodeDetector';
+import 'jest-canvas-mock';
 
 jest.mock('uuid', () => ({
     v4: jest.fn(),
@@ -292,5 +296,115 @@ describe('DivisionModal', () => {
         expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Failed to register plant'
         );
+    });
+});
+
+describe('DivisionModal with DivisionScanner', () => {
+    let app, user;
+    const mockClose = jest.fn();
+
+    beforeAll(() => {
+        // Mock all browser APIs used by QrScanner
+        applyQrScannerMocks();
+    });
+
+    beforeEach(() => {
+        mockCurrentURL('https://plants.lan/');
+
+        // Allow fast forwarding
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
+        // Render app + create userEvent instance to use in tests
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        app = render(
+            <>
+                <ReduxProvider initialState={mockContext}>
+                    <DivisionModal close={mockClose} />
+                </ReduxProvider>
+                <ErrorModal />
+            </>
+        );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.clearAllTimers();
+        jest.useRealTimers();
+        mockClose.mockClear();
+    });
+
+    it('uses QR scanner to capture UUID for /register_plant payload', async () => {
+        // Mock fetch function to return expected /divide_plant response
+        mockFetchResponse({
+            plant_key: 'parent-key-1',
+            division_event_key: 'division-event-1',
+            action: 'divide',
+            plant: mockContext.plant_details.uuid
+        });
+
+        // Simulate user creating DivisionEvent, confirm next screen loaded
+        await user.click(app.getByRole('button', { name: 'Start Dividing' }));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(global.fetch).toHaveBeenCalled();
+        expect(app.getByText('Register with QR code')).toBeInTheDocument();
+
+        // Confirm qr-scanner-overlay is not visible
+        expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
+
+        // Simulate user clicking "Register with QR code" button
+        await user.click(app.getByRole('button', { name: 'Register with QR code' }));
+
+        // Confirm qr-scanner-overlay appeared
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(app.getByTestId('qr-scanner-overlay')).toBeInTheDocument();
+        expect(app.getByText('Scan the QR code for your new plant')).toBeInTheDocument();
+        expect(app.queryByTestId('confirm-new-qr-code-button')).toBeNull();
+
+        // Simulate valid QR code with available UUID entering the viewport
+        mockQrCodeInViewport('https://plants.lan/manage/5c256d96ec7d408a83c73f86d63968b2');
+        mockFetchResponse({available: true});
+
+        // Fast forward until QR code detected, confirm button replaces instructions
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await waitFor(() =>
+            expect(FakeBarcodeDetector.prototype.detect).toHaveBeenCalled()
+        );
+        expect(app.queryByText('Scan the QR code for your new plant')).toBeNull();
+        expect(app.getByTestId('confirm-new-qr-code-button')).toBeInTheDocument();
+
+        // Mock /get_plant_species_options response (requested when form loads)
+        mockPlantSpeciesOptionsResponse();
+
+        // Simulate user clicking confirm button
+        await user.click(app.getByTestId('confirm-new-qr-code-button'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm scanner overlay closed, registration form appeared
+        expect(app.queryByTestId('qr-scanner-overlay')).toBeNull();
+        expect(app.getByTestId('division-modal-form')).toBeInTheDocument();
+
+        // Mock fetch function to return expected response when plant registered
+        mockFetchResponse({success: 'plant registered'});
+
+        // Simulate user submitting form, confirm success screen appears
+        await user.click(app.getByRole('button', { name: 'Register New Plant' }));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(app.getByText('1st plant registered!')).toBeInTheDocument();
+
+        // Confirm correct data posted to /register_plant endpoint (including
+        // UUID from mock QR code)
+        expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
+            method: 'POST',
+            body: JSON.stringify({
+                uuid: '5c256d96ec7d408a83c73f86d63968b2',
+                name: 'Test Plant prop',
+                species: 'Calathea',
+                pot_size: '4',
+                description: 'Divided from Test Plant on March 1, 2024',
+                divided_from_id: 'parent-key-1',
+                divided_from_event_id: 'division-event-1'
+            }),
+            headers: postHeaders
+        });
     });
 });
