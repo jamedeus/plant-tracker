@@ -184,7 +184,7 @@ const Title = memo(function Title() {
                 ariaLabel="Divide plant"
                 // Hide modal + backdrop while scanner open so backdrop doesn't
                 // cover close button in navbar (temp, need better solution)
-                backdropClassName={divisionScannerOpen ? "hidden" : ""}
+                backdropClassName={divisionScannerOpen ? "modal-invisible" : ""}
                 keepContents={true}
                 load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}
             />
