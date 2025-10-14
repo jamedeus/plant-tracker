@@ -645,4 +645,37 @@ describe('App', () => {
         // Confirm Edit timeline dropdown option was removed
         expect(app.queryByText('Edit timeline')).toBeNull();
     });
+
+    it('does not clear DivisionModal contents if user closes modal', async () => {
+        // Open DivisionModal, confirm modal appears
+        await user.click(app.getByText('Divide plant'));
+        await waitFor(() => {
+            expect(app.queryByText('When did you divide your plant?')).not.toBeNull();
+        });
+
+        // Mock fetch function to return expected /divide_plant response
+        mockFetchResponse({
+            plant_key: 'divided-parent-key',
+            division_event_key: 'division-event-key',
+            action: 'divide',
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
+
+        // Simulate user creating DivisionEvent
+        await user.click(app.getByRole('button', { name: 'Start Dividing' }));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm instructions disappeared, register child buttons appeared
+        expect(app.queryByText(/Dividing a plant lets you register new plants/)).toBeNull();
+        expect(app.getByRole('button', { name: 'Register with QR code' })).toBeInTheDocument();
+
+        // Close modal
+        await user.click(app.getByLabelText('Close modal'));
+        await act(async () => await jest.advanceTimersByTimeAsync(1000));
+
+        // Open modal again, confirm still on second step (did not remount)
+        await user.click(app.getByText('Divide plant'));
+        expect(app.queryByText(/Dividing a plant lets you register new plants/)).toBeNull();
+        expect(app.getByRole('button', { name: 'Register with QR code' })).toBeInTheDocument();
+    });
 });

@@ -185,6 +185,7 @@ const Title = memo(function Title() {
                 // Hide modal + backdrop while scanner open so backdrop doesn't
                 // cover close button in navbar (temp, need better solution)
                 backdropClassName={divisionScannerOpen ? "hidden" : ""}
+                keepContents={true}
                 load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}
             />
         </div>

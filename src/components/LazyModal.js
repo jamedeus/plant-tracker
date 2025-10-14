@@ -31,9 +31,11 @@ export function useModal() {
 //
 // Contents component will receive any props passed to open as well as the close
 // callback (closes modal) and setOnClose (takes function to call on close).
-const LazyModal = forwardRef(function LazyModal({ load, title, className, backdropClassName }, ref) {
+const LazyModal = forwardRef(function LazyModal({ load, title, className, backdropClassName, keepContents = false }, ref) {
     // Renders modal in portal if true
     const [isOpen, setIsOpen] = useState(false);
+    // Track if modal has opened, prevents unmount if keepContents is true
+    const [hasOpened, setHasOpened] = useState(false);
     // Adds modal-open class if true (starts open animation)
     const [active, setActive] = useState(false);
     // Adds translate down to close animation if true (user closed with swipe)
@@ -53,6 +55,7 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className, backdr
         }
         // Render modal in portal, start open animation on next frame
         setIsOpen(true);
+        setHasOpened(true);
         requestAnimationFrame(() => setActive(true));
     }, []);
 
@@ -94,7 +97,8 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className, backdr
     useImperativeHandle(ref, () => ({ open, close }), [open, close]);
 
     // Don't render in portal until user opens modal
-    if (!isOpen) {
+    // Unmount when user closes modal unless keepContents is true
+    if (!isOpen && !keepContents || !hasOpened) {
         return null;
     }
 
@@ -156,7 +160,8 @@ LazyModal.propTypes = {
     load: PropTypes.func.isRequired,
     title: PropTypes.string,
     className: PropTypes.string,
-    backdropClassName: PropTypes.string
+    backdropClassName: PropTypes.string,
+    keepContents: PropTypes.bool
 };
 
 export default LazyModal;
