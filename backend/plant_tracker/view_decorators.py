@@ -306,8 +306,10 @@ def clean_payload_data(func):
     Must call after requires_json_post (expects dict as data kwarg).
     '''
     def wrapper(data, **kwargs):
-        data = {key: (value.strip() if value != '' else None)
-                for key, value in data.items()}
+        data = {
+            key: ((value.strip() or None) if isinstance(value, str) else value)
+            for key, value in data.items()
+        }
         return func(data=data, **kwargs)
     return wrapper
 

@@ -21,7 +21,8 @@ from .models import (
     Photo,
     WaterEvent,
     FertilizeEvent,
-    RepotEvent
+    RepotEvent,
+    DivisionEvent
 )
 from .view_decorators import (
     get_default_user,
@@ -987,6 +988,38 @@ class ViewRegressionTests(TestCase):
         # Request registration page, confirm does not return 500 error
         response = self.client.get(f'/manage/{uuid4()}')
         self.assertEqual(response.status_code, 200)
+
+    def test_register_plant_fails_if_division_event_keys_contain_int(self):
+        '''Issue: The clean_payload_data decorator expected all payload values
+        to be strings and would raise an exception if it contained int (strip
+        method only exists on string). When /divide_plant response was updated
+        to include division event and parent plant primary keys (frontend uses
+        to register child plants) they were not cast to strings. This caused the
+        frontend to POST ints to /register_plant which resulted in an unhandled
+        exception. The clean_payload_data decorator now skips non-string values.
+        '''
+
+        # Create plant + DivisionEvent
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        event = DivisionEvent.objects.create(plant=plant, timestamp=timezone.now())
+        self.assertEqual(len(Plant.objects.all()), 1)
+
+        # Simulate frontend POSTing /register_plant payload with plant_key and
+        # division_event_key containing int (should have cast to string)
+        response = JSONClient().post('/register_plant', {
+            'uuid': uuid4(),
+            'name': '',
+            'species': '',
+            'description': 'Divided from Unnamed plant 1 on October 13, 2025',
+            'pot_size': '',
+            'divided_from_id': plant.pk,
+            'divided_from_event_id': event.pk
+        })
+
+        # Confirm registered successfully despite int values
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'success': 'plant registered'})
+        self.assertEqual(len(Plant.objects.all()), 2)
 
 
 class CachedStateRegressionTests(TestCase):
