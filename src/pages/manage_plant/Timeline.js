@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import { capitalize, pastTense } from 'src/utils/stringUtils';
 import { timestampToReadable, timestampToRelativeDays } from 'src/utils/timestampUtils';
-import { openNoteModal, openRepotModal } from './modals';
+import { openNoteModal, openRepotModal, openDivisionModal } from './modals';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
 import { FaCamera } from "react-icons/fa";
 import { TrashIcon } from '@heroicons/react/24/solid';
@@ -55,8 +55,6 @@ const Title = memo(function Title() {
         (state) => state.timeline.navigationOptions
     );
     const hasNavigationOptions = Object.keys(navigationOptions).length > 0;
-    // Hides DivisionModal while scanner is open (don't cover scanner)
-    const divisionScannerOpen = useSelector((state) => state.interface.divisionScannerOpen);
 
     const dispatch = useDispatch();
 
@@ -94,12 +92,6 @@ const Title = memo(function Title() {
         photoModal.open();
         document.activeElement.blur();
     }, [photoModal]);
-
-    const divisionModal = useModal();
-    const openDivisionModal = useCallback(() => {
-        divisionModal.open();
-        document.activeElement.blur();
-    }, [divisionModal]);
 
     return (
         <div
@@ -177,16 +169,6 @@ const Title = memo(function Title() {
                 ref={photoModal.ref}
                 ariaLabel="Upload plant photos"
                 load={() => import(/* webpackChunkName: "manage_plant_photo-modal" */ "./PhotoModal")}
-            />
-
-            <LazyModal
-                ref={divisionModal.ref}
-                ariaLabel="Divide plant"
-                // Hide modal + backdrop while scanner open so backdrop doesn't
-                // cover close button in navbar (temp, need better solution)
-                backdropClassName={divisionScannerOpen ? "modal-invisible" : ""}
-                keepContents={true}
-                load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}
             />
         </div>
     );

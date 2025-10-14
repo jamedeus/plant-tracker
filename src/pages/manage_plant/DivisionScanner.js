@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import { useSelector, useDispatch } from 'react-redux';
 import { divisionScannerOpened } from './interfaceSlice';
+import { openDivisionModal, closeDivisionModal } from './modals';
 import clsx from 'clsx';
 
 // Dynamic import (don't request webpack bundle until scanner opened)
@@ -43,10 +44,14 @@ const DivisionScannerButton = memo(function DivisionScannerButton({ setScannedUu
     const isOpen = useSelector((state) => state.interface.divisionScannerOpen);
 
     const open = useCallback(() => {
+        // Close DivisionModal (will cover scanner)
+        closeDivisionModal();
         dispatch(divisionScannerOpened(true));
     }, [dispatch]);
 
     const close = useCallback(() => {
+        // Reopen DivisionModal (was closed when scanner opened)
+        openDivisionModal();
         dispatch(divisionScannerOpened(false));
     }, [dispatch]);
 

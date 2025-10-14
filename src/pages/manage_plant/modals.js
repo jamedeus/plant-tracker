@@ -26,3 +26,18 @@ export const openRepotModal = () => {
     repotModalHandle?.open();
     document.activeElement.blur();
 };
+
+let divisionModalHandle;
+
+export const setDivisionModalHandle = (handle) => {
+    divisionModalHandle = handle;
+};
+
+export const openDivisionModal = () => {
+    divisionModalHandle?.open();
+    document.activeElement.blur();
+};
+
+export const closeDivisionModal = () => {
+    divisionModalHandle?.close();
+};

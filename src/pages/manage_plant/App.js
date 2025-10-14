@@ -3,8 +3,12 @@ import { ReduxProvider } from './store';
 import Settings from './Settings';
 import 'src/css/index.css';
 import LazyModal, { useModal } from 'src/components/LazyModal';
-import { setNoteModalHandle, setRepotModalHandle } from './modals';
 import initialStatePropTypes from './initialStatePropTypes';
+import {
+    setNoteModalHandle,
+    setRepotModalHandle,
+    setDivisionModalHandle
+} from './modals';
 
 const App = ({ initialState }) => {
     const noteModal = useModal();
@@ -12,6 +16,9 @@ const App = ({ initialState }) => {
 
     const repotModal = useModal();
     setRepotModalHandle(repotModal);
+
+    const divisionModal = useModal();
+    setDivisionModalHandle(divisionModal);
 
     return (
         <ReduxProvider initialState={initialState}>
@@ -28,6 +35,13 @@ const App = ({ initialState }) => {
                 title="Repot Plant"
                 ariaLabel="Repot plant"
                 load={() => import(/* webpackChunkName: "manage_plant_repot-modal" */ "./RepotModal")}
+            />
+
+            <LazyModal
+                ref={divisionModal.ref}
+                ariaLabel="Divide plant"
+                keepContents={true}
+                load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}
             />
         </ReduxProvider>
     );
