@@ -319,77 +319,6 @@ class SqlQueriesPerPageTests(TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_registration_page_state_changing_plant_qr_code(self):
-        '''Requesting the registration page state should make 5 database queries
-        when changing Plant QR code is in progress.
-        '''
-        cache.set(
-            f'old_uuid_{get_default_user().pk}',
-            str(Plant.objects.all()[0].uuid)
-        )
-        with self.assertNumQueries(5):
-            response = self.client.get(
-                f'/get_manage_state/{uuid4()}',
-                HTTP_ACCEPT='application/json'
-            )
-            self.assertEqual(response.status_code, 200)
-
-    def test_registration_page_state_changing_group_qr_code(self):
-        '''Requesting the registration page state should make 4 database queries
-        when changing Group QR code is in progress.
-        '''
-        cache.set(
-            f'old_uuid_{get_default_user().pk}',
-            str(Group.objects.all()[0].uuid)
-        )
-        with self.assertNumQueries(4):
-            response = self.client.get(
-                f'/get_manage_state/{uuid4()}',
-                HTTP_ACCEPT='application/json'
-            )
-            self.assertEqual(response.status_code, 200)
-
-    def test_registration_page_state_dividing_plant(self):
-        '''Requesting the registration page state should make 4 database queries
-        when dividing Plant is in progress.
-        '''
-        plant = Plant.objects.all()[0]
-        event = DivisionEvent.objects.create(
-            plant=plant,
-            timestamp=timezone.now()
-        )
-        cache.set(f'division_in_progress_{get_default_user().pk}', {
-            'divided_from_plant_uuid': str(plant.uuid),
-            'division_event_key': str(event.pk)
-        })
-        with self.assertNumQueries(4):
-            response = self.client.get(
-                f'/get_manage_state/{uuid4()}',
-                HTTP_ACCEPT='application/json'
-            )
-            self.assertEqual(response.status_code, 200)
-
-    def test_registration_page_state_dividing_plant_and_changing_qr_code(self):
-        '''Requesting the registration page state should make 7 database queries
-        when dividing Plant and changing Plant QR code are both in progress.
-        '''
-        plant = Plant.objects.all()[0]
-        event = DivisionEvent.objects.create(
-            plant=plant,
-            timestamp=timezone.now()
-        )
-        cache.set(f'division_in_progress_{get_default_user().pk}', {
-            'divided_from_plant_uuid': str(plant.uuid),
-            'division_event_key': str(event.pk)
-        })
-        cache.set(f'old_uuid_{get_default_user().pk}', str(plant.uuid))
-        with self.assertNumQueries(7):
-            response = self.client.get(
-                f'/get_manage_state/{uuid4()}',
-                HTTP_ACCEPT='application/json'
-            )
-            self.assertEqual(response.status_code, 200)
-
     def test_get_plant_species_options_endpoint(self):
         '''/get_plant_species_options should make 2 database queries.'''
         with self.assertNumQueries(2):
@@ -457,28 +386,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_change_qr_code_endpoint_plant(self):
-        '''/change_qr_code should make 3 database queries when target is Plant.'''
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(3):
-            response = self.client.post('/change_qr_code', {
-                'uuid': str(plant.uuid)
-            })
-            self.assertEqual(response.status_code, 200)
-
-    def test_change_qr_code_endpoint_group(self):
-        '''/change_qr_code should make 3 database queries when target is Group.'''
-        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(3):
-            response = self.client.post('/change_qr_code', {
-                'uuid': str(group.uuid)
-            })
-            self.assertEqual(response.status_code, 200)
-
     def test_change_uuid_endpoint_plant(self):
         '''/change_uuid should make 4 database queries when target is Plant.'''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        cache.set(f'old_uuid_{plant.user.pk}', str(plant.uuid))
         with self.assertNumQueries(4):
             response = self.client.post('/change_uuid', {
                 'uuid': str(plant.uuid),
@@ -489,7 +399,6 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
     def test_change_uuid_endpoint_group(self):
         '''/change_uuid should make 4 database queries when target is Group.'''
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        cache.set(f'old_uuid_{group.user.pk}', str(group.uuid))
         with self.assertNumQueries(4):
             response = self.client.post('/change_uuid', {
                 'uuid': str(group.uuid),

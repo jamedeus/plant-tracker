@@ -78,57 +78,6 @@ def build_manage_group_state(group):
     }
 
 
-def build_register_state(new_uuid, user):
-    '''Returns initial state for register page. Called by /get_manage_state
-    endpoint if UUID does not exist in database.
-
-    If the old_uuid cache is set (see /change_qr_code endpoint) context includes
-    information used by frontend to show change QR prompt (calls /change_uuid
-    and redirects if confirmed, shows normal registration form if rejected).
-
-    If the dividing_from cache is set (see /divide_plant endpoint) context
-    includes information used by frontend to show confirm dividing prompt (shows
-    plant form with pre-filled details if confirmed, shows normal registration
-    form if rejected).
-    '''
-    state = { 'new_id': new_uuid }
-
-    # Include context for changing QR code if present
-    old_uuid = cache.get(f'old_uuid_{user.pk}')
-    if old_uuid:
-        instance = get_plant_or_group_by_uuid(old_uuid, annotate=True)
-        if instance:
-            state['changing_qr_code'] = {
-                'type': instance._meta.model_name,
-                'instance': instance.get_details(),
-                'new_uuid': new_uuid
-            }
-            if state['changing_qr_code']['type'] == 'plant':
-                preview_url = instance.get_default_photo_details()['preview']
-                state['changing_qr_code']['preview'] = preview_url
-        else:
-            cache.delete(f'old_uuid_{user.pk}')
-
-    # Include context for dividing plant if present
-    division_in_progress = cache.get(f'division_in_progress_{user.pk}')
-    if division_in_progress:
-        plant = Plant.objects.get_with_overview_annotation(
-            uuid=division_in_progress['divided_from_plant_uuid']
-        )
-        if plant:
-            state['dividing_from'] = {
-                'plant_details': plant.get_details(),
-                'default_photo': plant.get_default_photo_details(),
-                'plant_key': str(plant.pk),
-                'event_key': division_in_progress['division_event_key']
-            }
-        else:
-            # Could not find parent plant in database, remove cache
-            cache.delete(f'division_in_progress_{user.pk}')
-
-    return state
-
-
 def has_archived_entries(user):
     '''Takes user, returns True if user has at least 1 archived plant or group.'''
     plant_queryset = (
@@ -327,7 +276,7 @@ def get_manage_state(request, uuid, user):
     return JsonResponse({
         'page': 'register',
         'title': 'Register New Plant',
-        'state': build_register_state(uuid, user)
+        'state': { 'new_id': uuid }
     }, status=200)
 
 

@@ -109,10 +109,6 @@ class EndpointStateUpdateTests(TestCase):
             plant=self.plant1,
             timestamp=timezone.now()
         )
-        cache.set(f'division_in_progress_{self.user.pk}', {
-            'divided_from_plant_uuid': str(self.plant1.uuid),
-            'division_event_key': str(division_event.pk)
-        }, 900)
 
         # Create new child plant with /register_plant endpoint, confirm successful
         new_plant_uuid = str(uuid4())
@@ -198,7 +194,6 @@ class EndpointStateUpdateTests(TestCase):
         self.assertEqual(len(initial_overview_state['plants']), 2)
 
         # Change plant UUID with /change_uuid endpoint
-        cache.set(f'old_uuid_{self.user.pk}', initial_plant_uuid, 900)
         response = self.client.post('/change_uuid', {
             'uuid': initial_plant_uuid,
             'new_id': new_plant_uuid
@@ -222,7 +217,6 @@ class EndpointStateUpdateTests(TestCase):
         self.assertEqual(len(initial_overview_state['groups']), 2)
 
         # Change group UUID with /change_uuid endpoint
-        cache.set(f'old_uuid_{self.user.pk}', initial_group_uuid, 900)
         response = self.client.post('/change_uuid', {
             'uuid': initial_group_uuid,
             'new_id': new_group_uuid

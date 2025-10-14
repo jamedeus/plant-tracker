@@ -43,7 +43,6 @@ urlpatterns = [
     path('register_group', views.register_group, name='register_group'),
     path('edit_plant_details', views.edit_plant_details, name='edit_plant_details'),
     path('edit_group_details', views.edit_group_details, name='edit_group_details'),
-    path('change_qr_code', views.change_qr_code, name='change_qr_code'),
     path('change_uuid', views.change_uuid, name='change_uuid'),
     path('bulk_delete_plants_and_groups', views.bulk_delete_plants_and_groups, name='bulk_delete_plants_and_groups'),
     path('bulk_archive_plants_and_groups', views.bulk_archive_plants_and_groups, name='bulk_archive_plants_and_groups'),

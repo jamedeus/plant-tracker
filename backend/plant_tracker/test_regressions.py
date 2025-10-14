@@ -486,43 +486,6 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(test_plant.photo_set.all()), 1)
 
-    def test_manage_endpoint_crashes_if_plant_expecting_new_qr_is_deleted(self):
-        '''Issue: after /manage was split in f6e229fd requests for new UUIDs
-        while old_uuid cache was set (expecting new QR code) were passed to
-        render_confirm_new_qr_code_page, which did not have a default return
-        statement. If the cached UUID was deleted from database before the new
-        QR code was scanned no response was returned. Previously this would
-        fall through the conditional and return the registration page.
-
-        Fix: render_confirm_new_qr_code_page now calls render_registration_page
-        and clears old_uuid cache if the UUID is not found in the database.
-        '''
-
-        # Create test plant, post UUID to /change_qr_code, confirm cache set
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        JSONClient().post('/change_qr_code', {'uuid': str(plant.uuid)})
-        self.assertEqual(
-            cache.get(f'old_uuid_{get_default_user().pk}'),
-            str(plant.uuid)
-        )
-
-        # Delete plant from database
-        plant.delete()
-
-        # Simulate user scanning QR code with UUID that is not in database
-        response = self.client.get(
-            f'/get_manage_state/{uuid4()}',
-            HTTP_ACCEPT='application/json'
-        )
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm response does NOT contain changing_qr_code key (causes register
-        # to show confirm QR prompt since merged with confirm_new_qr_code page)
-        self.assertNotIn('changing_qr_code', response.json()['state'])
-
-        # Confirm cache was cleared
-        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
-
     def test_edit_plant_details_crashes_when_pot_size_is_null(self):
         '''Issue: The /edit_plant_details endpoint returns a modified version of
         the payload it received, which previously cast the pot_size param to int

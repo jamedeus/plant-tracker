@@ -601,43 +601,6 @@ class RegistrationTests(TestCase):
         self.assertEqual(repot.old_pot_size, 8)
         self.assertEqual(repot.new_pot_size, 4)
 
-    def test_register_unrelated_plant_while_division_in_progress(self):
-        # Create existing plant, simulate division in progress
-        existing_plant = Plant.objects.create(user=self.default_user, uuid=uuid4())
-        self.assertEqual(len(Plant.objects.all()), 1)
-        division_event = DivisionEvent.objects.create(
-            plant=existing_plant,
-            timestamp=timezone.now()
-        )
-        cache.set(f'division_in_progress_{self.default_user.pk}', {
-            'divided_from_plant_uuid': str(existing_plant.uuid),
-            'division_event_key': str(division_event.pk)
-        }, 900)
-
-        # Send plant registration request WITHOUT existing plant id (user
-        # clicked no at confirmation screen asking if new plant was divided)
-        test_id = uuid4()
-        response = self.client.post('/register_plant', {
-            'uuid': test_id,
-            'name': 'Geoppertia prop',
-            'species': 'Geoppertia Warszewiczii',
-            'description': 'Divided from mature plant',
-            'pot_size': '4'
-        })
-
-        # Confirm response redirects to management page for new plant
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'plant registered'})
-
-        # Confirm new plant was created, does NOT have reverse relation to
-        # original plant or DivisionEvent
-        self.assertEqual(len(Plant.objects.all()), 2)
-        new_plant = Plant.objects.get(name='Geoppertia prop')
-        self.assertIsNone(new_plant.divided_from)
-        self.assertIsNone(new_plant.divided_from_event)
-        # Confirm no repot event was created (not divided from existing plant)
-        self.assertEqual(len(RepotEvent.objects.all()), 0)
-
     def test_register_group_endpoint(self):
         # Confirm no plants or groups in database
         self.assertEqual(len(Plant.objects.all()), 0)
@@ -683,57 +646,6 @@ class RegistrationTests(TestCase):
 
         # Confirm does not contain details of plant being divided (cache not set)
         self.assertNotIn('dividing_from', state.keys())
-
-    def test_registration_page_division_in_progress(self):
-        # Create Plant + DivisionEvent, simulate division in progress
-        existing_plant = Plant.objects.create(user=self.default_user, uuid=uuid4())
-        division_event = DivisionEvent.objects.create(
-            plant=existing_plant,
-            timestamp=timezone.now()
-        )
-        cache.set(f'division_in_progress_{self.default_user.pk}', {
-            'divided_from_plant_uuid': str(existing_plant.uuid),
-            'division_event_key': str(division_event.pk)
-        }, 900)
-
-        # Request management page with uuid that doesn't exist in database
-        response = self.client.get(f'/manage/{uuid4()}')
-
-        # Confirm returned SPA
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-
-        # Request state
-        response = self.client.get_json(f'/get_manage_state/{uuid4()}')
-        self.assertEqual(response.status_code, 200)
-        state = response.json()['state']
-
-        # Confirm context contains details of plant being divided from
-        self.assertEqual(state['dividing_from'], {
-            'plant_details': existing_plant.get_details(),
-            'default_photo': existing_plant.get_default_photo_details(),
-            'plant_key': str(existing_plant.pk),
-            'event_key': str(division_event.pk)
-        })
-
-    def test_registration_page_division_in_progress_parent_deleted(self):
-        # Simulate leftover division_in_progress cache key from a deleted parent
-        cache.set(f'division_in_progress_{self.default_user.pk}', {
-            'divided_from_plant_uuid': str(uuid4()),
-            'division_event_key': '3'
-        }, 900)
-
-        # Request registration page state
-        response = self.client.get_json(f'/get_manage_state/{uuid4()}')
-        self.assertEqual(response.status_code, 200)
-        state = response.json()['state']
-
-        # Confirm does not contain details of plant being divided even though
-        # cache was set (could not find parent plant in database)
-        self.assertNotIn('dividing_from', state.keys())
-
-        # Confirm cache key was deleted
-        self.assertIsNone(cache.get(f'division_in_progress_{self.default_user.pk}'))
 
     def test_plant_fields_max_length(self):
         # Send plant registration request name longer than 50 characters
@@ -1465,9 +1377,6 @@ class ManagePlantEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
 
-        # Confirm UUID was not cached
-        self.assertIsNone(cache.get(f'division_in_progress_{get_default_user().pk}'))
-
     def test_get_add_to_group_options(self):
         # Confirm endpoint returns details of all existing groups
         response = self.client.get('/get_add_to_group_options')
@@ -1733,34 +1642,7 @@ class ChangeQrCodeTests(TestCase):
         self.plant2.refresh_from_db()
         self.group1.refresh_from_db()
 
-    def test_change_qr_code_endpoint(self):
-        # Confirm cache key is empty
-        self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
-
-        # Post UUID to change_qr_code endpoint, confirm response
-        response = self.client.post('/change_qr_code', {
-            'uuid': str(self.plant1.uuid)
-        })
-        self.assertEqual(
-            response.json(),
-            {"success": "scan new QR code within 15 minutes to confirm"}
-        )
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm cache key contains UUID
-        self.assertEqual(
-            cache.get(f'old_uuid_{self.default_user.pk}'),
-            str(self.plant1.uuid)
-        )
-
     def test_change_uuid_endpoint_plant(self):
-        # Simulate cached UUID from change_qr_code request
-        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
-        self.assertEqual(
-            cache.get(f'old_uuid_{self.default_user.pk}'),
-            str(self.plant1.uuid)
-        )
-
         # Post new UUID to change_uuid endpoint, confirm response
         response = self.client.post('/change_uuid', {
             'uuid': str(self.plant1.uuid),
@@ -1772,19 +1654,11 @@ class ChangeQrCodeTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-        # Confirm plant UUID changed + cache cleared
+        # Confirm plant UUID changed
         self._refresh_test_models()
         self.assertEqual(str(self.plant1.uuid), str(self.fake_id))
-        self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
     def test_change_uuid_endpoint_group(self):
-        # Simulate cached UUID from change_qr_code request
-        cache.set(f'old_uuid_{self.default_user.pk}', str(self.group1.uuid))
-        self.assertEqual(
-            cache.get(f'old_uuid_{self.default_user.pk}'),
-            str(self.group1.uuid)
-        )
-
         # Post new UUID to change_uuid endpoint, confirm response
         response = self.client.post('/change_uuid', {
             'uuid': str(self.group1.uuid),
@@ -1796,10 +1670,9 @@ class ChangeQrCodeTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-        # Confirm plant UUID changed + cache cleared
+        # Confirm plant UUID changed
         self._refresh_test_models()
         self.assertEqual(str(self.group1.uuid), str(self.fake_id))
-        self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
     def test_change_uuid_invalid(self):
         # post invalid UUID to change_uuid endpoint, confirm error
@@ -1812,145 +1685,6 @@ class ChangeQrCodeTests(TestCase):
             response.json(),
             {"error": "new_id key is not a valid UUID"}
         )
-
-    def test_confirmation_page_plant(self):
-        # Simulate cached UUID from change_qr_code request
-        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
-        self.assertEqual(
-            cache.get(f'old_uuid_{self.default_user.pk}'),
-            str(self.plant1.uuid)
-        )
-
-        # Request management page with new UUID (simulate user scanning new QR)
-        response = self.client.get(f'/manage/{self.fake_id}')
-
-        # Confirm returned SPA
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-
-        # Request state
-        response = self.client.get_json(f'/get_manage_state/{self.fake_id}')
-        self.assertEqual(response.status_code, 200)
-        state = response.json()['state']
-
-        # Confirm state contains plant details and new UUID
-        self.assertEqual(
-            state,
-            {
-                'new_id': str(self.fake_id),
-                'changing_qr_code': {
-                    'type': 'plant',
-                    'instance': {
-                        'uuid': str(self.plant1.uuid),
-                        'created': self.plant1.created.isoformat(),
-                        'archived': False,
-                        'name': None,
-                        'display_name': 'Unnamed plant 1',
-                        'species': None,
-                        'thumbnail': None,
-                        'pot_size': None,
-                        'description': None,
-                        'last_watered': None,
-                        'last_fertilized': None,
-                        'group': None
-                    },
-                    'new_uuid': str(self.fake_id),
-                    'preview': self.plant1.get_default_photo_details()['preview']
-                }
-            }
-        )
-
-    def test_confirmation_page_group(self):
-        # Simulate cached UUID from change_qr_code request
-        cache.set(f'old_uuid_{self.default_user.pk}', str(self.group1.uuid))
-        self.assertEqual(
-            cache.get(f'old_uuid_{self.default_user.pk}'),
-            str(self.group1.uuid)
-        )
-
-        # Request management page with new UUID (simulate user scanning new QR)
-        response = self.client.get_json(f'/manage/{self.fake_id}')
-
-        # Confirm returned SPA
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-
-        # Request state
-        response = self.client.get_json(f'/get_manage_state/{self.fake_id}')
-        self.assertEqual(response.status_code, 200)
-        state = response.json()['state']
-
-        # Confirm state contains group details and new UUID
-        self.assertEqual(
-            state,
-            {
-                'new_id': str(self.fake_id),
-                'changing_qr_code': {
-                    'type': 'group',
-                    'instance': {
-                        'uuid': str(self.group1.uuid),
-                        'created': self.group1.created.isoformat(),
-                        'archived': False,
-                        'name': None,
-                        'display_name': 'Unnamed group 1',
-                        'location': None,
-                        'description': None,
-                        'plants': 0
-                    },
-                    'new_uuid': str(self.fake_id)
-                }
-            }
-        )
-
-    def test_manage_page_while_waiting_for_new_qr_code(self):
-        '''The /manage endpoint should only return the confirmation page if a
-        new QR code is scanned. If the QR code of an existing plant or group is
-        scanned it should return the manage page for the plant or group.
-        '''
-
-        # Simulate cached UUID from change_qr_code request
-        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
-        self.assertEqual(
-            cache.get(f'old_uuid_{self.default_user.pk}'),
-            str(self.plant1.uuid)
-        )
-
-        # Request management page state with new UUID (should return confirmation page)
-        response = self.client.get_json(f'/get_manage_state/{self.fake_id}')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['title'], 'Register New Plant')
-
-        # Request management page state with existing plant UUID (should return manage_plant)
-        response = self.client.get_json(f'/get_manage_state/{self.plant2.uuid}')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['title'], 'Manage Plant')
-
-        # Request management page state with existing group UUID (should return manage_group)
-        response = self.client.get_json(f'/get_manage_state/{self.group1.uuid}')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['title'], 'Manage Group')
-
-        # Request management page state with UUID of plant waiting for new QR code,
-        # should return manage_plant page like normal
-        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['title'], 'Manage Plant')
-
-    def test_target_plant_deleted_before_confirmation_page_loaded(self):
-        # Simulate user changing plant QR code
-        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
-        # Simulate user deleting plant before loading confirmation page
-        self.plant1.delete()
-        self.assertIsNotNone(cache.get(f'old_uuid_{self.default_user.pk}'))
-
-        # Request register state with new UUID (simulate user scanning new QR)
-        response = self.client.get_json(f'/get_manage_state/{self.fake_id}')
-        self.assertEqual(response.status_code, 200)
-        state = response.json()['state']
-
-        # Confirm old_id cache was cleared, state does not say changing QR code
-        self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
-        self.assertNotIn('changing_qr_code', state)
 
 
 class PlantEventEndpointTests(TestCase):

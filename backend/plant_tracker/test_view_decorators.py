@@ -116,16 +116,6 @@ class ViewDecoratorErrorTests(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "group not found"})
 
-    def test_qr_instance_uuid_does_not_exist(self):
-        # Send POST with UUID that does not exist in database to endpoint with
-        # get_qr_instance_from_post_body decorator, confirm error
-        response = self.client.post('/change_qr_code', {'uuid': uuid4()})
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(
-            response.json(),
-            {"error": "uuid does not match any plant or group"}
-        )
-
     def test_missing_plant_id(self):
         # Send POST with no plant_id key in body to endpoint that requires
         # plant_id (requires_json_post decorator arg), confirm error
@@ -174,16 +164,6 @@ class ViewDecoratorErrorTests(TestCase):
         self.assertEqual(
             response.json(),
             {"error": "group_id key is not a valid UUID"}
-        )
-
-    def test_invalid_qr_instance_uuid(self):
-        # Send POST with uuid that is not a valid UUID to endpoint with
-        # get_qr_instance_from_post_body decorator, confirm error
-        response = self.client.post('/change_qr_code', {'uuid': '31670857'})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {"error": "uuid key is not a valid UUID"}
         )
 
     def test_missing_timestamp_key(self):

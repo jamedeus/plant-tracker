@@ -1270,14 +1270,6 @@ class MultiUserModeTests(TestCase):
         plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
         group = Group.objects.create(uuid=uuid4(), user=self.test_user)
 
-        # Confirm /change_qr_code returns 401, does not cache UUID
-        self.assertAuthenticationRequiredError(
-            self.client.post('/change_qr_code', {
-                'uuid': str(plant.uuid)
-            })
-        )
-        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
-
         self.assertAuthenticationRequiredError(
             self.client.post('/change_uuid', {
                 'uuid': str(plant.uuid),
@@ -1453,14 +1445,6 @@ class MultiUserModeTests(TestCase):
 
         # Sign in as test user (does not own plant or group)
         self.client.login(username='unittest', password='12345')
-
-        # Confirm /change_qr_code returns 403, does not cache UUID
-        self.assertInstanceIsOwnedByADifferentUserError(
-            self.client.post('/change_qr_code', {
-                'uuid': str(plant.uuid)
-            })
-        )
-        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
         self.assertPlantIsOwnedByADifferentUserError(
             self.client.get_json(f'/get_manage_state/{plant.uuid}')

@@ -185,27 +185,10 @@ def register_group(user, data, **kwargs):
 
 
 @get_user_token
-@requires_json_post(["uuid"])
-@get_qr_instance_from_post_body(annotate=False)
-def change_qr_code(instance, user, **kwargs):
-    '''Caches plant or group UUID from POST body for 15 minutes. If the same
-    user scans a new QR before timeout /manage endpoint will return a
-    confirmation page with a button that calls /change_uuid to overwrite UUID.
-    Requires JSON POST with uuid (uuid) key.
-    '''
-    cache.set(f'old_uuid_{user.pk}', str(instance.uuid), 900)
-    return JsonResponse(
-        {"success": "scan new QR code within 15 minutes to confirm"},
-        status=200
-    )
-
-
-@get_user_token
 @requires_json_post(["uuid", "new_id"])
 @get_qr_instance_from_post_body(annotate=True)
 def change_uuid(instance, data, user, **kwargs):
-    '''Changes UUID of an existing Plant or Group. Called from confirmation
-    page served when new QR code scanned (after calling /change_qr_code).
+    '''Changes UUID of an existing Plant or Group.
     Requires JSON POST with uuid (uuid) and new_id (uuid) keys.
     '''
     try:
@@ -215,7 +198,6 @@ def change_uuid(instance, data, user, **kwargs):
         # Change UUID,
         instance.uuid = data["new_id"]
         instance.save(update_fields=["uuid"])
-        cache.delete(f'old_uuid_{user.pk}')
         # Add back to cached overview state under new UUID
         add_instance_to_cached_overview_state(instance)
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
