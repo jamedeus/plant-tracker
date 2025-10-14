@@ -17,7 +17,7 @@ from django.core.exceptions import ValidationError
 
 from .models import Plant, Group
 from .plant_species_options import PLANT_SPECIES_OPTIONS
-from .view_decorators import get_user_token, find_model_type, get_plant_or_group_by_uuid
+from .view_decorators import get_user_token, find_model_type
 
 
 def build_manage_plant_state(plant):

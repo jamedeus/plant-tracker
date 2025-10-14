@@ -29,7 +29,6 @@ from .models import (
     FertilizeEvent,
     PruneEvent,
     RepotEvent,
-    DivisionEvent,
     Photo,
     NoteEvent,
     UserEmailVerification

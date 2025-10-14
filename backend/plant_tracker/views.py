@@ -7,7 +7,6 @@ from itertools import chain
 from ua_parser import parse
 from django.conf import settings
 from django.shortcuts import render
-from django.core.cache import cache
 from django.http import JsonResponse
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
@@ -187,7 +186,7 @@ def register_group(user, data, **kwargs):
 @get_user_token
 @requires_json_post(["uuid", "new_id"])
 @get_qr_instance_from_post_body(annotate=True)
-def change_uuid(instance, data, user, **kwargs):
+def change_uuid(instance, data, **kwargs):
     '''Changes UUID of an existing Plant or Group.
     Requires JSON POST with uuid (uuid) and new_id (uuid) keys.
     '''
@@ -805,7 +804,7 @@ def repot_plant(plant, timestamp, data, **kwargs):
 @requires_json_post(["plant_id", "timestamp"])
 @get_plant_from_post_body()
 @get_timestamp_from_post_body
-def divide_plant(user, plant, timestamp, **kwargs):
+def divide_plant(plant, timestamp, **kwargs):
     '''Creates a DivisionEvent for specified Plant, returns parameters used in
     /register_plant payload to register child plant connected to division event.
     Requires JSON POST with plant_id and timestamp keys.

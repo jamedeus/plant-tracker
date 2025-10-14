@@ -14,8 +14,6 @@ import 'src/css/index.css';
 import uuidPropType from 'src/types/uuidPropType';
 
 function App({ initialState }) {
-    const newID = initialState.new_id;
-
     // Track visible form (changed by tabs), 0 for plant form, 1 for group form
     // Set initially visible form based on querystring if present
     const [visibleForm, setVisibleForm] = useState(() => {
@@ -45,7 +43,7 @@ function App({ initialState }) {
     const handleRegister = async () => {
         // Build payload by parsing all fields from visible form
         const payload = {
-            uuid: newID,
+            uuid: initialState.new_id,
             ...Object.fromEntries(new FormData(
                 visibleForm === 0 ? plantFormRef.current : groupFormRef.current
             ))
