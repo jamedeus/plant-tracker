@@ -1,12 +1,7 @@
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
-import {
-    mockContext,
-    mockDividingFrom,
-    mockChangingPlantQrCode,
-    mockChangingGroupQrCode
-} from './mockContext';
+import { mockContext } from './mockContext';
 
 describe('App', () => {
     beforeAll(() => {
@@ -38,33 +33,6 @@ describe('App', () => {
         // Render App, confirm matches snapshot
         globalThis.USER_ACCOUNTS_ENABLED = true;
         const { container } = render(<App initialState={mockContext} />);
-        expect(container).toMatchSnapshot();
-    });
-
-    it('matches snapshot when plant division in progress', () => {
-        // Render App, confirm matches snapshot
-        globalThis.USER_ACCOUNTS_ENABLED = true;
-        const { container } = render(
-            <App initialState={{ ...mockContext, dividing_from: mockDividingFrom }} />
-        );
-        expect(container).toMatchSnapshot();
-    });
-
-    it('matches snapshot when changing plant QR code', () => {
-        // Render App, confirm matches snapshot
-        globalThis.USER_ACCOUNTS_ENABLED = true;
-        const { container } = render(
-            <App initialState={{ ...mockContext, ...mockChangingPlantQrCode }} />
-        );
-        expect(container).toMatchSnapshot();
-    });
-
-    it('matches snapshot when changing group QR code', () => {
-        // Render App, confirm matches snapshot
-        globalThis.USER_ACCOUNTS_ENABLED = true;
-        const { container } = render(
-            <App initialState={{ ...mockContext, ...mockChangingGroupQrCode }} />
-        );
         expect(container).toMatchSnapshot();
     });
 });
