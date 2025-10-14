@@ -566,10 +566,6 @@ class RegistrationTests(TestCase):
             plant=existing_plant,
             timestamp=timezone.now()
         )
-        cache.set(f'division_in_progress_{self.default_user.pk}', {
-            'divided_from_plant_uuid': str(existing_plant.uuid),
-            'division_event_key': str(division_event.pk)
-        }, 900)
 
         # Send plant registration request with id of existing plant + event
         test_id = uuid4()
@@ -1057,10 +1053,6 @@ class ManagePageTests(TestCase):
     def test_get_new_plant_state_plant_has_parent(self):
         # Simulate division in progress (user called /divide_plant from plant1)
         divide = DivisionEvent.objects.create(plant=self.plant1, timestamp=timezone.now())
-        cache.set(f'division_in_progress_{self.plant1.user.pk}', {
-            'divided_from_plant_uuid': str(self.plant1.uuid),
-            'division_event_key': str(divide.pk)
-        }, 900)
 
         # Register new plant that is a child of plant1
         test_id = uuid4()
@@ -1450,15 +1442,6 @@ class ManagePlantEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
 
-        # Confirm cache key contains UUID of divided plant + pk of DivisionEvent
-        self.assertEqual(
-            cache.get(f'division_in_progress_{get_default_user().pk}'),
-            {
-                'divided_from_plant_uuid': str(self.plant.uuid),
-                'division_event_key': str(division_event.pk)
-            }
-        )
-
     def test_divide_plant_duplicate_timestamp(self):
         # Create existing DivisionEvent
         timestamp = '2024-02-06T03:06:26.000Z'
@@ -1793,41 +1776,6 @@ class ChangeQrCodeTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(str(self.plant1.uuid), str(self.fake_id))
         self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
-
-    def test_change_uuid_endpoint_while_dividing_plant(self):
-        # Simulate division in progress for plant2
-        cache.set(f'division_in_progress_{self.default_user.pk}', {
-            'divided_from_plant_uuid': str(self.plant2.uuid),
-            'division_event_key': 3
-        }, 900)
-
-        # Simulate cached plant1 UUID from change_qr_code_request
-        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
-
-        # Post new plant1 UUID to change_uuid endpoint
-        response = self.client.post('/change_uuid', {
-            'uuid': str(self.plant1.uuid),
-            'new_id': str(uuid4())
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm plant2 UUID in division cache did NOT change
-        dividing = cache.get(f'division_in_progress_{self.default_user.pk}')
-        self.assertEqual(dividing['divided_from_plant_uuid'], str(self.plant2.uuid))
-
-        # Simulate cached plant2 UUID (same plant as dividing)
-        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant2.uuid))
-
-        # Post new plant2 UUID to change_uuid endpoint
-        response = self.client.post('/change_uuid', {
-            'uuid': str(self.plant2.uuid),
-            'new_id': str(self.fake_id)
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm plant2 UUID in division cache changed
-        dividing = cache.get(f'division_in_progress_{self.default_user.pk}')
-        self.assertEqual(dividing['divided_from_plant_uuid'], str(self.fake_id))
 
     def test_change_uuid_endpoint_group(self):
         # Simulate cached UUID from change_qr_code request

@@ -218,11 +218,6 @@ def change_uuid(instance, data, user, **kwargs):
         cache.delete(f'old_uuid_{user.pk}')
         # Add back to cached overview state under new UUID
         add_instance_to_cached_overview_state(instance)
-        # If division in progress update cached UUID
-        dividing = cache.get(f'division_in_progress_{user.pk}')
-        if dividing and dividing['divided_from_plant_uuid'] == data["uuid"]:
-            dividing['divided_from_plant_uuid'] = str(instance.uuid)
-            cache.set(f'division_in_progress_{user.pk}', dividing, 900)
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
@@ -829,8 +824,8 @@ def repot_plant(plant, timestamp, data, **kwargs):
 @get_plant_from_post_body()
 @get_timestamp_from_post_body
 def divide_plant(user, plant, timestamp, **kwargs):
-    '''Creates a DivisionEvent for specified Plant and caches uuid so new plants
-    can be registered with reverse relation to parent plant.
+    '''Creates a DivisionEvent for specified Plant, returns parameters used in
+    /register_plant payload to register child plant connected to division event.
     Requires JSON POST with plant_id and timestamp keys.
     '''
 
@@ -841,12 +836,6 @@ def divide_plant(user, plant, timestamp, **kwargs):
                 plant=plant,
                 timestamp=timestamp
             )
-        # Cache object with old plant UUID and DivisionEvent key for 15 minutes.
-        # Will be included in register page context, used to create db relations.
-        cache.set(f'division_in_progress_{user.pk}', {
-            'divided_from_plant_uuid': str(plant.uuid),
-            'division_event_key': str(event.pk)
-        }, 900)
         return JsonResponse(
             {
                 "action": "divide",
