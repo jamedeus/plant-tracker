@@ -15,9 +15,59 @@ from .view_decorators import (
     get_group_from_post_body,
     get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
-    get_event_type_from_post_body
+    get_event_type_from_post_body,
+    clean_payload_data
 )
 from .unit_test_helpers import JSONClient
+
+
+class CleanPayloadDataTests(TestCase):
+    def setUp(self):
+        # Decorate mock function so tests can see cleaned payload
+        def passthrough(*, data):
+            return data
+        self.decorated = clean_payload_data(passthrough)
+
+    def test_trims_leading_and_trailing_whitespace(self):
+        cleaned = self.decorated(data={
+            'name': '     test plant',
+            'species': '  Spider Plant  ',
+            'description': '\nNeeds bright light\t',
+            'pot_size': '4'
+        })
+        self.assertEqual(cleaned['name'], 'test plant')
+        self.assertEqual(cleaned['species'], 'Spider Plant')
+        self.assertEqual(cleaned['description'], 'Needs bright light')
+        self.assertEqual(cleaned['pot_size'], '4')
+
+    def test_converts_empty_strings_to_none(self):
+        cleaned = self.decorated(data={
+            'name': '     ',
+            'species': '',
+            'description': '\n',
+            'pot_size': '\t'
+        })
+        self.assertIsNone(cleaned['name'])
+        self.assertIsNone(cleaned['species'])
+        self.assertIsNone(cleaned['description'])
+        self.assertIsNone(cleaned['pot_size'])
+
+    def test_does_not_change_non_string_values(self):
+        cleaned = self.decorated(data={
+            'int_value': 7,
+            'float_value': 12.5,
+            'bool_value': True,
+            'none_value': None,
+            'list_value': ['item1', 'item2'],
+            'dict_value': {'key': 'value'},
+        })
+
+        self.assertEqual(cleaned['int_value'], 7)
+        self.assertEqual(cleaned['float_value'], 12.5)
+        self.assertTrue(cleaned['bool_value'])
+        self.assertIsNone(cleaned['none_value'])
+        self.assertEqual(cleaned['list_value'], ['item1', 'item2'])
+        self.assertEqual(cleaned['dict_value'], {'key': 'value'})
 
 
 class ViewDecoratorErrorTests(TestCase):
