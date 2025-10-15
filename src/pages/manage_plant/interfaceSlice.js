@@ -19,7 +19,7 @@ export const interfaceSlice = createSlice({
         // Can select events/photos/notes to delete by clicking in timeline if true
         deleteMode: false,
         // Tracks events selected by clicking in timeline
-        // Uses same format as /bulk_delete_plant_events payload
+        // Uses same format as /delete_plant_events payload
         selectedEvents: {
             water: [],
             fertilize: [],

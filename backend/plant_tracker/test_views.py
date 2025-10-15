@@ -1881,7 +1881,7 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
 
-    def test_bulk_delete_plant_events(self):
+    def test_delete_plant_events(self):
         # Create multiple events with different types, confirm number in db
         timestamp = timezone.now()
         WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
@@ -1893,8 +1893,8 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(len(self.plant1.pruneevent_set.all()), 1)
         self.assertEqual(len(self.plant1.repotevent_set.all()), 1)
 
-        # Post timestamp and type of each event to bulk_delete_plant_events endpoint
-        response = self.client.post('/bulk_delete_plant_events', {
+        # Post timestamp and type of each event to delete_plant_events endpoint
+        response = self.client.post('/delete_plant_events', {
             'plant_id': self.plant1.uuid,
             'events': {
                 'water': [timestamp.isoformat()],
@@ -1920,9 +1920,9 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(len(self.plant1.pruneevent_set.all()), 0)
         self.assertEqual(len(self.plant1.repotevent_set.all()), 0)
 
-    def test_bulk_delete_plant_events_does_not_exist(self):
+    def test_delete_plant_events_does_not_exist(self):
         # Post payload containing event that does not exist
-        response = self.client.post('/bulk_delete_plant_events', {
+        response = self.client.post('/delete_plant_events', {
             'plant_id': self.plant1.uuid,
             'events': {
                 'water': ['2024-04-19T00:13:37+00:00'],

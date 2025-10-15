@@ -513,7 +513,7 @@ class EndpointStateUpdateTests(TestCase):
             '2024-02-06T03:06:26+00:00'
         )
 
-    def test_bulk_delete_plant_events_water(self):
+    def test_delete_plant_events_water(self):
         '''The cached overview state should update when WaterEvents are bulk deleted.'''
 
         # Create 2 water events for plant1
@@ -534,8 +534,8 @@ class EndpointStateUpdateTests(TestCase):
             '2024-02-06T03:06:26+00:00'
         )
 
-        # Delete water events with /bulk_delete_plant_events endpoint
-        response = self.client.post('/bulk_delete_plant_events', {
+        # Delete water events with /delete_plant_events endpoint
+        response = self.client.post('/delete_plant_events', {
             'plant_id': self.plant1.uuid,
             'events': {
                 'water': [
@@ -554,7 +554,7 @@ class EndpointStateUpdateTests(TestCase):
             self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['last_watered']
         )
 
-    def test_bulk_delete_plant_events_fertilize(self):
+    def test_delete_plant_events_fertilize(self):
         '''The cached overview state should update when FertilizeEvents are bulk deleted.'''
 
         # Create 2 fertilize events for plant1
@@ -575,8 +575,8 @@ class EndpointStateUpdateTests(TestCase):
             '2024-02-06T03:06:26+00:00'
         )
 
-        # Delete fertilize events with /bulk_delete_plant_events endpoint
-        response = self.client.post('/bulk_delete_plant_events', {
+        # Delete fertilize events with /delete_plant_events endpoint
+        response = self.client.post('/delete_plant_events', {
             'plant_id': self.plant1.uuid,
             'events': {
                 'water': [],

@@ -1339,7 +1339,7 @@ class CachedStateRegressionTests(TestCase):
         )
 
     def test_cached_last_fertilized_time_does_not_update_when_water_also_deleted(self):
-        '''Issue: /bulk_delete_plant_events used if elif to check if water and
+        '''Issue: /delete_plant_events used if elif to check if water and
         fertilize respectively were deleted (instead of 2 ifs). If both were
         deleted only the last_watered time would be updated, instead of both.
         '''
@@ -1362,7 +1362,7 @@ class CachedStateRegressionTests(TestCase):
         self.assertIsNotNone(overview_state['plants'][str(plant.uuid)]['last_fertilized'])
 
         # Delete both events in a single request
-        JSONClient().post('/bulk_delete_plant_events', {
+        JSONClient().post('/delete_plant_events', {
             'plant_id': plant.uuid,
             'events': {
                 'water': ['2024-03-06T03:06:26.000Z'],

@@ -487,7 +487,7 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body()
-def bulk_delete_plant_events(plant, data, **kwargs):
+def delete_plant_events(plant, data, **kwargs):
     '''Deletes a list of events (any type) associated with a single plant.
     Requires JSON POST with plant_id (uuid) and events (dict) keys.
     The events dict must contain event type keys, list of timestamps as values.

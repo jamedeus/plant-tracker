@@ -758,9 +758,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_bulk_delete_plant_events_endpoint_water(self):
-        '''/bulk_delete_plant_events should make 5 database queries when
-        deleting any number of WaterEvents.
+    def test_delete_plant_events_endpoint_water(self):
+        '''/delete_plant_events should make 5 database queries when deleting
+        any number of WaterEvents.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         timestamp1 = '2024-04-19T00:13:37+00:00'
@@ -778,7 +778,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 5 database queries when 1 WaterEvent deleted
         with self.assertNumQueries(5):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [timestamp1],
@@ -791,7 +791,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 5 database queries when 2 WaterEvents deleted
         with self.assertNumQueries(5):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [
@@ -805,9 +805,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_bulk_delete_plant_events_endpoint_fertilize(self):
-        '''/bulk_delete_plant_events should make 5 database queries when
-        deleting any number of FertilizeEvents.
+    def test_delete_plant_events_endpoint_fertilize(self):
+        '''/delete_plant_events should make 5 database queries when deleting
+        any number of FertilizeEvents.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         timestamp1 = '2024-04-19T00:13:37+00:00'
@@ -825,7 +825,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 5 database queries when 1 FertilizeEvent deleted
         with self.assertNumQueries(5):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [],
@@ -838,7 +838,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 5 database queries when 2 FertilizeEvents deleted
         with self.assertNumQueries(5):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [],
@@ -852,9 +852,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_bulk_delete_plant_events_endpoint_prune(self):
-        '''/bulk_delete_plant_events should make 4 database queries when
-        deleting any number of PruneEvents.
+    def test_delete_plant_events_endpoint_prune(self):
+        '''/delete_plant_events should make 4 database queries when deleting
+        any number of PruneEvents.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         timestamp1 = '2024-04-19T00:13:37+00:00'
@@ -872,7 +872,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 4 database queries when 1 PruneEvent deleted
         with self.assertNumQueries(4):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [],
@@ -885,7 +885,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 4 database queries when 2 PruneEvents deleted
         with self.assertNumQueries(4):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [],
@@ -899,9 +899,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_bulk_delete_plant_events_endpoint_repot(self):
-        '''/bulk_delete_plant_events should make 4 database queries when
-        deleting any number of RepotEvents.
+    def test_delete_plant_events_endpoint_repot(self):
+        '''/delete_plant_events should make 4 database queries when deleting
+        any number of RepotEvents.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         timestamp1 = '2024-04-19T00:13:37+00:00'
@@ -919,7 +919,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 4 database queries when 1 RepotEvent deleted
         with self.assertNumQueries(4):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [],
@@ -932,7 +932,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 4 database queries when 2 RepotEvents deleted
         with self.assertNumQueries(4):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [],
@@ -946,9 +946,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_bulk_delete_plant_events_endpoint_all_event_types(self):
-        '''/bulk_delete_plant_events should make 12 database queries when
-        deleting any number of all 4 event types.
+    def test_delete_plant_events_endpoint_all_event_types(self):
+        '''/delete_plant_events should make 12 database queries when deleting
+        any number of all 4 event types.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         timestamp1 = '2024-04-19T00:13:37+00:00'
@@ -967,7 +967,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 12 queries when deleting 1 of each
         with self.assertNumQueries(12):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [timestamp1],
@@ -980,7 +980,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm 12 queries when deletng 2 of each
         with self.assertNumQueries(12):
-            response = self.client.post('/bulk_delete_plant_events', {
+            response = self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': [timestamp2, timestamp3],

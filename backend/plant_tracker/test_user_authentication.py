@@ -1344,7 +1344,7 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertAuthenticationRequiredError(
-            self.client.post('/bulk_delete_plant_events', {
+            self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': ['2024-02-06T03:06:26+00:00'],
@@ -1500,7 +1500,7 @@ class MultiUserModeTests(TestCase):
         })
 
         self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/bulk_delete_plant_events', {
+            self.client.post('/delete_plant_events', {
                 'plant_id': plant.uuid,
                 'events': {
                     'water': ['2024-02-06T03:06:26+00:00'],

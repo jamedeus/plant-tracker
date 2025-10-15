@@ -153,8 +153,8 @@ describe('Delete mode', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
-        // Confirm correct data posted to /bulk_delete_plant_events endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_events', {
+        // Confirm correct data posted to /delete_plant_events endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/delete_plant_events', {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
@@ -285,7 +285,7 @@ describe('Delete mode', () => {
 
         // Confirm correct data posted to all endpoints
         expect(global.fetch).toHaveBeenCalledTimes(3);
-        expect(global.fetch).toHaveBeenNthCalledWith(1, '/bulk_delete_plant_events', {
+        expect(global.fetch).toHaveBeenNthCalledWith(1, '/delete_plant_events', {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
@@ -352,7 +352,7 @@ describe('Delete mode', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
         expect(global.fetch).toHaveBeenCalledTimes(1);
-        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_events', {
+        expect(global.fetch).toHaveBeenCalledWith('/delete_plant_events', {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
