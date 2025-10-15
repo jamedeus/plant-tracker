@@ -33,21 +33,19 @@ const EventButtons = memo(function EventButtons() {
     const dispatch = useDispatch();
 
     const addEvent = async (eventType, timestamp) => {
-        const response = await sendPostRequest('/add_plant_event', {
+        const payload = {
             plant_id: plantID,
             event_type: eventType,
             timestamp: localToUTC(timestamp)
-        });
-        if (response.ok) {
-            const data = await response.json();
-            // Add new event to redux store (updates calendar, timeline, etc)
-            dispatch(eventAdded({
-                timestamp: data.timestamp,
-                type: data.action
-            }));
-        } else {
+        };
+        // Add new event to redux store (updates calendar, timeline, etc)
+        const onSuccess = (data) => dispatch(eventAdded({
+            timestamp: data.timestamp,
+            type: data.action
+        }));
+        const onError = (data, status) => {
             // Duplicate event timestamp: show error toast for 5 seconds
-            if (response.status === 409) {
+            if (status === 409) {
                 showToast(
                     `Error: ${eventType} event with same timestamp already exists`,
                     'red',
@@ -55,10 +53,10 @@ const EventButtons = memo(function EventButtons() {
                 );
             // Other error (unexpected): show in error modal
             } else {
-                const error = await response.json();
-                openErrorModal(JSON.stringify(error));
+                openErrorModal(JSON.stringify(data));
             }
-        }
+        };
+        await sendPostRequest('/add_plant_event', payload, onSuccess, onError);
     };
 
     return (

@@ -79,17 +79,16 @@ const GalleryDropdown = memo(function GalleryDropdown({ currentSlide, focusMode,
     // Sets the current slide as the default photo
     const handleSetDefaultPhoto = async () => {
         document.activeElement.blur();
-        const response = await sendPostRequest('/set_plant_default_photo', {
+        const payload = {
             plant_id: plantDetails.uuid,
             photo_key: currentSlide.key
-        });
-        if (response.ok) {
-            const data = await response.json();
+        };
+        const onSuccess = (data) => {
             dispatch(defaultPhotoChanged(data.default_photo));
             showToast('Default photo set!', 'green', 2500);
-        } else {
-            showToast('Failed to set default photo', 'red', 2500);
-        }
+        };
+        const onError = () => showToast('Failed to set default photo', 'red', 2500);
+        await sendPostRequest('/set_plant_default_photo', payload, onSuccess, onError);
     };
 
     // Opens native share sheet on mobile, saves to downloads folder on desktop
@@ -148,18 +147,13 @@ const GalleryDropdown = memo(function GalleryDropdown({ currentSlide, focusMode,
     // Deletes photo when user clicks delete in confirmation overlay
     const handleDeletePhoto = async () => {
         setShowConfirmDelete(false);
-
-        const response = await sendPostRequest('/delete_plant_photos', {
+        const payload = {
             plant_id: plantDetails.uuid,
             delete_photos: [currentSlide.key]
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            dispatch(photosDeleted(data.deleted));
-        } else {
-            showToast('Failed to delete photo', 'red', 2500);
-        }
+        };
+        const onSuccess = (data) => dispatch(photosDeleted(data.deleted));
+        const onError = () => showToast('Failed to delete photo', 'red', 2500);
+        await sendPostRequest('/delete_plant_photos', payload, onSuccess, onError);
     };
 
     return (

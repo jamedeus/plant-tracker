@@ -69,23 +69,22 @@ const NoteModal = ({ note, close }) => {
     };
 
     const handleSubmit = async () => {
-        const response = await sendPostRequest('/add_plant_note', {
+        const payload = {
             plant_id: plantID,
             timestamp: localToUTC(timestampRef.current.value),
             note_text: noteText
-        });
-
-        if (response.ok) {
-            // Update state with new note from response, close modal
-            const data = await response.json();
+        };
+        // Update note state with params from response, close modal
+        const onSuccess = (data) => {
             dispatch(noteAdded({
                 timestamp: data.timestamp,
                 text: data.note_text
             }));
             close();
-        } else {
-            // Duplicate note timestamp: show error toast for 5 seconds
-            if (response.status === 409) {
+        };
+        const onError = (data, status) => {
+            // Duplicate event timestamp: show error toast for 5 seconds
+            if (status === 409) {
                 showToast(
                     `Error: note with same timestamp already exists`,
                     'red',
@@ -93,10 +92,10 @@ const NoteModal = ({ note, close }) => {
                 );
             // Other error (unexpected): show in error modal
             } else {
-                const error = await response.json();
-                openErrorModal(JSON.stringify(error));
+                openErrorModal(JSON.stringify(data));
             }
-        }
+        };
+        await sendPostRequest('/add_plant_note', payload, onSuccess, onError);
     };
 
     const handleEdit = async () => {

@@ -175,17 +175,11 @@ const RegisterForm = () => {
 
     const submit = async (e) => {
         e.preventDefault();
-        // Post FormData to backend
-        const formData = new FormData(formRef.current);
-        const response = await sendPostRequest('/accounts/create_user/',
-            Object.fromEntries(formData)
-        );
+        const payload = Object.fromEntries(new FormData(formRef.current));
         // Redirect to overview if logged in successfully
-        if (response.ok) {
-            navigate('/');
+        const onSuccess = () => navigate('/');
         // Show correct error if account creation failed
-        } else {
-            const data = await response.json();
+        const onError = (data) => {
             const error = data.error[0];
             if (error === 'username already exists') {
                 setShowUsernameError(error);
@@ -196,7 +190,8 @@ const RegisterForm = () => {
             } else {
                 setShowError(error);
             }
-        }
+        };
+        await sendPostRequest('/accounts/create_user/', payload, onSuccess, onError);
     };
 
     return (

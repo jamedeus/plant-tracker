@@ -41,18 +41,15 @@ const EditModeFooter = memo(function EditModeFooter({
         }
 
         // Send /bulk_delete_plants_and_groups request with all selected UUIDs
-        const response = await sendPostRequest('/bulk_delete_plants_and_groups', {
-            uuids: selectedPlants.concat(selectedGroups)
-        });
-        // Remove deleted UUIDs from state
-        if (response.ok) {
-            const data = await response.json();
+        const payload = { uuids: selectedUuids };
+        const onSuccess = (data) => {
             dispatch(plantsRemoved(data.deleted));
             dispatch(groupsRemoved(data.deleted));
-        } else {
-            const data = await response.json();
-            openErrorModal(`Failed to delete: ${data.failed.join(', ')}`);
-        }
+        };
+        const onError = (data) => openErrorModal(
+            `Failed to delete: ${data.failed.join(', ')}`
+        );
+        await sendPostRequest('/bulk_delete_plants_and_groups', payload, onSuccess, onError);
 
         // Reset editing state
         setEditing(false);
@@ -77,21 +74,17 @@ const EditModeFooter = memo(function EditModeFooter({
         }
 
         // Send /bulk_archive_plants_and_groups request with all selected UUIDs
-        const response = await sendPostRequest('/bulk_archive_plants_and_groups', {
-            uuids: selectedUuids,
-            archived: archived
-        });
-        // Remove archived UUIDs from state
-        if (response.ok) {
-            const data = await response.json();
+        const payload = { uuids: selectedUuids, archived: archived };
+        const onSuccess = (data) => {
             dispatch(plantsRemoved(data.archived));
             dispatch(groupsRemoved(data.archived));
             // Ensure archive link visible in dropdown menu
             dispatch(showArchiveChanged(archived));
-        } else {
-            const data = await response.json();
-            openErrorModal(`Failed to archive: ${data.failed.join(', ')}`);
-        }
+        };
+        const onError = (data) => openErrorModal(
+            `Failed to archive: ${data.failed.join(', ')}`
+        );
+        await sendPostRequest('/bulk_archive_plants_and_groups', payload, onSuccess, onError);
 
         // Reset editing state
         setEditing(false);

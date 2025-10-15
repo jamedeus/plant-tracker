@@ -5,12 +5,13 @@ import { openErrorModal } from 'src/components/ErrorModal';
 // Takes endpoint and POST body, makes backend request with csrftoken.
 // Handles 401 response automatically by redirecting to login page.
 //
-// If optional onSuccess callback is given processes response by passing decoded
-// data to onSuccess if successful, or passing decoded error to openErrorModal
-// if failed. Returns true if successful, false if failed.
+// Proccesses response if either optional callback (onSuccess or onError) given.
+// Decodes response and passes to onSuccess if successful, onError if failed.
+// If onError not given decodes response and shows error in ErrorModal.
+// Returns true if successful, false if failed.
 //
-// If onSuccess callback is not given returns response unprocessed.
-export default async function sendPostRequest(url, body, onSuccess) {
+// Returns response unprocessed if neither callback given.
+export default async function sendPostRequest(url, body, onSuccess, onError) {
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(body),
@@ -24,29 +25,29 @@ export default async function sendPostRequest(url, body, onSuccess) {
     // Redirect to login page if user not signed in/session expired
     if (response.status === 401) {
         navigate('/accounts/login/');
-        // Return mock error that ErrorModal won't show
-        // (prevents exception when caller tries response.json())
-        return new Response(JSON.stringify('spa-redirect'), {
-            ok: false,
-            status: 401
-        });
+        return;
     }
 
-    // Process response automatically if onSuccess callback given
-    if (onSuccess) {
-        if (!response.ok) {
-            // Show error in ErrorModal if request failed
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-            return false;
-        } else {
-            // Pass response data to onSuccess callback if request succeeded
-            const data = await response.json();
+    // Return response unprocessed if neither callback given
+    if (!onSuccess && !onError) {
+        return response;
+    }
+
+    const data = await response.json();
+    if (response.ok) {
+        // Pass response data to onSuccess callback if request succeeded
+        if (onSuccess) {
             onSuccess(data);
-            return true;
         }
+        return true;
+    } else {
+        if (onError) {
+            // Pass error data to onError callback if request failed
+            onError(data, response.status);
+        } else {
+            // Show error in ErrorModal if failed and no onError callback
+            openErrorModal(JSON.stringify(data));
+        }
+        return false;
     }
-
-    // Return response unprocessed if no onSuccess callback given
-    return response;
 }

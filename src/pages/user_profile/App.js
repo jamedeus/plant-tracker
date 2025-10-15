@@ -30,18 +30,17 @@ const UserDetails = memo(function UserDetails({ initialUserDetails }) {
                                  !EMAIL_REGEX.test(email);
 
     const submit = async () => {
-        const response = await sendPostRequest('/accounts/edit_user_details/', {
+        const payload = {
             first_name: firstName,
             last_name: lastName,
             email: email
-        });
-        if (response.ok) {
-            const data = await response.json();
+        };
+        const onSuccess = (data) => {
             setUserDetails(data.user_details);
             showToast('Details updated!', 'green', 2000);
-        } else {
-            showToast('Unable to update details', 'red', 2000);
-        }
+        };
+        const onError = () => showToast('Unable to update details', 'red', 2000);
+        await sendPostRequest('/accounts/edit_user_details/', payload, onSuccess, onError);
     };
 
     const submitOnEnterKey = async (event) => {
