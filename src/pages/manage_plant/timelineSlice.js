@@ -216,19 +216,19 @@ export const timelineSlice = createSlice({
                 });
         },
 
-        // Takes timestamp of deleted note, removes from timelineDays state
-        noteDeleted(state, action) {
-            const noteTime = action.payload;
-
-            // Parse YYYY-MM-DD from deleted note timestamp, find in
-            // timelineDays state and remove
-            const dateKey = timestampToDateString(noteTime);
-            state.timelineDays[dateKey].notes =
-                state.timelineDays[dateKey].notes.filter(
-                    note => note.timestamp !== noteTime
-                );
-            // Remove timelineDays day if no content left
-            removeDateKeyIfEmpty(state, dateKey);
+        // Takes array of deleted note timestamps, removes from timelineDays state
+        notesDeleted(state, action) {
+            action.payload.forEach(noteTime => {
+                // Parse YYYY-MM-DD from deleted note timestamp
+                const dateKey = timestampToDateString(noteTime);
+                // Find in timelineDays state and remove
+                state.timelineDays[dateKey].notes =
+                    state.timelineDays[dateKey].notes.filter(
+                        note => note.timestamp !== noteTime
+                    );
+                // Remove timelineDays day if no content left
+                removeDateKeyIfEmpty(state, dateKey);
+            });
         },
 
         // Takes photo URLs from API response when new photos are uploaded
@@ -324,7 +324,7 @@ export const {
     eventDeleted,
     noteAdded,
     noteEdited,
-    noteDeleted,
+    notesDeleted,
     photosAdded,
     photosDeleted,
     defaultPhotoChanged

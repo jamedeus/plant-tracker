@@ -8,7 +8,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { localToUTC, timestampToReadable } from 'src/utils/timestampUtils';
 import { DateTime } from 'luxon';
-import { noteAdded, noteEdited, noteDeleted } from './timelineSlice';
+import { noteAdded, noteEdited, notesDeleted } from './timelineSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
@@ -122,7 +122,7 @@ const NoteModal = ({ note, close }) => {
         };
         // Remove note from state, close modal
         const onSuccess = (data) => {
-            dispatch(noteDeleted(data.deleted[0]));
+            dispatch(notesDeleted(data.deleted));
             close();
         };
         await sendPostRequest('/delete_plant_notes', payload, onSuccess);
