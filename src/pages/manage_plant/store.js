@@ -48,10 +48,6 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
         eventDates.forEach(date =>
             addValue(date, 'events', {type: eventType, timestamp: date}))
     );
-    // Remove duplicate event types on same day
-    Object.keys(timelineDays).forEach(dateKey =>
-        timelineDays[dateKey].events = [...new Set(timelineDays[dateKey].events)]
-    );
 
     // Add objects from photos context to photos key under correct dateKey
     photos.forEach((photo) =>
