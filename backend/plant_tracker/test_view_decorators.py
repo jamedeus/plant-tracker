@@ -116,6 +116,19 @@ class ViewDecoratorErrorTests(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "group not found"})
 
+    def test_qr_instance_uuid_does_not_exist(self):
+        # Send POST with UUID that does not exist in database to endpoint with
+        # get_qr_instance_from_post_body decorator, confirm error
+        response = self.client.post('/change_uuid', {
+            'uuid': uuid4(),
+            'new_id': uuid4()
+        })
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response.json(),
+            {"error": "uuid does not match any plant or group"}
+        )
+
     def test_missing_plant_id(self):
         # Send POST with no plant_id key in body to endpoint that requires
         # plant_id (requires_json_post decorator arg), confirm error
@@ -164,6 +177,19 @@ class ViewDecoratorErrorTests(TestCase):
         self.assertEqual(
             response.json(),
             {"error": "group_id key is not a valid UUID"}
+        )
+
+    def test_invalid_qr_instance_uuid(self):
+        # Send POST with uuid that is not a valid UUID to endpoint with
+        # get_qr_instance_from_post_body decorator, confirm error
+        response = self.client.post('/change_uuid', {
+            'uuid': '31670857',
+            'new_id': uuid4()
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {"error": "uuid key is not a valid UUID"}
         )
 
     def test_missing_timestamp_key(self):
@@ -313,3 +339,30 @@ class UnusedBranchCoverageTests(TestCase):
         # pylint: disable-next=too-many-function-args
         response = mock_view_function(request)
         self.assertEqual(response.status_code, 200)
+
+    def test_get_qr_instance_from_post_body_without_annotations(self):
+        # Create mock function with annotate set to False
+        @requires_json_post(['uuid'])
+        @get_qr_instance_from_post_body(annotate=False)
+        def mock_view_function(instance, **kwargs):
+            return instance
+
+        # Create test plant
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Create mock POST request with plant UUID
+        factory = RequestFactory()
+        request = factory.post(
+            '/mock_endpoint',
+            json.dumps({'uuid': str(plant.uuid)}),
+            content_type='application/json'
+        )
+
+        # Pass mock request to mock view, should return plant instance
+        plant = mock_view_function(request)
+        self.assertIsInstance(plant, Plant)
+
+        # Confirm plant does not have attributes added by annotation
+        self.assertFalse(hasattr(plant, 'last_watered_time'))
+        self.assertFalse(hasattr(plant, 'last_fertilized_time'))
+        self.assertFalse(hasattr(plant, 'last_photo_thumbnail'))
