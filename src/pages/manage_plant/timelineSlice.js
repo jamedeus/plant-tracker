@@ -145,34 +145,37 @@ export const timelineSlice = createSlice({
             }
         },
 
-        // Takes object with timestamp and type keys, removes from events,
-        // calendarDays, and timelineDays states
-        eventDeleted(state, action) {
-            // Remove event from events state
-            const deletedEvent = action.payload;
-            state.eventsByType[deletedEvent.type].splice(
-                state.eventsByType[deletedEvent.type].indexOf(deletedEvent.timestamp),
-                1
-            );
+        // Takes object with event types as keys, array of timestamps as values
+        // Removes each event from events, calendarDays, and timelineDays states
+        eventsDeleted(state, action) {
+            Object.entries(action.payload).forEach(
+                ([eventType, timestamps]) => timestamps.forEach(timestamp => {
+                    // Remove event from events state
+                    state.eventsByType[eventType].splice(
+                        state.eventsByType[eventType].indexOf(timestamp),
+                        1
+                    );
 
-            // Remove event from timelineDays
-            const dateKey = timestampToDateString(deletedEvent.timestamp);
-            state.timelineDays[dateKey].events =
-                state.timelineDays[dateKey].events.filter(event =>
-                    event.type != deletedEvent.type ||
-                    event.timestamp != deletedEvent.timestamp
-                );
-            // Remove from calendarDays if no other events with same type exist
-            const sameTypeAndDay = state.timelineDays[dateKey].events.filter(
-                event => event.type == deletedEvent.type
+                    // Remove event from timelineDays
+                    const dateKey = timestampToDateString(timestamp);
+                    state.timelineDays[dateKey].events =
+                        state.timelineDays[dateKey].events.filter(event =>
+                            event.type != eventType ||
+                            event.timestamp != timestamp
+                        );
+                    // Remove from calendarDays if no other events with same type exist
+                    const sameTypeAndDay = state.timelineDays[dateKey].events.filter(
+                        event => event.type == eventType
+                    );
+                    if (!sameTypeAndDay.length) {
+                        state.calendarDays[dateKey] = state.calendarDays[dateKey].filter(
+                            event => event !== eventType
+                        );
+                        // Remove calendarDays and timelineDays day if no content left
+                        removeDateKeyIfEmpty(state, dateKey);
+                    }
+                })
             );
-            if (!sameTypeAndDay.length) {
-                state.calendarDays[dateKey] = state.calendarDays[dateKey].filter(
-                    event => event !== deletedEvent.type
-                );
-                // Remove calendarDays and timelineDays day if no content left
-                removeDateKeyIfEmpty(state, dateKey);
-            }
 
             // Last event deleted: remove delete events dropdown option
             if (!state.eventsByType.water.length &&
@@ -321,7 +324,7 @@ export const timelineSlice = createSlice({
 // Export individual action creators from slice
 export const {
     eventAdded,
-    eventDeleted,
+    eventsDeleted,
     noteAdded,
     noteEdited,
     notesDeleted,

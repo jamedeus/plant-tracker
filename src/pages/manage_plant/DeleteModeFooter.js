@@ -3,7 +3,7 @@ import FloatingFooter from 'src/components/FloatingFooter';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteModeChanged } from './interfaceSlice';
-import { eventDeleted, photosDeleted, notesDeleted } from './timelineSlice';
+import { eventsDeleted, photosDeleted, notesDeleted } from './timelineSlice';
 import HoldToConfirm from 'src/components/HoldToConfirm';
 
 const DeleteModeFooter = memo(function DeleteModeFooter() {
@@ -70,14 +70,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
         if (Object.values(selectedEvents).some(arr => arr.length > 0)) {
             const payload = { plant_id: plantID, events: selectedEvents };
             // Remove events from timeline if successful
-            const onSuccess = (data) => Object.entries(data.deleted).forEach(
-                ([eventType, timestamps]) => timestamps.forEach(
-                    timestamp => dispatch(eventDeleted({
-                        timestamp: timestamp,
-                        type: eventType
-                    }))
-                )
-            );
+            const onSuccess = (data) => dispatch(eventsDeleted(data.deleted));
             await sendPostRequest('/bulk_delete_plant_events', payload, onSuccess);
         }
 
