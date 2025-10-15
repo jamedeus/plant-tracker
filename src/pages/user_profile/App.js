@@ -30,15 +30,11 @@ const UserDetails = memo(function UserDetails({ initialUserDetails }) {
                                  !EMAIL_REGEX.test(email);
 
     const submit = async () => {
-        const payload = {
+        const response = await sendPostRequest('/accounts/edit_user_details/', {
             first_name: firstName,
             last_name: lastName,
             email: email
-        };
-        const response = await sendPostRequest(
-            '/accounts/edit_user_details/',
-            payload
-        );
+        });
         if (response.ok) {
             const data = await response.json();
             setUserDetails(data.user_details);

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import GroupCard from 'src/components/GroupCard';
-import { openErrorModal } from 'src/components/ErrorModal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import RegisterPageLink from 'src/components/RegisterPageLink';
 import { plantAddedToGroup } from './plantSlice';
@@ -14,21 +13,13 @@ const Options = ({ options, close }) => {
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
     const submit = async (groupID) => {
-        const response = await sendPostRequest('/add_plant_to_group', {
-            plant_id: plantID,
-            group_id: groupID
-        });
-        if (response.ok) {
-            // Update plant state with group name and UUID from response
-            const data = await response.json();
-            dispatch(plantAddedToGroup({
-                name: data.group_name,
-                uuid: data.group_uuid
-            }));
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        const payload = { plant_id: plantID, group_id: groupID };
+        // Update plant state with group name and UUID from response
+        const onSuccess = (data) => dispatch(plantAddedToGroup({
+            name: data.group_name,
+            uuid: data.group_uuid
+        }));
+        await sendPostRequest('/add_plant_to_group', payload, onSuccess);
         close();
     };
 

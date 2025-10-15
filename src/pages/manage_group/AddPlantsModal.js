@@ -7,7 +7,6 @@ import LoadingAnimation from 'src/components/LoadingAnimation';
 import RegisterPageLink from 'src/components/RegisterPageLink';
 import PlantCard from 'src/components/PlantCard';
 import { plantsAdded } from './groupSlice';
-import { openErrorModal } from 'src/components/ErrorModal';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 
 const Options = ({ options, close }) => {
@@ -27,18 +26,10 @@ const Options = ({ options, close }) => {
 
     // Takes array of selected plant UUIDs,posts to backend and updates state
     const addPlants = async (selected) => {
-        const response = await sendPostRequest('/bulk_add_plants_to_group', {
-            group_id: groupId,
-            plants: selected
-        });
-        if (response.ok) {
-            // Add objects in response to plantDetails state
-            const data = await response.json();
-            dispatch(plantsAdded(data.added));
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        const payload = { group_id: groupId, plants: selected };
+        // Add objects in response to plantDetails state
+        const onSuccess = (data) => dispatch(plantsAdded(data.added));
+        await sendPostRequest('/bulk_add_plants_to_group', payload, onSuccess);
     };
 
     return (

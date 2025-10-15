@@ -6,7 +6,6 @@ import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import ModalPages from 'src/components/ModalPages';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { openErrorModal } from 'src/components/ErrorModal';
 import Checkmark from 'src/components/Checkmark';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import DivisionScannerButton from './DivisionScanner';
@@ -47,19 +46,16 @@ const DivisionModal = ({ close }) => {
 
     // Creates DivisionEvent and stores response keys needed to register child
     const createDivisionEvent = useCallback(async() => {
-        const response = await sendPostRequest('/divide_plant', {
+        const payload = {
             plant_id: plantDetails.uuid,
             timestamp: localToUTC(timestampRef.current.value)
-        });
-        if (response.ok) {
-            const data = await response.json();
+        };
+        const onSuccess = (data) => {
             setDividedFromId(data.plant_key);
             setDividedFromEventId(data.division_event_key);
             setModalContents("register");
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        };
+        await sendPostRequest('/divide_plant', payload, onSuccess);
     }, [plantDetails.uuid, timestampRef]);
 
     // Callback receives QR code from scanner confirm button
@@ -76,19 +72,17 @@ const DivisionModal = ({ close }) => {
 
     // Registration form submit handler
     const registerChildPlant = useCallback(async () => {
-        const response = await sendPostRequest('/register_plant', {
+        const payload = {
             uuid: nextChildId,
             ...Object.fromEntries(new FormData(formRef.current)),
             divided_from_id: dividedFromId,
             divided_from_event_id: dividedFromEventId
-        });
-        if (response.ok) {
+        };
+        const onSuccess = () => {
             setModalContents("done");
             setNumberRegistered(numberRegistered + 1);
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        };
+        await sendPostRequest('/register_plant', payload, onSuccess);
     }, [nextChildId, dividedFromId, dividedFromEventId, numberRegistered]);
 
     switch(modalContents) {

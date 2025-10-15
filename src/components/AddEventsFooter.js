@@ -5,7 +5,6 @@ import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { getSelectedItems, filterSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
-import { openErrorModal } from 'src/components/ErrorModal';
 import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
 
@@ -43,14 +42,12 @@ const AddEventsFooter = memo(function AddEventsFooter({
         }
 
         // Send /bulk_add_plant_events request with all selected UUIDs
-        const timestamp = localToUTC(new Date().toISOString());
-        const response = await sendPostRequest('/bulk_add_plant_events', {
+        const payload = {
             plants: selectedPlants,
             event_type: eventType,
-            timestamp: timestamp
-        });
-        if (response.ok) {
-            const data = await response.json();
+            timestamp: localToUTC(new Date().toISOString())
+        };
+        const onSuccess = (data) => {
             // Update last_watered/last_fertilized times for selected plants
             updatePlantLastEventTimes({
                 eventType: eventType,
@@ -59,10 +56,8 @@ const AddEventsFooter = memo(function AddEventsFooter({
             });
             // Show success message in footer
             showAlternateTextMessage(`Plants ${pastTense(eventType)}!`, 3000);
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        };
+        await sendPostRequest('/bulk_add_plant_events', payload, onSuccess);
     };
 
     return (

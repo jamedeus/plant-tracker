@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { showToast } from './Toast';
-import { openErrorModal } from './ErrorModal';
 import LoadingAnimation from './LoadingAnimation';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import uuidPropType from 'src/types/uuidPropType';
@@ -21,20 +20,17 @@ const ScannedUrlButton = ({ onExit, scannedUrl, oldUuid }) => {
     const navigate = useNavigate();
     // Makes /change_uuid call to confirm new QR code
     const handleAcceptNewQrCode = async () => {
-        const response = await sendPostRequest('/change_uuid', {
+        const payload = {
             uuid: oldUuid,
             new_id: scannedUrl.split('/manage/')[1]
-        });
+        };
         // Close scanner, show success toast, update current URL (revalidates)
-        if (response.ok) {
+        const onSuccess = (data) => {
             onExit();
             showToast('QR code changed!', 'green', 3000);
-            const data = await response.json();
             navigate(`/manage/${data.new_uuid}`, { replace: true });
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        };
+        await sendPostRequest('/change_uuid', payload, onSuccess);
     };
 
     return (

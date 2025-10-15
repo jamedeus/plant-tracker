@@ -100,43 +100,33 @@ const NoteModal = ({ note, close }) => {
     };
 
     const handleEdit = async () => {
-        const response = await sendPostRequest('/edit_plant_note', {
+        const payload = {
             plant_id: plantID,
             timestamp: noteTime,
             note_text: noteText
-        });
-
-        if (response.ok) {
-            // Update note state with params from response, close modal
-            const data = await response.json();
+        };
+        // Update note state with params from response, close modal
+        const onSuccess = (data) => {
             dispatch(noteEdited({
                 timestamp: data.timestamp,
                 text: data.note_text
             }));
             close();
-        } else {
-            // Show error in modal
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        };
+        await sendPostRequest('/edit_plant_note', payload, onSuccess);
     };
 
     const handleDelete = async () => {
-        const response = await sendPostRequest('/delete_plant_notes', {
+        const payload = {
             plant_id: plantID,
             timestamps: [noteTime]
-        });
-
-        if (response.ok) {
-            // Remove note from state, close modal
-            const data = await response.json();
+        };
+        // Remove note from state, close modal
+        const onSuccess = (data) => {
             dispatch(noteDeleted(data.deleted[0]));
             close();
-        } else {
-            // Show error in modal
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        };
+        await sendPostRequest('/delete_plant_notes', payload, onSuccess);
     };
 
     return (

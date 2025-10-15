@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { plantsRemoved } from './groupSlice';
-import { openErrorModal } from 'src/components/ErrorModal';
 import { getSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
 
@@ -15,22 +14,17 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
     const dispatch = useDispatch();
     const groupId = useSelector((state) => state.group.groupDetails.uuid);
 
-    // Handler for remove button in FloatingFooter that appears when remove
-    // dropdown option clicked
     const removePlants = async () => {
-        const response = await sendPostRequest('/bulk_remove_plants_from_group', {
+        const payload = {
             group_id: groupId,
             plants: getSelectedItems(selectedPlantsRef)
-        });
-        if (response.ok) {
-            const data = await response.json();
+        };
+        const onSuccess = (data) => {
             dispatch(plantsRemoved(data.removed));
-            // Hide FloatingFooter and checkboxes
+            // Hide RemovePlantsFooter and checkboxes
             stopRemovingPlants();
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        };
+        await sendPostRequest('/bulk_remove_plants_from_group', payload, onSuccess);
     };
 
     return (

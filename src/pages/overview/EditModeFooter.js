@@ -41,10 +41,9 @@ const EditModeFooter = memo(function EditModeFooter({
         }
 
         // Send /bulk_delete_plants_and_groups request with all selected UUIDs
-        const response = await sendPostRequest(
-            '/bulk_delete_plants_and_groups',
-            {uuids: selectedPlants.concat(selectedGroups)}
-        );
+        const response = await sendPostRequest('/bulk_delete_plants_and_groups', {
+            uuids: selectedPlants.concat(selectedGroups)
+        });
         // Remove deleted UUIDs from state
         if (response.ok) {
             const data = await response.json();
@@ -78,13 +77,10 @@ const EditModeFooter = memo(function EditModeFooter({
         }
 
         // Send /bulk_archive_plants_and_groups request with all selected UUIDs
-        const response = await sendPostRequest(
-            '/bulk_archive_plants_and_groups',
-            {
-                uuids: selectedUuids,
-                archived: archived
-            }
-        );
+        const response = await sendPostRequest('/bulk_archive_plants_and_groups', {
+            uuids: selectedUuids,
+            archived: archived
+        });
         // Remove archived UUIDs from state
         if (response.ok) {
             const data = await response.json();

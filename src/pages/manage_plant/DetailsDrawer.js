@@ -5,7 +5,6 @@ import sendPostRequest from 'src/utils/sendPostRequest';
 import { useSelector, useDispatch } from 'react-redux';
 import TitleDrawer from 'src/components/TitleDrawer';
 import PlantDetails from 'src/components/PlantDetails';
-import { openErrorModal } from 'src/components/ErrorModal';
 import ChangeQrScannerButton from 'src/components/ChangeQrScanner';
 import { FaPlus } from 'react-icons/fa6';
 import { IoMdCloseCircle } from "react-icons/io";
@@ -53,16 +52,10 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
 
     // Makes remove_plant_from_group API call, updates state if successful
     const handleRemoveGroup = async () => {
-        const response = await sendPostRequest('/remove_plant_from_group', {
-            plant_id: plantDetails.uuid
-        });
-        if (response.ok) {
-            // Remove group details from plant state
-            dispatch(plantRemovedFromGroup());
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        const payload = { plant_id: plantDetails.uuid };
+        // Remove group details from plant state
+        const onSuccess = () => dispatch(plantRemovedFromGroup());
+        await sendPostRequest('/remove_plant_from_group', payload, onSuccess);
     };
 
     return (

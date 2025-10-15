@@ -1,7 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import FloatingFooter from 'src/components/FloatingFooter';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteModeChanged } from './interfaceSlice';
 import { eventDeleted, photosDeleted, noteDeleted } from './timelineSlice';
@@ -69,60 +68,35 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const handleDelete = async () => {
         // Delete events if 1 or more selected
         if (Object.values(selectedEvents).some(arr => arr.length > 0)) {
-            const response = await sendPostRequest('/bulk_delete_plant_events', {
-                plant_id: plantID,
-                events: selectedEvents
-            });
-
-            // If successful remove events from timeline
-            if (response.ok) {
-                const data = await response.json();
-                Object.entries(data.deleted).forEach(([eventType, timestamps]) =>
-                    timestamps.forEach(timestamp =>
-                        dispatch(eventDeleted({
-                            timestamp: timestamp,
-                            type: eventType
-                        }))
-                    )
-                );
-            } else {
-                const error = await response.json();
-                openErrorModal(JSON.stringify(error));
-            }
+            const payload = { plant_id: plantID, events: selectedEvents };
+            // Remove events from timeline if successful
+            const onSuccess = (data) => Object.entries(data.deleted).forEach(
+                ([eventType, timestamps]) => timestamps.forEach(
+                    timestamp => dispatch(eventDeleted({
+                        timestamp: timestamp,
+                        type: eventType
+                    }))
+                )
+            );
+            await sendPostRequest('/bulk_delete_plant_events', payload, onSuccess);
         }
 
         // Delete photos if 1 or more selected
         if (selectedPhotos.length) {
-            const response = await sendPostRequest('/delete_plant_photos', {
-                plant_id: plantID,
-                delete_photos: selectedPhotos
-            });
-
-            // If successful remove photos from timeline
-            if (response.ok) {
-                const data = await response.json();
-                dispatch(photosDeleted(data.deleted));
-            } else {
-                const error = await response.json();
-                openErrorModal(JSON.stringify(error));
-            }
+            const payload = { plant_id: plantID, delete_photos: selectedPhotos };
+            // Remove photos from timeline if successful
+            const onSuccess = (data) => dispatch(photosDeleted(data.deleted));
+            await sendPostRequest('/delete_plant_photos', payload, onSuccess);
         }
 
         // Delete notes if 1 or more selected
         if (selectedNotes.length) {
-            const response = await sendPostRequest('/delete_plant_notes', {
-                plant_id: plantID,
-                timestamps: selectedNotes
-            });
-
-            // If successful remove note from timeline
-            if (response.ok) {
-                const data = await response.json();
-                data.deleted.forEach(timestamp => dispatch(noteDeleted(timestamp)));
-            } else {
-                const error = await response.json();
-                openErrorModal(JSON.stringify(error));
-            }
+            const payload = { plant_id: plantID, timestamps: selectedNotes };
+            // Remove notes from timeline if successful
+            const onSuccess = (data) => data.deleted.forEach(
+                timestamp => dispatch(noteDeleted(timestamp))
+            );
+            await sendPostRequest('/delete_plant_notes', payload, onSuccess);
         }
 
         // Hide footer

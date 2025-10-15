@@ -9,7 +9,6 @@ import sendPostRequest from 'src/utils/sendPostRequest';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import QrScannerButton from 'src/components/QrScannerButton';
-import { openErrorModal } from 'src/components/ErrorModal';
 import 'src/css/index.css';
 import uuidPropType from 'src/types/uuidPropType';
 
@@ -41,6 +40,7 @@ function App({ initialState }) {
     const navigate = useNavigate();
 
     const handleRegister = async () => {
+        const endpoint = visibleForm === 0 ? '/register_plant' : '/register_group';
         // Build payload by parsing all fields from visible form
         const payload = {
             uuid: initialState.new_id,
@@ -48,17 +48,9 @@ function App({ initialState }) {
                 visibleForm === 0 ? plantFormRef.current : groupFormRef.current
             ))
         };
-
-        const endpoint = visibleForm === 0 ? '/register_plant' : '/register_group';
-        const response = await sendPostRequest(endpoint, payload);
         // Reload route (switch to manage page) if successful
-        if (response.ok) {
-            navigate(window.location.pathname);
-        // Show error modal if registration failed
-        } else {
-            const data = await response.json();
-            openErrorModal(data.error);
-        }
+        const onSuccess = () => navigate(window.location.pathname);
+        await sendPostRequest(endpoint, payload, onSuccess);
     };
 
     // Top left corner dropdown options

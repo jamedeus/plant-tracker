@@ -82,23 +82,21 @@ const RepotModal = ({ close }) => {
         // Replace contents with loading spinner
         setModalContents("loading");
 
-        const response = await sendPostRequest('/repot_plant', {
+        const payload = {
             plant_id: plantID,
             new_pot_size: parseInt(new_pot_size),
             timestamp: timestamp
-        });
-        if (response.ok) {
-            const data = await response.json();
+        };
+        const onSuccess = (data) => {
             // Update plantDetails state, add event to events state
             dispatch(plantRepotted(data.pot_size));
             dispatch(eventAdded({timestamp: data.timestamp, type: 'repot'}));
             // Show success animation + change QR code button
             setModalContents("done");
-        } else {
-            // Go back to prompt, show error in modal
+        };
+        if (! await sendPostRequest('/repot_plant', payload, onSuccess)) {
+            // Go back to prompt if error
             setModalContents("prompt");
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
         }
     };
 

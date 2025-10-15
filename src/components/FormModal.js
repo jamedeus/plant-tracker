@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import { openErrorModal } from 'src/components/ErrorModal';
 
 // Reusable component to render a form with submit handler and validation.
 // Intended to be rendered inside LazyModal component.
@@ -21,18 +20,11 @@ const FormModal = ({ close, FormComponent, initialValues, endpoint, payload, onS
     };
 
     const submit = async () => {
-        const response = await sendPostRequest(endpoint, {
+        const data = {
             ...payload,
             ...Object.fromEntries(new FormData(formRef.current))
-        });
-        if (response.ok) {
-            // Update plant details state with new values from response
-            const data = await response.json();
-            onSuccess(data);
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
+        };
+        await sendPostRequest(endpoint, data, onSuccess);
         close();
     };
 
