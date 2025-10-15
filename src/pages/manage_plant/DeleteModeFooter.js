@@ -76,7 +76,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
         // Delete photos if 1 or more selected
         if (selectedPhotos.length) {
-            const payload = { plant_id: plantID, delete_photos: selectedPhotos };
+            const payload = { plant_id: plantID, photos: selectedPhotos };
             // Remove photos from timeline if successful
             const onSuccess = (data) => dispatch(photosDeleted(data.deleted));
             await sendPostRequest('/delete_plant_photos', payload, onSuccess);

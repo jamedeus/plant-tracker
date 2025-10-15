@@ -2267,7 +2267,7 @@ class PlantPhotoEndpointTests(TestCase):
         # Add a non-existing primary key, should add to response failed section
         response = self.client.post('/delete_plant_photos', {
             'plant_id': str(self.plant.uuid),
-            'delete_photos': [
+            'photos': [
                 photo1.pk,
                 photo2.pk,
                 999
@@ -2291,7 +2291,7 @@ class PlantPhotoEndpointTests(TestCase):
         photo_key = 999
         response = self.client.post('/delete_plant_photos', {
             'plant_id': self.plant.uuid,
-            'delete_photos': [photo_key]
+            'photos': [photo_key]
         })
 
         # Confirm correct error

@@ -891,19 +891,19 @@ def add_plant_photos(request, user):
 
 
 @get_user_token
-@requires_json_post(["plant_id", "delete_photos"])
+@requires_json_post(["plant_id", "photos"])
 @get_plant_from_post_body(select_related='default_photo')
 def delete_plant_photos(plant, data, **kwargs):
     '''Deletes a list of Photos associated with a specific Plant.
-    Requires JSON POST with plant_id (uuid) and delete_photos (list of db keys).
+    Requires JSON POST with plant_id (uuid) and photos (list of db keys).
     '''
 
     # Query all requested photos, get list of found primary keys
-    photos = Photo.objects.filter(plant=plant, pk__in=data["delete_photos"])
+    photos = Photo.objects.filter(plant=plant, pk__in=data["photos"])
     deleted = [photo.pk for photo in photos]
 
     # Get list of photo primary keys that were not found in database
-    failed = list(set(data["delete_photos"]) - set(deleted))
+    failed = list(set(data["photos"]) - set(deleted))
 
     # Delete all found photos
     photos.delete()

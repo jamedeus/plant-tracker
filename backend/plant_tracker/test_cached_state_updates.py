@@ -831,7 +831,7 @@ class EndpointStateUpdateTests(TestCase):
         # Delete photo with /delete_plant_photos endpoint
         response = self.client.post('/delete_plant_photos', {
             'plant_id': str(self.plant1.uuid),
-            'delete_photos': [
+            'photos': [
                 Photo.objects.all()[0].pk
             ]
         })

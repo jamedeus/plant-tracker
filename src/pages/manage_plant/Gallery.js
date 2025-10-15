@@ -149,7 +149,7 @@ const GalleryDropdown = memo(function GalleryDropdown({ currentSlide, focusMode,
         setShowConfirmDelete(false);
         const payload = {
             plant_id: plantDetails.uuid,
-            delete_photos: [currentSlide.key]
+            photos: [currentSlide.key]
         };
         const onSuccess = (data) => dispatch(photosDeleted(data.deleted));
         const onError = () => showToast('Failed to delete photo', 'red', 2500);

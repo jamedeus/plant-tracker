@@ -407,7 +407,7 @@ class ViewRegressionTests(TestCase):
         # Make request to delete both photos from database
         response = JSONClient().post('/delete_plant_photos', {
             'plant_id': str(plant.uuid),
-            'delete_photos': [photo1.pk, photo2.pk]
+            'photos': [photo1.pk, photo2.pk]
         })
 
         # Should succeed despite duplicate timestamp, confirm removed from db
@@ -1095,7 +1095,7 @@ class CachedStateRegressionTests(TestCase):
         # Delete photo with /delete_plant_photos endpoint
         response = JSONClient().post('/delete_plant_photos', {
             'plant_id': str(plant.uuid),
-            'delete_photos': [
+            'photos': [
                 photo.pk
             ]
         })

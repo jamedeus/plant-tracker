@@ -1228,7 +1228,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         with self.assertNumQueries(7):
             response = self.client.post('/delete_plant_photos', {
                 'plant_id': str(plant.uuid),
-                'delete_photos': [
+                'photos': [
                     photo1.pk,
                 ]
             })
@@ -1238,7 +1238,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         with self.assertNumQueries(7):
             response = self.client.post('/delete_plant_photos', {
                 'plant_id': str(plant.uuid),
-                'delete_photos': [
+                'photos': [
                     photo2.pk,
                     photo3.pk,
                 ]
@@ -1259,7 +1259,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         with self.assertNumQueries(6):
             response = self.client.post('/delete_plant_photos', {
                 'plant_id': str(plant.uuid),
-                'delete_photos': [
+                'photos': [
                     photo1.pk,
                 ]
             })

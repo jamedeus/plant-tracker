@@ -1423,7 +1423,7 @@ class MultiUserModeTests(TestCase):
         self.assertAuthenticationRequiredError(
             self.client.post('/delete_plant_photos', {
                 'plant_id': str(plant.uuid),
-                'delete_photos': [1]
+                'photos': [1]
             })
         )
         self.assertAuthenticationRequiredError(
@@ -1573,7 +1573,7 @@ class MultiUserModeTests(TestCase):
         self.assertPlantIsOwnedByADifferentUserError(
             self.client.post('/delete_plant_photos', {
                 'plant_id': str(plant.uuid),
-                'delete_photos': [1]
+                'photos': [1]
             })
         )
         self.assertPlantIsOwnedByADifferentUserError(
