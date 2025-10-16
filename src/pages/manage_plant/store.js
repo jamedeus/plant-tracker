@@ -12,11 +12,23 @@ import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import initialStatePropTypes from './initialStatePropTypes';
 
 // Correct order for event markers within a single timeline day (readability)
-export const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
+const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
+
+// Takes object where each key contains an array
+// Returns array of key names that contain non-empty arrays
+export const nonEmptyKeys = (data) => Object.entries(data)
+    .filter(([, value]) => value.length > 0)
+    .map(([key]) => key)
+    .sort((a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b));
 
 // Factory returns template for each dateKey in timelineDays state
 const getTimelineDaysTemplate = () => ({
-    events: [],
+    events: {
+        water: [],
+        fertilize: [],
+        prune: [],
+        repot: []
+    },
     notes: [],
     photos: []
 });
@@ -47,6 +59,16 @@ export function getDateKey(state, timestamp) {
     return dateKey;
 }
 
+// Takes timelineSlice state with timelineDays populated with events.
+// Populates calendarDays key with YYYY-MM-DD dateKeys containing an array of
+// event types for each day (used to render EventCalendar component).
+const buildCalendarDays = (state) => {
+    Object.keys(state.timelineDays).forEach(dateKey => {
+        const eventTypes = nonEmptyKeys(state.timelineDays[dateKey].events);
+        state.calendarDays[dateKey] = eventTypes;
+    });
+};
+
 // Takes timelineSlice state with eventsByType, photos, divisionEvents, and
 // dividedFrom keys pre-populated (from initialState) and notes initialState.
 //
@@ -71,11 +93,13 @@ const buildTimelineState = (state, notes) => {
         ];
     };
 
-    // Iterates timestamps under each event type (water, fertilize, prune, repot)
-    // Add event object (type + timestamp) to events array under correct dateKey
+    // Iterates timestamps for each event type (water, fertilize, prune, repot)
+    // Add timestamp to correct event type array under correct dateKey
     Object.entries(state.eventsByType).forEach(([eventType, eventDates]) =>
-        eventDates.forEach(date =>
-            addValue(date, 'events', {type: eventType, timestamp: date}))
+        eventDates.forEach(date => {
+            const dateKey = getDateKey(state, date);
+            state.timelineDays[dateKey].events[eventType].push(date);
+        })
     );
 
     // Populate calendarDays state used by EventCalendar component
@@ -102,19 +126,6 @@ const buildTimelineState = (state, notes) => {
         const dateKey = getDateKey(state, state.dividedFrom.timestamp);
         state.timelineDays[dateKey].dividedFrom = state.dividedFrom;
     }
-};
-
-// Takes timelineDays state, flattens and returns calendarDays state used by
-// EventCalendar component (YYYY-MM-DD keys containing array of event strings).
-const buildCalendarDays = (state) => {
-    Object.keys(state.timelineDays).forEach(dateKey => {
-        if (state.timelineDays[dateKey].events.length) {
-            // Convert array of objects to array of type strings (no duplicates)
-            state.calendarDays[dateKey] = [...new Set(
-                state.timelineDays[dateKey].events.map(event => event.type)
-            )];
-        }
-    });
 };
 
 // Takes array of photo objects (contains timestamp key), sorts chronologically

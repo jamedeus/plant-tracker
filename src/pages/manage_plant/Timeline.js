@@ -20,7 +20,6 @@ import { LuSplit } from "react-icons/lu";
 import { TbShovel } from "react-icons/tb";
 import { useSelector, useDispatch } from 'react-redux';
 import 'src/css/timeline.css';
-import { EVENTS_ORDER } from './store';
 import {
     photoGalleryOpened,
     photoGalleryIndexChanged,
@@ -639,14 +638,6 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
     // must change whenever photos change, but haven't tested.
     const photos = useSelector((state) => state.timeline.photos);
 
-    // Convert events from array of objects with type and timestamp keys to
-    // object with type keys (no duplicates) containing array of timestamps
-    const eventsByType = contents.events.reduce((acc, { type, timestamp }) => {
-        acc[type].push(timestamp);
-        return acc;
-    // Seed accumulator object with type keys in correct order
-    }, Object.fromEntries(EVENTS_ORDER.map(type => [type, []])));
-
     return (
         <>
             {/* Render MonthDivider if monthDivider param was given */}
@@ -658,7 +649,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     className="timeline-day-events"
                     data-testid={`${dateKey}-events`}
                 >
-                    {Object.entries(eventsByType).map(([type, timestamps]) => {
+                    {Object.entries(contents.events).map(([type, timestamps]) => {
                         if (timestamps.length) {
                             return <EventMarker
                                 key={type}
