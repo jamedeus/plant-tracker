@@ -661,7 +661,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     className="timeline-day-photos"
                     data-testid={`${dateKey}-photos`}
                 >
-                    {[...contents.photos].sort((a, b) => {
+                    {Object.values(contents.photos).sort((a, b) => {
                         return a.timestamp.localeCompare(b.timestamp);
                     }).reverse().map((photo) => (
                         <PhotoThumbnail

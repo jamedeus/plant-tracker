@@ -30,7 +30,7 @@ function removeNavigationOption(state, dateKey) {
 function removeDateKeyIfEmpty(state, dateKey) {
     if (state.timelineDays[dateKey] &&
         !Object.keys(state.timelineDays[dateKey].notes).length &&
-        !state.timelineDays[dateKey].photos.length &&
+        !Object.keys(state.timelineDays[dateKey].photos).length &&
         !nonEmptyKeys(state.timelineDays[dateKey].events).length &&
         !state.timelineDays[dateKey].dividedFrom &&
         !state.timelineDays[dateKey].dividedInto
@@ -63,10 +63,10 @@ export const timelineSlice = createSlice({
         // Values are array of event types (eg ['water', 'fertilize'])
         calendarDays: {},
         // Keys are YYYY-MM-DD in user's local timezone
-        // Values are objects with 3 keys:
-        //   events      (object with event type keys, array of timestamps values)
-        //   notes       (object with note timestamp keys, note text values)
-        //   photos      (array of objects with same keys as photos state)
+        // Values are objects with 3 keys, each containing a sub object:
+        //   events      (keys: event type, values: array of timestamps)
+        //   notes       (keys: note timestamp, values: note text)
+        //   photos      (keys: photo key, values: same objects as photos state)
         timelineDays: {},
         // Array of objects each representing 1 photo, keys:
         //   timestamp   (full ISO timestamp in UTC)
@@ -184,7 +184,7 @@ export const timelineSlice = createSlice({
             // Add new URLs to timelineDays state used to render timeline
             photos.forEach((photo) => {
                 const dateKey = getDateKey(state, photo.timestamp);
-                state.timelineDays[dateKey].photos.push(photo);
+                state.timelineDays[dateKey].photos[photo.key] = photo;
             });
 
             // Add new URLs to photos state (used by Gallery)
@@ -212,10 +212,7 @@ export const timelineSlice = createSlice({
                     // Parse YYYY-MM-DD from deleted photo timestamp, find in
                     // timelineDays state and remove
                     const dateKey = timestampToDateString(photo.timestamp);
-                    state.timelineDays[dateKey].photos =
-                        state.timelineDays[dateKey].photos.filter(
-                            p => p.key !== photo.key
-                        );
+                    delete state.timelineDays[dateKey].photos[photo.key];
                     // Remove timelineDays day if no content left
                     removeDateKeyIfEmpty(state, dateKey);
                     // Return false (remove from state.photos)

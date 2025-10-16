@@ -30,7 +30,7 @@ const getTimelineDaysTemplate = () => ({
         repot: []
     },
     notes: {},
-    photos: []
+    photos: {}
 });
 
 // Takes timelineSlice state and new YYYY-MM-DD dateKey
@@ -83,16 +83,6 @@ const buildCalendarDays = (state) => {
 // Populates navigationOptions state with YYYY keys containing arrays of MM
 // month strings (used to render QuickNavigation component).
 const buildTimelineState = (state, notes) => {
-    // Takes ISO timestamp, dayTemplate key, and value (string or array)
-    // Appends value to array under requested key (concatenates if array value)
-    const addValue = (timestamp, key, value) => {
-        const dateKey = getDateKey(state, timestamp);
-        state.timelineDays[dateKey][key] =  [
-            ...state.timelineDays[dateKey][key] || [],
-            ...Array.isArray(value) ? value : [value]
-        ];
-    };
-
     // Iterates timestamps for each event type (water, fertilize, prune, repot)
     // Add timestamp to correct event type array under correct dateKey
     Object.entries(state.eventsByType).forEach(([eventType, eventDates]) =>
@@ -106,9 +96,10 @@ const buildTimelineState = (state, notes) => {
     buildCalendarDays(state);
 
     // Add objects from photos context to photos key under correct dateKey
-    state.photos.forEach((photo) =>
-        addValue(photo.timestamp, 'photos', photo)
-    );
+    state.photos.forEach((photo) => {
+        const dateKey = getDateKey(state, photo.timestamp);
+        state.timelineDays[dateKey].photos[photo.key] = photo;
+    });
 
     // Convert notes object to array of objects in notes key under correct dateKey
     Object.entries(notes).forEach(([timestamp, text]) => {
@@ -116,11 +107,12 @@ const buildTimelineState = (state, notes) => {
         state.timelineDays[dateKey].notes[timestamp] = text;
     });
 
-    // Add dividedInto if has children (adds link(s) to child plants on days
-    // they were divided)
-    Object.entries(state.divisionEvents).forEach(([timestamp, plants]) =>
-        addValue(timestamp, 'dividedInto', plants)
-    );
+    // Add dividedInto if has children (adds link(s) on days children were divided)
+    Object.entries(state.divisionEvents).forEach(([timestamp, plants]) => {
+        const dateKey = getDateKey(state, timestamp);
+        // Create dividedInto if doesn't exist, merge plants into array
+        (state.timelineDays[dateKey].dividedInto ??= []).push(...plants);
+    });
 
     // Add dividedFrom if has parent (adds link to parent at start of timeline)
     if (state.dividedFrom) {
