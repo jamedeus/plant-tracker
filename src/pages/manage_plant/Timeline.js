@@ -20,7 +20,7 @@ import { LuSplit } from "react-icons/lu";
 import { TbShovel } from "react-icons/tb";
 import { useSelector, useDispatch } from 'react-redux';
 import 'src/css/timeline.css';
-import { EVENTS_ORDER } from './timelineSlice';
+import { EVENTS_ORDER } from './store';
 import {
     photoGalleryOpened,
     photoGalleryIndexChanged,

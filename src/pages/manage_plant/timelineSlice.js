@@ -1,22 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { timestampToDateString } from 'src/utils/timestampUtils';
-import { sortPhotosChronologically } from './store';
-
-// Correct order for event markers within a single timeline day (readability)
-export const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
-
-// Takes timelineSlice state and new YYYY-MM-DD dateKey
-// Adds month and year to navigationOptions if not already present
-function addNavigationOption(state, dateKey) {
-    const [year, month] = dateKey.split('-');
-    if (!state.navigationOptions[year]) {
-        state.navigationOptions[year] = [];
-    }
-    if (!state.navigationOptions[year].includes(month)) {
-        state.navigationOptions[year].push(month);
-        state.navigationOptions[year].sort().reverse();
-    }
-}
+import { EVENTS_ORDER, getDateKey, sortPhotosChronologically } from './store';
 
 // Takes timelineSlice state and removed YYYY-MM-DD dateKey
 // Removes month and year from navigationOptions if there are no days left in
@@ -42,7 +26,7 @@ function removeNavigationOption(state, dateKey) {
 
 // Takes timelineSlice state and YYYY-MM-DD dateKey of a removed item
 // Checks if any content exists on the same date, removes dateKey from
-// timelineDays if not
+// timelineDays and calendarDays if not
 function removeDateKeyIfEmpty(state, dateKey) {
     if (state.timelineDays[dateKey] &&
         !state.timelineDays[dateKey].notes.length &&
@@ -117,27 +101,14 @@ export const timelineSlice = createSlice({
             state.eventsByType[newEvent.type].push(newEvent.timestamp);
             state.eventsByType[newEvent.type].sort().reverse();
 
-            // Add new dateKey to calendarDays and timelineDays if missing
-            const dateKey = timestampToDateString(newEvent.timestamp);
-            if (!state.timelineDays[dateKey]) {
-                state.timelineDays[dateKey] = {
-                    events: [ newEvent ],
-                    notes: [],
-                    photos: []
-                };
-                state.calendarDays[dateKey] = [ newEvent.type ];
-                // Add navigationOption if first dateKey in year + month
-                addNavigationOption(state, dateKey);
-
-            // Add new event to existing dateKey in calendarDays and timelineDays
-            } else {
-                state.timelineDays[dateKey].events.push(newEvent);
-                state.calendarDays[dateKey] = [...new Set(
-                    state.timelineDays[dateKey].events.map(event => event.type)
-                )].sort(
-                    (a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b)
-                );
-            }
+            // Add new event to correct dateKey in calendarDays and timelineDays
+            const dateKey = getDateKey(state, newEvent.timestamp);
+            state.timelineDays[dateKey].events.push(newEvent);
+            state.calendarDays[dateKey] = [...new Set(
+                state.timelineDays[dateKey].events.map(event => event.type)
+            )].sort(
+                (a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b)
+            );
 
             // First event added: add delete events dropdown option
             if (!state.hasEvents) {
@@ -190,19 +161,8 @@ export const timelineSlice = createSlice({
         // Takes object with timestamp and text keys, adds to timelineDays state
         noteAdded(state, action) {
             const note = action.payload;
-            const dateKey = timestampToDateString(note.timestamp);
-            // Add new dateKey if missing
-            if (!state.timelineDays[dateKey]) {
-                state.timelineDays[dateKey] = {
-                    events: [],
-                    notes: [note],
-                    photos: []
-                };
-            } else {
-                state.timelineDays[dateKey].notes.push(note);
-            }
-            // Add navigationOption if first note in year + month
-            addNavigationOption(state, dateKey);
+            const dateKey = getDateKey(state, note.timestamp);
+            state.timelineDays[dateKey].notes.push(note);
         },
 
         // Takes note with same timestamp as existing note (timestamp cannot be
@@ -240,20 +200,8 @@ export const timelineSlice = createSlice({
 
             // Add new URLs to timelineDays state used to render timeline
             photos.forEach((photo) => {
-                const dateKey = timestampToDateString(photo.timestamp);
-                // Add new dateKey if missing
-                if (!state.timelineDays[dateKey]) {
-                    state.timelineDays[dateKey] = {
-                        events: [],
-                        notes: [],
-                        photos: [photo]
-                    };
-                    // Add navigationOption if first photo in year + month
-                    addNavigationOption(state, dateKey);
-                } else {
-                    // Add photo to photos array for correct day
-                    state.timelineDays[dateKey].photos.push(photo);
-                }
+                const dateKey = getDateKey(state, photo.timestamp);
+                state.timelineDays[dateKey].photos.push(photo);
             });
 
             // Add new URLs to photos state (used by Gallery)

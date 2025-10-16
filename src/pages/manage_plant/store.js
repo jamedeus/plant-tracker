@@ -11,46 +11,78 @@ import { loadUserSettings } from './Settings';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import initialStatePropTypes from './initialStatePropTypes';
 
-// Takes events, notes, photos, dividedFrom, and divisionEvents context objects
-// from django backend, returns timelineDays state used by Timeline component
-// (YYYY-MM-DD keys containing objects with events, notes, and photos keys).
+// Correct order for event markers within a single timeline day (readability)
+export const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
+
+// Factory returns template for each dateKey in timelineDays state
+const getTimelineDaysTemplate = () => ({
+    events: [],
+    notes: [],
+    photos: []
+});
+
+// Takes timelineSlice state and new YYYY-MM-DD dateKey
+// Adds month and year to state.navigationOptions if not already present
+function addNavigationOption(state, dateKey) {
+    const [year, month] = dateKey.split('-');
+    if (!state.navigationOptions[year]) {
+        state.navigationOptions[year] = [];
+    }
+    if (!state.navigationOptions[year].includes(month)) {
+        state.navigationOptions[year].push(month);
+        state.navigationOptions[year].sort().reverse();
+    }
+}
+
+// Takes timelineSlice state and timestamp, returns YYYY-MM-DD dateKey
+// Populates timelineDays state and navigationOptions if dateKey is new
+export function getDateKey(state, timestamp) {
+    const dateKey = timestampToDateString(timestamp);
+    if (!state.timelineDays[dateKey]) {
+        // Add empty timelineDays template if dateKey missing
+        state.timelineDays[dateKey] = getTimelineDaysTemplate();
+        // Add navigationOption if first dateKey in year + month
+        addNavigationOption(state, dateKey);
+    }
+    return dateKey;
+}
+
+// Takes timelineSlice state with eventsByType, photos, divisionEvents, and
+// dividedFrom keys pre-populated (from initialState) and notes initialState.
 //
-// Only adds dividedFrom and dividedInto keys to date when plant was divided (no
-// empty keys on every day - can only have 1 dividedFrom, dividedInto is rare).
-export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEvents) => {
-    // Create object, will have YYYY-MM-DD keys containing template below
-    const timelineDays = {};
-    const dayTemplate = {events: [], notes: [], photos: []};
-
-    // Takes ISO timestamp, converts to YYYY-MM-DD dateKey, returns
-    // If dateKey does not exist in timelineDays adds dayTemplate
-    const getDateKey = (timestamp) => {
-        const dateKey = timestampToDateString(timestamp);
-        if (!timelineDays[dateKey]) {
-            timelineDays[dateKey] = { ...dayTemplate };
-        }
-        return dateKey;
-    };
-
+// Populates timelineDays state with YYYY-MM-DD dateKeys containing objects with
+// events, notes, and photos keys (used to render Timeline component). Only adds
+// dividedFrom and dividedInto keys to date when plant was divided (no empty
+// keys on every day - can only have 1 dividedFrom, dividedInto is rare).
+//
+// Populates calendarDays state with YYYY-MM-DD dateKeys containing an array of
+// event types for each day (used to render EventCalendar component).
+//
+// Populates navigationOptions state with YYYY keys containing arrays of MM
+// month strings (used to render QuickNavigation component).
+const buildTimelineState = (state, notes) => {
     // Takes ISO timestamp, dayTemplate key, and value (string or array)
     // Appends value to array under requested key (concatenates if array value)
     const addValue = (timestamp, key, value) => {
-        const dateKey = getDateKey(timestamp);
-        timelineDays[dateKey][key] =  [
-            ...timelineDays[dateKey][key] || [],
+        const dateKey = getDateKey(state, timestamp);
+        state.timelineDays[dateKey][key] =  [
+            ...state.timelineDays[dateKey][key] || [],
             ...Array.isArray(value) ? value : [value]
         ];
     };
 
     // Iterates timestamps under each event type (water, fertilize, prune, repot)
     // Add event object (type + timestamp) to events array under correct dateKey
-    Object.entries(events).forEach(([eventType, eventDates]) =>
+    Object.entries(state.eventsByType).forEach(([eventType, eventDates]) =>
         eventDates.forEach(date =>
             addValue(date, 'events', {type: eventType, timestamp: date}))
     );
 
+    // Populate calendarDays state used by EventCalendar component
+    buildCalendarDays(state);
+
     // Add objects from photos context to photos key under correct dateKey
-    photos.forEach((photo) =>
+    state.photos.forEach((photo) =>
         addValue(photo.timestamp, 'photos', photo)
     );
 
@@ -61,51 +93,28 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
 
     // Add dividedInto if has children (adds link(s) to child plants on days
     // they were divided)
-    Object.entries(divisionEvents).forEach(([timestamp, plants]) =>
+    Object.entries(state.divisionEvents).forEach(([timestamp, plants]) =>
         addValue(timestamp, 'dividedInto', plants)
     );
 
     // Add dividedFrom if has parent (adds link to parent at start of timeline)
-    if (dividedFrom) {
-        timelineDays[getDateKey(dividedFrom.timestamp)].dividedFrom = dividedFrom;
+    if (state.dividedFrom) {
+        const dateKey = getDateKey(state, state.dividedFrom.timestamp);
+        state.timelineDays[dateKey].dividedFrom = state.dividedFrom;
     }
-
-    return timelineDays;
 };
 
 // Takes timelineDays state, flattens and returns calendarDays state used by
 // EventCalendar component (YYYY-MM-DD keys containing array of event strings).
-export const buildCalendarDays = (timelineDays) => {
-    const calendarDays = {};
-    Object.keys(timelineDays).forEach(dateKey => {
-        if (timelineDays[dateKey].events.length) {
+const buildCalendarDays = (state) => {
+    Object.keys(state.timelineDays).forEach(dateKey => {
+        if (state.timelineDays[dateKey].events.length) {
             // Convert array of objects to array of type strings (no duplicates)
-            calendarDays[dateKey] = [...new Set(
-                timelineDays[dateKey].events.map(event => event.type)
+            state.calendarDays[dateKey] = [...new Set(
+                state.timelineDays[dateKey].events.map(event => event.type)
             )];
         }
     });
-    return calendarDays;
-};
-
-// Takes timelineDays state, returns navigationOptions state used to populate
-// timeline QuickNavigation options (YYYY keys containing array of MM strings).
-export const buildNavigationOptions = (timelineDays) => {
-    const navigationOptions = {};
-    Object.keys(timelineDays).forEach(dateString => {
-        const [year, month] = dateString.split('-');
-        if (!navigationOptions[year]) {
-            navigationOptions[year] = [];
-        }
-        if (!navigationOptions[year].includes(month)) {
-            navigationOptions[year].push(month);
-        }
-    });
-    // Sort months in each year chronologically (timelineDays is not sorted)
-    Object.keys(navigationOptions).forEach(year =>
-        navigationOptions[year].sort().reverse()
-    );
-    return navigationOptions;
 };
 
 // Takes array of photo objects (contains timestamp key), sorts chronologically
@@ -135,49 +144,33 @@ export function ReduxProvider({ children, initialState }) {
     // Parses SPA-provided context elements containing events, photos, and notes
     // Merges and returns values for all initialState keys in timelineSlice
     const init = () => {
-        const plantDetails = initialState.plant_details;
-        const eventsByType = initialState.events;
-        const dividedFrom = initialState.divided_from;
-        const divisionEvents = initialState.division_events;
-        const photos = sortPhotosChronologically(
-            Object.values(initialState.photos || {})
-        );
-        const notes = initialState.notes;
-        const defaultPhoto = initialState.default_photo;
-        const hasPhotos = photos.length > 0;
-        const hasEvents = eventsByType.water.length > 0 ||
-                          eventsByType.fertilize.length > 0 ||
-                          eventsByType.prune.length > 0 ||
-                          eventsByType.repot.length > 0;
+        const timelineSliceState = {
+            eventsByType: initialState.events,
+            dividedFrom: initialState.divided_from,
+            divisionEvents: initialState.division_events,
+            calendarDays: {},
+            timelineDays: {},
+            photos: sortPhotosChronologically(
+                Object.values(initialState.photos)
+            ),
+            navigationOptions: {},
+            defaultPhoto: initialState.default_photo,
+            hasPhotos: Object.values(initialState.photos).length > 0,
+            hasEvents: initialState.events.water.length > 0 ||
+                       initialState.events.fertilize.length > 0 ||
+                       initialState.events.prune.length > 0 ||
+                       initialState.events.repot.length > 0
+        };
 
-        // Build state objects
-        const timelineDays = buildTimelineDays(
-            eventsByType,
-            notes,
-            photos,
-            dividedFrom,
-            divisionEvents
-        );
-        const calendarDays = buildCalendarDays(timelineDays);
-        const navigationOptions = buildNavigationOptions(timelineDays);
+        // Build timelineDays, calendarDays, and navigationOptions objects
+        buildTimelineState(timelineSliceState, initialState.notes);
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {
             plant: {
-                plantDetails
+                plantDetails: initialState.plant_details
             },
-            timeline: {
-                eventsByType,
-                dividedFrom,
-                divisionEvents,
-                calendarDays,
-                timelineDays,
-                photos,
-                navigationOptions,
-                defaultPhoto,
-                hasPhotos,
-                hasEvents
-            },
+            timeline: timelineSliceState,
             settings: loadUserSettings(layout),
             interface: {
                 titleDrawerOpen: false,
