@@ -29,7 +29,7 @@ function removeNavigationOption(state, dateKey) {
 // timelineDays and calendarDays if not
 function removeDateKeyIfEmpty(state, dateKey) {
     if (state.timelineDays[dateKey] &&
-        !state.timelineDays[dateKey].notes.length &&
+        !Object.keys(state.timelineDays[dateKey].notes).length &&
         !state.timelineDays[dateKey].photos.length &&
         !nonEmptyKeys(state.timelineDays[dateKey].events).length &&
         !state.timelineDays[dateKey].dividedFrom &&
@@ -65,7 +65,7 @@ export const timelineSlice = createSlice({
         // Keys are YYYY-MM-DD in user's local timezone
         // Values are objects with 3 keys:
         //   events      (object with event type keys, array of timestamps values)
-        //   notes       (array of objects with text and timestamp keys)
+        //   notes       (object with note timestamp keys, note text values)
         //   photos      (array of objects with same keys as photos state)
         timelineDays: {},
         // Array of objects each representing 1 photo, keys:
@@ -155,7 +155,7 @@ export const timelineSlice = createSlice({
         noteAdded(state, action) {
             const note = action.payload;
             const dateKey = getDateKey(state, note.timestamp);
-            state.timelineDays[dateKey].notes.push(note);
+            state.timelineDays[dateKey].notes[note.timestamp] = note.text;
         },
 
         // Takes note with same timestamp as existing note (timestamp cannot be
@@ -163,13 +163,7 @@ export const timelineSlice = createSlice({
         noteEdited(state, action) {
             const note = action.payload;
             const dateKey = timestampToDateString(note.timestamp);
-            state.timelineDays[dateKey].notes =
-                state.timelineDays[dateKey].notes.map(oldNote => {
-                    if (oldNote.timestamp === note.timestamp) {
-                        return {timestamp: note.timestamp, text: note.text};
-                    }
-                    return oldNote;
-                });
+            state.timelineDays[dateKey].notes[note.timestamp] = note.text;
         },
 
         // Takes array of deleted note timestamps, removes from timelineDays state
@@ -177,11 +171,7 @@ export const timelineSlice = createSlice({
             action.payload.forEach(noteTime => {
                 // Parse YYYY-MM-DD from deleted note timestamp
                 const dateKey = timestampToDateString(noteTime);
-                // Find in timelineDays state and remove
-                state.timelineDays[dateKey].notes =
-                    state.timelineDays[dateKey].notes.filter(
-                        note => note.timestamp !== noteTime
-                    );
+                delete state.timelineDays[dateKey].notes[noteTime];
                 // Remove timelineDays day if no content left
                 removeDateKeyIfEmpty(state, dateKey);
             });

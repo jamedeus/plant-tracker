@@ -463,14 +463,14 @@ const clampedLines = {
 
 // Takes note object (timestamp and text keys), renders element with first line
 // of text always visible which expands to show full text when clicked
-const NoteCollapse = memo(function NoteCollapse({ note }) {
+const NoteCollapse = memo(function NoteCollapse({ text, timestamp }) {
     const dispatch = useDispatch();
     const [selected, setSelected] = useState(false);
     const deleteMode = useSelector((state) => state.interface.deleteMode);
 
     const toggleSelected = () => {
         dispatch(noteSelected({
-            timestamp: note.timestamp,
+            timestamp: timestamp,
             selected: !selected
         }));
         setSelected(!selected);
@@ -478,7 +478,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
 
     const editNote = () => {
         if (!archived && !deleteMode) {
-            openNoteModal(note);
+            openNoteModal({ timestamp: timestamp, text: text });
         }
     };
 
@@ -504,7 +504,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
     // Used to measure height of expanded note text
     const textRef = useRef(null);
 
-    const readableTimestamp = timestampToReadable(note.timestamp);
+    const readableTimestamp = timestampToReadable(timestamp);
 
     const toggleCollapsed = () => {
         if (!deleteMode && collapsedNoteLines !== 'All') {
@@ -518,7 +518,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
         if (textRef.current) {
             expanded && setHeight(textRef.current.scrollHeight + "px");
         }
-    }, [note]);
+    }, [text]);
 
     // Expand note to full height
     const expand = () => {
@@ -606,7 +606,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
                     onClick={toggleCollapsed}
                 >
                     <span className='note-collapse-text'>
-                        {note.text}
+                        {text}
                     </span>
                     <span className='text-xs'>
                         {readableTimestamp.split('-')[0].trim()}
@@ -618,10 +618,8 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
 });
 
 NoteCollapse.propTypes = {
-    note: PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        timestamp: isoTimestampTzPropType.isRequired
-    }).isRequired
+    text: PropTypes.string.isRequired,
+    timestamp: isoTimestampTzPropType.isRequired
 };
 
 // Takes YYYY-MM-DD dateKey matching a key in timelineSlice.timelineDays state.
@@ -679,12 +677,11 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     className="flex flex-col"
                     data-testid={`${dateKey}-notes`}
                 >
-                    {[...contents.notes].sort((a, b) => {
-                        return a.timestamp.localeCompare(b.timestamp);
-                    }).map((note) => (
+                    {Object.keys(contents.notes).sort().map((timestamp) => (
                         <NoteCollapse
-                            key={note.timestamp}
-                            note={note}
+                            key={timestamp}
+                            text={contents.notes[timestamp]}
+                            timestamp={timestamp}
                         />
                     ))}
                 </div>

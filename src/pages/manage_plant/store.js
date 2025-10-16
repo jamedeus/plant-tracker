@@ -29,7 +29,7 @@ const getTimelineDaysTemplate = () => ({
         prune: [],
         repot: []
     },
-    notes: [],
+    notes: {},
     photos: []
 });
 
@@ -111,9 +111,10 @@ const buildTimelineState = (state, notes) => {
     );
 
     // Convert notes object to array of objects in notes key under correct dateKey
-    Object.entries(notes).forEach(([timestamp, text]) =>
-        addValue(timestamp, 'notes', { timestamp: timestamp, text: text })
-    );
+    Object.entries(notes).forEach(([timestamp, text]) => {
+        const dateKey = getDateKey(state, timestamp);
+        state.timelineDays[dateKey].notes[timestamp] = text;
+    });
 
     // Add dividedInto if has children (adds link(s) to child plants on days
     // they were divided)
