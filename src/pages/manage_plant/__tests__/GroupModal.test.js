@@ -1,11 +1,16 @@
 import React from 'react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import { v4 as mockUuidv4 } from 'uuid';
 import GroupModal from '../GroupModal';
 import { ReduxProvider } from '../store';
 import { mockContext, mockGroupOptions } from './mockContext';
 import { waitFor } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
+
+jest.mock('uuid', () => ({
+    v4: jest.fn(),
+}));
 
 describe('GroupModal', () => {
     const mockClose = jest.fn();
@@ -142,6 +147,118 @@ describe('GroupModal', () => {
 
         // Confirm correct data posted to /add_plant_to_group
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_to_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            }),
+            headers: postHeaders
+        });
+    });
+
+    it('shows group registration form if user clicks "Create new group"', async () => {
+        // Mock fetch to return group options (requested when modal opened)
+        mockFetchResponse({ options: mockGroupOptions });
+
+        // Render modal, fast forward so options load
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const component = render(
+            <ReduxProvider initialState={mockContext}>
+                <GroupModal close={mockClose} />
+            </ReduxProvider>
+        );
+        await act(async () => await jest.advanceTimersByTimeAsync(0));
+
+        // Confirm title is "Add plant to group", options are visible
+        await waitFor(() => {
+            expect(component.getByRole('heading', {name: 'Add plant to group'})).not.toBeNull();
+            expect(component.queryByRole('heading', {name: 'Create new group'})).toBeNull();
+            expect(component.getByText('Test group')).not.toBeNull();
+        });
+
+        // Simulate user clicking "Create new group" button
+        await user.click(component.getByText('Create new group'));
+
+        // Confirm title changed to "Create new group", form replaced options
+        await waitFor(() => {
+            expect(component.queryByRole('heading', {name: 'Add plant to group'})).toBeNull();
+            expect(component.getByRole('heading', {name: 'Create new group'})).not.toBeNull();
+            expect(component.queryByText('Test group')).toBeNull();
+        });
+
+        // Click Cancel button, confirm switches back to options
+        await user.click(component.getByRole('button', {name: 'Cancel'}));
+        await waitFor(() => {
+            expect(component.getByRole('heading', {name: 'Add plant to group'})).not.toBeNull();
+            expect(component.queryByRole('heading', {name: 'Create new group'})).toBeNull();
+            expect(component.getByText('Test group')).not.toBeNull();
+        });
+    });
+
+    it('sends correct payload when group registration form submitted', async () => {
+        // Mock fetch to return group options (requested when modal opened)
+        mockFetchResponse({ options: mockGroupOptions });
+
+        // Render modal, fast forward so options load
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const component = render(
+            <ReduxProvider initialState={mockContext}>
+                <GroupModal close={mockClose} />
+            </ReduxProvider>
+        );
+        await act(async () => await jest.advanceTimersByTimeAsync(0));
+        // Mock uuidv4 to return a predictable value for new group
+        mockUuidv4.mockReturnValue('0640ec3b-1bed-4b15-a078-d6e7ec66be14');
+
+        // Simulate user clicking "Create new group" button
+        await user.click(component.getByText('Create new group'));
+
+        // Simulate user filling in form fields
+        await user.type(component.getByRole('textbox', {name: 'Group name'}), 'Test group');
+        await user.type(component.getByRole('textbox', {name: 'Group location'}), 'Middle shelf');
+        await user.type(component.getByRole('textbox', {name: 'Description'}), 'Microgreens');
+
+        // Mock fetch function to return /register_group response on first
+        // request, /add_plant_to_group response on second
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                success: 'group registered',
+                name: 'Test group',
+                uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be14'
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        }).mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                action: "add_plant_to_group",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                group_name: "Test group",
+                group_uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        });
+        global.fetch.mockClear();
+
+        // Simulate user submitting form
+        await user.click(component.getByRole('button', {name: 'Edit'}));
+
+        // Confirm correct data posted to /register_group endpoint
+        expect(global.fetch).toHaveBeenNthCalledWith(1, '/register_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                name: "Test group",
+                location: "Middle shelf",
+                description: "Microgreens",
+            }),
+            headers: postHeaders
+        });
+
+        // Confirm correct data posted to /add_plant_to_group endpoint
+        expect(global.fetch).toHaveBeenNthCalledWith(2, '/add_plant_to_group', {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",

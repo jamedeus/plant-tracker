@@ -8,6 +8,11 @@ const EditGroupModal = ({ close }) => {
     const dispatch = useDispatch();
     const groupDetails = useSelector((state) => state.group.groupDetails);
 
+    const onSuccess = (data) => {
+        dispatch(groupDetailsUpdateed(data));
+        close();
+    };
+
     return (
         <FormModal
             close={close}
@@ -15,7 +20,7 @@ const EditGroupModal = ({ close }) => {
             endpoint='/edit_group_details'
             initialValues={groupDetails}
             payload={{group_id: groupDetails.uuid}}
-            onSuccess={data => dispatch(groupDetailsUpdateed(data))}
+            onSuccess={onSuccess}
         />
     );
 };

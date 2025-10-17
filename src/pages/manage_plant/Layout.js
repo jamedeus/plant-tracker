@@ -137,7 +137,6 @@ function Layout() {
 
             <LazyModal
                 ref={groupModal.ref}
-                title="Add plant to group"
                 ariaLabel="Add plant to group"
                 load={() => import(/* webpackChunkName: "manage_plant_group-modal" */ "./GroupModal")}
             />

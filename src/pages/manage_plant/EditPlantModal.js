@@ -8,6 +8,11 @@ const EditPlantModal = ({ close }) => {
     const dispatch = useDispatch();
     const plantDetails = useSelector((state) => state.plant.plantDetails);
 
+    const onSuccess = (data) => {
+        dispatch(plantDetailsUpdated(data));
+        close();
+    };
+
     return (
         <FormModal
             close={close}
@@ -15,7 +20,7 @@ const EditPlantModal = ({ close }) => {
             endpoint='/edit_plant_details'
             initialValues={plantDetails}
             payload={{plant_id: plantDetails.uuid}}
-            onSuccess={data => dispatch(plantDetailsUpdated(data))}
+            onSuccess={onSuccess}
         />
     );
 };
