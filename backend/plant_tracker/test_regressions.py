@@ -534,7 +534,7 @@ class ViewRegressionTests(TestCase):
         # Confirm no plants in database
         self.assertEqual(len(Plant.objects.all()), 0)
 
-        # Send register_plant request, confirm expected redirect response
+        # Send register_plant request, confirm expected response
         test_id = uuid4()
         response = JSONClient().post('/register_plant', {
             'uuid': test_id,
@@ -544,7 +544,11 @@ class ViewRegressionTests(TestCase):
             'pot_size': '4'
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'plant registered'})
+        self.assertEqual(response.json(), {
+            'success': 'plant registered',
+            'name': 'test plant',
+            'uuid': str(test_id)
+        })
 
         # Attempt to register the same UUID again, confirm expected error
         response = JSONClient().post('/register_plant', {
@@ -577,7 +581,7 @@ class ViewRegressionTests(TestCase):
         # Confirm no plants in database
         self.assertEqual(len(Group.objects.all()), 0)
 
-        # Send register_group request, confirm expected redirect response
+        # Send register_group request, confirm expected response
         test_id = uuid4()
         response = JSONClient().post('/register_group', {
             'uuid': test_id,
@@ -904,8 +908,9 @@ class ViewRegressionTests(TestCase):
 
         # Simulate frontend POSTing /register_plant payload with plant_key and
         # division_event_key containing int (should have cast to string)
+        test_id = uuid4()
         response = JSONClient().post('/register_plant', {
-            'uuid': uuid4(),
+            'uuid': test_id,
             'name': '',
             'species': '',
             'description': 'Divided from Unnamed plant 1 on October 13, 2025',
@@ -916,7 +921,11 @@ class ViewRegressionTests(TestCase):
 
         # Confirm registered successfully despite int values
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'plant registered'})
+        self.assertEqual(response.json(), {
+            'success': 'plant registered',
+            'name': 'Unnamed plant 2',
+            'uuid': str(test_id)
+        })
         self.assertEqual(len(Plant.objects.all()), 2)
 
 

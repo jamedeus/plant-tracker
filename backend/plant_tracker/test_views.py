@@ -528,9 +528,13 @@ class RegistrationTests(TestCase):
             'pot_size': '4'
         })
 
-        # Confirm response redirects to management page for new plant
+        # Confirm response contains new plant uuid and name (whitespace removed)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'plant registered'})
+        self.assertEqual(response.json(), {
+            'success': 'plant registered',
+            'name': 'test plant',
+            'uuid': str(test_id)
+        })
 
         # Confirm new plant exists in database, confirm no group was created
         self.assertEqual(len(Plant.objects.all()), 1)
@@ -579,9 +583,13 @@ class RegistrationTests(TestCase):
             'divided_from_event_id': str(division_event.pk)
         })
 
-        # Confirm response redirects to management page for new plant
+        # Confirm response contains new plant uuid and name (whitespace removed)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'plant registered'})
+        self.assertEqual(response.json(), {
+            'success': 'plant registered',
+            'name': 'Geoppertia prop',
+            'uuid': str(test_id)
+        })
 
         # Confirm new plant was created, has reverse relation to original plant
         # and DivisionEvent
@@ -615,7 +623,7 @@ class RegistrationTests(TestCase):
             'description': 'This group is used for propagation'
         })
 
-        # Confirm response redirects to management page for new group
+        # Confirm response
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'success': 'group registered'})
 

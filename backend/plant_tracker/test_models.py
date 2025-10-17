@@ -636,7 +636,7 @@ class UniqueUUIDTests(TransactionTestCase):
         self.assertEqual(len(UUID.objects.all()), 1)
 
     def test_create_duplicate_with_registration_endpoints(self):
-        # Register plant, confirm success (redirected to manage page)
+        # Register plant, confirm success
         uuid = uuid4()
         response = self.register_plant(uuid)
         self.assertEqual(response.status_code, 200)

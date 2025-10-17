@@ -655,8 +655,16 @@ describe('App', () => {
         mockPlantSpeciesOptionsResponse();
         await user.click(app.getByRole('button', { name: 'Add QR code later' }));
 
+        // Simulate user typing name for new child plant
+        await user.clear(app.getByRole('textbox', {name: 'Plant name'}));
+        await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Baby plant');
+
         // Mock fetch function to return expected response when plant registered
-        mockFetchResponse({success: 'plant registered'});
+        mockFetchResponse({
+            success: 'plant registered',
+            name: 'Baby plant',
+            uuid: '3c55c103-308f-42ec-abac-8f0167c98704'
+        });
 
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
@@ -665,5 +673,10 @@ describe('App', () => {
 
         // Confirm child plant appeared in timeline
         expect(app.queryByText('Divided into:')).not.toBeNull();
+        expect(app.getByText('Baby plant')).toBeInTheDocument();
+        expect(app.getByText('Baby plant')).toHaveAttribute(
+            'href',
+            '/manage/3c55c103-308f-42ec-abac-8f0167c98704'
+        );
     });
 });

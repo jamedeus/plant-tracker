@@ -74,7 +74,11 @@ class EndpointStateUpdateTests(TestCase):
             'pot_size': '4'
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'plant registered'})
+        self.assertEqual(response.json(), {
+            'success': 'plant registered',
+            'name': 'new plant',
+            'uuid': str(new_plant_uuid)
+        })
 
         # Confirm new plant was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()
@@ -122,7 +126,11 @@ class EndpointStateUpdateTests(TestCase):
             'divided_from_event_id': str(division_event.pk)
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'plant registered'})
+        self.assertEqual(response.json(), {
+            'success': 'plant registered',
+            'name': 'Unnamed plant 1 prop',
+            'uuid': str(new_plant_uuid)
+        })
 
         # Confirm new plant was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()

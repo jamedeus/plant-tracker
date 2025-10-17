@@ -138,8 +138,15 @@ def register_plant(user, data, **kwargs):
                     new_pot_size=plant.pot_size
                 )
 
-        # Redirect to manage page
-        return JsonResponse({'success': 'plant registered'}, status=200)
+        # Return new plant details
+        return JsonResponse(
+            {
+                'success': 'plant registered',
+                'name': plant.get_display_name(),
+                'uuid': str(plant.uuid)
+            },
+            status=200
+        )
 
     except IntegrityError:
         return JsonResponse(

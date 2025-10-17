@@ -84,14 +84,14 @@ const DivisionModal = ({ close }) => {
             divided_from_id: dividedFromId,
             divided_from_event_id: dividedFromEventId
         };
-        const onSuccess = () => {
+        const onSuccess = (data) => {
             setModalContents("done");
             setNumberRegistered(numberRegistered + 1);
             /// Add child plant to timeline
             dispatch(childPlantRegistered({
                 timestamp: divisionEventTimestamp,
-                name: payload.name,
-                uuid: payload.uuid
+                name: data.name,
+                uuid: data.uuid
             }));
         };
         await sendPostRequest('/register_plant', payload, onSuccess);
