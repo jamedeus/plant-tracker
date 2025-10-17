@@ -14,6 +14,7 @@ jest.mock('uuid', () => ({
 
 describe('GroupModal', () => {
     const mockClose = jest.fn();
+    const mockSetTitle = jest.fn();
 
     beforeEach(() => {
         // Allow fast forwarding
@@ -27,6 +28,7 @@ describe('GroupModal', () => {
 
         act(() => jest.runAllTimers());
         jest.useRealTimers();
+        mockSetTitle.mockClear();
     });
 
     it('renders card for each object in /get_add_to_group_options response', async () => {
@@ -36,7 +38,7 @@ describe('GroupModal', () => {
         // Render modal
         const component = render(
             <ReduxProvider initialState={mockContext}>
-                <GroupModal close={mockClose} />
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
             </ReduxProvider>
         );
 
@@ -59,7 +61,7 @@ describe('GroupModal', () => {
         // Render modal
         const component = render(
             <ReduxProvider initialState={mockContext}>
-                <GroupModal close={mockClose} />
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
             </ReduxProvider>
         );
 
@@ -79,7 +81,7 @@ describe('GroupModal', () => {
         // Render modal
         const component = render(
             <ReduxProvider initialState={mockContext}>
-                <GroupModal close={mockClose} />
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
             </ReduxProvider>
         );
 
@@ -107,7 +109,7 @@ describe('GroupModal', () => {
         // Render modal
         const component = render(
             <ReduxProvider initialState={mockContext}>
-                <GroupModal close={mockClose} />
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
             </ReduxProvider>
         );
 
@@ -136,7 +138,7 @@ describe('GroupModal', () => {
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         const component = render(
             <ReduxProvider initialState={mockContext}>
-                <GroupModal close={mockClose} />
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
             </ReduxProvider>
         );
         await act(async () => await jest.advanceTimersByTimeAsync(0));
@@ -164,16 +166,15 @@ describe('GroupModal', () => {
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         const component = render(
             <ReduxProvider initialState={mockContext}>
-                <GroupModal close={mockClose} />
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
             </ReduxProvider>
         );
         await act(async () => await jest.advanceTimersByTimeAsync(0));
 
         // Confirm title is "Add plant to group", options are visible
         await waitFor(() => {
-            expect(component.getByRole('heading', {name: 'Add plant to group'})).not.toBeNull();
-            expect(component.queryByRole('heading', {name: 'Create new group'})).toBeNull();
             expect(component.getByText('Test group')).not.toBeNull();
+            expect(mockSetTitle).toHaveBeenCalledWith('Add plant to group');
         });
 
         // Simulate user clicking "Create new group" button
@@ -181,17 +182,15 @@ describe('GroupModal', () => {
 
         // Confirm title changed to "Create new group", form replaced options
         await waitFor(() => {
-            expect(component.queryByRole('heading', {name: 'Add plant to group'})).toBeNull();
-            expect(component.getByRole('heading', {name: 'Create new group'})).not.toBeNull();
             expect(component.queryByText('Test group')).toBeNull();
+            expect(mockSetTitle).toHaveBeenCalledWith('Create new group');
         });
 
         // Click Cancel button, confirm switches back to options
         await user.click(component.getByRole('button', {name: 'Cancel'}));
         await waitFor(() => {
-            expect(component.getByRole('heading', {name: 'Add plant to group'})).not.toBeNull();
-            expect(component.queryByRole('heading', {name: 'Create new group'})).toBeNull();
             expect(component.getByText('Test group')).not.toBeNull();
+            expect(mockSetTitle).toHaveBeenCalledWith('Add plant to group');
         });
     });
 
@@ -203,7 +202,7 @@ describe('GroupModal', () => {
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         const component = render(
             <ReduxProvider initialState={mockContext}>
-                <GroupModal close={mockClose} />
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
             </ReduxProvider>
         );
         await act(async () => await jest.advanceTimersByTimeAsync(0));

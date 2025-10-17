@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import print from 'print-js';
-import ModalTitle from 'src/components/ModalTitle';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import sendPostRequest from 'src/utils/sendPostRequest';
 
@@ -54,9 +53,10 @@ ErrorMessage.propTypes = {
     error: PropTypes.string.isRequired
 };
 
-const PrintModal = memo(function PrintModal({ close, setOnClose }) {
+const PrintModal = memo(function PrintModal({ close, setOnClose, setTitle }) {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
+    useLayoutEffect(() => setTitle("Select QR Code Size"), []);
 
     // Selected size option, default to small
     const [qrSize, setQrSize] = useState(sizeOptions.small);
@@ -181,13 +181,13 @@ const PrintModal = memo(function PrintModal({ close, setOnClose }) {
 
         // Change modal contents to error
         setModalContents("error");
+        setTitle("Error");
     };
 
     switch(modalContents) {
         case("loading"):
             return (
                 <>
-                    <ModalTitle title="Fetching QR Codes" />
                     <LoadingAnimation className="mt-2 mx-auto" />
                     <div className="modal-action">
                         <button className="btn btn-soft" onClick={cancel}>
@@ -199,7 +199,6 @@ const PrintModal = memo(function PrintModal({ close, setOnClose }) {
         case("options"):
             return (
                 <>
-                    <ModalTitle title="Select QR Code Size" />
                     <div className="h-36 mt-2 flex flex-col justify-center">
                         <Tab.Group
                             onChange={(index) => {
@@ -242,7 +241,6 @@ const PrintModal = memo(function PrintModal({ close, setOnClose }) {
         default:
             return (
                 <>
-                    <ModalTitle title="Error" />
                     <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
                         <ErrorMessage error={error} />
                     </div>
@@ -256,7 +254,8 @@ const PrintModal = memo(function PrintModal({ close, setOnClose }) {
 
 PrintModal.propTypes = {
     close: PropTypes.func.isRequired,
-    setOnClose: PropTypes.func.isRequired
+    setOnClose: PropTypes.func.isRequired,
+    setTitle: PropTypes.func.isRequired
 };
 
 export default PrintModal;

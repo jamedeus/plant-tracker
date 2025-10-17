@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import GroupCard from 'src/components/GroupCard';
 import FormModal from 'src/components/FormModal';
-import ModalTitle from 'src/components/ModalTitle';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import Checkmark from 'src/components/Checkmark';
@@ -13,9 +12,14 @@ import { FaPlus } from 'react-icons/fa6';
 import { plantAddedToGroup } from './plantSlice';
 import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
-const RegisterGroup = ({ close, cancel, addPlantToGroup }) => {
+const RegisterGroup = ({ close, cancel, setTitle, addPlantToGroup }) => {
     // Either "form", "loading", or "success"
     const [modalContents, setModalContents] = useState("form");
+
+    // Update title when contents change
+    useLayoutEffect(() => setTitle(
+        modalContents ===  "success" ? "Group created!" : "Create new group"
+    ), [modalContents]);
 
     // If group registered successfully make second request to add plant to new
     // group, show success screen
@@ -25,59 +29,62 @@ const RegisterGroup = ({ close, cancel, addPlantToGroup }) => {
     };
 
     return (
-        <>
-            <ModalTitle title="Create new group" />
-            <div className="flex flex-col w-full max-w-88 min-h-94 mx-auto">
-                {modalContents === "form" && (
-                    <FormModal
-                        close={cancel}
-                        FormComponent={GroupDetailsForm}
-                        initialValues={{}}
-                        endpoint="/register_group"
-                        payload={{uuid: uuidv4()}}
-                        onSubmit={() => setModalContents("loading")}
-                        onSuccess={onSuccess}
-                        submitButtonText="Create"
-                    />
-                )}
-                {modalContents === "loading" && (
-                    <LoadingAnimation className="mx-auto mt-20" />
-                )}
-                {modalContents === "success" && (
-                    <>
-                        <div className="flex flex-col my-auto items-center gap-8">
-                            <span className="mt-2 md:mt-5">
-                                Your plant has been added to the new group!
-                            </span>
-                            <Checkmark className="w-16" />
-                            <span>
-                                You can access the group from the plant details
-                                dropdown or overview page.
-                            </span>
-                        </div>
-                        <div className="modal-action">
-                            <button className="btn btn-accent" onClick={close}>
-                                OK
-                            </button>
-                        </div>
-                    </>
-                )}
-            </div>
-        </>
+        <div className="flex flex-col w-full max-w-88 min-h-94 mx-auto">
+            {modalContents === "form" && (
+                <FormModal
+                    close={cancel}
+                    FormComponent={GroupDetailsForm}
+                    initialValues={{}}
+                    endpoint="/register_group"
+                    payload={{uuid: uuidv4()}}
+                    onSubmit={() => setModalContents("loading")}
+                    onSuccess={onSuccess}
+                    submitButtonText="Create"
+                />
+            )}
+            {modalContents === "loading" && (
+                <LoadingAnimation className="mx-auto mt-20" />
+            )}
+            {modalContents === "success" && (
+                <>
+                    <div className="flex flex-col my-auto items-center gap-8">
+                        <span className="mt-2 md:mt-5">
+                            Your plant has been added to the new group!
+                        </span>
+                        <Checkmark className="w-16" />
+                        <span>
+                            You can access the group from the plant details
+                            dropdown or overview page.
+                        </span>
+                    </div>
+                    <div className="modal-action">
+                        <button className="btn btn-accent" onClick={close}>
+                            OK
+                        </button>
+                    </div>
+                </>
+            )}
+        </div>
     );
 };
 
 RegisterGroup.propTypes = {
     close: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
+    setTitle: PropTypes.func.isRequired,
     addPlantToGroup: PropTypes.func.isRequired
 };
 
-const Options = ({ options, close }) => {
+const Options = ({ options, setTitle, close }) => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     // Replaces options with registration form if true
     const [showGroupForm, setShowGroupForm] = useState(false);
+
+    // Set correct title when loaded
+    useLayoutEffect(() => {
+        !showGroupForm && setTitle("Add plant to group");
+    }, [showGroupForm]);
 
     // Makes /add_plant_to_group, returns true if successful false if failed
     const addPlantToGroup = async (groupID) => {
@@ -102,6 +109,7 @@ const Options = ({ options, close }) => {
             <RegisterGroup
                 close={close}
                 cancel={() => setShowGroupForm(false)}
+                setTitle={setTitle}
                 addPlantToGroup={addPlantToGroup}
             />
         );
@@ -109,44 +117,42 @@ const Options = ({ options, close }) => {
 
     // Render existing options (default)
     return (
-        <>
-            <ModalTitle title="Add plant to group" />
-            <div className="flex flex-col items-center px-4 overflow-y-auto">
-                {Object.entries(options).map(([uuid, group]) => (
-                    <div
-                        key={uuid}
-                        className="flex relative w-full max-w-80 mx-auto mb-4"
-                    >
-                        <GroupCard key={uuid} {...group} />
-                        {/* Cover card with transparent div with listener */}
-                        <div
-                            className="absolute h-full w-full cursor-pointer"
-                            onClick={() => handleClickOption(uuid)}
-                        ></div>
-                    </div>
-                ))}
-                {!Object.keys(options).length && (
-                    <div className="flex flex-col h-36 pb-4 justify-center gap-4">
-                        <span>No groups</span>
-                    </div>
-                )}
-                <button
-                    className="btn btn-accent"
-                    onClick={() => setShowGroupForm(true)}
+        <div className="flex flex-col items-center px-4 overflow-y-auto">
+            {Object.entries(options).map(([uuid, group]) => (
+                <div
+                    key={uuid}
+                    className="flex relative w-full max-w-80 mx-auto mb-4"
                 >
-                    <FaPlus className="size-5 mr-1" /> Create new group
-                </button>
-            </div>
-        </>
+                    <GroupCard key={uuid} {...group} />
+                    {/* Cover card with transparent div with listener */}
+                    <div
+                        className="absolute h-full w-full cursor-pointer"
+                        onClick={() => handleClickOption(uuid)}
+                    ></div>
+                </div>
+            ))}
+            {!Object.keys(options).length && (
+                <div className="flex flex-col h-36 pb-4 justify-center gap-4">
+                    <span>No groups</span>
+                </div>
+            )}
+            <button
+                className="btn btn-accent"
+                onClick={() => setShowGroupForm(true)}
+            >
+                <FaPlus className="size-5 mr-1" /> Create new group
+            </button>
+        </div>
     );
 };
 
 Options.propTypes = {
     options: PropTypes.objectOf(groupDetailsProptypes).isRequired,
+    setTitle: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired
 };
 
-const GroupModal = ({ close }) => {
+const GroupModal = ({ close, setTitle }) => {
     // Stores options queried from backend
     const [options, setOptions] = useState(null);
 
@@ -162,22 +168,21 @@ const GroupModal = ({ close }) => {
     };
 
     // Get options from backend on first load
-    useEffect(() => {
+    useLayoutEffect(() => {
         loadOptions();
+        setTitle("Add plant to group");
     }, []);
 
     return options ? (
-        <Options options={options} close={close} />
+        <Options options={options} setTitle={setTitle} close={close} />
     ) : (
-        <>
-            <ModalTitle title="Add plant to group" />
-            <LoadingAnimation className="m-auto" />
-        </>
+        <LoadingAnimation className="m-auto" />
     );
 };
 
 GroupModal.propTypes = {
-    close: PropTypes.func.isRequired
+    close: PropTypes.func.isRequired,
+    setTitle: PropTypes.func.isRequired
 };
 
 export default GroupModal;

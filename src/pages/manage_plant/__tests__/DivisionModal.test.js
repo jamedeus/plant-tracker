@@ -19,6 +19,7 @@ jest.mock('uuid', () => ({
 describe('DivisionModal', () => {
     let app, user;
     const mockClose = jest.fn();
+    const mockSetTitle = jest.fn();
 
     beforeEach(() => {
         // Allow fast forwarding
@@ -31,7 +32,7 @@ describe('DivisionModal', () => {
         app = render(
             <>
                 <ReduxProvider initialState={mockContext}>
-                    <DivisionModal close={mockClose} />
+                    <DivisionModal close={mockClose} setTitle={mockSetTitle} />
                 </ReduxProvider>
                 <ErrorModal />
             </>
@@ -43,6 +44,7 @@ describe('DivisionModal', () => {
         jest.clearAllTimers();
         jest.useRealTimers();
         mockClose.mockClear();
+        mockSetTitle.mockClear();
     });
 
     it('sends correct payload when DivisionEvent is created', async () => {
@@ -114,7 +116,7 @@ describe('DivisionModal', () => {
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
-        expect(app.getByText('1st plant registered!')).toBeInTheDocument();
+        expect(mockSetTitle).toHaveBeenCalledWith('1st plant registered!');
 
         // Confirm correct data posted to /register_plant endpoint (including
         // divided_from_id and divided_from_event_id so ForeignKey created)
@@ -168,7 +170,7 @@ describe('DivisionModal', () => {
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
-        expect(app.getByText('1st plant registered!')).toBeInTheDocument();
+        expect(mockSetTitle).toHaveBeenCalledWith('1st plant registered!');
 
         // Confirm payload includes 1st child plant mock UUID
         expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
@@ -203,7 +205,7 @@ describe('DivisionModal', () => {
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         // Confirm number of registered plants updated
-        expect(app.getByText('2nd plant registered!')).toBeInTheDocument();
+        expect(mockSetTitle).toHaveBeenCalledWith('2nd plant registered!');
 
         // Confirm payload includes 2nd child plant mock UUID
         expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
@@ -238,7 +240,7 @@ describe('DivisionModal', () => {
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         // Confirm number of registered plants updated
-        expect(app.getByText('3rd plant registered!')).toBeInTheDocument();
+        expect(mockSetTitle).toHaveBeenCalledWith('3rd plant registered!');
 
         // Confirm payload includes 3rd child plant mock UUID
         expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
@@ -318,6 +320,7 @@ describe('DivisionModal', () => {
 describe('DivisionModal with DivisionScanner', () => {
     let app, user;
     const mockClose = jest.fn();
+    const mockSetTitle = jest.fn();
 
     beforeAll(() => {
         // Mock all browser APIs used by QrScanner
@@ -335,7 +338,7 @@ describe('DivisionModal with DivisionScanner', () => {
         app = render(
             <>
                 <ReduxProvider initialState={mockContext}>
-                    <DivisionModal close={mockClose} />
+                    <DivisionModal close={mockClose} setTitle={mockSetTitle} />
                 </ReduxProvider>
                 <ErrorModal />
             </>
@@ -347,6 +350,7 @@ describe('DivisionModal with DivisionScanner', () => {
         jest.clearAllTimers();
         jest.useRealTimers();
         mockClose.mockClear();
+        mockSetTitle.mockClear();
     });
 
     it('uses QR scanner to capture UUID for /register_plant payload', async () => {
@@ -409,7 +413,7 @@ describe('DivisionModal with DivisionScanner', () => {
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
-        expect(app.getByText('1st plant registered!')).toBeInTheDocument();
+        expect(mockSetTitle).toHaveBeenCalledWith('1st plant registered!');
 
         // Confirm correct data posted to /register_plant endpoint (including
         // UUID from mock QR code)

@@ -36,7 +36,7 @@ describe('PhotoModal', () => {
         app = render(
             <>
                 <ReduxProvider initialState={mockContext}>
-                    <PhotoModal close={mockClose} />
+                    <PhotoModal close={mockClose} setTitle={jest.fn()} />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />

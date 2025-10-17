@@ -1,7 +1,6 @@
-import React, { useState, useRef, memo } from 'react';
+import React, { useState, useRef, useLayoutEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import ModalTitle from 'src/components/ModalTitle';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
 import HoldToConfirm from 'src/components/HoldToConfirm';
@@ -27,7 +26,7 @@ ExistingNoteTimestamp.propTypes = {
     noteTime: isoTimestampTzPropType.isRequired
 };
 
-const NoteModal = ({ note, close }) => {
+const NoteModal = ({ note, close, setTitle }) => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     // Get user-configured hold to delete delay
@@ -41,6 +40,7 @@ const NoteModal = ({ note, close }) => {
 
     // Show delete button and prevent editing timestamp if true
     const editingNote = note ? true : false;
+    useLayoutEffect(() => setTitle(editingNote ? "Edit Note" : "Add Note"), []);
 
     // Ref to read value of timestamp input
     const timestampRef = useRef(null);
@@ -115,59 +115,56 @@ const NoteModal = ({ note, close }) => {
     };
 
     return (
-        <>
-            <ModalTitle title={editingNote ? "Edit Note" : "Add Note"} />
-            <div className="flex flex-col">
-                <div className="min-h-36 flex flex-col items-center mt-2">
-                    {editingNote
-                        ? <ExistingNoteTimestamp noteTime={note.timestamp} />
-                        : <DatetimeInput inputRef={timestampRef} />
-                    }
-                    <textarea
-                        className={clsx(
-                            'textarea w-full max-w-xs mx-auto mt-8 mb-4 min-h-40',
-                            charCount > 500 && 'textarea-error'
-                        )}
-                        value={noteText}
-                        onChange={e => updateNoteText(e.target.value)}
-                    ></textarea>
-                    <span className={clsx(
-                        'text-sm',
-                        charCount > 500 && 'text-error'
-                    )}>
-                        {charCount} / 500
-                    </span>
-                </div>
-                <div className="modal-action">
-                    {editingNote ? (
-                        <>
-                            <HoldToConfirm
-                                callback={handleDelete}
-                                timeout={holdToConfirmDelay}
-                                buttonText="Delete"
-                                buttonClass="w-20"
-                                tooltipText="Hold to confirm"
-                            />
-                            <button
-                                className="btn btn-accent w-20"
-                                onClick={handleEdit}
-                                disabled={saveButtonDisabled}
-                            >
-                                Save
-                            </button>
-                        </>
-                    ) : (
+        <div className="flex flex-col">
+            <div className="min-h-36 flex flex-col items-center mt-2">
+                {editingNote
+                    ? <ExistingNoteTimestamp noteTime={note.timestamp} />
+                    : <DatetimeInput inputRef={timestampRef} />
+                }
+                <textarea
+                    className={clsx(
+                        'textarea w-full max-w-xs mx-auto mt-8 mb-4 min-h-40',
+                        charCount > 500 && 'textarea-error'
+                    )}
+                    value={noteText}
+                    onChange={e => updateNoteText(e.target.value)}
+                ></textarea>
+                <span className={clsx(
+                    'text-sm',
+                    charCount > 500 && 'text-error'
+                )}>
+                    {charCount} / 500
+                </span>
+            </div>
+            <div className="modal-action">
+                {editingNote ? (
+                    <>
+                        <HoldToConfirm
+                            callback={handleDelete}
+                            timeout={holdToConfirmDelay}
+                            buttonText="Delete"
+                            buttonClass="w-20"
+                            tooltipText="Hold to confirm"
+                        />
                         <button
-                            className="btn btn-accent"
-                            onClick={handleSubmit}
+                            className="btn btn-accent w-20"
+                            onClick={handleEdit}
                             disabled={saveButtonDisabled}
                         >
                             Save
                         </button>
-                    )}
-                </div>
+                    </>
+                ) : (
+                    <button
+                        className="btn btn-accent"
+                        onClick={handleSubmit}
+                        disabled={saveButtonDisabled}
+                    >
+                        Save
+                    </button>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
@@ -176,7 +173,8 @@ NoteModal.propTypes = {
         text: PropTypes.string.isRequired,
         timestamp: isoTimestampTzPropType.isRequired
     }),
-    close: PropTypes.func.isRequired
+    close: PropTypes.func.isRequired,
+    setTitle: PropTypes.func.isRequired
 };
 
 export default NoteModal;

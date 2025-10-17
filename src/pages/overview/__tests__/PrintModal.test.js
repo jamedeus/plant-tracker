@@ -22,7 +22,7 @@ describe('PrintModal', () => {
     beforeEach(async () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
-        component = render(<PrintModal close={close} setOnClose={setOnClose} />);
+        component = render(<PrintModal close={close} setOnClose={setOnClose} setTitle={jest.fn()} />);
     });
 
     it('makes request and opens print dialog when small QR codes requested', async () => {

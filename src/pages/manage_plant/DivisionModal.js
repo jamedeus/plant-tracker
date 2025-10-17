@@ -1,10 +1,9 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
 import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import ModalTitle from 'src/components/ModalTitle';
 import ModalPages from 'src/components/ModalPages';
 import DatetimeInput from 'src/components/DatetimeInput';
 import Checkmark from 'src/components/Checkmark';
@@ -21,7 +20,7 @@ const numberSuffixMap = {
 };
 const getNumberSuffix = (number) => numberSuffixMap[number] || 'th';
 
-const DivisionModal = ({ close }) => {
+const DivisionModal = ({ close, setTitle }) => {
     const dispatch = useDispatch();
     const plantDetails = useSelector((state) => state.plant.plantDetails);
 
@@ -31,6 +30,7 @@ const DivisionModal = ({ close }) => {
     // - "form" (shows registration form)
     // - "done" (shows success screen, buttons to register another)
     const [modalContents, setModalContents] = useState("divide");
+    useLayoutEffect(() => setTitle("Divide Plant"), []);
 
     // Stores /divide_plant response keys used in /register_plant payload
     const [dividedFromId, setDividedFromId] = useState(null);
@@ -59,6 +59,7 @@ const DivisionModal = ({ close }) => {
             setDividedFromId(data.plant_key);
             setDividedFromEventId(data.division_event_key);
             setModalContents("register");
+            setTitle("Divide Plant");
             setDivisionEventTimestamp(timestamp);
             dispatch(divisionEventCreated(timestamp));
         };
@@ -69,12 +70,14 @@ const DivisionModal = ({ close }) => {
     const registerFromQrCode = useCallback((uuid) => {
         setNextChildId(uuid);
         setModalContents("form");
+        setTitle("Register new plant");
     }, []);
 
     // Generates random UUID and shows registration form (skip QR code scanner)
     const registerWithoutQrCode = useCallback(() => {
         setNextChildId(uuidv4());
         setModalContents("form");
+        setTitle("Register new plant");
     }, []);
 
     // Registration form submit handler
@@ -87,7 +90,9 @@ const DivisionModal = ({ close }) => {
         };
         const onSuccess = (data) => {
             setModalContents("done");
-            setNumberRegistered(numberRegistered + 1);
+            const numRegistered = numberRegistered + 1
+            setNumberRegistered(numRegistered);
+            setTitle(`${numRegistered}${getNumberSuffix(numRegistered)} plant registered!`);
             /// Add child plant to timeline
             dispatch(childPlantRegistered({
                 timestamp: divisionEventTimestamp,
@@ -101,128 +106,115 @@ const DivisionModal = ({ close }) => {
     switch(modalContents) {
         case("divide"):
             return (
-                <>
-                    <ModalTitle title="Divide Plant" />
-                    <ModalPages>
-                        {/* Page 1 */}
-                        <div className="flex flex-col min-h-52 max-w-86 justify-center gap-8 mx-auto">
-                            <span>
-                                Dividing a plant lets you register new plants that came from the same parent.
-                            </span>
-                            <span>
-                                This is great for propagating houseplants or splitting up seedling trays into pots.
-                            </span>
+                <ModalPages>
+                    {/* Page 1 */}
+                    <div className="flex flex-col min-h-52 max-w-86 justify-center gap-8 mx-auto">
+                        <span>
+                            Dividing a plant lets you register new plants that came from the same parent.
+                        </span>
+                        <span>
+                            This is great for propagating houseplants or splitting up seedling trays into pots.
+                        </span>
+                    </div>
+
+                    {/* Page 2 */}
+                    <div className="flex flex-col min-h-52 max-w-86 justify-center gap-8 mx-auto">
+                        <span>
+                            Each new plant gets its own timeline with a link to the original at the beginning.
+                        </span>
+                        {/* <span>
+                            You can register as many as you want, each with their own QR code (or add QR codes later).
+                        </span> */}
+                        {/* <span>
+                            You can add a QR code for each plant as you register them, or skip this and add them later.
+                        </span> */}
+                        <span>
+                            You can add a QR code for each plant you register, or skip this and add one later.
+                        </span>
+                    </div>
+
+                    {/* Page 3 */}
+                    <div className="flex flex-col h-full justify-center gap-4">
+                        <span>When did you divide your plant?</span>
+                        <div className="mx-auto">
+                            <DatetimeInput inputRef={timestampRef} />
                         </div>
 
-                        {/* Page 2 */}
-                        <div className="flex flex-col min-h-52 max-w-86 justify-center gap-8 mx-auto">
-                            <span>
-                                Each new plant gets its own timeline with a link to the original at the beginning.
-                            </span>
-                            {/* <span>
-                                You can register as many as you want, each with their own QR code (or add QR codes later).
-                            </span> */}
-                            {/* <span>
-                                You can add a QR code for each plant as you register them, or skip this and add them later.
-                            </span> */}
-                            <span>
-                                You can add a QR code for each plant you register, or skip this and add one later.
-                            </span>
-                        </div>
-
-                        {/* Page 3 */}
-                        <div className="flex flex-col h-full justify-center gap-4">
-                            <span>When did you divide your plant?</span>
-                            <div className="mx-auto">
-                                <DatetimeInput inputRef={timestampRef} />
-                            </div>
-
-                            <button
-                                className="btn btn-accent text-base mx-auto mt-2"
-                                onClick={createDivisionEvent}
-                            >
-                                <LuSplit className='size-6 mr-2 rotate-90' />
-                                Start Dividing
-                            </button>
-                        </div>
-                    </ModalPages>
-                </>
+                        <button
+                            className="btn btn-accent text-base mx-auto mt-2"
+                            onClick={createDivisionEvent}
+                        >
+                            <LuSplit className='size-6 mr-2 rotate-90' />
+                            Start Dividing
+                        </button>
+                    </div>
+                </ModalPages>
             );
         case("register"):
             return (
-                <>
-                    <ModalTitle title="Divide Plant" />
-                    <div className="min-h-60 max-w-86 flex flex-col justify-center gap-6 py-4 mx-auto">
-                        <span>
-                            Now lets register your first new plant!
-                        </span>
-                        <span className="mb-2">
-                            You can start by scanning a QR code sticker, or go right to the registration form.
-                        </span>
-                        <DivisionScannerButton setScannedUuid={registerFromQrCode} />
-                        <button className="btn" onClick={registerWithoutQrCode}>
-                            Add QR code later
-                        </button>
-                    </div>
-                </>
+                <div className="min-h-60 max-w-86 flex flex-col justify-center gap-6 py-4 mx-auto">
+                    <span>
+                        Now lets register your first new plant!
+                    </span>
+                    <span className="mb-2">
+                        You can start by scanning a QR code sticker, or go right to the registration form.
+                    </span>
+                    <DivisionScannerButton setScannedUuid={registerFromQrCode} />
+                    <button className="btn" onClick={registerWithoutQrCode}>
+                        Add QR code later
+                    </button>
+                </div>
             );
         case("form"):
             return (
-                <>
-                    <ModalTitle title="Register new plant" />
-                    <div
-                        className="flex flex-col w-full max-w-[25rem] gap-4 mx-auto"
-                        data-testid="division-modal-form"
+                <div
+                    className="flex flex-col w-full max-w-[25rem] gap-4 mx-auto"
+                    data-testid="division-modal-form"
+                >
+                    <PlantDetailsForm
+                        formRef={formRef}
+                        name={plantDetails.name ? `${plantDetails.name} prop` : null}
+                        species={plantDetails.species}
+                        pot_size={plantDetails.pot_size}
+                        description={`Divided from ${plantDetails.display_name} on ${today}`}
+                    />
+                    <button
+                        className="btn btn-accent mx-auto my-4"
+                        onClick={registerChildPlant}
                     >
-                        <PlantDetailsForm
-                            formRef={formRef}
-                            name={plantDetails.name ? `${plantDetails.name} prop` : null}
-                            species={plantDetails.species}
-                            pot_size={plantDetails.pot_size}
-                            description={`Divided from ${plantDetails.display_name} on ${today}`}
-                        />
-                        <button
-                            className="btn btn-accent mx-auto my-4"
-                            onClick={registerChildPlant}
-                        >
-                            Register New Plant
-                        </button>
-                    </div>
-                </>
+                        Register New Plant
+                    </button>
+                </div>
             );
         default:
             return (
-                <>
-                    <ModalTitle title={
-                        `${numberRegistered}${getNumberSuffix(numberRegistered)} plant registered!`
-                    }/>
-                    <div className="flex flex-col min-h-124.5 max-w-[25rem] justify-center mx-auto">
-                        <div
-                            className="flex flex-col h-full gap-6"
-                            data-testid="repot-modal-success"
-                        >
-                            <div className="mx-auto">
-                                <Checkmark className="w-16" />
-                            </div>
-                            <span>
-                                You can register as many as you want
-                            </span>
-                            <DivisionScannerButton setScannedUuid={registerFromQrCode} />
-                            <button className="btn" onClick={registerWithoutQrCode}>
-                                Register without QR code
-                            </button>
-                            <button className="btn mt-8" onClick={close}>
-                                Done
-                            </button>
+                <div className="flex flex-col min-h-124.5 max-w-[25rem] justify-center mx-auto">
+                    <div
+                        className="flex flex-col h-full gap-6"
+                        data-testid="repot-modal-success"
+                    >
+                        <div className="mx-auto">
+                            <Checkmark className="w-16" />
                         </div>
+                        <span>
+                            You can register as many as you want
+                        </span>
+                        <DivisionScannerButton setScannedUuid={registerFromQrCode} />
+                        <button className="btn" onClick={registerWithoutQrCode}>
+                            Register without QR code
+                        </button>
+                        <button className="btn mt-8" onClick={close}>
+                            Done
+                        </button>
                     </div>
-                </>
+                </div>
             );
     }
 };
 
 DivisionModal.propTypes = {
     close: PropTypes.func.isRequired,
+    setTitle: PropTypes.func.isRequired
 };
 
 export default DivisionModal;

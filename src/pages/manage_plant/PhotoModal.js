@@ -1,8 +1,7 @@
-import React, { useState, useRef, useCallback, memo } from 'react';
+import React, { useState, useRef, useCallback, useLayoutEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
-import ModalTitle from 'src/components/ModalTitle';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
@@ -35,10 +34,11 @@ Row.propTypes = {
     removeFile: PropTypes.func.isRequired
 };
 
-const PhotoModal = ({ close }) => {
+const PhotoModal = ({ close, setTitle }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
+    useLayoutEffect(() => setTitle("Upload Photos"), []);
 
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
@@ -49,6 +49,9 @@ const PhotoModal = ({ close }) => {
 
     // State to control loading animation visibility
     const [uploading, setUploading] = useState(false);
+    useLayoutEffect(() =>
+        setTitle(uploading ? "Uploading..." : "Upload Photos"),
+    [uploading]);
 
     const handleSelect = (event) => {
         setSelectedFiles([
@@ -60,6 +63,7 @@ const PhotoModal = ({ close }) => {
     const handleSubmit = async () => {
         // Start loading animation
         setUploading(true);
+        setTitle("Uploading...");
 
         // Create FormData containing all photos + plant UUID
         const formData = new FormData();
@@ -94,6 +98,7 @@ const PhotoModal = ({ close }) => {
             }
         } else {
             setUploading(false);
+            setTitle("Upload Photos");
             // Redirect to login page if user not signed in/session expired
             if (response.status === 401) {
                 navigate('/accounts/login/');
@@ -136,8 +141,6 @@ const PhotoModal = ({ close }) => {
 
     return (
         <>
-            <ModalTitle title={uploading ? "Uploading..." : "Upload Photos"} />
-
             {/* Photo select/unselect input, shown until user clicks submit */}
             <div className={uploading ? "hidden" : "flex flex-col"}>
                 <div className={
@@ -184,6 +187,7 @@ const PhotoModal = ({ close }) => {
 
 PhotoModal.propTypes = {
     close: PropTypes.func.isRequired,
+    setTitle: PropTypes.func.isRequired
 };
 
 export default PhotoModal;

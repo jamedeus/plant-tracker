@@ -48,6 +48,10 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className, keepCo
     // Stores callback set by lazy loaded contents, runs when modal closes
     const onCloseRef = useRef(null);
 
+    // Set initial title in state, create callback passed to children to update
+    const [modalTitle, setModalTitle] = useState(title);
+    const setTitle = useCallback((newTitle) => setModalTitle(newTitle), []);
+
     const open = useCallback((props) => {
         // Load contents component and set props passed to it if given
         setContentProps(props);
@@ -130,7 +134,7 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className, keepCo
                 </button>
 
                 {/* Render title if given (can also render this in contents */}
-                {title && <ModalTitle title={title} />}
+                {modalTitle && <ModalTitle title={modalTitle} />}
 
                 {/* Show loading spinner while lazy loading contents bundle */}
                 <Suspense fallback={<LoadingAnimation className="mt-2 mx-auto" />}>
@@ -138,6 +142,7 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className, keepCo
                         <LazyComponentRef.current
                             {...contentProps}
                             close={close}
+                            setTitle={setTitle}
                             setOnClose={(fn) => { onCloseRef.current = fn; }}
                         />
                     )}
