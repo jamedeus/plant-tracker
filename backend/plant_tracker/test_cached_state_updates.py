@@ -171,7 +171,11 @@ class EndpointStateUpdateTests(TestCase):
             'description': ''
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'group registered'})
+        self.assertEqual(response.json(), {
+            'success': 'group registered',
+            'name': 'new group',
+            'uuid': str(new_group_uuid)
+        })
 
         # Confirm new group was added to cached overview state
         updated_overview_state = self.load_cached_overview_state()

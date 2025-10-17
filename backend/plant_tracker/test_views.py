@@ -623,9 +623,13 @@ class RegistrationTests(TestCase):
             'description': 'This group is used for propagation'
         })
 
-        # Confirm response
+        # Confirm response contains new group uuid and name (whitespace removed)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'group registered'})
+        self.assertEqual(response.json(), {
+            'success': 'group registered',
+            'name': 'test group',
+            'uuid': str(test_id)
+        })
 
         # Confirm new group exists in database, confirm no plant was created
         self.assertEqual(len(Group.objects.all()), 1)

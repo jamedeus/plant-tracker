@@ -590,7 +590,11 @@ class ViewRegressionTests(TestCase):
             'description': ''
         })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'success': 'group registered'})
+        self.assertEqual(response.json(), {
+            'success': 'group registered',
+            'name': 'test group',
+            'uuid': str(test_id)
+        })
 
         # Attempt to register the same UUID again, confirm expected error
         response = JSONClient().post('/register_group', {

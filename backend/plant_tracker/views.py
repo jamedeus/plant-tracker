@@ -177,8 +177,15 @@ def register_group(user, data, **kwargs):
             # Add to cached overview state
             add_instance_to_cached_overview_state(group)
 
-        # Redirect to manage page
-        return JsonResponse({'success': 'group registered'}, status=200)
+        # Return new group details
+        return JsonResponse(
+            {
+                'success': 'group registered',
+                'name': group.get_display_name(),
+                'uuid': str(group.uuid)
+            },
+            status=200
+        )
 
     except IntegrityError:
         return JsonResponse(
