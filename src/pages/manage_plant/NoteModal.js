@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import ModalTitle from 'src/components/ModalTitle';
@@ -8,7 +8,6 @@ import HoldToConfirm from 'src/components/HoldToConfirm';
 import { openErrorModal } from 'src/components/ErrorModal';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { localToUTC, timestampToReadable } from 'src/utils/timestampUtils';
-import { DateTime } from 'luxon';
 import { noteAdded, noteEdited, notesDeleted } from './timelineSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
@@ -36,32 +35,18 @@ const NoteModal = ({ note, close }) => {
         (state) => state.settings.holdToConfirmDelay
     );
 
-    // States for text and timestamp inputs
-    const [noteTime, setNoteTime] = useState('');
-    const [noteText, setNoteText] = useState('');
-    const [charCount, setCharCount] = useState(0);
+    // States for text input + character count
+    const [noteText, setNoteText] = useState(note?.text || '');
+    const [charCount, setCharCount] = useState(note?.text.length || 0);
 
-    // State shows delete button and prevents editing timestamp if true
-    const [editingNote, setEditingNote] = useState(false);
+    // Show delete button and prevent editing timestamp if true
+    const editingNote = note ? true : false;
 
     // Ref to read value of timestamp input
     const timestampRef = useRef(null);
 
     // Disable save button if text field empty or over character limit
     const saveButtonDisabled = !noteText.length || noteText.length > 500;
-
-    // Prefill existing note details when editing
-    useEffect(() => {
-        if (note) {
-            updateNoteText(note.text);
-            setNoteTime(note.timestamp);
-            setEditingNote(true);
-        } else {
-            updateNoteText('');
-            setNoteTime(DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss"));
-            setEditingNote(false);
-        }
-    }, [note]);
 
     // Textarea listener
     const updateNoteText = (text) => {
@@ -102,7 +87,7 @@ const NoteModal = ({ note, close }) => {
     const handleEdit = async () => {
         const payload = {
             plant_id: plantID,
-            timestamp: noteTime,
+            timestamp: note.timestamp,
             note_text: noteText
         };
         // Update note state with params from response, close modal
@@ -119,7 +104,7 @@ const NoteModal = ({ note, close }) => {
     const handleDelete = async () => {
         const payload = {
             plant_id: plantID,
-            timestamps: [noteTime]
+            timestamps: [note.timestamp]
         };
         // Remove note from state, close modal
         const onSuccess = (data) => {
@@ -135,7 +120,7 @@ const NoteModal = ({ note, close }) => {
             <div className="flex flex-col">
                 <div className="min-h-36 flex flex-col items-center mt-2">
                     {editingNote
-                        ? <ExistingNoteTimestamp noteTime={noteTime} />
+                        ? <ExistingNoteTimestamp noteTime={note.timestamp} />
                         : <DatetimeInput inputRef={timestampRef} />
                     }
                     <textarea
