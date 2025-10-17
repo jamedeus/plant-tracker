@@ -10,7 +10,7 @@ import sendPostRequest from 'src/utils/sendPostRequest';
 // endpoint is the API endpoint formData is POSTed to on submit
 // payload is an optional object that is concatenated with formData before POST
 // onSuccess is a callback function that receives response data after success
-const FormModal = ({ close, FormComponent, initialValues, endpoint, payload, onSubmit, onSuccess }) => {
+const FormModal = ({ close, FormComponent, initialValues, endpoint, payload, onSubmit, onSuccess, submitButtonText = "Edit" }) => {
     const formRef = useRef(null);
 
     // Disable edit button if form is invalid (field exceeded length limit)
@@ -43,7 +43,7 @@ const FormModal = ({ close, FormComponent, initialValues, endpoint, payload, onS
                     onClick={submit}
                     disabled={!formIsValid}
                 >
-                    Edit
+                    {submitButtonText}
                 </button>
             </div>
         </>
@@ -57,7 +57,8 @@ FormModal.propTypes = {
     endpoint: PropTypes.string.isRequired,
     payload: PropTypes.object,
     onSubmit: PropTypes.func,
-    onSuccess: PropTypes.func.isRequired
+    onSuccess: PropTypes.func.isRequired,
+    submitButtonText: PropTypes.string
 };
 
 export default FormModal;

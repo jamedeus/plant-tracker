@@ -243,7 +243,7 @@ describe('GroupModal', () => {
         global.fetch.mockClear();
 
         // Simulate user submitting form
-        await user.click(component.getByRole('button', {name: 'Edit'}));
+        await user.click(component.getByRole('button', {name: 'Create'}));
 
         // Confirm correct data posted to /register_group endpoint
         expect(global.fetch).toHaveBeenNthCalledWith(1, '/register_group', {

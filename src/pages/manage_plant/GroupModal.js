@@ -37,6 +37,7 @@ const RegisterGroup = ({ close, cancel, addPlantToGroup }) => {
                         payload={{uuid: uuidv4()}}
                         onSubmit={() => setModalContents("loading")}
                         onSuccess={onSuccess}
+                        submitButtonText="Create"
                     />
                 )}
                 {modalContents === "loading" && (
