@@ -89,7 +89,11 @@ describe('App', () => {
 
     it('sends the correct payload when plant form is submitted', async () => {
         // Mock fetch function to return expected response
-        mockFetchResponse({success: 'plant registered'});
+        mockFetchResponse({
+            success: 'plant registered',
+            name: 'Test plant',
+            uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        });
 
         // Fill in form fields
         await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Test plant');
@@ -116,7 +120,11 @@ describe('App', () => {
 
     it('sends the correct payload when group form is submitted', async () => {
         // Mock fetch function to return expected response
-        mockFetchResponse({success: 'group registered'});
+        mockFetchResponse({
+            success: 'group registered',
+            name: 'Test group',
+            uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        });
 
         // Click Group button
         await user.click(app.getByText('Group'));

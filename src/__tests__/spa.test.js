@@ -160,7 +160,9 @@ describe('SPA integration tests', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                success: 'plant registered'
+                success: 'plant registered',
+                name: 'Test plant',
+                uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be12'
             }),
             headers: new Map([['content-type', 'application/json']]),
         }).mockResolvedValueOnce({

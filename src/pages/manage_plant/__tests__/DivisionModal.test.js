@@ -105,7 +105,11 @@ describe('DivisionModal', () => {
         expect(app.getByTestId('division-modal-form')).toBeInTheDocument();
 
         // Mock fetch function to return expected response when plant registered
-        mockFetchResponse({success: 'plant registered'});
+        mockFetchResponse({
+            success: 'plant registered',
+            name: 'Test Plant prop',
+            uuid: 'child-uuid-1'
+        });
 
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
@@ -155,7 +159,11 @@ describe('DivisionModal', () => {
         expect(app.getByTestId('division-modal-form')).toBeInTheDocument();
 
         // Mock fetch function to return expected response when plant registered
-        mockFetchResponse({success: 'plant registered'});
+        mockFetchResponse({
+            success: 'plant registered',
+            name: 'Test Plant prop',
+            uuid: 'child-uuid-1'
+        });
 
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
@@ -185,7 +193,11 @@ describe('DivisionModal', () => {
         expect(app.getByTestId('division-modal-form')).toBeInTheDocument();
 
         // Mock fetch function to return expected response when plant registered
-        mockFetchResponse({success: 'plant registered'});
+        mockFetchResponse({
+            success: 'plant registered',
+            name: 'Test Plant prop',
+            uuid: 'child-uuid-2'
+        });
 
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
@@ -216,7 +228,11 @@ describe('DivisionModal', () => {
         expect(app.getByTestId('division-modal-form')).toBeInTheDocument();
 
         // Mock fetch function to return expected response when plant registered
-        mockFetchResponse({success: 'plant registered'});
+        mockFetchResponse({
+            success: 'plant registered',
+            name: 'Test Plant prop',
+            uuid: 'child-uuid-3'
+        });
 
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
@@ -384,7 +400,11 @@ describe('DivisionModal with DivisionScanner', () => {
         expect(app.getByTestId('division-modal-form')).toBeInTheDocument();
 
         // Mock fetch function to return expected response when plant registered
-        mockFetchResponse({success: 'plant registered'});
+        mockFetchResponse({
+            success: 'plant registered',
+            name: 'Test Plant prop',
+            uuid: '5c256d96ec7d408a83c73f86d63968b2'
+        });
 
         // Simulate user submitting form, confirm success screen appears
         await user.click(app.getByRole('button', { name: 'Register New Plant' }));
