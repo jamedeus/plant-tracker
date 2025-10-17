@@ -9,7 +9,8 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import Checkmark from 'src/components/Checkmark';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import DivisionScannerButton from './DivisionScanner';
-import { useSelector, } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { divisionEventCreated, childPlantRegistered } from './timelineSlice';
 import { LuSplit } from "react-icons/lu";
 
 const numberSuffixMap = {
@@ -20,6 +21,7 @@ const numberSuffixMap = {
 const getNumberSuffix = (number) => numberSuffixMap[number] || 'th';
 
 const DivisionModal = ({ close }) => {
+    const dispatch = useDispatch();
     const plantDetails = useSelector((state) => state.plant.plantDetails);
 
     // Options:
@@ -32,6 +34,7 @@ const DivisionModal = ({ close }) => {
     // Stores /divide_plant response keys used in /register_plant payload
     const [dividedFromId, setDividedFromId] = useState(null);
     const [dividedFromEventId, setDividedFromEventId] = useState(null);
+    const [divisionEventTimestamp, setDivisionEventTimestamp] = useState(null);
     // Stores UUID of next child plant (scanned from QR code or random UUID)
     const [nextChildId, setNextChildId] = useState(null);
     // Track number registered (shown on "done" page so user knows not looping)
@@ -46,14 +49,17 @@ const DivisionModal = ({ close }) => {
 
     // Creates DivisionEvent and stores response keys needed to register child
     const createDivisionEvent = useCallback(async() => {
+        const timestamp = localToUTC(timestampRef.current.value);
         const payload = {
             plant_id: plantDetails.uuid,
-            timestamp: localToUTC(timestampRef.current.value)
+            timestamp: timestamp
         };
         const onSuccess = (data) => {
             setDividedFromId(data.plant_key);
             setDividedFromEventId(data.division_event_key);
             setModalContents("register");
+            setDivisionEventTimestamp(timestamp);
+            dispatch(divisionEventCreated(timestamp));
         };
         await sendPostRequest('/divide_plant', payload, onSuccess);
     }, [plantDetails.uuid, timestampRef]);
@@ -81,6 +87,12 @@ const DivisionModal = ({ close }) => {
         const onSuccess = () => {
             setModalContents("done");
             setNumberRegistered(numberRegistered + 1);
+            /// Add child plant to timeline
+            dispatch(childPlantRegistered({
+                timestamp: divisionEventTimestamp,
+                name: payload.name,
+                uuid: payload.uuid
+            }));
         };
         await sendPostRequest('/register_plant', payload, onSuccess);
     }, [nextChildId, dividedFromId, dividedFromEventId, numberRegistered]);

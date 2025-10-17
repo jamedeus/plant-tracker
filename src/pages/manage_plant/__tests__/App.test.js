@@ -621,4 +621,49 @@ describe('App', () => {
             "Hide all last event times except water"
         );
     });
+
+    it('renders new child plants in the timeline when registered in DivisonModal', async () => {
+        // Confirm no division event or child plants in timeline
+        expect(app.queryByText('Divided')).toBeNull();
+        expect(app.queryByText('Divided into:')).toBeNull();
+
+        // Open DivisionModal, wait until modal renders
+        await user.click(app.getByText('Divide plant'));
+        await waitFor(() => {
+            expect(app.queryByText('When did you divide your plant?')).not.toBeNull();
+        });
+
+        // Mock fetch function to return expected /divide_plant response
+        mockFetchResponse({
+            plant_key: 'divided-parent-key',
+            division_event_key: 'division-event-key',
+            action: 'divide',
+            plant: mockContext.plant_details.uuid
+        });
+
+        // Simulate user creating DivisionEvent
+        await user.click(app.getByRole('button', { name: 'Start Dividing' }));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(global.fetch).toHaveBeenCalled();
+
+        // Confirm division event appeared in timeline (but no children yet)
+        expect(app.queryByText('Divided')).not.toBeNull();
+        expect(app.queryByText('Divided into:')).toBeNull();
+
+        // Mock /get_plant_species_options response (requested when form loads)
+        // Simulate user clicking "Add QR code later" button to load form
+        mockPlantSpeciesOptionsResponse();
+        await user.click(app.getByRole('button', { name: 'Add QR code later' }));
+
+        // Mock fetch function to return expected response when plant registered
+        mockFetchResponse({success: 'plant registered'});
+
+        // Simulate user submitting form, confirm success screen appears
+        await user.click(app.getByRole('button', { name: 'Register New Plant' }));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(app.getByText('1st plant registered!')).toBeInTheDocument();
+
+        // Confirm child plant appeared in timeline
+        expect(app.queryByText('Divided into:')).not.toBeNull();
+    });
 });

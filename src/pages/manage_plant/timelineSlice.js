@@ -246,6 +246,21 @@ export const timelineSlice = createSlice({
         defaultPhotoChanged(state, action) {
             state.defaultPhoto = action.payload;
         },
+
+        // Takes timestamp of new DivisionEvent
+        divisionEventCreated(state, action) {
+            const dateKey = getDateKey(state, action.payload);
+            state.timelineDays[dateKey].dividedInto ??= [];
+        },
+
+        // Takes object with timestamp, name, and uuid keys
+        childPlantRegistered(state, action) {
+            const dateKey = getDateKey(state, action.payload.timestamp);
+            (state.timelineDays[dateKey].dividedInto ??= []).push({
+                name: action.payload.name,
+                uuid: action.payload.uuid
+            });
+        },
     }
 });
 
@@ -258,5 +273,7 @@ export const {
     notesDeleted,
     photosAdded,
     photosDeleted,
-    defaultPhotoChanged
+    defaultPhotoChanged,
+    divisionEventCreated,
+    childPlantRegistered
 } = timelineSlice.actions;
