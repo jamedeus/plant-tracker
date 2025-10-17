@@ -11,15 +11,11 @@ import { loadUserSettings } from './Settings';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import initialStatePropTypes from './initialStatePropTypes';
 
-// Correct order for event markers within a single timeline day (readability)
-const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
-
 // Takes object where each key contains an array
 // Returns array of key names that contain non-empty arrays
 export const nonEmptyKeys = (data) => Object.entries(data)
     .filter(([, value]) => value.length > 0)
-    .map(([key]) => key)
-    .sort((a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b));
+    .map(([key]) => key);
 
 // Factory returns template for each dateKey in timelineDays state
 const getTimelineDaysTemplate = () => ({

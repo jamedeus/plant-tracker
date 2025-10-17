@@ -260,6 +260,43 @@ describe('App', () => {
         expect(eventMarkers.children[2].textContent).toContain('Pruned');
     });
 
+    // Original bug: If a fertilize event was created first, then a water event
+    // was created on the same day, the EventCalendar would render the green
+    // fertilize dot before the blue water dot (should always be in the same
+    // order on every day of the calendar for readability).
+    it('renders EventCalendar dots in a predictable order', async () => {
+        // Simulate user creating prune event
+        mockFetchResponse({
+            action: "prune",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
+        await user.click(app.getByRole("button", {name: "Prune"}));
+
+        // Simulate user creating fertilize event
+        mockFetchResponse({
+            action: "fertilize",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
+        await user.click(app.getByRole("button", {name: "Fertilize"}));
+
+        // Simulate user creating water event
+        mockFetchResponse({
+            action: "water",
+            timestamp: "2024-03-01T20:00:01+00:00",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+        });
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Get div containing EventCalendar dots, confirm "Watered" is first
+        const calendarDay = app.getByLabelText('March 1, 2024').parentElement;
+        const calendarDots = calendarDay.querySelectorAll('.dot');
+        expect(calendarDots[0].children[0].classList).toContain('bg-info');
+        expect(calendarDots[1].children[0].classList).toContain('bg-success');
+        expect(calendarDots[2].children[0].classList).toContain('bg-prune');
+    });
+
     // Original bug: timelineSlice.eventDeleted assumed there was only 1 event
     // of each type per day. If there were multiple water events at different
     // times on the same day and only 1 was deleted eventDeleted would remove
