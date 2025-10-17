@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { useSwipeable } from 'react-swipeable';
+import ModalTitle from './ModalTitle';
 import LoadingAnimation from './LoadingAnimation';
 import CloseButtonIcon from './CloseButtonIcon';
 import { useCloseWithEscKey } from 'src/hooks/useCloseWithEscKey';
@@ -129,11 +130,7 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className, keepCo
                 </button>
 
                 {/* Render title if given (can also render this in contents */}
-                {title && (
-                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                        {title}
-                    </h3>
-                )}
+                {title && <ModalTitle title={title} />}
 
                 {/* Show loading spinner while lazy loading contents bundle */}
                 <Suspense fallback={<LoadingAnimation className="mt-2 mx-auto" />}>

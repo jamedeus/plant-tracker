@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import GroupCard from 'src/components/GroupCard';
 import FormModal from 'src/components/FormModal';
+import ModalTitle from 'src/components/ModalTitle';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import Checkmark from 'src/components/Checkmark';
@@ -25,9 +26,7 @@ const RegisterGroup = ({ close, cancel, addPlantToGroup }) => {
 
     return (
         <>
-            <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                Create new group
-            </h3>
+            <ModalTitle title="Create new group" />
             <div className="flex flex-col w-full max-w-88 min-h-94 mx-auto">
                 {modalContents === "form" && (
                     <FormModal
@@ -110,9 +109,7 @@ const Options = ({ options, close }) => {
     // Render existing options (default)
     return (
         <>
-            <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                Add plant to group
-            </h3>
+            <ModalTitle title="Add plant to group" />
             <div className="flex flex-col items-center px-4 overflow-y-auto">
                 {Object.entries(options).map(([uuid, group]) => (
                     <div
@@ -172,9 +169,7 @@ const GroupModal = ({ close }) => {
         <Options options={options} close={close} />
     ) : (
         <>
-            <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                Add plant to group
-            </h3>
+            <ModalTitle title="Add plant to group" />
             <LoadingAnimation className="m-auto" />
         </>
     );

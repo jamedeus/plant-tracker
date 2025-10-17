@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
+import ModalTitle from 'src/components/ModalTitle';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
@@ -135,10 +136,7 @@ const PhotoModal = ({ close }) => {
 
     return (
         <>
-            {/* Title */}
-            <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                {uploading ? "Uploading..." : "Upload Photos"}
-            </h3>
+            <ModalTitle title={uploading ? "Uploading..." : "Upload Photos"} />
 
             {/* Photo select/unselect input, shown until user clicks submit */}
             <div className={uploading ? "hidden" : "flex flex-col"}>

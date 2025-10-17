@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
 import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
+import ModalTitle from 'src/components/ModalTitle';
 import ModalPages from 'src/components/ModalPages';
 import DatetimeInput from 'src/components/DatetimeInput';
 import Checkmark from 'src/components/Checkmark';
@@ -101,10 +102,7 @@ const DivisionModal = ({ close }) => {
         case("divide"):
             return (
                 <>
-                    {/* Title */}
-                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                        Divide Plant
-                    </h3>
+                    <ModalTitle title="Divide Plant" />
                     <ModalPages>
                         {/* Page 1 */}
                         <div className="flex flex-col min-h-52 max-w-86 justify-center gap-8 mx-auto">
@@ -153,9 +151,7 @@ const DivisionModal = ({ close }) => {
         case("register"):
             return (
                 <>
-                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                        Divide Plant
-                    </h3>
+                    <ModalTitle title="Divide Plant" />
                     <div className="min-h-60 max-w-86 flex flex-col justify-center gap-6 py-4 mx-auto">
                         <span>
                             Now lets register your first new plant!
@@ -173,9 +169,7 @@ const DivisionModal = ({ close }) => {
         case("form"):
             return (
                 <>
-                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                        Register new plant
-                    </h3>
+                    <ModalTitle title="Register new plant" />
                     <div
                         className="flex flex-col w-full max-w-[25rem] gap-4 mx-auto"
                         data-testid="division-modal-form"
@@ -199,9 +193,9 @@ const DivisionModal = ({ close }) => {
         default:
             return (
                 <>
-                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                        {numberRegistered}{getNumberSuffix(numberRegistered)} plant registered!
-                    </h3>
+                    <ModalTitle title={
+                        `${numberRegistered}${getNumberSuffix(numberRegistered)} plant registered!`
+                    }/>
                     <div className="flex flex-col min-h-124.5 max-w-[25rem] justify-center mx-auto">
                         <div
                             className="flex flex-col h-full gap-6"

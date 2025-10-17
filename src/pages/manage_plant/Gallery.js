@@ -17,6 +17,7 @@ import { defaultPhotoChanged, photosDeleted } from './timelineSlice';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 import { useIsBreakpointActive } from 'src/hooks/useBreakpoint';
 import { showToast } from 'src/components/Toast';
+import ModalTitle from 'src/components/ModalTitle';
 import DropdownMenu from 'src/components/DropdownMenu';
 import DropdownButton from 'src/components/DropdownButton';
 import LoadingAnimation from 'src/components/LoadingAnimation';
@@ -198,7 +199,7 @@ const GalleryDropdown = memo(function GalleryDropdown({ currentSlide, focusMode,
             {showConfirmDelete && (
                 <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
                     <div className="bg-base-100 rounded-box p-6 pt-4 mx-4 text-center">
-                        <h3 className="font-bold text-lg mb-4">Delete Photo</h3>
+                        <ModalTitle title="Delete Photo" />
                         <p className="text-base-content/70 mb-6">
                             Are you sure? This cannot be undone.
                         </p>

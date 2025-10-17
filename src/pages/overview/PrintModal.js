@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import print from 'print-js';
+import ModalTitle from 'src/components/ModalTitle';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import sendPostRequest from 'src/utils/sendPostRequest';
 
@@ -186,9 +187,7 @@ const PrintModal = memo(function PrintModal({ close, setOnClose }) {
         case("loading"):
             return (
                 <>
-                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                        Fetching QR Codes
-                    </h3>
+                    <ModalTitle title="Fetching QR Codes" />
                     <LoadingAnimation className="mt-2 mx-auto" />
                     <div className="modal-action">
                         <button className="btn btn-soft" onClick={cancel}>
@@ -200,9 +199,7 @@ const PrintModal = memo(function PrintModal({ close, setOnClose }) {
         case("options"):
             return (
                 <>
-                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                        Select QR Code Size
-                    </h3>
+                    <ModalTitle title="Select QR Code Size" />
                     <div className="h-36 mt-2 flex flex-col justify-center">
                         <Tab.Group
                             onChange={(index) => {
@@ -245,9 +242,7 @@ const PrintModal = memo(function PrintModal({ close, setOnClose }) {
         default:
             return (
                 <>
-                    <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                        Error
-                    </h3>
+                    <ModalTitle title="Error" />
                     <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
                         <ErrorMessage error={error} />
                     </div>

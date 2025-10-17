@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import ModalTitle from 'src/components/ModalTitle';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
 import HoldToConfirm from 'src/components/HoldToConfirm';
@@ -130,9 +131,7 @@ const NoteModal = ({ note, close }) => {
 
     return (
         <>
-            <h3 className="font-bold text-lg leading-8 md:text-xl mb-3">
-                {editingNote ? "Edit Note" : "Add Note"}
-            </h3>
+            <ModalTitle title={editingNote ? "Edit Note" : "Add Note"} />
             <div className="flex flex-col">
                 <div className="min-h-36 flex flex-col items-center mt-2">
                     {editingNote
