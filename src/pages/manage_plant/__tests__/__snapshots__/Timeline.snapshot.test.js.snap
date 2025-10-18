@@ -2110,7 +2110,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   Fertilized with dilute 10-15-10 liquid fertilizer
                 </span>
                 <span
-                  class="text-xs"
+                  class="text-xs pr-1 md:pr-2"
                 >
                   07:45 AM
                 </span>
@@ -2191,7 +2191,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   One of the older leaves is starting to turn yellow
                 </span>
                 <span
-                  class="text-xs"
+                  class="text-xs pr-1 md:pr-2"
                 >
                   04:44 AM
                 </span>
@@ -5341,7 +5341,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   Fertilized with dilute 10-15-10 liquid fertilizer
                 </span>
                 <span
-                  class="text-xs"
+                  class="text-xs pr-1 md:pr-2"
                 >
                   07:45 AM
                 </span>
@@ -5422,7 +5422,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   One of the older leaves is starting to turn yellow
                 </span>
                 <span
-                  class="text-xs"
+                  class="text-xs pr-1 md:pr-2"
                 >
                   04:44 AM
                 </span>
