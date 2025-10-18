@@ -405,10 +405,7 @@ describe('Gallery', () => {
         navigator.canShare = jest.fn(() => true);
 
         // Mock fetch function to return error when photo downloaded
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            status: 404
-        }));
+        mockFetchResponse(null, 404);
 
         // Click gallery dropdown option, confirm gallery appears
         await user.click(app.getByRole('button', {name: 'Gallery'}));

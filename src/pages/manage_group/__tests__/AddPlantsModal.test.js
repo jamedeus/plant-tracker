@@ -1,6 +1,6 @@
 import AddPlantsModal from '../AddPlantsModal';
 import { mockContext, mockPlantOptions } from './mockContext';
-import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, { buildFetchMockResponse } from 'src/testUtils/mockFetchResponse';
 import { ReduxProvider } from '../store';
 
 /* eslint react/prop-types: 0 */
@@ -65,7 +65,7 @@ describe('AddPlantsModal', () => {
 
     it('renders "No plants" if error occurs in /get_plant_options request', async () => {
         // Mock fetch to simulate error when group options requested
-        global.fetch = jest.fn(() => Promise.resolve({ ok: false }));
+        mockFetchResponse(null, 500);
 
         // Render modal
         const component = render(<TestComponent mockClose={mockClose} />);
@@ -82,12 +82,9 @@ describe('AddPlantsModal', () => {
         // Mock fetch to return options (requested when modal opened)
         // Add delay so loading spinner will render (simulate real request)
         global.fetch = jest.fn(() => new Promise(resolve =>
-            setTimeout(() => {
-                resolve({
-                    ok: true,
-                    json: () => Promise.resolve({ options: mockPlantOptions })
-                });
-            }, 5)
+            setTimeout(() => resolve(buildFetchMockResponse({
+                options: mockPlantOptions
+            }), 5))
         ));
 
         // Render modal

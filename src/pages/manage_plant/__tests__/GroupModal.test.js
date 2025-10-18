@@ -1,6 +1,9 @@
 import React from 'react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import mockFetchResponse, { mockMultipleFetchResponses } from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, {
+    buildFetchMockResponse,
+    mockMultipleFetchResponses
+} from 'src/testUtils/mockFetchResponse';
 import { v4 as mockUuidv4 } from 'uuid';
 import GroupModal from '../GroupModal';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -77,7 +80,7 @@ describe('GroupModal', () => {
 
     it('renders "No groups" if error occurs in /get_add_to_group_options request', async () => {
         // Mock fetch to simulate error when group options requested
-        global.fetch = jest.fn(() => Promise.resolve({ ok: false }));
+        mockFetchResponse(null, 500);
 
         // Render modal
         const component = render(
@@ -99,12 +102,9 @@ describe('GroupModal', () => {
         // Mock fetch to return group options (requested when modal opened)
         // Add delay so loading spinner will render (simulate real request)
         global.fetch = jest.fn(() => new Promise(resolve =>
-            setTimeout(() => {
-                resolve({
-                    ok: true,
-                    json: () => Promise.resolve({ options: mockGroupOptions })
-                });
-            }, 5)
+            setTimeout(() => resolve(buildFetchMockResponse({
+                options: mockGroupOptions
+            })), 5)
         ));
 
         // Render modal

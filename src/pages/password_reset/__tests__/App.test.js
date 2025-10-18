@@ -1,6 +1,6 @@
 import { Toast } from 'src/components/Toast';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, { buildFetchMockResponse } from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 
 // Mock useNavigate to return a mock (confirm redirected to correct page)
@@ -91,13 +91,11 @@ describe('App', () => {
 
     it('does not submit form again if submit button is clicked while loading', async () => {
         // Mock fetch to simulate slow response
-        global.fetch = jest.fn(() => new Promise((resolve) => {
-            setTimeout(() => resolve({
-                ok: true,
-                status: 200,
-                json: () => Promise.resolve({ success: 'password_changed' })
-            }), 5000);
-        }));
+        global.fetch = jest.fn(() => new Promise((resolve) =>
+            setTimeout(() => resolve(buildFetchMockResponse({
+                success: 'password_changed'
+            })), 5000)
+        ));
 
         // Simulate user entering new password twice
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');

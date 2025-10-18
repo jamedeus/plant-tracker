@@ -1,6 +1,6 @@
 import React, { act } from 'react';
 import { postHeaders } from 'src/testUtils/headers';
-import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, { buildFetchMockResponse } from 'src/testUtils/mockFetchResponse';
 import RepotModal from '../RepotModal';
 import { ReduxProvider } from '../store';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -53,17 +53,12 @@ describe('RepotModal', () => {
         // Mock fetch function to return expected response after delay (allow
         // loading spinner to render before switching to success screen)
         global.fetch = jest.fn(() => new Promise(resolve =>
-            setTimeout(() => {
-                resolve({
-                    ok: true,
-                    json: () => Promise.resolve({
-                        action: "repot",
-                        plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                        timestamp: "2024-03-01T20:00:00+00:00",
-                        pot_size: 8
-                    })
-                });
-            }, 5)
+            setTimeout(() => resolve(buildFetchMockResponse({
+                action: "repot",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-03-01T20:00:00+00:00",
+                pot_size: 8
+            })), 5)
         ));
 
         // Click submit button, confirm prompt was replaced by loading spinner

@@ -276,12 +276,7 @@ describe('SPA routes', () => {
 
     it('shows unexpected error page when loader receives invalid JSON', async () => {
         // Simulate server returning JSON with invalid syntax
-        global.fetch = jest.fn().mockResolvedValue({
-            ok: true,
-            status: 200,
-            headers: new Map([['content-type', 'application/json']]),
-            json: () => Promise.reject(new SyntaxError('Invalid JSON')),
-        });
+        mockFetchResponse(Promise.reject(new SyntaxError('Invalid JSON')));
         // Render overview page
         const { getByTestId } = renderRouter({
             routes: routes,

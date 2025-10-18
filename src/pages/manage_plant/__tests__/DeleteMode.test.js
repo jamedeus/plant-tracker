@@ -1,5 +1,5 @@
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, { mockMultipleFetchResponses} from 'src/testUtils/mockFetchResponse';
 import { postHeaders } from 'src/testUtils/headers';
 import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
@@ -239,35 +239,19 @@ describe('Delete mode', () => {
 
     it('sends correct payloads when events, photos, and notes are deleted', async () => {
         // Mock fetch function to return all expected responses
-        global.fetch = jest.fn()
-            .mockImplementationOnce(() => Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve({
-                    deleted: {
-                        water: ["2024-03-01T15:45:44+00:00"],
-                        fertilize: [],
-                        prune: [],
-                        repot: []
-                    },
-                    failed: []
-                })
-            }))
-            .mockImplementationOnce(() => Promise.resolve({
-                ok: true,
-                status: 200,
-                json: () => Promise.resolve({
-                    deleted: [2],
-                    failed: []
-                })
-            }))
-            .mockImplementationOnce(() => Promise.resolve({
-                ok: true,
-                status: 200,
-                json: () => Promise.resolve({
-                    deleted: ["2024-03-01T15:45:44+00:00"],
-                    failed: []
-                })
-            }));
+        mockMultipleFetchResponses([
+            [{
+                deleted: {
+                    water: ["2024-03-01T15:45:44+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: []
+            }],
+            [{ deleted: [2], failed: [] }],
+            [{ deleted: ["2024-03-01T15:45:44+00:00"], failed: [] }]
+        ]);
 
         // Enter delete mode
         await user.click(app.getByText('Edit timeline'));

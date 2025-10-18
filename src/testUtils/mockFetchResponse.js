@@ -1,5 +1,5 @@
 // Takes JSON response and optional status, returns value to mock fetch function
-const buildMockResponse = (json, status=200) => ({
+export const buildFetchMockResponse = (json, status=200) => ({
     ok: status >= 200 && status < 300,
     status,
     headers: new Map([['content-type', 'application/json']]),
@@ -9,7 +9,7 @@ const buildMockResponse = (json, status=200) => ({
 // Takes JSON response and optional status, mocks global fetch function
 const mockFetchResponse = (json, status=200) => {
     global.fetch = jest.fn().mockResolvedValue(
-        buildMockResponse(json, status)
+        buildFetchMockResponse(json, status)
     );
 };
 
@@ -20,7 +20,7 @@ export const mockMultipleFetchResponses = (responses) => {
     global.fetch = jest.fn();
     responses.forEach(([ json, status=200 ]) => {
         global.fetch.mockResolvedValueOnce(
-            buildMockResponse(json, status)
+            buildFetchMockResponse(json, status)
         );
     });
 };
