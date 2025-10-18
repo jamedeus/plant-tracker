@@ -50,7 +50,7 @@
     }
 
     /* Press animation */
-    &:active:hover, &:active:focus {
+    &:active {
         animation: button-pop 0s ease-out;
         transform: scale(0.95);
         --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
