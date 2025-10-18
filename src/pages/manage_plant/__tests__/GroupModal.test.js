@@ -1,6 +1,6 @@
 import React from 'react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, { mockMultipleFetchResponses } from 'src/testUtils/mockFetchResponse';
 import { v4 as mockUuidv4 } from 'uuid';
 import GroupModal from '../GroupModal';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -220,26 +220,19 @@ describe('GroupModal', () => {
 
         // Mock fetch function to return /register_group response on first
         // request, /add_plant_to_group response on second
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+        mockMultipleFetchResponses([
+            [{
                 success: 'group registered',
                 name: 'Test group',
                 uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be14'
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        }).mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+            }],
+            [{
                 action: "add_plant_to_group",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                 group_name: "Test group",
                 group_uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        });
+            }]
+        ]);
         global.fetch.mockClear();
 
         // Simulate user submitting form
@@ -329,23 +322,14 @@ describe('GroupModal', () => {
 
         // Mock fetch function to return /register_group response on first
         // request, arbitrary /add_plant_to_group error on second
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+        mockMultipleFetchResponses([
+            [{
                 success: 'group registered',
                 name: 'Test group',
                 uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be14'
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        }).mockResolvedValueOnce({
-            ok: false,
-            status: 400,
-            json: () => Promise.resolve({
-                error: "failed to add plant to group"
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        });
+            }],
+            [{ error: "failed to add plant to group" }, 400 ]
+        ]);
         global.fetch.mockClear();
 
         // Confirm error modal is not rendered

@@ -5,7 +5,7 @@ import { render, waitFor, cleanup } from '@testing-library/react';
 import FakeBarcodeDetector, { mockQrCodeInViewport } from 'src/testUtils/mockBarcodeDetector';
 import { postHeaders } from 'src/testUtils/headers';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, { mockMultipleFetchResponses } from 'src/testUtils/mockFetchResponse';
 import applyQrScannerMocks from 'src/testUtils/applyQrScannerMocks';
 import 'jest-canvas-mock';
 import { mockContext as mockOverviewContext } from 'src/pages/overview/__tests__/mockContext';
@@ -105,27 +105,14 @@ describe('SPA integration tests', () => {
     it('navigates from register page to manage_plant when registration is complete', async () => {
         // Mock fetch function to return register page state on first request,
         // and /get_plant_species_options response on second
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+        mockMultipleFetchResponses([
+            [{
                 page: 'register',
                 title: 'Register New Plant',
                 state: mockRegisterContext
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        }).mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                options: [
-                    "Parlor Palm",
-                    "Spider Plant",
-                    "Calathea"
-                ]
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        });
+            }],
+            [{ options: [ "Parlor Palm", "Spider Plant", "Calathea" ]}]
+        ]);
 
         // Render SPA on registration pages (makes both requests above on load)
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
@@ -156,25 +143,18 @@ describe('SPA integration tests', () => {
 
         // Mock fetch function to return /register_plant response on first
         // request, manage plant state on second request
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+        mockMultipleFetchResponses([
+            [{
                 success: 'plant registered',
                 name: 'Test plant',
                 uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        }).mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+            }],
+            [{
                 page: 'manage_plant',
                 title: 'Manage Plant',
                 state: mockPlantContext
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        });
+            }]
+        ]);
 
         // Simulate user filling in form fields and clicking Save button
         await user.type(getByRole('textbox', {name: 'Plant name'}), 'Test plant');
@@ -245,10 +225,8 @@ describe('SPA integration tests', () => {
 
         // Mock fetch to simulate successfully un-archiving all plants and
         // groups on first request, return overview state on second request
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+        mockMultipleFetchResponses([
+            [{
                 archived: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "0640ec3b-1bed-4b16-a078-d6e7ec66be12",
@@ -256,14 +234,9 @@ describe('SPA integration tests', () => {
                     "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
                 ],
                 failed: []
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        }).mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve(mockOverviewContext),
-            headers: new Map([['content-type', 'application/json']]),
-        });
+            }],
+            [ mockOverviewContext ]
+        ]);
         jest.clearAllMocks();
 
         // Simulate user unarchiving all plants and groups
@@ -539,27 +512,20 @@ describe('SPA integration tests', () => {
         // and /get_plant_species_options response on second
         //
         // Simulates group being deleted while user was on external site
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+        mockMultipleFetchResponses([
+            [{
                 page: 'register',
                 title: 'Register New Plant',
                 state: mockRegisterContext
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        }).mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
+            }],
+            [{
                 options: [
                     "Parlor Palm",
                     "Spider Plant",
                     "Calathea"
                 ]
-            }),
-            headers: new Map([['content-type', 'application/json']]),
-        });
+            }]
+        ]);
 
         // Simulate user navigating to external site then returning to SPA by
         // pressing browser back button

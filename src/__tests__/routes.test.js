@@ -1,4 +1,4 @@
-import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, { mockMultipleFetchResponses } from 'src/testUtils/mockFetchResponse';
 
 // Mock bundles to render div with testid to confirm which bundle was rendered
 jest.mock('src/bundles', () => {
@@ -184,17 +184,10 @@ describe('SPA routes', () => {
     it('follows redirect when loader receives 302', async () => {
         // Simulate /get_archived_overview_state response when no archived
         // plants exist on first request, /get_overview_state response on second
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            ok: false,
-            status: 302,
-            json: () => Promise.resolve({ 'redirect': '/' }),
-            headers: new Map([['content-type', 'application/json']]),
-        }).mockResolvedValueOnce({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({ title: 'Plant Overview' }),
-            headers: new Map([['content-type', 'application/json']]),
-        });
+        mockMultipleFetchResponses([
+            [ { redirect: '/' }, 302 ],
+            [ { title: 'Plant Overview' } ]
+        ]);
 
         // Simulate user loading archived overview page
         const { router, getByTestId } = renderRouter({
