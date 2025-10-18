@@ -129,7 +129,7 @@ function Layout() {
 
             <LazyModal
                 ref={editModal.ref}
-                title="Edit Details"
+                initialTitle="Edit Details"
                 ariaLabel="Edit plant details"
                 className="max-w-[25rem]"
                 load={() => import(/* webpackChunkName: "manage_plant_edit-modal" */ "./EditPlantModal")}
@@ -137,7 +137,7 @@ function Layout() {
 
             <LazyModal
                 ref={groupModal.ref}
-                title="Add plant to group"
+                initialTitle="Add plant to group"
                 ariaLabel="Add plant to group"
                 load={() => import(/* webpackChunkName: "manage_plant_group-modal" */ "./GroupModal")}
             />

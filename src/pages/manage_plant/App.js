@@ -32,14 +32,14 @@ const App = ({ initialState }) => {
 
             <LazyModal
                 ref={repotModal.ref}
-                title="Repot Plant"
+                initialTitle="Repot Plant"
                 ariaLabel="Repot plant"
                 load={() => import(/* webpackChunkName: "manage_plant_repot-modal" */ "./RepotModal")}
             />
 
             <LazyModal
                 ref={divisionModal.ref}
-                title="Divide Plant"
+                initialTitle="Divide Plant"
                 ariaLabel="Divide plant"
                 keepContents={true}
                 load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}

@@ -30,9 +30,11 @@ export function useModal() {
 //
 // Ref has open and close methods, open method takes props to pass to contents.
 //
-// Contents component will receive any props passed to open as well as the close
-// callback (closes modal) and setOnClose (takes function to call on close).
-const LazyModal = forwardRef(function LazyModal({ load, title, className, keepContents = false }, ref) {
+// Contents component will receive any props passed to open and these callbacks:
+// - close (closes modal)
+// - setOnClose (takes function to call on close)
+// - setTitle (takes new title string, overwrites initialTitle)
+const LazyModal = forwardRef(function LazyModal({ load, initialTitle, className, keepContents = false }, ref) {
     // Renders modal in portal if true
     const [isOpen, setIsOpen] = useState(false);
     // Track if modal has opened, prevents unmount if keepContents is true
@@ -48,8 +50,8 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className, keepCo
     // Stores callback set by lazy loaded contents, runs when modal closes
     const onCloseRef = useRef(null);
 
-    // Set initial title in state, create callback passed to children to update
-    const [modalTitle, setModalTitle] = useState(title);
+    // Set initial initialTitle in state, create callback passed to children to update
+    const [modalTitle, setModalTitle] = useState(initialTitle);
     const setTitle = useCallback((newTitle) => setModalTitle(newTitle), []);
 
     const open = useCallback((props) => {
@@ -160,7 +162,7 @@ const LazyModal = forwardRef(function LazyModal({ load, title, className, keepCo
 
 LazyModal.propTypes = {
     load: PropTypes.func.isRequired,
-    title: PropTypes.string,
+    initialTitle: PropTypes.string,
     className: PropTypes.string,
     keepContents: PropTypes.bool
 };

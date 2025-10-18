@@ -44,7 +44,7 @@ export const ErrorModal = () => {
     return (
         <LazyModal
             ref={errorModal.ref}
-            title="Error"
+            initialTitle="Error"
             ariaLabel="Error modal"
             load={() => Promise.resolve({ default: ErrorModalBody })}
         />

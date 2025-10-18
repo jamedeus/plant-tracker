@@ -5,7 +5,7 @@ import LazyModal, { useModal } from '../LazyModal';
 /* eslint react/prop-types: 0 */
 
 // Test parent component that renders button for each method exposed by useModal
-function TestComponent({ title, loader }) {
+function TestComponent({ initialTitle, loader }) {
     const modal = useModal();
 
     return (
@@ -22,7 +22,7 @@ function TestComponent({ title, loader }) {
 
             <LazyModal
                 ref={modal.ref}
-                title={title}
+                initialTitle={initialTitle}
                 load={loader}
             />
         </>
@@ -104,9 +104,9 @@ describe('LazyModal', () => {
     });
 
     it('renders title h3 if prop given', async () => {
-        // Render LazyModal with title prop
+        // Render LazyModal with initialTitle prop
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        const component = render(<TestComponent title="Modal Title" loader={immediateLoader} />);
+        const component = render(<TestComponent initialTitle="Modal Title" loader={immediateLoader} />);
 
         // Confirm title is not in document before modal renders
         expect(component.queryByText('Modal Title')).toBeNull();
@@ -116,7 +116,7 @@ describe('LazyModal', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(component.getByTestId('lazy-loaded-body')).toBeInTheDocument();
 
-        // Confirm title h3 has text passed to title prop
+        // Confirm title h3 has text passed to initialTitle prop
         expect(component.getByText('Modal Title')).toBeInTheDocument();
         expect(component.getByText('Modal Title').nodeName.toLowerCase()).toBe('h3');
     });
@@ -144,7 +144,7 @@ describe('LazyModal', () => {
         TestBody.onCloseSpy = jest.fn();
         // Render TestBody component inside LazyModal
         const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        const component = render(<TestComponent title="Title" loader={immediateLoader} />);
+        const component = render(<TestComponent initialTitle="Title" loader={immediateLoader} />);
 
         // Open modal by clicking button rendered by parent, confirm rendered
         await user.click(component.getByText('Open LazyModal'));
