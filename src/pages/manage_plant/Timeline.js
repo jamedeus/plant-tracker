@@ -609,7 +609,7 @@ const NoteCollapse = memo(function NoteCollapse({ text, timestamp }) {
                     <span className='note-collapse-text'>
                         {text}
                     </span>
-                    <span className='text-xs'>
+                    <span className='text-xs pr-1 md:pr-2'>
                         {readableTimestamp.split('-')[0].trim()}
                     </span>
                 </div>

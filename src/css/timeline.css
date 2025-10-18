@@ -92,13 +92,14 @@
 
     /* Scale down contents when selected */
     &.selected > * {
-        @apply scale-92 md:scale-95;
+        @apply scale-92 ml-3 mr-1 md:scale-95 md:ml-4 md:mr-0;
     }
 }
 
 .note-collapse {
-    @apply m-2 flex flex-row;
+    @apply m-2 flex flex-row origin-left;
     transition: max-height .3s ease-in-out,
+                margin .15s ease-in-out,
                 scale .15s ease-in-out;
 }
 
