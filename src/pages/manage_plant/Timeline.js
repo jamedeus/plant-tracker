@@ -166,6 +166,7 @@ const Title = memo(function Title() {
 
             <LazyModal
                 ref={photoModal.ref}
+                title="Upload Photos"
                 ariaLabel="Upload plant photos"
                 load={() => import(/* webpackChunkName: "manage_plant_photo-modal" */ "./PhotoModal")}
             />

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
@@ -168,10 +168,7 @@ const GroupModal = ({ close, setTitle }) => {
     };
 
     // Get options from backend on first load
-    useLayoutEffect(() => {
-        loadOptions();
-        setTitle("Add plant to group");
-    }, []);
+    useEffect(() => {loadOptions();}, []);
 
     return options ? (
         <Options options={options} setTitle={setTitle} close={close} />

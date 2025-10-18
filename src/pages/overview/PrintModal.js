@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
@@ -56,7 +56,6 @@ ErrorMessage.propTypes = {
 const PrintModal = memo(function PrintModal({ close, setOnClose, setTitle }) {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
-    useLayoutEffect(() => setTitle("Select QR Code Size"), []);
 
     // Selected size option, default to small
     const [qrSize, setQrSize] = useState(sizeOptions.small);
@@ -72,6 +71,7 @@ const PrintModal = memo(function PrintModal({ close, setOnClose, setTitle }) {
     const cancel = () => {
         cancelPrinting.current = true;
         setModalContents("options");
+        setTitle("Select QR Code Size");
     };
 
     // Abort printing immediately when modal is closed
@@ -83,6 +83,7 @@ const PrintModal = memo(function PrintModal({ close, setOnClose, setTitle }) {
     const fetchQrCodes = async (size) => {
         // State starts loading animation (will change back if user cancels)
         setModalContents("loading");
+        setTitle("Fetching QR Codes");
 
         // Request Base64-encoded image string from backend
         const response = await sendPostRequest('/get_qr_codes', {

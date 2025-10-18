@@ -38,7 +38,6 @@ const PhotoModal = ({ close, setTitle }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
-    useLayoutEffect(() => setTitle("Upload Photos"), []);
 
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
@@ -63,7 +62,6 @@ const PhotoModal = ({ close, setTitle }) => {
     const handleSubmit = async () => {
         // Start loading animation
         setUploading(true);
-        setTitle("Uploading...");
 
         // Create FormData containing all photos + plant UUID
         const formData = new FormData();
@@ -98,7 +96,6 @@ const PhotoModal = ({ close, setTitle }) => {
             }
         } else {
             setUploading(false);
-            setTitle("Upload Photos");
             // Redirect to login page if user not signed in/session expired
             if (response.status === 401) {
                 navigate('/accounts/login/');

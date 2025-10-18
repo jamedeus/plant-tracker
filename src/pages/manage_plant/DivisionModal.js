@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useLayoutEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
@@ -30,7 +30,6 @@ const DivisionModal = ({ close, setTitle }) => {
     // - "form" (shows registration form)
     // - "done" (shows success screen, buttons to register another)
     const [modalContents, setModalContents] = useState("divide");
-    useLayoutEffect(() => setTitle("Divide Plant"), []);
 
     // Stores /divide_plant response keys used in /register_plant payload
     const [dividedFromId, setDividedFromId] = useState(null);
@@ -90,7 +89,7 @@ const DivisionModal = ({ close, setTitle }) => {
         };
         const onSuccess = (data) => {
             setModalContents("done");
-            const numRegistered = numberRegistered + 1
+            const numRegistered = numberRegistered + 1;
             setNumberRegistered(numRegistered);
             setTitle(`${numRegistered}${getNumberSuffix(numRegistered)} plant registered!`);
             /// Add child plant to timeline

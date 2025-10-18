@@ -39,6 +39,7 @@ const App = ({ initialState }) => {
 
             <LazyModal
                 ref={divisionModal.ref}
+                title="Divide Plant"
                 ariaLabel="Divide plant"
                 keepContents={true}
                 load={() => import(/* webpackChunkName: "manage_plant_division-modal" */ "./DivisionModal")}
