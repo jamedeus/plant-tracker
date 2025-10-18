@@ -3,6 +3,7 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import { v4 as mockUuidv4 } from 'uuid';
 import GroupModal from '../GroupModal';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { ReduxProvider } from '../store';
 import { mockContext, mockGroupOptions } from './mockContext';
 import { waitFor } from '@testing-library/react';
@@ -130,7 +131,7 @@ describe('GroupModal', () => {
         });
     });
 
-    it('sends the correct payload when "Add to group" modal submitted', async () => {
+    it('sends the correct payload when existing group option is clicked', async () => {
         // Mock fetch to return group options (requested when modal opened)
         mockFetchResponse({ options: mockGroupOptions });
 
@@ -265,5 +266,102 @@ describe('GroupModal', () => {
             }),
             headers: postHeaders
         });
+    });
+
+    it('shows error modal if error received while creating new group', async () => {
+        // Mock fetch to return group options (requested when modal opened)
+        mockFetchResponse({ options: mockGroupOptions });
+
+        // Render modal, fast forward so options load
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const component = render(
+            <ReduxProvider initialState={mockContext}>
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
+                <ErrorModal />
+            </ReduxProvider>
+        );
+        await act(async () => await jest.advanceTimersByTimeAsync(0));
+        // Mock uuidv4 to return a predictable value for new group
+        mockUuidv4.mockReturnValue('0640ec3b-1bed-4b15-a078-d6e7ec66be14');
+
+        // Simulate user clicking "Create new group" button
+        await user.click(component.getByText('Create new group'));
+
+        // Mock response to simulate error in /register_group call
+        mockFetchResponse({error: "uuid already exists in database"}, 409);
+        global.fetch.mockClear();
+
+        // Confirm error modal is not rendered
+        expect(component.queryByTestId('error-modal-body')).toBeNull();
+
+        // Simulate user submitting form
+        await user.click(component.getByRole('button', {name: 'Create'}));
+
+        // Confirm error modal appeared with error text
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(component.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(component.getByTestId('error-modal-body')).toHaveTextContent(
+            'uuid already exists in database'
+        );
+
+        // Confirm only made 1 fetch call (skipped /add_plant_to_group)
+        expect(global.fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it('shows error modal if error received while adding plant to new group', async () => {
+        // Mock fetch to return group options (requested when modal opened)
+        mockFetchResponse({ options: mockGroupOptions });
+
+        // Render modal, fast forward so options load
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const component = render(
+            <ReduxProvider initialState={mockContext}>
+                <GroupModal close={mockClose} setTitle={mockSetTitle} />
+                <ErrorModal />
+            </ReduxProvider>
+        );
+        await act(async () => await jest.advanceTimersByTimeAsync(0));
+        // Mock uuidv4 to return a predictable value for new group
+        mockUuidv4.mockReturnValue('0640ec3b-1bed-4b15-a078-d6e7ec66be14');
+
+        // Simulate user clicking "Create new group" button
+        await user.click(component.getByText('Create new group'));
+
+        // Mock fetch function to return /register_group response on first
+        // request, arbitrary /add_plant_to_group error on second
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                success: 'group registered',
+                name: 'Test group',
+                uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be14'
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        }).mockResolvedValueOnce({
+            ok: false,
+            status: 400,
+            json: () => Promise.resolve({
+                error: "failed to add plant to group"
+            }),
+            headers: new Map([['content-type', 'application/json']]),
+        });
+        global.fetch.mockClear();
+
+        // Confirm error modal is not rendered
+        expect(component.queryByTestId('error-modal-body')).toBeNull();
+
+        // Simulate user submitting form
+        await user.click(component.getByRole('button', {name: 'Create'}));
+
+        // Confirm error modal appeared with arbitrary error text
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(component.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(component.getByTestId('error-modal-body')).toHaveTextContent(
+            'failed to add plant to group'
+        );
+
+        // Confirm made both requests (/register_group and /add_plant_to_group)
+        expect(global.fetch).toHaveBeenCalledTimes(2);
     });
 });

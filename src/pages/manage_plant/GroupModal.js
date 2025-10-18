@@ -7,6 +7,7 @@ import GroupCard from 'src/components/GroupCard';
 import FormModal from 'src/components/FormModal';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import LoadingAnimation from 'src/components/LoadingAnimation';
+import { openErrorModal } from 'src/components/ErrorModal';
 import Checkmark from 'src/components/Checkmark';
 import { FaPlus } from 'react-icons/fa6';
 import { plantAddedToGroup } from './plantSlice';
@@ -22,10 +23,16 @@ const RegisterGroup = ({ close, cancel, setTitle, addPlantToGroup }) => {
     ), [modalContents]);
 
     // If group registered successfully make second request to add plant to new
-    // group, show success screen
+    // group, show success screen (or go back to form if unable to add plant)
     const onSuccess = async (data) => {
         const result = await addPlantToGroup(data.uuid);
         setModalContents(result ? "success" : "form");
+    };
+
+    // If group registration failed show error modal and go back to form
+    const onError = (data) => {
+        openErrorModal(JSON.stringify(data));
+        setModalContents("form");
     };
 
     return (
@@ -39,6 +46,7 @@ const RegisterGroup = ({ close, cancel, setTitle, addPlantToGroup }) => {
                     payload={{uuid: uuidv4()}}
                     onSubmit={() => setModalContents("loading")}
                     onSuccess={onSuccess}
+                    onError={onError}
                     submitButtonText="Create"
                 />
             )}
