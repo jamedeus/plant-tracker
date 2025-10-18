@@ -4,6 +4,7 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { v4 as mockUuidv4 } from 'uuid';
+import { intToOrdinal } from 'src/utils/stringUtils';
 import DivisionModal from '../DivisionModal';
 import { ReduxProvider } from '../store';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -256,6 +257,19 @@ describe('DivisionModal', () => {
             }),
             headers: postHeaders
         });
+
+        // Confirm funciton used to generate title works for large numbers
+        expect(intToOrdinal(11)).toBe('11th');
+        expect(intToOrdinal(12)).toBe('12th');
+        expect(intToOrdinal(13)).toBe('13th');
+        expect(intToOrdinal(20)).toBe('20th');
+        expect(intToOrdinal(21)).toBe('21st');
+        expect(intToOrdinal(22)).toBe('22nd');
+        expect(intToOrdinal(23)).toBe('23rd');
+        expect(intToOrdinal(100)).toBe('100th');
+        expect(intToOrdinal(101)).toBe('101st');
+        expect(intToOrdinal(102)).toBe('102nd');
+        expect(intToOrdinal(103)).toBe('103rd');
     });
 
     it('shows error modal if error received while dividing plant', async () => {

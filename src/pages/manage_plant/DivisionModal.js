@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
+import { intToOrdinal } from 'src/utils/stringUtils';
 import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import ModalPages from 'src/components/ModalPages';
@@ -12,13 +13,6 @@ import DivisionScannerButton from './DivisionScanner';
 import { useSelector, useDispatch } from 'react-redux';
 import { divisionEventCreated, childPlantRegistered } from './timelineSlice';
 import { LuSplit } from "react-icons/lu";
-
-const numberSuffixMap = {
-    1: 'st',
-    2: 'nd',
-    3: 'rd'
-};
-const getNumberSuffix = (number) => numberSuffixMap[number] || 'th';
 
 const DivisionModal = ({ close, setTitle }) => {
     const dispatch = useDispatch();
@@ -89,9 +83,8 @@ const DivisionModal = ({ close, setTitle }) => {
         };
         const onSuccess = (data) => {
             setModalContents("done");
-            const numRegistered = numberRegistered + 1;
-            setNumberRegistered(numRegistered);
-            setTitle(`${numRegistered}${getNumberSuffix(numRegistered)} plant registered!`);
+            setNumberRegistered(numberRegistered + 1);
+            setTitle(`${intToOrdinal(numberRegistered + 1)} plant registered!`);
             /// Add child plant to timeline
             dispatch(childPlantRegistered({
                 timestamp: divisionEventTimestamp,
