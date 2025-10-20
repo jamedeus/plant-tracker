@@ -80,15 +80,11 @@ function Layout() {
     }, [dispatch]);
 
     const editModal = useModal();
-    const openEditModal = useCallback(() => {
-        editModal.open();
-    }, [editModal]);
-
     const addPlantsModal = useModal();
     const openAddPlantsModal = useCallback(() => {
         addPlantsModal.open();
         document.activeElement.blur();
-    }, [addPlantsModal]);
+    }, [addPlantsModal.open]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -112,7 +108,7 @@ function Layout() {
                 Remove
             </a></li>
         </DropdownMenu>
-    ), []);
+    ), [openAddPlantsModal]);
 
     return (
         <div
@@ -140,7 +136,10 @@ function Layout() {
                         description={groupDetails.description}
                     />
                 </div>
-                <button className="btn h-8 mt-4 w-full" onClick={openEditModal}>
+                <button
+                    className="btn h-8 mt-4 w-full"
+                    onClick={() => editModal.open()}
+                >
                     Edit Details
                 </button>
                 <ChangeQrScannerButton

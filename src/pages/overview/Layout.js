@@ -81,7 +81,7 @@ const Layout = () => {
     const openPrintModal = useCallback(() => {
         printModal.open();
         document.activeElement.blur();
-    }, [printModal]);
+    }, [printModal.open]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
@@ -119,7 +119,7 @@ const Layout = () => {
 
             </>
         );
-    }, [ToggleThemeOption, showArchive]);
+    }, [ToggleThemeOption, showArchive, openPrintModal]);
 
     // Dropdown with links to jump to plant or group columns
     // Only rendered on mobile layout (both columns always visible on desktop)
