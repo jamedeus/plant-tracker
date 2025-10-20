@@ -61,6 +61,11 @@ function Layout() {
         groupModal.open();
     }, [groupModal]);
 
+    const removeQrModal = useModal();
+    const openRemoveQrModal = useCallback(() => {
+        removeQrModal.open();
+    }, [removeQrModal]);
+
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
         <NavbarDropdownOptions>
@@ -108,6 +113,7 @@ function Layout() {
             <DetailsDrawer
                 openGroupModal={openGroupModal}
                 openEditModal={openEditModal}
+                openRemoveQrModal={openRemoveQrModal}
             />
 
             {/* Don't render event buttons if plant is archived */}
@@ -141,6 +147,15 @@ function Layout() {
                 ariaLabel="Add plant to group"
                 load={() => import(/* webpackChunkName: "manage_plant_group-modal" */ "./GroupModal")}
             />
+
+            {plantDetails.archived && (
+                <LazyModal
+                    ref={removeQrModal.ref}
+                    initialTitle="Remove QR code"
+                    ariaLabel="Remove QR code"
+                    load={() => import(/* webpackChunkName: "manage_plant_remove-qr-modal" */ "./RemoveQrModal")}
+                />
+            )}
 
             {/* Don't render until user opens gallery */}
             {galleryOpen && (

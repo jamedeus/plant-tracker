@@ -18,7 +18,7 @@ import {
 import 'src/css/title-drawer.css';
 import clsx from 'clsx';
 
-const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
+const DetailsDrawer = ({ openGroupModal, openEditModal, openRemoveQrModal }) => {
     // Get state shown in drawer
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
@@ -129,19 +129,26 @@ const DetailsDrawer = ({ openGroupModal, openEditModal }) => {
                     Edit Details
                 </button>
             </div>
-            <ChangeQrScannerButton
-                isOpen={changeQrScannerOpen}
-                onOpen={openChangeQrScanner}
-                onClose={closeChangeQrScanner}
-                oldUuid={plantDetails.uuid}
-            />
+            {plantDetails.archived ? (
+                <button className="btn h-8 mt-4 w-full" onClick={openRemoveQrModal}>
+                    Remove QR Code
+                </button>
+            ) : (
+                <ChangeQrScannerButton
+                    isOpen={changeQrScannerOpen}
+                    onOpen={openChangeQrScanner}
+                    onClose={closeChangeQrScanner}
+                    oldUuid={plantDetails.uuid}
+                />
+            )}
         </TitleDrawer>
     );
 };
 
 DetailsDrawer.propTypes = {
     openGroupModal: PropTypes.func.isRequired,
-    openEditModal: PropTypes.func.isRequired
+    openEditModal: PropTypes.func.isRequired,
+    openRemoveQrModal: PropTypes.func.isRequired
 };
 
 export default DetailsDrawer;

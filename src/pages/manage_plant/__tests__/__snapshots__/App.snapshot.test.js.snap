@@ -2529,7 +2529,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         <button
           class="btn h-8 mt-4 w-full"
         >
-          Change QR Code
+          Remove QR Code
         </button>
       </div>
     </div>
