@@ -48,7 +48,6 @@ def setUpModule():
 
 def tearDownModule():
     # Delete mock photo directory after tests
-    print("\nDeleting mock photos...\n")
     cleanup_isolated_media_root(OVERRIDE, MODULE_MEDIA_ROOT)
 
 
