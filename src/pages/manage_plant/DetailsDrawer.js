@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import sendPostRequest from 'src/utils/sendPostRequest';
@@ -18,7 +18,7 @@ import {
 import 'src/css/title-drawer.css';
 import clsx from 'clsx';
 
-const DetailsDrawer = ({ openGroupModal, openEditModal, openRemoveQrModal }) => {
+const DetailsDrawer = memo(function DetailsDrawer({ openGroupModal, openEditModal, openRemoveQrModal }) {
     // Get state shown in drawer
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
@@ -107,7 +107,7 @@ const DetailsDrawer = ({ openGroupModal, openEditModal, openRemoveQrModal }) => 
             ) : (
                 <a
                     className='btn btn-square size-10 min-size-10'
-                    onClick={openGroupModal}
+                    onClick={() => openGroupModal()}
                     title='Add plant to group'
                     tabIndex={0}
                 >
@@ -125,12 +125,12 @@ const DetailsDrawer = ({ openGroupModal, openEditModal, openRemoveQrModal }) => 
                     pot_size={plantDetails.pot_size}
                     description={plantDetails.description}
                 />
-                <button className="btn h-8 mt-4 w-full" onClick={openEditModal}>
+                <button className="btn h-8 mt-4 w-full" onClick={() => openEditModal()}>
                     Edit Details
                 </button>
             </div>
             {plantDetails.archived ? (
-                <button className="btn h-8 mt-4 w-full" onClick={openRemoveQrModal}>
+                <button className="btn h-8 mt-4 w-full" onClick={() => openRemoveQrModal()}>
                     Remove QR Code
                 </button>
             ) : (
@@ -143,7 +143,7 @@ const DetailsDrawer = ({ openGroupModal, openEditModal, openRemoveQrModal }) => 
             )}
         </TitleDrawer>
     );
-};
+});
 
 DetailsDrawer.propTypes = {
     openGroupModal: PropTypes.func.isRequired,

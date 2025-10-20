@@ -52,19 +52,8 @@ function Layout() {
     }, [dispatch]);
 
     const editModal = useModal();
-    const openEditModal = useCallback(() => {
-        editModal.open();
-    }, [editModal]);
-
     const groupModal = useModal();
-    const openGroupModal = useCallback(() => {
-        groupModal.open();
-    }, [groupModal]);
-
     const removeQrModal = useModal();
-    const openRemoveQrModal = useCallback(() => {
-        removeQrModal.open();
-    }, [removeQrModal]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -111,9 +100,9 @@ function Layout() {
             />
 
             <DetailsDrawer
-                openGroupModal={openGroupModal}
-                openEditModal={openEditModal}
-                openRemoveQrModal={openRemoveQrModal}
+                openGroupModal={groupModal.open}
+                openEditModal={editModal.open}
+                openRemoveQrModal={removeQrModal.open}
             />
 
             {/* Don't render event buttons if plant is archived */}
