@@ -55,6 +55,7 @@ function App({ initialState }) {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => <NavbarDropdownOptions />, []);
+    const topRightButton = useMemo(() => <QrScannerButton />, []);
 
     return (
         <div
@@ -64,7 +65,7 @@ function App({ initialState }) {
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title='Registration'
-                topRightButton={<QrScannerButton />}
+                topRightButton={topRightButton}
             />
 
             <div

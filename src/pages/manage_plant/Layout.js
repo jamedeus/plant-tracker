@@ -84,6 +84,13 @@ function Layout() {
         </NavbarDropdownOptions>
     ), [plantDetails, hasPhotos]);
 
+    const topRightButton = useMemo(() => (
+        <QrScannerButton
+            otherScannerOpen={otherScannerOpen}
+            closeOtherScanner={closeOtherScanner}
+        />
+    ), [otherScannerOpen, closeOtherScanner]);
+
     return (
         <div
             className="container flex flex-col items-center mx-auto mb-28"
@@ -93,10 +100,7 @@ function Layout() {
                 menuOptions={DropdownMenuOptions}
                 title={plantDetails.display_name}
                 onTitleClick={toggleDetailsDrawerOpen}
-                topRightButton={<QrScannerButton
-                    otherScannerOpen={otherScannerOpen}
-                    closeOtherScanner={closeOtherScanner}
-                />}
+                topRightButton={topRightButton}
             />
 
             <DetailsDrawer

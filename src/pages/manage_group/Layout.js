@@ -110,6 +110,13 @@ function Layout() {
         </DropdownMenu>
     ), [openAddPlantsModal]);
 
+    const topRightButton = useMemo(() => (
+        <QrScannerButton
+            otherScannerOpen={changeQrScannerOpen}
+            closeOtherScanner={closeChangeQrScanner}
+        />
+    ), [changeQrScannerOpen, closeChangeQrScanner]);
+
     return (
         <div
             className="container flex flex-col items-center mx-auto mb-28"
@@ -119,10 +126,7 @@ function Layout() {
                 menuOptions={DropdownMenuOptions}
                 title={groupDetails.display_name}
                 onTitleClick={toggleTitleDrawerOpen}
-                topRightButton={<QrScannerButton
-                    otherScannerOpen={changeQrScannerOpen}
-                    closeOtherScanner={closeChangeQrScanner}
-                />}
+                topRightButton={topRightButton}
             />
 
             <TitleDrawer open={titleDrawerOpen} onClose={closeTitleDrawer}>

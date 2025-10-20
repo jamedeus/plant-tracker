@@ -146,6 +146,8 @@ const Layout = () => {
         );
     }, []);
 
+    const topRightButton = useMemo(() => <QrScannerButton />, []);
+
     return (
         <div
             className="container flex flex-col items-center mx-auto pb-28"
@@ -155,7 +157,7 @@ const Layout = () => {
                 menuOptions={DropdownMenuOptions}
                 title={pageTitle}
                 titleOptions={stackedColumns ? TitleQuickNavigation : null}
-                topRightButton={<QrScannerButton />}
+                topRightButton={topRightButton}
             />
 
             <div className={clsx(
