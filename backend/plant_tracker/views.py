@@ -1,6 +1,7 @@
 '''Django API endpoint functions'''
 
 import base64
+from uuid import UUID
 from io import BytesIO
 from itertools import chain
 
@@ -209,12 +210,12 @@ def change_uuid(instance, data, **kwargs):
         # are uuid so once it changes the old entry can't be removed)
         remove_instance_from_cached_overview_state(instance)
         # Change UUID,
-        instance.uuid = data["new_id"]
+        instance.uuid = UUID(data["new_id"])
         instance.save(update_fields=["uuid"])
         # Add back to cached overview state under new UUID
         add_instance_to_cached_overview_state(instance)
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
-    except ValidationError:
+    except (ValidationError, ValueError):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
     except IntegrityError:
         return JsonResponse(
