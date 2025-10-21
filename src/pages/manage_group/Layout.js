@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
@@ -17,6 +17,7 @@ import clsx from 'clsx';
 import 'src/css/index.css';
 import { updatePlantLastEventTimes } from './groupSlice';
 import EventButtons from './EventButtons';
+import { useEditableNodeListController } from 'src/components/editableNodeListController';
 
 function Layout() {
     const dispatch = useDispatch();
@@ -71,8 +72,8 @@ function Layout() {
         setAddEventsMode(0);
     }, []);
 
-    // FormRef for FilterColumn used to add events to subset of plants in group
-    const selectedPlantsRef = useRef(null);
+    // Controller used to track selected plants when adding events or removing
+    const selectedPlantsController = useEditableNodeListController();
 
     // Handler for AddEventsFooter buttons
     const handleAddEvents = useCallback((payload) => {
@@ -192,7 +193,7 @@ function Layout() {
                 <PlantsCol
                     plants={plantDetails}
                     editing={Boolean(addEventsMode) || removingPlants}
-                    formRef={selectedPlantsRef}
+                    selectionController={selectedPlantsController}
                     storageKey={`group-${groupDetails.uuid}`}
                     // Render dropdown with add/remove options unless no plants
                     titleOptions={noPlants ? null : PlantsColTitleOptions}
@@ -218,14 +219,14 @@ function Layout() {
             <AddEventsFooter
                 visible={Boolean(addEventsMode)}
                 onClose={stopAddingEvents}
-                selectedPlantsRef={selectedPlantsRef}
+                selectedPlantsController={selectedPlantsController}
                 plants={plantDetails}
                 updatePlantLastEventTimes={handleAddEvents}
             />
 
             <RemovePlantsFooter
                 visible={removingPlants}
-                selectedPlantsRef={selectedPlantsRef}
+                selectedPlantsController={selectedPlantsController}
                 stopRemovingPlants={stopRemovingPlants}
             />
 

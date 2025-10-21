@@ -7,11 +7,12 @@ import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
 import HoldToConfirm from 'src/components/HoldToConfirm';
 import { plantsRemoved, groupsRemoved, showArchiveChanged } from './overviewSlice';
+import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
 const EditModeFooter = memo(function EditModeFooter({
     visible,
-    selectedPlantsRef,
-    selectedGroupsRef,
+    selectedPlantsController,
+    selectedGroupsController,
     setEditing,
     archivedOverview,
 }) {
@@ -31,8 +32,8 @@ const EditModeFooter = memo(function EditModeFooter({
     // Callback fired when delete button held for required interval
     const handleDelete = async () => {
         // Get combined array of selected plant and group uuids
-        const selectedPlants = getSelectedItems(selectedPlantsRef);
-        const selectedGroups = getSelectedItems(selectedGroupsRef);
+        const selectedPlants = getSelectedItems(selectedPlantsController);
+        const selectedGroups = getSelectedItems(selectedGroupsController);
         const selectedUuids = selectedPlants.concat(selectedGroups);
 
         // Don't send empty request if nothing selected
@@ -45,6 +46,9 @@ const EditModeFooter = memo(function EditModeFooter({
         const onSuccess = (data) => {
             dispatch(plantsRemoved(data.deleted));
             dispatch(groupsRemoved(data.deleted));
+            // Remove deleted uuids from controller selection
+            selectedPlantsController.bulkUnselect?.(data.deleted);
+            selectedGroupsController.bulkUnselect?.(data.deleted);
         };
         const onError = (data) => openErrorModal(
             `Failed to delete: ${data.failed.join(', ')}`
@@ -64,8 +68,8 @@ const EditModeFooter = memo(function EditModeFooter({
         const archived = !archivedOverview;
 
         // Get combined array of selected plant and group uuids
-        const selectedPlants = getSelectedItems(selectedPlantsRef);
-        const selectedGroups = getSelectedItems(selectedGroupsRef);
+        const selectedPlants = getSelectedItems(selectedPlantsController);
+        const selectedGroups = getSelectedItems(selectedGroupsController);
         const selectedUuids = selectedPlants.concat(selectedGroups);
 
         // Don't send empty request if nothing selected
@@ -80,6 +84,9 @@ const EditModeFooter = memo(function EditModeFooter({
             dispatch(groupsRemoved(data.archived));
             // Ensure archive link visible in dropdown menu
             dispatch(showArchiveChanged(archived));
+            // Remove archived uuids from controller selection
+            selectedPlantsController.bulkUnselect?.(data.archived);
+            selectedGroupsController.bulkUnselect?.(data.archived);
         };
         const onError = (data) => openErrorModal(
             `Failed to archive: ${data.failed.join(', ')}`
@@ -93,7 +100,7 @@ const EditModeFooter = memo(function EditModeFooter({
     return (
         <EditableNodeListActions
             visible={visible}
-            formRefs={[selectedPlantsRef, selectedGroupsRef]}
+            controllers={[selectedPlantsController, selectedGroupsController]}
             onClose={() => setEditing(false)}
             itemName="item"
             initialText="Select plants and groups"
@@ -134,14 +141,8 @@ const EditModeFooter = memo(function EditModeFooter({
 
 EditModeFooter.propTypes = {
     visible: PropTypes.bool.isRequired,
-    selectedPlantsRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
-    selectedGroupsRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
+    selectedPlantsController: controllerPropTypes.isRequired,
+    selectedGroupsController: controllerPropTypes.isRequired,
     setEditing: PropTypes.func.isRequired,
     archivedOverview: PropTypes.bool.isRequired,
 };

@@ -1,5 +1,6 @@
 import PlantCard from '../PlantCard';
 import FilterColumn from '../FilterColumn';
+import { createEditableNodeListController } from '../editableNodeListController';
 
 const plants = [
     {
@@ -78,7 +79,7 @@ const plants = [
 ];
 
 describe('FilterColumn', () => {
-    let component, user;
+    let component, user, selectionController;
 
     beforeEach(() => {
         // Allow fast forwarding (skip debounce)
@@ -86,13 +87,14 @@ describe('FilterColumn', () => {
 
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        selectionController = createEditableNodeListController();
         component = render(
             <FilterColumn
                 title="Plants"
                 contents={plants}
                 CardComponent={PlantCard}
                 editing={false}
-                formRef={jest.fn()}
+                controller={selectionController}
                 selected={{current: []}}
                 ignoreKeys={[
                     'uuid',
@@ -424,7 +426,7 @@ describe('FilterColumn', () => {
                 ]}
                 CardComponent={PlantCard}
                 editing={false}
-                formRef={jest.fn()}
+                controller={createEditableNodeListController()}
                 selected={{current: []}}
                 ignoreKeys={[]}
                 sortByKeys={[
@@ -456,7 +458,7 @@ describe('FilterColumn optional parameters', () => {
             contents: plants,
             CardComponent: PlantCard,
             editing: false,
-            formRef: jest.fn(),
+            controller: createEditableNodeListController(),
             selected: {current: []},
             ignoreKeys: [
                 'uuid',

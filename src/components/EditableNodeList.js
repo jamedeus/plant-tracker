@@ -1,15 +1,12 @@
-import React, { useId } from 'react';
+import React, { useId, useSyncExternalStore } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
-// Takes formRef passed to EditableNodeList, returns array of selected item keys
-export const getSelectedItems = (formRef) => {
-    if (formRef.current) {
-        const selected = new FormData(formRef.current);
-        return Array.from(selected.keys());
-    } else {
-        return [];
-    }
+// Takes controller passed to EditableNodeList, returns array of selected item keys
+export const getSelectedItems = (controller) => {
+    if (!controller) return [];
+    return Array.from(controller.getSnapshot());
 };
 
 // Takes array of selected item keys, object with details of each item (keys
@@ -27,53 +24,64 @@ export const filterSelectedItems = (selectedItems, itemDetails, requiredAttribut
     });
 };
 
-// Takes editing (bool), formRef (used to parse FormData), and node list
-// Returns node list wrapped in form with a hidden checkbox for each node
-// When editing is true nodes shrink to show hidden checkbox
-const EditableNodeList = ({ editing, formRef, children }) => {
-    // Get unique checkbox ID prefix (allows multiple EditableNodelist with
-    // overlapping contents on same page)
+// Takes editing (bool), controller object, and children (list of nodes).
+// Renders each node with a wrapper with a hidden checkbox for each node.
+// When editing is true nodes shrink to show hidden checkbox, clicking checkbox
+// or transparent overlay over node toggles selection in controller.
+const EditableNodeList = ({ editing, controller, children }) => {
     const prefix = useId();
+    const nodes = React.Children.toArray(children);
+
+    // Subscribe to controller (returns Set with selected item keys)
+    const selected = useSyncExternalStore(
+        controller.subscribe,
+        controller.getSnapshot
+    );
 
     return (
-        <form ref={formRef} className="flex flex-col gap-4">
-            {children.map((node) => (
-                <div key={node.key} className="flex relative">
-                    <div className="absolute flex h-full z-0">
-                        <input
-                            type="checkbox"
-                            tabIndex={editing ? 0 : -1}
-                            id={`${prefix}-${node.key}`}
-                            name={node.key}
-                            className="radio my-auto"
-                            aria-label={`Select ${node.props?.name || 'node'}`}
+        <div className="flex flex-col gap-4">
+            {nodes.map((node) => {
+                // Remove .$ prefix added to keys by React
+                const key = String(node.key).replace(/^\.\$/, '');
+                const checkboxId = `${prefix}-${key}`;
+                const isSelected = selected.has(key);
+
+                return (
+                    <div key={key} className="flex relative">
+                        <div className="absolute flex h-full z-0">
+                            <input
+                                type="checkbox"
+                                tabIndex={editing ? 0 : -1}
+                                id={checkboxId}
+                                checked={isSelected}
+                                onChange={() => controller.toggle(key)}
+                                className="radio my-auto"
+                                aria-label={`Select ${node.props?.name || 'node'}`}
+                            />
+                        </div>
+                        <div className={clsx(
+                            'w-full overflow-hidden transition-all duration-300',
+                            editing ? 'ml-[2.5rem]' : 'ml-0'
+                        )}>
+                            {node}
+                        </div>
+                        <label
+                            htmlFor={checkboxId}
+                            className={clsx(
+                                'cursor-pointer absolute z-20',
+                                editing && 'size-full'
+                            )}
                         />
                     </div>
-                    <div className={clsx(
-                        'w-full overflow-hidden transition-all duration-300',
-                        editing ? 'ml-[2.5rem]' : 'ml-0'
-                    )}>
-                        {node}
-                    </div>
-                    <label
-                        htmlFor={`${prefix}-${node.key}`}
-                        className={clsx(
-                            "cursor-pointer absolute z-20",
-                            editing && "size-full"
-                        )}
-                    />
-                </div>
-            ))}
-        </form>
+                );
+            })}
+        </div>
     );
 };
 
 EditableNodeList.propTypes = {
     editing: PropTypes.bool.isRequired,
-    formRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
+    controller: controllerPropTypes.isRequired,
     children: PropTypes.node
 };
 

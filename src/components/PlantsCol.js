@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import PlantCard from 'src/components/PlantCard';
 import FilterColumn from 'src/components/FilterColumn';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
 // Populates sort dropdown options
 const SORT_BY_KEYS = [
@@ -21,7 +22,7 @@ const IGNORE_KEYS = [
 ];
 
 // Renders FilterColumn with PlantCard for each item in plants param (array)
-const PlantsCol = ({ plants, editing, formRef, storageKey, titleOptions, onOpenTitle, children }) => {
+const PlantsCol = ({ plants, editing, selectionController, storageKey, titleOptions, onOpenTitle, children }) => {
     return (
         <FilterColumn
             title="Plants"
@@ -30,7 +31,7 @@ const PlantsCol = ({ plants, editing, formRef, storageKey, titleOptions, onOpenT
             contents={Object.values(plants)}
             CardComponent={PlantCard}
             editing={editing}
-            formRef={formRef}
+            controller={selectionController}
             ignoreKeys={IGNORE_KEYS}
             sortByKeys={SORT_BY_KEYS}
             defaultSortKey='created'
@@ -44,10 +45,7 @@ const PlantsCol = ({ plants, editing, formRef, storageKey, titleOptions, onOpenT
 PlantsCol.propTypes = {
     plants: PropTypes.objectOf(plantDetailsProptypes).isRequired,
     editing: PropTypes.bool.isRequired,
-    formRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
+    selectionController: controllerPropTypes.isRequired,
     storageKey: PropTypes.string,
     titleOptions: PropTypes.node,
     onOpenTitle: PropTypes.func,

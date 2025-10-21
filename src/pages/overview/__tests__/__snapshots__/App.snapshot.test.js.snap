@@ -319,7 +319,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           <div
             class="section-content"
           >
-            <form
+            <div
               class="flex flex-col gap-4"
             >
               <div
@@ -332,7 +332,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     aria-label="Select Test Plant"
                     class="radio my-auto"
                     id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                    name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
                     type="checkbox"
                   />
@@ -466,7 +465,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   for=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -587,7 +586,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           <div
             class="section-content"
           >
-            <form
+            <div
               class="flex flex-col gap-4"
             >
               <div
@@ -600,7 +599,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     aria-label="Select Test group"
                     class="radio my-auto"
                     id=":r7:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                    name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     tabindex="-1"
                     type="checkbox"
                   />
@@ -698,7 +696,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   for=":r7:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 />
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -710,6 +708,11 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
       <div
         class="relative flex flex-col items-center gap-4 w-full"
       >
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -987,6 +990,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         class="relative flex flex-col items-center gap-4 w-full"
       >
         <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
+        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -1043,6 +1051,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -1419,7 +1432,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
           <div
             class="section-content"
           >
-            <form
+            <div
               class="flex flex-col gap-4"
             >
               <div
@@ -1432,7 +1445,6 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     aria-label="Select Test group"
                     class="radio my-auto"
                     id=":r5:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                    name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     tabindex="-1"
                     type="checkbox"
                   />
@@ -1530,7 +1542,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   for=":r5:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 />
               </div>
-            </form>
+            </div>
             <a
               aria-label="Register new group"
               class="btn btn-accent mx-auto mt-4"
@@ -1564,6 +1576,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
       <div
         class="relative flex flex-col items-center gap-4 w-full"
       >
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -1621,6 +1638,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -2029,7 +2051,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
           <div
             class="section-content"
           >
-            <form
+            <div
               class="flex flex-col gap-4"
             >
               <div
@@ -2042,7 +2064,6 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     aria-label="Select Test Plant"
                     class="radio my-auto"
                     id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                    name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
                     type="checkbox"
                   />
@@ -2176,7 +2197,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   for=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
-            </form>
+            </div>
             <a
               aria-label="Register new plant"
               class="btn btn-accent mx-auto mt-4"
@@ -2210,6 +2231,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
       <div
         class="relative flex flex-col items-center gap-4 w-full"
       >
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -2267,6 +2293,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -2675,7 +2706,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           <div
             class="section-content"
           >
-            <form
+            <div
               class="flex flex-col gap-4"
             >
               <div
@@ -2688,7 +2719,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     aria-label="Select Test Plant"
                     class="radio my-auto"
                     id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                    name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
                     type="checkbox"
                   />
@@ -2822,7 +2852,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   for=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
-            </form>
+            </div>
             <a
               aria-label="Register new plant"
               class="btn btn-accent mx-auto mt-4"
@@ -2965,7 +2995,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           <div
             class="section-content"
           >
-            <form
+            <div
               class="flex flex-col gap-4"
             >
               <div
@@ -2978,7 +3008,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     aria-label="Select Test group"
                     class="radio my-auto"
                     id=":r1:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                    name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     tabindex="-1"
                     type="checkbox"
                   />
@@ -3076,7 +3105,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   for=":r1:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 />
               </div>
-            </form>
+            </div>
             <a
               aria-label="Register new group"
               class="btn btn-accent mx-auto mt-4"
@@ -3110,6 +3139,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
       <div
         class="relative flex flex-col items-center gap-4 w-full"
       >
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -3167,6 +3201,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -3597,7 +3636,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           <div
             class="section-content"
           >
-            <form
+            <div
               class="flex flex-col gap-4"
             >
               <div
@@ -3610,7 +3649,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     aria-label="Select Test Plant"
                     class="radio my-auto"
                     id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                    name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
                     type="checkbox"
                   />
@@ -3744,7 +3782,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
-            </form>
+            </div>
             <a
               aria-label="Register new plant"
               class="btn btn-accent mx-auto mt-4"
@@ -3887,7 +3925,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           <div
             class="section-content"
           >
-            <form
+            <div
               class="flex flex-col gap-4"
             >
               <div
@@ -3900,7 +3938,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     aria-label="Select Test group"
                     class="radio my-auto"
                     id=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-                    name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     tabindex="-1"
                     type="checkbox"
                   />
@@ -3998,7 +4035,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   for=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 />
               </div>
-            </form>
+            </div>
             <a
               aria-label="Register new group"
               class="btn btn-accent mx-auto mt-4"
@@ -4032,6 +4069,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
       <div
         class="relative flex flex-col items-center gap-4 w-full"
       >
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants and groups
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -4089,6 +4131,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >

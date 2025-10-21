@@ -18,6 +18,7 @@ import { updatePlantLastEventTimes } from './overviewSlice';
 import { FaHome, FaUser } from "react-icons/fa";
 import { FaPrint, FaClockRotateLeft } from "react-icons/fa6";
 import clsx from 'clsx';
+import { useEditableNodeListController } from 'src/components/editableNodeListController';
 
 // Render correct components for current state objects
 const Layout = () => {
@@ -44,9 +45,9 @@ const Layout = () => {
     const plantsColRef = useRef(null);
     const groupsColRef = useRef(null);
 
-    // FormRefs for PlantsCol and GroupsCol, used to read user selection
-    const selectedPlantsRef = useRef(null);
-    const selectedGroupsRef = useRef(null);
+    // Controllers for PlantsCol and GroupsCol, used to read user selection
+    const selectedPlantsController = useEditableNodeListController();
+    const selectedGroupsController = useEditableNodeListController();
 
     // States to control edit and add events modes (shows checkboxes when true)
     // Renders EditModeFooter and AddEventsFooter respectively when true
@@ -170,7 +171,7 @@ const Layout = () => {
                         <PlantsCol
                             plants={plants}
                             editing={editing || addingEvents}
-                            formRef={selectedPlantsRef}
+                            selectionController={selectedPlantsController}
                             storageKey='overviewPlantsColumn'
                             // Archived overview: Click title to enter edit mode
                             onOpenTitle={archivedOverview ? toggleEditing : null}
@@ -209,7 +210,7 @@ const Layout = () => {
                         <GroupsCol
                             groups={groups}
                             editing={editing}
-                            formRef={selectedGroupsRef}
+                            selectionController={selectedGroupsController}
                             storageKey='overviewGroupsColumn'
                             onOpenTitle={toggleEditing}
                         >
@@ -230,8 +231,8 @@ const Layout = () => {
 
             <EditModeFooter
                 visible={editing}
-                selectedPlantsRef={selectedPlantsRef}
-                selectedGroupsRef={selectedGroupsRef}
+                selectedPlantsController={selectedPlantsController}
+                selectedGroupsController={selectedGroupsController}
                 setEditing={setEditing}
                 archivedOverview={archivedOverview}
             />
@@ -240,7 +241,7 @@ const Layout = () => {
                 <AddEventsFooter
                     visible={addingEvents}
                     onClose={stopAddingEvents}
-                    selectedPlantsRef={selectedPlantsRef}
+                    selectedPlantsController={selectedPlantsController}
                     plants={plants}
                     updatePlantLastEventTimes={handleAddEvents}
                 />

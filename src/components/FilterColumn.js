@@ -7,6 +7,7 @@ import DropdownButton from './DropdownButton';
 import EditableNodeList from './EditableNodeList';
 import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FaArrowDownLong } from 'react-icons/fa6';
+import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 import clsx from 'clsx';
 
 // Takes object, ignoreKeys array, and filter input query
@@ -268,7 +269,7 @@ FilterInput.propTypes = {
 //   CardComponent, used to render cards in EditableNodeList.
 // - CardComponent: A JSX component rendered for each item in contents.
 // - editing: Bool that controls EditableNodeList checkbox visibility.
-// - selected: Ref containing array, receives selected EditableNodeList items.
+// - controller: EditableNodeListController object use to track selection.
 // - ignoreKeys: Array of strings matching attributes in contents objects that
 //   should be ignored when user types in filter input.
 // - sortByKeys: Array of objects with `key` and display attributes, populates
@@ -284,7 +285,7 @@ const FilterColumn = ({
     contents,
     CardComponent,
     editing,
-    formRef,
+    controller,
     ignoreKeys=[],
     sortByKeys=[],
     defaultSortKey=null,
@@ -404,7 +405,7 @@ const FilterColumn = ({
             }
             colRef={colRef}
         >
-            <EditableNodeList editing={editing} formRef={formRef}>
+            <EditableNodeList editing={editing} controller={controller}>
                 {sortByKey(state.currentContents, state.sortKey).map((item) => (
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
@@ -423,10 +424,7 @@ FilterColumn.propTypes = {
     contents: PropTypes.array.isRequired,
     CardComponent: PropTypes.elementType.isRequired,
     editing: PropTypes.bool,
-    formRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
+    controller: controllerPropTypes.isRequired,
     ignoreKeys: PropTypes.array,
     sortByKeys: PropTypes.array,
     defaultSortKey: PropTypes.string,

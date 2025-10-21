@@ -1,26 +1,27 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import EditableNodeList from 'src/components/EditableNodeList';
+import EditableNodeList, { getSelectedItems } from 'src/components/EditableNodeList';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import RegisterPageLink from 'src/components/RegisterPageLink';
 import PlantCard from 'src/components/PlantCard';
 import { plantsAdded } from './groupSlice';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import { useEditableNodeListController } from 'src/components/editableNodeListController';
 
 const Options = ({ options, close }) => {
     const dispatch = useDispatch();
     const groupId = useSelector((state) => state.group.groupDetails.uuid);
-    // Ref used to read selected items from EditableNodeList form
-    const formRef = useRef(null);
+    // Controller used to read selected items from EditableNodeList
+    const selectionController = useEditableNodeListController();
     // Show options if true, no plants message if false
     const hasOptions = Object.keys(options).length > 0;
 
     // Parses array of selected plant UUIDs, passes to addPlants callback
     const submit = () => {
-        const selected = new FormData(formRef.current);
-        addPlants(Array.from(selected.keys()));
+        const selected = getSelectedItems(selectionController);
+        addPlants(selected);
         close();
     };
 
@@ -36,7 +37,7 @@ const Options = ({ options, close }) => {
         <>
             <div className="md:max-h-[50vh] max-w-94 w-full mx-auto overflow-y-auto pr-4 my-4">
                 {hasOptions ? (
-                    <EditableNodeList editing={true} formRef={formRef}>
+                    <EditableNodeList editing={true} controller={selectionController}>
                         {Object.entries(options).map(([uuid, plant]) => (
                             <PlantCard key={uuid} { ...plant } />
                         ))}

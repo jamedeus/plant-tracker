@@ -7,11 +7,12 @@ import { getSelectedItems, filterSelectedItems } from 'src/components/EditableNo
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
+import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
 const AddEventsFooter = memo(function AddEventsFooter({
     visible,
     onClose,
-    selectedPlantsRef,
+    selectedPlantsController,
     plants,
     updatePlantLastEventTimes
 }) {
@@ -30,7 +31,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
     const handleAddEvents = async (eventType) => {
         // Get all selected plants that are not archived
         const selectedPlants = filterSelectedItems(
-            getSelectedItems(selectedPlantsRef),
+            getSelectedItems(selectedPlantsController),
             plants,
             { archived: false }
         );
@@ -63,7 +64,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
     return (
         <EditableNodeListActions
             visible={visible}
-            formRefs={[selectedPlantsRef]}
+            controllers={[selectedPlantsController]}
             onClose={onClose}
             itemName="plant"
             initialText="Select plants to add events"
@@ -105,10 +106,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
 AddEventsFooter.propTypes = {
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    selectedPlantsRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
+    selectedPlantsController: controllerPropTypes.isRequired,
     plants: PropTypes.objectOf(plantDetailsProptypes).isRequired,
     updatePlantLastEventTimes: PropTypes.func.isRequired,
 };

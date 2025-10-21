@@ -331,7 +331,7 @@ describe('App', () => {
 
         // Get reference to modal, confirm contains 2 plant options
         const modal = app.getByText("Add Plants").closest(".modal-box");
-        const plantOptions = modal.querySelector('form:not([method="dialog"])');
+        const plantOptions = modal.querySelector(':nth-child(4) > div > div');
         expect(plantOptions.children.length).toBe(2);
 
         // Click the second option twice (unselect, should not be in payload)

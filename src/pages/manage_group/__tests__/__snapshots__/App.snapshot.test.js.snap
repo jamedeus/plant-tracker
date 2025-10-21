@@ -420,7 +420,7 @@ exports[`App matches snapshot 1`] = `
         <div
           class="section-content"
         >
-          <form
+          <div
             class="flex flex-col gap-4"
           >
             <div
@@ -433,7 +433,6 @@ exports[`App matches snapshot 1`] = `
                   aria-label="Select Test Plant"
                   class="radio my-auto"
                   id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                  name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -578,7 +577,6 @@ exports[`App matches snapshot 1`] = `
                   aria-label="Select node"
                   class="radio my-auto"
                   id=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
-                  name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -722,7 +720,6 @@ exports[`App matches snapshot 1`] = `
                   aria-label="Select Newest plant"
                   class="radio my-auto"
                   id=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                  name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -818,7 +815,7 @@ exports[`App matches snapshot 1`] = `
                 for=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
               />
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -848,6 +845,11 @@ exports[`App matches snapshot 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -921,6 +923,11 @@ exports[`App matches snapshot 1`] = `
       <div
         class="relative flex flex-col items-center gap-4 w-full"
       >
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to remove
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -1313,7 +1320,7 @@ exports[`App matches snapshot when group is archived 1`] = `
         <div
           class="section-content"
         >
-          <form
+          <div
             class="flex flex-col gap-4"
           >
             <div
@@ -1326,7 +1333,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                   aria-label="Select Test Plant"
                   class="radio my-auto"
                   id=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                  name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -1471,7 +1477,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                   aria-label="Select node"
                   class="radio my-auto"
                   id=":r3:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
-                  name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -1615,7 +1620,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                   aria-label="Select Newest plant"
                   class="radio my-auto"
                   id=":r3:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                  name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -1711,7 +1715,7 @@ exports[`App matches snapshot when group is archived 1`] = `
                 for=":r3:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
               />
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -1741,6 +1745,11 @@ exports[`App matches snapshot when group is archived 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -1814,6 +1823,11 @@ exports[`App matches snapshot when group is archived 1`] = `
       <div
         class="relative flex flex-col items-center gap-4 w-full"
       >
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to remove
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -2232,7 +2246,7 @@ exports[`App matches snapshot when no plants 1`] = `
         <div
           class="section-content"
         >
-          <form
+          <div
             class="flex flex-col gap-4"
           />
           <span
@@ -2289,6 +2303,11 @@ exports[`App matches snapshot when no plants 1`] = `
             />
           </svg>
         </button>
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to add events
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >
@@ -2362,6 +2381,11 @@ exports[`App matches snapshot when no plants 1`] = `
       <div
         class="relative flex flex-col items-center gap-4 w-full"
       >
+        <div
+          class="w-70 md:w-82 text-sm md:text-base select-none text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
+        >
+          Select plants to remove
+        </div>
         <div
           class="flex flex-row justify-center gap-8"
         >

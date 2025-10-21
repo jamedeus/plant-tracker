@@ -5,10 +5,11 @@ import sendPostRequest from 'src/utils/sendPostRequest';
 import { plantsRemoved } from './groupSlice';
 import { getSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
+import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
 const RemovePlantsFooter = memo(function RemovePlantsFooter({
     visible,
-    selectedPlantsRef,
+    selectedPlantsController,
     stopRemovingPlants
 }) {
     const dispatch = useDispatch();
@@ -17,10 +18,14 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
     const removePlants = async () => {
         const payload = {
             group_id: groupId,
-            plants: getSelectedItems(selectedPlantsRef)
+            plants: getSelectedItems(selectedPlantsController)
         };
         const onSuccess = (data) => {
             dispatch(plantsRemoved(data.removed));
+            // Remove plants from selection
+            selectedPlantsController.bulkUnselect?.(
+                data.removed?.map((plant) => plant.uuid)
+            );
             // Hide RemovePlantsFooter and checkboxes
             stopRemovingPlants();
         };
@@ -30,7 +35,7 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
     return (
         <EditableNodeListActions
             visible={visible}
-            formRefs={[selectedPlantsRef]}
+            controllers={[selectedPlantsController]}
             onClose={stopRemovingPlants}
             itemName="plant"
             initialText="Select plants to remove"
@@ -55,10 +60,7 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
 
 RemovePlantsFooter.propTypes = {
     visible: PropTypes.bool.isRequired,
-    selectedPlantsRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
+    selectedPlantsController: controllerPropTypes.isRequired,
     stopRemovingPlants: PropTypes.func.isRequired,
 };
 
