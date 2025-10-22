@@ -425,6 +425,8 @@ exports[`App matches snapshot 1`] = `
           >
             <div
               class="flex relative"
+              data-editable-index="0"
+              data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             >
               <div
                 class="absolute flex h-full z-0"
@@ -432,7 +434,6 @@ exports[`App matches snapshot 1`] = `
                 <input
                   aria-label="Select Test Plant"
                   class="radio my-auto"
-                  id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -562,13 +563,17 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </a>
               </div>
-              <label
+              <button
+                aria-hidden="true"
                 class="cursor-pointer absolute z-20"
-                for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                tabindex="-1"
+                type="button"
               />
             </div>
             <div
               class="flex relative"
+              data-editable-index="1"
+              data-editable-key="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
             >
               <div
                 class="absolute flex h-full z-0"
@@ -576,7 +581,6 @@ exports[`App matches snapshot 1`] = `
                 <input
                   aria-label="Select node"
                   class="radio my-auto"
-                  id=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -705,13 +709,17 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </a>
               </div>
-              <label
+              <button
+                aria-hidden="true"
                 class="cursor-pointer absolute z-20"
-                for=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                tabindex="-1"
+                type="button"
               />
             </div>
             <div
               class="flex relative"
+              data-editable-index="2"
+              data-editable-key="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
             >
               <div
                 class="absolute flex h-full z-0"
@@ -719,7 +727,6 @@ exports[`App matches snapshot 1`] = `
                 <input
                   aria-label="Select Newest plant"
                   class="radio my-auto"
-                  id=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -810,9 +817,11 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </a>
               </div>
-              <label
+              <button
+                aria-hidden="true"
                 class="cursor-pointer absolute z-20"
-                for=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                tabindex="-1"
+                type="button"
               />
             </div>
           </div>
@@ -1325,6 +1334,8 @@ exports[`App matches snapshot when group is archived 1`] = `
           >
             <div
               class="flex relative"
+              data-editable-index="0"
+              data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             >
               <div
                 class="absolute flex h-full z-0"
@@ -1332,7 +1343,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                 <input
                   aria-label="Select Test Plant"
                   class="radio my-auto"
-                  id=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -1462,13 +1472,17 @@ exports[`App matches snapshot when group is archived 1`] = `
                   </div>
                 </a>
               </div>
-              <label
+              <button
+                aria-hidden="true"
                 class="cursor-pointer absolute z-20"
-                for=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                tabindex="-1"
+                type="button"
               />
             </div>
             <div
               class="flex relative"
+              data-editable-index="1"
+              data-editable-key="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
             >
               <div
                 class="absolute flex h-full z-0"
@@ -1476,7 +1490,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                 <input
                   aria-label="Select node"
                   class="radio my-auto"
-                  id=":r3:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -1605,13 +1618,17 @@ exports[`App matches snapshot when group is archived 1`] = `
                   </div>
                 </a>
               </div>
-              <label
+              <button
+                aria-hidden="true"
                 class="cursor-pointer absolute z-20"
-                for=":r3:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                tabindex="-1"
+                type="button"
               />
             </div>
             <div
               class="flex relative"
+              data-editable-index="2"
+              data-editable-key="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
             >
               <div
                 class="absolute flex h-full z-0"
@@ -1619,7 +1636,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                 <input
                   aria-label="Select Newest plant"
                   class="radio my-auto"
-                  id=":r3:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                   tabindex="-1"
                   type="checkbox"
                 />
@@ -1710,9 +1726,11 @@ exports[`App matches snapshot when group is archived 1`] = `
                   </div>
                 </a>
               </div>
-              <label
+              <button
+                aria-hidden="true"
                 class="cursor-pointer absolute z-20"
-                for=":r3:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                tabindex="-1"
+                type="button"
               />
             </div>
           </div>
@@ -2078,7 +2096,7 @@ exports[`App matches snapshot when no plants 1`] = `
           aria-selected="true"
           class="tab-option whitespace-nowrap tab-option-selected"
           data-headlessui-state="selected"
-          id="headlessui-tabs-tab-:r4:"
+          id="headlessui-tabs-tab-:r2:"
           role="tab"
           tabindex="0"
           type="button"
@@ -2089,7 +2107,7 @@ exports[`App matches snapshot when no plants 1`] = `
           aria-selected="false"
           class="tab-option whitespace-nowrap"
           data-headlessui-state=""
-          id="headlessui-tabs-tab-:r5:"
+          id="headlessui-tabs-tab-:r3:"
           role="tab"
           tabindex="-1"
           type="button"
