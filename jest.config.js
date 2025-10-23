@@ -38,5 +38,7 @@ module.exports = {
     testPathIgnorePatterns: ['mockContext.js'],
     setupFiles: ['<rootDir>/src/testUtils/jest.polyfills.js'],
     setupFilesAfterEnv: ['<rootDir>/src/testUtils/jest.setup.js'],
-    testTimeout: 15000
+    testTimeout: 15000,
+    // Limit workers (runs faster)
+    maxWorkers: '50%',
 };
