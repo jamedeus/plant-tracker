@@ -24,16 +24,18 @@ export const filterSelectedItems = (selectedItems, itemDetails, requiredAttribut
     });
 };
 
-// Takes element, returns getBoundingClientRect clamped to viewport (the
-// rect around the visible portion of the element, excluding offscreen)
+// Takes element, returns DOMRect around visible portion of the element
+// Clamps to parent rect (if parent is fixed height with overflow child may be
+// bigger) and viewport (if page has overflow element may be bigger than screen)
 const getVisibleRect = (element) => {
     if (!element) return null;
 
     const rect = element.getBoundingClientRect();
-    const top = Math.max(rect.top, 0);
-    const bottom = Math.min(rect.bottom, window.innerHeight);
-    const left = Math.max(rect.left, 0);
-    const right = Math.min(rect.right, window.innerWidth);
+    const parentRect = element.parentElement.getBoundingClientRect();
+    const top = Math.max(rect.top, parentRect.top, 0);
+    const bottom = Math.min(rect.bottom, parentRect.bottom, window.innerHeight);
+    const left = Math.max(rect.left, parentRect.left, 0);
+    const right = Math.min(rect.right, parentRect.right, window.innerWidth);
 
     // Return null if entirely offscreen
     if (bottom <= top || right <= left) return null;
@@ -197,7 +199,8 @@ const EditableNodeList = ({ editing, controller, children }) => {
 
         // Positions where scroll starts (slow, faster further past boundary)
         const scrollUpBoundary = visibleRect.top + zone;
-        const scrollDownBoundary = visibleRect.bottom - zone;
+        // Subtract 1 so it can actually hit max speed going down
+        const scrollDownBoundary = visibleRect.bottom - zone - 1;
 
         // Scroll up if cursor above scrollUpBoundary
         if (clientY < scrollUpBoundary) {
