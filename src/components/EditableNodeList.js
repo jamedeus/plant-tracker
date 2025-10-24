@@ -124,7 +124,7 @@ const EditableNodeList = ({
         const elements = document.elementsFromPoint?.(center, clientY) || [];
         // Find node wrapper, return index from data attribute
         const nodeWrapper = elements.find((el) =>
-            el?.hasAttribute?.('data-editable-index')
+            el?.hasAttribute?.('data-editable-index') && listRef?.current?.contains(el)
         );
         if (nodeWrapper) {
             return Number(nodeWrapper.getAttribute('data-editable-index'));
