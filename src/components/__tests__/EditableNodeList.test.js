@@ -37,6 +37,17 @@ describe('EditableNodeList', () => {
     beforeEach(() => {
         jest.useFakeTimers({ doNotFake: ['Date'] });
 
+        // Mock getBoundingClientRect to return list wrapper dimensions on iOS
+        // (used by getIndexFromPoint to get center of list)
+        Element.prototype.getBoundingClientRect = jest.fn(() => ({
+            top: 100,
+            bottom: 500,
+            left: 46,
+            right: 382,
+            width: 336,
+            height: 400
+        }));
+
         // Mock document.elementsFromPoint to return the element with
         // data-editable-index attribute matching elementUnderCursorIndex
         elementUnderCursorIndex = null;

@@ -114,16 +114,20 @@ const EditableNodeList = ({
         controller.replace(nextSelection);
     };
 
-    // Takes cursor coordinates, returns index of node under cursor (or null)
-    const getIndexFromPoint = (clientX, clientY) => {
-        // Get all elements under cursor, find node wrapper by data attribute
-        const elements = document.elementsFromPoint?.(clientX, clientY) || [];
-        const rowElement = elements.find((el) =>
-            el?.hasAttribute?.('data-editable-index') && listRef?.current?.contains(el)
+    // Takes cursor Y coordinate, returns index of node at same height (or null)
+    const getIndexFromPoint = (clientY) => {
+        // Get center of list (x axis)
+        const visibleRect = getVisibleRect(listRef.current);
+        const center = visibleRect.width / 2 + visibleRect.left;
+
+        // Get all elements with same Y coordinate as cursor
+        const elements = document.elementsFromPoint?.(center, clientY) || [];
+        // Find node wrapper, return index from data attribute
+        const nodeWrapper = elements.find((el) =>
+            el?.hasAttribute?.('data-editable-index')
         );
-        // Return index from data attribute
-        if (rowElement) {
-            return Number(rowElement.getAttribute('data-editable-index'));
+        if (nodeWrapper) {
+            return Number(nodeWrapper.getAttribute('data-editable-index'));
         }
         return null;
     };
@@ -186,7 +190,7 @@ const EditableNodeList = ({
             // Check which node is under cursor after scroll, update selection
             const pointerPosition = lastPointerPositionRef.current;
             if (pointerPosition) {
-                const index = getIndexFromPoint(pointerPosition.x, pointerPosition.y);
+                const index = getIndexFromPoint(pointerPosition.y);
                 if (index !== null && index !== dragStateRef.current.lastEventIndex) {
                     applyRangeSelection(dragStateRef.current, index);
                 }
@@ -290,7 +294,7 @@ const EditableNodeList = ({
             );
 
             // Get index of node under pointer (null if not over a node)
-            const newIndex = getIndexFromPoint(moveEvent.clientX, moveEvent.clientY);
+            const newIndex = getIndexFromPoint(moveEvent.clientY);
             // Update selection if pointer over different node than last event
             if (newIndex !== null && newIndex !== state.lastEventIndex) {
                 state.lastEventIndex = newIndex;
