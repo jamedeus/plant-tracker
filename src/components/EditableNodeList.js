@@ -393,7 +393,7 @@ const EditableNodeList = ({
                                 // No touch actions to prevent scrolling page
                                 // (allows dragging to select on mobile)
                                 className={clsx(
-                                    'absolute size-full z-20',
+                                    'absolute -inset-2 z-20',
                                     'cursor-pointer touch-none select-none'
                                 )}
                                 onPointerDown={event => beginDrag(event, index)}
