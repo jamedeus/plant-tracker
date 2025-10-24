@@ -352,7 +352,10 @@ const EditableNodeList = ({
     }, [editing]);
 
     return (
-        <div ref={listRef} className="flex flex-col gap-4">
+        <div
+            ref={listRef}
+            className={clsx("flex flex-col gap-4", editing && "select-none")}
+        >
             {nodes.map((node, index) => {
                 // Get node key, check if selected (checkbox state)
                 const key = itemKeys[index];
