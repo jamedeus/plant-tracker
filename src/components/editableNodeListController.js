@@ -25,30 +25,6 @@ export const createEditableNodeListController = (initialSelected = []) => {
     let selected = new Set(initialSelected);
     const subscriptions = createSubscriptionSet();
 
-    const emit = () => {
-        subscriptions.notify();
-    };
-
-    // Replace internal selection with result of updater/array input
-    const update = (updater) => {
-        let nextSelected = typeof updater === 'function'
-            ? updater(cloneSet(selected))
-            : new Set(updater);
-
-        if (!(nextSelected instanceof Set)) {
-            nextSelected = new Set(nextSelected ?? []);
-        }
-
-        // Update if selection changed
-        if (
-            nextSelected.size !== selected.size ||
-            Array.from(nextSelected).some((key) => !selected.has(key))
-        ) {
-            selected = nextSelected;
-            emit();
-        }
-    };
-
     return {
         // useSyncExternalStore first arg
         subscribe(listener) {
@@ -64,8 +40,16 @@ export const createEditableNodeListController = (initialSelected = []) => {
             selected.has(key) ? selected.delete(key) : selected.add(key);
             subscriptions.notify();
         },
-        replace(keys) {
-            update(keys);
+        // Takes new Set with selected keys, replaces selection
+        replace(nextSelected) {
+            // Only update if selection changed
+            if (
+                nextSelected.size !== selected.size ||
+                Array.from(nextSelected).some((key) => !selected.has(key))
+            ) {
+                selected = nextSelected;
+                subscriptions.notify();
+            }
         },
         // Takes array of keys, removes all from selection
         bulkUnselect(keys) {
