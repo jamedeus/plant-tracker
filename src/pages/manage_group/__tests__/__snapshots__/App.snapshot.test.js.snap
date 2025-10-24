@@ -563,12 +563,6 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </a>
               </div>
-              <button
-                aria-hidden="true"
-                class="cursor-pointer absolute z-20"
-                tabindex="-1"
-                type="button"
-              />
             </div>
             <div
               class="flex relative"
@@ -709,12 +703,6 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </a>
               </div>
-              <button
-                aria-hidden="true"
-                class="cursor-pointer absolute z-20"
-                tabindex="-1"
-                type="button"
-              />
             </div>
             <div
               class="flex relative"
@@ -817,12 +805,6 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </a>
               </div>
-              <button
-                aria-hidden="true"
-                class="cursor-pointer absolute z-20"
-                tabindex="-1"
-                type="button"
-              />
             </div>
           </div>
         </div>
@@ -1472,12 +1454,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                   </div>
                 </a>
               </div>
-              <button
-                aria-hidden="true"
-                class="cursor-pointer absolute z-20"
-                tabindex="-1"
-                type="button"
-              />
             </div>
             <div
               class="flex relative"
@@ -1618,12 +1594,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                   </div>
                 </a>
               </div>
-              <button
-                aria-hidden="true"
-                class="cursor-pointer absolute z-20"
-                tabindex="-1"
-                type="button"
-              />
             </div>
             <div
               class="flex relative"
@@ -1726,12 +1696,6 @@ exports[`App matches snapshot when group is archived 1`] = `
                   </div>
                 </a>
               </div>
-              <button
-                aria-hidden="true"
-                class="cursor-pointer absolute z-20"
-                tabindex="-1"
-                type="button"
-              />
             </div>
           </div>
         </div>

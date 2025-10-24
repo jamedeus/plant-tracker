@@ -374,19 +374,22 @@ const EditableNodeList = ({
                         )}>
                             {node}
                         </div>
-                        <button
-                            type="button"
-                            tabIndex={-1}
-                            // Cover full node when editing (click to select)
-                            // Disable touch actions to prevent scrolling page
-                            // (allows dragging to select multiple on mobile)
-                            className={clsx(
-                                'cursor-pointer absolute z-20',
-                                editing && 'size-full touch-none select-none'
-                            )}
-                            onPointerDown={(event) => beginDrag(event, index)}
-                            aria-hidden="true"
-                        />
+                        {/* Transparent overlay covers item when editing */}
+                        {editing && (
+                            <button
+                                type="button"
+                                tabIndex={-1}
+                                // Cover full node (click anywhere to select)
+                                // No touch actions to prevent scrolling page
+                                // (allows dragging to select on mobile)
+                                className={clsx(
+                                    'absolute size-full z-20',
+                                    'cursor-pointer touch-none select-none'
+                                )}
+                                onPointerDown={event => beginDrag(event, index)}
+                                aria-hidden="true"
+                            />
+                        )}
                     </div>
                 );
             })}

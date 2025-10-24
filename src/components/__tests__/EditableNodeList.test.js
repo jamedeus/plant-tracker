@@ -221,16 +221,16 @@ describe('EditableNodeList', () => {
     });
 
     it('does not select nodes when editing is disabled', () => {
-        // Render component with editing = false, get overlay buttons
+        // Render component with editing = false, get wrappers around nodes
         const { container, controller } = renderTestComponent(false);
-        const buttons = container.querySelectorAll('button');
+        const wrappers = container.querySelectorAll('.flex.relative');
 
         // Confirm nothing is selected
         expect(getSelectedItems(controller)).toEqual([]);
 
         // Simulate user starting click on first node, dragging to third node
         elementUnderCursorIndex = 0;
-        firePointerEvent(buttons[0], 'pointerdown', {
+        firePointerEvent(wrappers[0], 'pointerdown', {
             pointerId: 7,
             button: 0,
             clientX: 200,
