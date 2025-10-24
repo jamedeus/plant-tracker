@@ -50,10 +50,22 @@ const getClampedPosition = (cursorX, cursorY) => ({
 });
 
 // Takes editing (bool), controller object, and children (list of nodes).
-// Renders each node with a wrapper with a hidden checkbox for each node.
-// When editing is true nodes shrink to show hidden checkbox, clicking checkbox
-// or transparent overlay over node toggles selection in controller.
-const EditableNodeList = ({ editing, controller, children }) => {
+// Renders each node in a wrapper with a hidden checkbox that shows if selected.
+// When editing is true nodes shrink to show hidden checkbox, clicking anywhere
+// on node or checkbox toggles selection in controller.
+//
+// Clicking and dragging selects all nodes the cursor passes over and scrolls
+// page when cursor nears top/bottom. Optional scrollZoneHeight prop configures
+// scroll zone height (px) and the optional offset props adjust boundaries where
+// scroll zones begin (positive moves toward middle, negative moves outward).
+const EditableNodeList = ({
+    editing,
+    controller,
+    children,
+    scrollZoneHeight=112,
+    scrollZoneOffsetTop=0,
+    scrollZoneOffsetBottom=0
+}) => {
     const listRef = useRef(null);
     const dragStateRef = useRef(null);
     const pointerHandlersRef = useRef({ move: null, up: null, cancel: null });
@@ -189,8 +201,7 @@ const EditableNodeList = ({ editing, controller, children }) => {
     // Takes cursor Y coordinate, returns scroll speed in px/second
     // 0 = no scroll, negative = scroll up, positive = scroll down
     // Max scroll speed is full viewport height every second
-    // Optional zone arg controls height of scroll zones
-    const getAutoScrollSpeed = (clientY, zone = 80) => {
+    const getAutoScrollSpeed = (clientY) => {
         // Get rect around visible portion of list to detect if cursor is near
         // top/bottom (cursor can't reach actual top/bottom if offscreen)
         const visibleRect = getVisibleRect(listRef.current);
@@ -198,21 +209,21 @@ const EditableNodeList = ({ editing, controller, children }) => {
         if (!visibleRect) return;
 
         // Positions where scroll starts (slow, faster further past boundary)
-        const scrollUpBoundary = visibleRect.top + zone;
+        const scrollUpBoundary = visibleRect.top + scrollZoneHeight + scrollZoneOffsetTop;
         // Subtract 1 so it can actually hit max speed going down
-        const scrollDownBoundary = visibleRect.bottom - zone - 1;
+        const scrollDownBoundary = visibleRect.bottom - scrollZoneHeight - scrollZoneOffsetBottom - 1;
 
         // Scroll up if cursor above scrollUpBoundary
         if (clientY < scrollUpBoundary) {
             // Get distance into zone as ratio (0=at boundary, 1=top of zone)
-            const ratio = Math.min(zone, scrollUpBoundary - clientY) / zone;
+            const ratio = Math.min(scrollZoneHeight, scrollUpBoundary - clientY) / scrollZoneHeight;
             // Multiply by screen height to get px/second (negative = scroll up)
             return -(ratio * window.innerHeight);
         }
         // Scroll down if cursor below scrollDownBoundary
         if (clientY > scrollDownBoundary) {
             // Get distance into zone as ratio (0=at boundary, 1=bottom of zone)
-            const ratio = Math.min(zone, clientY - scrollDownBoundary) / zone;
+            const ratio = Math.min(scrollZoneHeight, clientY - scrollDownBoundary) / scrollZoneHeight;
             // Multiply by screen height to get px/second
             return ratio * window.innerHeight;
         }
@@ -382,7 +393,10 @@ const EditableNodeList = ({ editing, controller, children }) => {
 EditableNodeList.propTypes = {
     editing: PropTypes.bool.isRequired,
     controller: controllerPropTypes.isRequired,
-    children: PropTypes.node
+    children: PropTypes.node,
+    scrollZoneHeight: PropTypes.number,
+    scrollZoneOffsetTop: PropTypes.number,
+    scrollZoneOffsetBottom: PropTypes.number
 };
 
 export default EditableNodeList;

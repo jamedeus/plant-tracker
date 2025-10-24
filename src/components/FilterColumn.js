@@ -405,7 +405,11 @@ const FilterColumn = ({
             }
             colRef={colRef}
         >
-            <EditableNodeList editing={editing} controller={controller}>
+            <EditableNodeList
+                editing={editing}
+                controller={controller}
+                scrollZoneOffsetTop={180}
+            >
                 {sortByKey(state.currentContents, state.sortKey).map((item) => (
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
