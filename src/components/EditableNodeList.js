@@ -120,8 +120,15 @@ const EditableNodeList = ({
         const visibleRect = getVisibleRect(listRef.current);
         const center = visibleRect.width / 2 + visibleRect.left;
 
+        // Clamp Y coordinate to last clickable px at top/bottom of list
+        // Fixes not selecting during autoscroll if cursor is above/below list
+        const clampedY = Math.max(
+            visibleRect.top + 1,
+            Math.min(clientY, visibleRect.bottom - 1)
+        );
+
         // Get all elements with same Y coordinate as cursor
-        const elements = document.elementsFromPoint?.(center, clientY) || [];
+        const elements = document.elementsFromPoint?.(center, clampedY) || [];
         // Find node wrapper, return index from data attribute
         const nodeWrapper = elements.find((el) =>
             el?.hasAttribute?.('data-editable-index') && listRef?.current?.contains(el)
