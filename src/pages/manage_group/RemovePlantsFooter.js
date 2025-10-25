@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { plantsRemoved } from './groupSlice';
-import { getSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
@@ -18,7 +17,7 @@ const RemovePlantsFooter = memo(function RemovePlantsFooter({
     const removePlants = async () => {
         const payload = {
             group_id: groupId,
-            plants: getSelectedItems(selectedPlantsController)
+            plants: Array.from(selectedPlantsController.getSnapshot())
         };
         const onSuccess = (data) => {
             dispatch(plantsRemoved(data.removed));

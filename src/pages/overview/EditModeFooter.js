@@ -1,7 +1,6 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { getSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { openErrorModal } from 'src/components/ErrorModal';
@@ -32,8 +31,8 @@ const EditModeFooter = memo(function EditModeFooter({
     // Callback fired when delete button held for required interval
     const handleDelete = async () => {
         // Get combined array of selected plant and group uuids
-        const selectedPlants = getSelectedItems(selectedPlantsController);
-        const selectedGroups = getSelectedItems(selectedGroupsController);
+        const selectedPlants = Array.from(selectedPlantsController.getSnapshot());
+        const selectedGroups = Array.from(selectedGroupsController.getSnapshot());
         const selectedUuids = selectedPlants.concat(selectedGroups);
 
         // Don't send empty request if nothing selected
@@ -68,8 +67,8 @@ const EditModeFooter = memo(function EditModeFooter({
         const archived = !archivedOverview;
 
         // Get combined array of selected plant and group uuids
-        const selectedPlants = getSelectedItems(selectedPlantsController);
-        const selectedGroups = getSelectedItems(selectedGroupsController);
+        const selectedPlants = Array.from(selectedPlantsController.getSnapshot());
+        const selectedGroups = Array.from(selectedGroupsController.getSnapshot());
         const selectedUuids = selectedPlants.concat(selectedGroups);
 
         // Don't send empty request if nothing selected

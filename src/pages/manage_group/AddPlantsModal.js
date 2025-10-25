@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import EditableNodeList, { getSelectedItems } from 'src/components/EditableNodeList';
+import EditableNodeList from 'src/components/EditableNodeList';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import RegisterPageLink from 'src/components/RegisterPageLink';
 import PlantCard from 'src/components/PlantCard';
@@ -20,8 +20,7 @@ const Options = ({ options, close }) => {
 
     // Parses array of selected plant UUIDs, passes to addPlants callback
     const submit = () => {
-        const selected = getSelectedItems(selectionController);
-        addPlants(selected);
+        addPlants(Array.from(selectionController.getSnapshot()));
         close();
     };
 

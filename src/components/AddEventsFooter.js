@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { pastTense } from 'src/utils/stringUtils';
 import { localToUTC } from 'src/utils/timestampUtils';
 import sendPostRequest from 'src/utils/sendPostRequest';
-import { getSelectedItems, filterSelectedItems } from 'src/components/EditableNodeList';
+import { filterSelectedItems } from 'src/components/EditableNodeList';
 import EditableNodeListActions from 'src/components/EditableNodeListActions';
 import { FaDroplet, FaSeedling, FaScissors } from 'react-icons/fa6';
 import plantDetailsProptypes from 'src/types/plantDetailsPropTypes';
@@ -31,7 +31,7 @@ const AddEventsFooter = memo(function AddEventsFooter({
     const handleAddEvents = async (eventType) => {
         // Get all selected plants that are not archived
         const selectedPlants = filterSelectedItems(
-            getSelectedItems(selectedPlantsController),
+            Array.from(selectedPlantsController.getSnapshot()),
             plants,
             { archived: false }
         );

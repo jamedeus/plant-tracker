@@ -3,12 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
-// Takes controller passed to EditableNodeList, returns array of selected item keys
-export const getSelectedItems = (controller) => {
-    if (!controller) return [];
-    return Array.from(controller.getSnapshot());
-};
-
 // Takes array of selected item keys, object with details of each item (keys
 // match selectedItems), and object with one or more required attribute values.
 //

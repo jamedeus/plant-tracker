@@ -15,9 +15,6 @@ const createSubscriptionSet = () => {
     };
 };
 
-// Clone helper keeps mutations off the live Set reference
-const cloneSet = (set) => new Set(set);
-
 // Takes array of initially selected keys, returns controller object.
 // Components that subscribe to controller receive a Set of selected item keys.
 // Usage: useSyncExternalStore(controller.subscribe, controller.getSnapshot).
@@ -36,7 +33,7 @@ export const createEditableNodeListController = (initialSelected = []) => {
         },
         // Takes key, selects if unselected, unselects if selected
         toggle(key) {
-            selected = cloneSet(selected);
+            selected = new Set(selected);
             selected.has(key) ? selected.delete(key) : selected.add(key);
             subscriptions.notify();
         },
@@ -54,7 +51,7 @@ export const createEditableNodeListController = (initialSelected = []) => {
         // Takes array of keys, removes all from selection
         bulkUnselect(keys) {
             let didChange = false;
-            const nextSelected = cloneSet(selected);
+            const nextSelected = new Set(selected);
             Array.from(keys ?? []).forEach((key) => {
                 if (nextSelected.delete(key)) {
                     didChange = true;

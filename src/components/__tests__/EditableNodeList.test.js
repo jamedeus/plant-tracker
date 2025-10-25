@@ -1,4 +1,4 @@
-import EditableNodeList, { getSelectedItems } from '../EditableNodeList';
+import EditableNodeList from '../EditableNodeList';
 import { createEditableNodeListController } from '../editableNodeListController';
 
 const DEFAULT_NODES = ['node-1', 'node-2', 'node-3'];
@@ -75,19 +75,19 @@ describe('EditableNodeList', () => {
         const buttons = container.querySelectorAll('button');
 
         // Confirm nothing is selected
-        expect(getSelectedItems(controller)).toEqual([]);
+        expect(controller.getSnapshot()).toEqual(new Set());
 
         // Click first button, confirm selected
         await user.click(buttons[0]);
-        expect(getSelectedItems(controller)).toEqual(['node-1']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
 
         // Click second button, confirm selected
         await user.click(buttons[1]);
-        expect(getSelectedItems(controller)).toEqual(['node-1', 'node-2']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1', 'node-2']));
 
         // Click first button again, confirm unselected
         await user.click(buttons[0]);
-        expect(getSelectedItems(controller)).toEqual(['node-2']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-2']));
     });
 
     it('selects multiple nodes when user clicks and drags', () => {
@@ -104,7 +104,7 @@ describe('EditableNodeList', () => {
             clientY: 220
         });
         // Confirm first node selected immediately (before drag)
-        expect(getSelectedItems(controller)).toEqual(['node-1']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
 
         // Simulate user dragging without leaving first node
         firePointerEvent(window, 'pointermove', {
@@ -113,7 +113,7 @@ describe('EditableNodeList', () => {
             clientY: 240
         });
         // Confirm selection did not change
-        expect(getSelectedItems(controller)).toEqual(['node-1']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
 
         // Simulate user dragging down to third node
         elementUnderCursorIndex = 2;
@@ -123,7 +123,7 @@ describe('EditableNodeList', () => {
             clientY: 360
         });
         // Confirm all 3 nodes are now selected
-        expect(getSelectedItems(controller)).toEqual(['node-1', 'node-2', 'node-3']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1', 'node-2', 'node-3']));
 
         // Simulate user releasing click, moving mouse back to top (no click)
         firePointerEvent(window, 'pointerup', { pointerId: 7 });
@@ -134,7 +134,7 @@ describe('EditableNodeList', () => {
             clientY: 220
         });
         // Confirm selection did not change
-        expect(getSelectedItems(controller)).toEqual(['node-1', 'node-2', 'node-3']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1', 'node-2', 'node-3']));
     });
 
     it('unselects multiple nodes when user clicks and drags', () => {
@@ -154,7 +154,7 @@ describe('EditableNodeList', () => {
             clientY: 220
         });
         // Confirm first node unselected immediately (before drag)
-        expect(getSelectedItems(controller)).toEqual(['node-2', 'node-3']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-2', 'node-3']));
 
         // Simulate user dragging down to third node
         elementUnderCursorIndex = 2;
@@ -165,7 +165,7 @@ describe('EditableNodeList', () => {
         });
         firePointerEvent(window, 'pointerup', { pointerId: 7 });
         // Confirm all 3 nodes are now unselected
-        expect(getSelectedItems(controller)).toEqual([]);
+        expect(controller.getSnapshot()).toEqual(new Set([]));
     });
 
     it('ignores drag from second pointer (multitouch) when drag already in progress', () => {
@@ -182,7 +182,7 @@ describe('EditableNodeList', () => {
             clientY: 220
         });
         // Confirm first node selected immediately (before drag)
-        expect(getSelectedItems(controller)).toEqual(['node-1']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
 
         // Simulate user starting click with different pointer on first node
         firePointerEvent(buttons[2], 'pointerdown', {
@@ -192,7 +192,7 @@ describe('EditableNodeList', () => {
             clientY: 220
         });
         // Confirm selection did not change (second click did not unselect)
-        expect(getSelectedItems(controller)).toEqual(['node-1']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
 
         // Simulate second pointer dragging to third node
         elementUnderCursorIndex = 2;
@@ -202,11 +202,11 @@ describe('EditableNodeList', () => {
             clientY: 360
         });
         // Confirm selection still did not change (no drag for second click)
-        expect(getSelectedItems(controller)).toEqual(['node-1']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
 
         // Simulate second pointer ending click, confirm selection did not change
         firePointerEvent(window, 'pointerup', { pointerId: 22 });
-        expect(getSelectedItems(controller)).toEqual(['node-1']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
 
         // Simulate first pointer dragging to second node
         elementUnderCursorIndex = 1;
@@ -217,7 +217,7 @@ describe('EditableNodeList', () => {
         });
         firePointerEvent(window, 'pointerup', { pointerId: 7 });
         // Confirm first 2 nodes are now selected (first drag did not abort)
-        expect(getSelectedItems(controller)).toEqual(['node-1', 'node-2']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1', 'node-2']));
     });
 
     it('does not select nodes when editing is disabled', () => {
@@ -226,7 +226,7 @@ describe('EditableNodeList', () => {
         const wrappers = container.querySelectorAll('.flex.relative');
 
         // Confirm nothing is selected
-        expect(getSelectedItems(controller)).toEqual([]);
+        expect(controller.getSnapshot()).toEqual(new Set([]));
 
         // Simulate user starting click on first node, dragging to third node
         elementUnderCursorIndex = 0;
@@ -245,7 +245,7 @@ describe('EditableNodeList', () => {
         firePointerEvent(window, 'pointerup', { pointerId: 7 });
 
         // Confirm nothing is selected
-        expect(getSelectedItems(controller)).toEqual([]);
+        expect(controller.getSnapshot()).toEqual(new Set([]));
     });
 });
 
@@ -374,7 +374,7 @@ describe('EditableNodeList autoscroll', () => {
             clientY: 120
         });
         // Confirm first node selected immediately (before drag)
-        expect(getSelectedItems(controller)).toEqual(['node-1']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
 
         // Simulate user moving cursor into bottom autoscroll zone
         elementUnderCursorIndex = 4;
@@ -384,9 +384,9 @@ describe('EditableNodeList autoscroll', () => {
             clientY: 599
         });
         // Confirm all nodes cursor passed over were selected
-        expect(getSelectedItems(controller)).toEqual([
+        expect(controller.getSnapshot()).toEqual(new Set([
             'node-1', 'node-2', 'node-3', 'node-4', 'node-5'
-        ]);
+        ]));
         // Confirm requestAnimationFrame was called (start autoscroll loop)
         expect(window.requestAnimationFrame).toHaveBeenCalledTimes(1);
 
@@ -404,7 +404,7 @@ describe('EditableNodeList autoscroll', () => {
         expect(deltaY).toBeCloseTo(9.6, 3);
         expect(window.scrollY).toBeCloseTo(309.6, 3);
         // Confirm node that moved into view was selected
-        expect(getSelectedItems(controller)).toContain('node-7');
+        expect(controller.getSnapshot()).toContain('node-7');
     });
 
     it('scrolls overflow container when pointer enters top scroll zone', () => {
@@ -446,7 +446,7 @@ describe('EditableNodeList autoscroll', () => {
             clientY: 180
         });
         // Confirm first node selected immediately (before drag)
-        expect(getSelectedItems(controller)).toEqual(['node-4']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-4']));
 
         // Simulate user moving cursor into top autoscroll zone
         firePointerEvent(window, 'pointermove', {
@@ -470,7 +470,7 @@ describe('EditableNodeList autoscroll', () => {
         expect(parent.scrollTop).toBeCloseTo(310.4, 3);
         expect(window.scrollBy).not.toHaveBeenCalled();
         // Confirm node that moved into view was selected
-        expect(getSelectedItems(controller)).toEqual(['node-3', 'node-4']);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-3', 'node-4']));
     });
 
     it('stops autoscroll when top/bottom of page reached', () => {
