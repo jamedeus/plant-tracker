@@ -449,7 +449,6 @@ describe('EditableNodeList autoscroll', () => {
         expect(getSelectedItems(controller)).toEqual(['node-4']);
 
         // Simulate user moving cursor into top autoscroll zone
-        elementUnderCursorIndex = 5;
         firePointerEvent(window, 'pointermove', {
             pointerId: 3,
             clientX: 240,
@@ -472,5 +471,221 @@ describe('EditableNodeList autoscroll', () => {
         expect(window.scrollBy).not.toHaveBeenCalled();
         // Confirm node that moved into view was selected
         expect(getSelectedItems(controller)).toEqual(['node-3', 'node-4']);
+    });
+
+    it('stops autoscroll when top/bottom of page reached', () => {
+        // Render component, get list element and parent + overlay buttons
+        const { container } = renderTestComponent(true, nodes);
+        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const parent = list.parentElement;
+        const buttons = container.querySelectorAll('button');
+
+        // Simulate flex parent (greater than or equal to list height)
+        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 500 });
+        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 700 });
+        // Mock bounding rect for list and parent
+        parent.getBoundingClientRect = jest.fn(() => ({
+            top: 80,
+            bottom: 920,
+            left: 190,
+            right: 610,
+            width: 420,
+            height: 840
+        }));
+        list.getBoundingClientRect = jest.fn(() => ({
+            top: 80,
+            bottom: 920,
+            left: 200,
+            right: 600,
+            width: 400,
+            height: 840
+        }));
+        // Set page height so max scroll position is close to current scrollY
+        Object.defineProperty(document.documentElement, 'scrollHeight', {
+            configurable: true,
+            value: window.innerHeight + 120
+        });
+        window.scrollY = 110;
+
+        // Simulate user starting click, moving cursor to bottom autoscroll zone
+        firePointerEvent(buttons[0], 'pointerdown', {
+            pointerId: 4,
+            button: 0,
+            clientX: 240,
+            clientY: 120
+        });
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 4,
+            clientX: 240,
+            clientY: 599
+        });
+        // Confirm requestAnimationFrame was called (start autoscroll loop)
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(1);
+
+        // Run first animation frame (sets initial timestamp), confirm no scroll
+        act(() => runAnimationFrame(1000));
+        expect(window.scrollBy).not.toHaveBeenCalled();
+        // Confirm autoscroll scheduled next frame
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(2);
+
+        // Run animation frames until bottom reached
+        const pageMax = document.documentElement.scrollHeight - window.innerHeight;
+        let timestamp = 1016;
+        for (let framesExecuted = 1; framesExecuted <= 5; framesExecuted += 1) {
+            act(() => runAnimationFrame(timestamp));
+            // Confirm scrolls on every frame
+            expect(window.scrollBy).toHaveBeenCalledTimes(framesExecuted);
+            if (window.scrollY >= pageMax) {
+                break;
+            }
+            timestamp += 16;
+        }
+        // Confirm cancelAnimationFrame was called, no more frames were scheduled
+        expect(global.cancelAnimationFrame).toHaveBeenCalled();
+        expect(rafQueue).toHaveLength(0);
+        // Confirm at bottom of page
+        expect(window.scrollY).toBeGreaterThanOrEqual(pageMax);
+    });
+
+    it('stops autoscroll when top/bottom of parent div reached', () => {
+        // Render component, get list element and parent + overlay buttons
+        const { container } = renderTestComponent(true, nodes);
+        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const parent = list.parentElement;
+        const buttons = container.querySelectorAll('button');
+
+        // Simulate fixed-height parent with overflow (less than list height)
+        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 1200 });
+        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 600 });
+        Object.defineProperty(parent, 'scrollTop', { configurable: true, writable: true, value: 16 });
+        Object.defineProperty(parent, 'scrollHeight', { configurable: true, value: 1600 });
+        // Mock bounding rect for list and parent
+        list.getBoundingClientRect = jest.fn(() => ({
+            top: 0,
+            bottom: 1200,
+            left: 200,
+            right: 600,
+            width: 400,
+            height: 1200
+        }));
+        parent.getBoundingClientRect = jest.fn(() => ({
+            top: 0,
+            bottom: 600,
+            left: 190,
+            right: 610,
+            width: 420,
+            height: 600
+        }));
+
+        // Simulate user starting click, moving cursor to top autoscroll zone
+        firePointerEvent(buttons[3], 'pointerdown', {
+            pointerId: 9,
+            button: 0,
+            clientX: 240,
+            clientY: 180
+        });
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 9,
+            clientX: 240,
+            clientY: 0
+        });
+        // Confirm requestAnimationFrame was called (start autoscroll loop)
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(1);
+
+        // Run first animation frame (sets initial timestamp), confirm no scroll
+        act(() => runAnimationFrame(1000));
+        expect(parent.scrollTop).toBeCloseTo(16);
+        // Confirm autoscroll scheduled next frame
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(2);
+
+        // Run animation frames until top reached
+        let timestamp = 1016;
+        let lastScrollPosition = parent.scrollTop;
+        for (let framesExecuted = 0; framesExecuted <= 5; framesExecuted += 1) {
+            act(() => runAnimationFrame(timestamp));
+            // Confirm scrolls on every frame
+            expect(parent.scrollTop).toBeLessThan(lastScrollPosition);
+            lastScrollPosition = parent.scrollTop;
+            if (parent.scrollTop <= 0) {
+                break;
+            }
+            timestamp += 16;
+        }
+        // Confirm cancelAnimationFrame was called, no more frames were scheduled
+        expect(global.cancelAnimationFrame).toHaveBeenCalled();
+        expect(rafQueue).toHaveLength(0);
+        // Confirm container scrolled to top without moving the body
+        expect(parent.scrollTop).toBeLessThanOrEqual(0);
+        expect(window.scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('stops autoscroll when cursor moves out of autoscroll zone', () => {
+        // Render component, get list element and parent + overlay buttons
+        const { container } = renderTestComponent(true, nodes);
+        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const parent = list.parentElement;
+        const buttons = container.querySelectorAll('button');
+
+        // Simulate flex parent (greater than or equal to list height)
+        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 500 });
+        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 700 });
+        // Mock bounding rect for list and parent
+        parent.getBoundingClientRect = jest.fn(() => ({
+            top: 80,
+            bottom: 920,
+            left: 190,
+            right: 610,
+            width: 420,
+            height: 840
+        }));
+        list.getBoundingClientRect = jest.fn(() => ({
+            top: 80,
+            bottom: 920,
+            left: 200,
+            right: 600,
+            width: 400,
+            height: 840
+        }));
+        // Set page height so max scroll position is close to current scrollY
+        Object.defineProperty(document.documentElement, 'scrollHeight', {
+            configurable: true,
+            value: window.innerHeight + 120
+        });
+        window.scrollY = 110;
+
+        // Simulate user starting click, moving cursor to bottom autoscroll zone
+        firePointerEvent(buttons[0], 'pointerdown', {
+            pointerId: 4,
+            button: 0,
+            clientX: 240,
+            clientY: 120
+        });
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 4,
+            clientX: 240,
+            clientY: 599
+        });
+        // Confirm requestAnimationFrame was called (start autoscroll loop)
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(1);
+
+        // Run first animation frame (sets initial timestamp), confirm no scroll
+        act(() => runAnimationFrame(1000));
+        expect(window.scrollBy).not.toHaveBeenCalled();
+        // Confirm autoscroll scheduled next frame
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(2);
+
+        // Simulate user moving cursor out of the autoscroll zone
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 4,
+            clientX: 240,
+            clientY: 400
+        });
+
+        // Run next frame confirm still did not scroll (no longer in zone)
+        act(() => runAnimationFrame(1016));
+        expect(window.scrollBy).not.toHaveBeenCalled();
+        // Confirm did not schedule next frame, called cancelAnimationFrame
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(2);
+        expect(global.cancelAnimationFrame).toHaveBeenCalled();
     });
 });

@@ -122,7 +122,7 @@ const EditableNodeList = ({
         );
 
         // Get all elements with same Y coordinate as cursor
-        const elements = document.elementsFromPoint?.(center, clampedY) || [];
+        const elements = document.elementsFromPoint(center, clampedY);
         // Find node wrapper, return index from data attribute
         const nodeWrapper = elements.find((el) =>
             el?.hasAttribute?.('data-editable-index') && listRef?.current?.contains(el)
