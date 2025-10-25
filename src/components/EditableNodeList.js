@@ -92,12 +92,6 @@ const EditableNodeList = ({
         const rangeMin = Math.min(state.initialIndex, currentIndex);
         const rangeMax = Math.max(state.initialIndex, currentIndex);
 
-        // Skip if range is same as last call, otherwise update for next call
-        if (state.activeRange.min === rangeMin && state.activeRange.max === rangeMax) {
-            return;
-        }
-        state.activeRange = { min: rangeMin, max: rangeMax };
-
         const nextSelection = new Set(state.originalSelection);
         if (state.mode === 'select') {
             // Selecting: add all items in range to selection
@@ -199,6 +193,7 @@ const EditableNodeList = ({
             if (pointerPosition) {
                 const index = getIndexFromPoint(pointerPosition.y);
                 if (index !== null && index !== dragStateRef.current.lastEventIndex) {
+                    dragStateRef.current.lastEventIndex = index;
                     applyRangeSelection(dragStateRef.current, index);
                 }
             }
@@ -279,7 +274,6 @@ const EditableNodeList = ({
             initialIndex: index,
             mode,
             originalSelection,
-            activeRange: { min: index, max: index},
             lastEventIndex: index,
         };
         dragStateRef.current = state;
