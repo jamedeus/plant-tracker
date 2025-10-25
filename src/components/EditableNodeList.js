@@ -22,6 +22,7 @@ export const filterSelectedItems = (selectedItems, itemDetails, requiredAttribut
 // Clamps to parent rect (if parent is fixed height with overflow child may be
 // bigger) and viewport (if page has overflow element may be bigger than screen)
 const getVisibleRect = (element) => {
+    /* istanbul ignore next: shouldn't be reachable unless runs after unmount */
     if (!element) return null;
 
     const rect = element.getBoundingClientRect();
@@ -192,13 +193,10 @@ const EditableNodeList = ({
             }
 
             // Check which node is under cursor after scroll, update selection
-            const pointerPosition = lastPointerPositionRef.current;
-            if (pointerPosition) {
-                const index = getIndexFromPoint(pointerPosition.y);
-                if (index !== null && index !== dragStateRef.current.lastEventIndex) {
-                    dragStateRef.current.lastEventIndex = index;
-                    applyRangeSelection(dragStateRef.current, index);
-                }
+            const index = getIndexFromPoint(lastPointerPositionRef.current.y);
+            if (index !== null && index !== dragStateRef.current.lastEventIndex) {
+                dragStateRef.current.lastEventIndex = index;
+                applyRangeSelection(dragStateRef.current, index);
             }
         }
     };
@@ -253,8 +251,6 @@ const EditableNodeList = ({
     const beginDrag = (event, index) => {
         // Ignore if another drag already active (multitouch)
         if (dragStateRef.current) return;
-        // Ignore if no items or not editing
-        if (!editing || itemKeys.length === 0) return;
         // Ignore right click drag (must be left click)
         if (event.button !== undefined && event.button !== 0) return;
 

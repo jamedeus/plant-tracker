@@ -777,4 +777,49 @@ describe('EditableNodeList autoscroll', () => {
         // Confirm handlePointerMove did NOT schedule autoscroll
         expect(window.requestAnimationFrame).toHaveBeenCalledTimes(3);
     });
+
+    it('does not autoscroll when user right clicks and drags', () => {
+        // Render component, get list element and parent + overlay buttons
+        const { container } = renderTestComponent(true, nodes);
+        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const parent = list.parentElement;
+        const buttons = container.querySelectorAll('button');
+
+        // Simulate flex parent (greater than or equal to list height)
+        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 500 });
+        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 700 });
+        // Mock bounding rect for list and parent
+        parent.getBoundingClientRect = jest.fn(() => ({
+            top: 80,
+            bottom: 920,
+            left: 190,
+            right: 610,
+            width: 420,
+            height: 840
+        }));
+        list.getBoundingClientRect = jest.fn(() => ({
+            top: 80,
+            bottom: 920,
+            left: 200,
+            right: 600,
+            width: 400,
+            height: 840
+        }));
+
+        // Simulate user right clicking and dragging to bottom autoscroll zone
+        firePointerEvent(buttons[0], 'pointerdown', {
+            pointerId: 1,
+            button: 2,
+            clientX: 240,
+            clientY: 120
+        });
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 1,
+            clientX: 240,
+            clientY: 599
+        });
+
+        // Confirm requestAnimationFrame was NOT called
+        expect(window.requestAnimationFrame).not.toHaveBeenCalled();
+    });
 });
