@@ -688,4 +688,93 @@ describe('EditableNodeList autoscroll', () => {
         expect(window.requestAnimationFrame).toHaveBeenCalledTimes(2);
         expect(global.cancelAnimationFrame).toHaveBeenCalled();
     });
+
+    it('does not autoscroll when list is fully offscreen', () => {
+        // Render component, get list element and parent + overlay buttons
+        const { container } = renderTestComponent(true, nodes);
+        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const parent = list.parentElement;
+        const buttons = container.querySelectorAll('button');
+
+        // Simulate flex parent (greater than or equal to list height)
+        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 800 });
+        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 900 });
+
+        // Mock bounding rect for list and parent
+        parent.getBoundingClientRect = jest.fn(() => ({
+            top: 80,
+            bottom: 980,
+            left: 190,
+            right: 610,
+            width: 420,
+            height: 900
+        }));
+        list.getBoundingClientRect = jest.fn(() => ({
+            top: 80,
+            bottom: 980,
+            left: 200,
+            right: 600,
+            width: 400,
+            height: 900
+        }));
+
+        // Simulate user starting click on first node, moving cursor off screen
+        // (should start autoscroll, offscreen gets clamped to autoscroll zone)
+        firePointerEvent(buttons[0], 'pointerdown', {
+            pointerId: 1,
+            button: 0,
+            clientX: 240,
+            clientY: 200
+        });
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 1,
+            clientX: 240,
+            clientY: 999
+        });
+        // Confirm requestAnimationFrame was called (start autoscroll loop)
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(1);
+
+        // Run first animation frame (sets initial timestamp), confirm no scroll
+        act(() => runAnimationFrame(1000));
+        expect(window.scrollBy).not.toHaveBeenCalled();
+        // Confirm autoscroll scheduled next frame
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(2);
+
+        // Simulate list going completely off screen in next frame
+        parent.getBoundingClientRect = jest.fn(() => ({
+            top: 900,
+            bottom: 1500,
+            left: 190,
+            right: 610,
+            width: 420,
+            height: 600
+        }));
+        list.getBoundingClientRect = jest.fn(() => ({
+            top: 900,
+            bottom: 1500,
+            left: 200,
+            right: 600,
+            width: 400,
+            height: 600
+        }));
+
+        // Run next animation frame
+        act(() => runAnimationFrame(1032));
+        // Confirm scrolled once, scheduled next frame, then cancelled when
+        // getIndexFromPoint saw that list went off screen
+        expect(window.scrollBy).toHaveBeenCalledTimes(1);
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(3);
+        expect(global.cancelAnimationFrame).toHaveBeenCalled();
+
+        // Simulate user moving cursor further off screen
+        // (still in autoscroll zone due to clamp)
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 1,
+            clientX: 240,
+            clientY: 1099
+        });
+
+        // Confirm handlePointerMove did NOT schedule autoscroll
+        expect(window.requestAnimationFrame).toHaveBeenCalledTimes(3);
+    });
 });

@@ -104,8 +104,13 @@ const EditableNodeList = ({
 
     // Takes cursor Y coordinate, returns index of node at same height (or null)
     const getIndexFromPoint = (clientY) => {
-        // Get center of list (x axis)
+        // If list is entirely off screen return null and stop autoscroll
         const visibleRect = getVisibleRect(listRef.current);
+        if (!visibleRect) {
+            stopAutoScroll();
+            return null;
+        }
+        // Get center of list (x axis)
         const center = visibleRect.width / 2 + visibleRect.left;
 
         // Clamp Y coordinate to last clickable px at top/bottom of list
@@ -134,7 +139,7 @@ const EditableNodeList = ({
         }
         autoScrollRef.current.frameId = 0;
         autoScrollRef.current.lastTimestamp = 0;
-        autoScrollRef.current.v = 0;
+        autoScrollRef.current.speed = 0;
     };
 
     // Takes timestamp from requestAnimationFrame, updates scroll position
@@ -152,6 +157,10 @@ const EditableNodeList = ({
         const lastTimestamp = autoScrollRef.current.lastTimestamp || timestamp;
         const secondsSinceLast = (timestamp - lastTimestamp) / 1000;
         const stepSize = autoScrollRef.current.speed * secondsSinceLast;
+
+        // Schedule to run again on next frame
+        autoScrollRef.current.lastTimestamp = timestamp;
+        autoScrollRef.current.frameId = requestAnimationFrame(handleAutoScrollFrame);
 
         // Step size will be zero on first loop (0 seconds since last frame)
         if (stepSize !== 0) {
@@ -192,10 +201,6 @@ const EditableNodeList = ({
                 }
             }
         }
-
-        // Repeat on next frame
-        autoScrollRef.current.lastTimestamp = timestamp;
-        autoScrollRef.current.frameId = requestAnimationFrame(handleAutoScrollFrame);
     };
 
     // Takes cursor Y coordinate, returns scroll speed in px/second
@@ -206,7 +211,7 @@ const EditableNodeList = ({
         // top/bottom (cursor can't reach actual top/bottom if offscreen)
         const visibleRect = getVisibleRect(listRef.current);
         // Don't scroll if whole list off screen
-        if (!visibleRect) return;
+        if (!visibleRect) return 0;
 
         // Positions where scroll starts (slow, faster further past boundary)
         const scrollUpBoundary = visibleRect.top + scrollZoneHeight + scrollZoneOffsetTop;
