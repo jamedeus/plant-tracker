@@ -427,13 +427,8 @@ exports[`App matches snapshot 1`] = `
               class="flex relative"
             >
               <div
-                class="absolute flex h-full z-0"
-              >
-                <div
-                  aria-checked="false"
-                  class="radio my-auto"
-                />
-              </div>
+                class="radio absolute top-1/2 -translate-y-1/2 z-0"
+              />
               <div
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
@@ -564,13 +559,8 @@ exports[`App matches snapshot 1`] = `
               class="flex relative"
             >
               <div
-                class="absolute flex h-full z-0"
-              >
-                <div
-                  aria-checked="false"
-                  class="radio my-auto"
-                />
-              </div>
+                class="radio absolute top-1/2 -translate-y-1/2 z-0"
+              />
               <div
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
@@ -700,13 +690,8 @@ exports[`App matches snapshot 1`] = `
               class="flex relative"
             >
               <div
-                class="absolute flex h-full z-0"
-              >
-                <div
-                  aria-checked="false"
-                  class="radio my-auto"
-                />
-              </div>
+                class="radio absolute top-1/2 -translate-y-1/2 z-0"
+              />
               <div
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
@@ -1306,13 +1291,8 @@ exports[`App matches snapshot when group is archived 1`] = `
               class="flex relative"
             >
               <div
-                class="absolute flex h-full z-0"
-              >
-                <div
-                  aria-checked="false"
-                  class="radio my-auto"
-                />
-              </div>
+                class="radio absolute top-1/2 -translate-y-1/2 z-0"
+              />
               <div
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
@@ -1443,13 +1423,8 @@ exports[`App matches snapshot when group is archived 1`] = `
               class="flex relative"
             >
               <div
-                class="absolute flex h-full z-0"
-              >
-                <div
-                  aria-checked="false"
-                  class="radio my-auto"
-                />
-              </div>
+                class="radio absolute top-1/2 -translate-y-1/2 z-0"
+              />
               <div
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
@@ -1579,13 +1554,8 @@ exports[`App matches snapshot when group is archived 1`] = `
               class="flex relative"
             >
               <div
-                class="absolute flex h-full z-0"
-              >
-                <div
-                  aria-checked="false"
-                  class="radio my-auto"
-                />
-              </div>
+                class="radio absolute top-1/2 -translate-y-1/2 z-0"
+              />
               <div
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >

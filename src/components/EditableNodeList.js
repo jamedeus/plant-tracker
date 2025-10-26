@@ -351,12 +351,11 @@ const EditableNodeList = ({
 
                 return (
                     <div key={key} className="flex relative">
-                        <div className="absolute flex h-full z-0">
-                            <div
-                                className="radio my-auto"
-                                aria-checked={isSelected}
-                            />
-                        </div>
+                        {/* Selection indicator (div with radio button css) */}
+                        <div className={clsx(
+                            "radio absolute top-1/2 -translate-y-1/2 z-0",
+                            isSelected && "radio-checked"
+                        )} />
                         <div className={clsx(
                             'w-full overflow-hidden transition-all duration-300',
                             editing ? 'ml-[2.5rem]' : 'ml-0'

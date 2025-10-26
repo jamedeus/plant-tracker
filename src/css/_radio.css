@@ -7,6 +7,7 @@
 
   Added:
    - Check animation from DaisyUI v4
+   - .radio-checked class (for div with radio appearance
 
   Removed:
    - Color variants (base class modified to use --color-accent when checked,
@@ -28,7 +29,7 @@
         outline-offset: 2px;
     }
 
-    &:checked, &[aria-checked="true"] {
+    &:checked, &[aria-checked="true"], &.radio-checked {
         /* Fill entire circle with --color-accent, change border */
         @apply bg-accent border-accent;
 
