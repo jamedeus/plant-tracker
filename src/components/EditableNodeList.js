@@ -38,11 +38,8 @@ const getVisibleRect = (element) => {
     return { top, bottom, left, right, height: bottom - top, width: right - left };
 };
 
-// Takes cursor coordinates, returns clamped to viewport dimensions
-const getClampedPosition = (cursorX, cursorY) => ({
-    x: Math.min(Math.max(cursorX, 0), window.innerWidth - 1),
-    y: Math.min(Math.max(cursorY, 0), window.innerHeight - 1)
-});
+// Takes cursor Y coordinate, returns clamped to viewport height
+const getClampedY = (y) => Math.min(Math.max(y, 0), window.innerHeight - 1);
 
 // Takes editing (bool), controller object, and children (list of nodes).
 // Renders each node in a wrapper with a hidden checkbox that shows if selected.
@@ -61,11 +58,19 @@ const EditableNodeList = ({
     scrollZoneOffsetTop=0,
     scrollZoneOffsetBottom=0
 }) => {
+    // Wrapper div containing list of nodes
     const listRef = useRef(null);
+    // Stores state for current drag gesture (null if not dragging)
     const dragStateRef = useRef(null);
+    // Stores event handlers for current drag gesture (used for cleanup)
     const pointerHandlersRef = useRef({ move: null, up: null, cancel: null });
-    const autoScrollRef = useRef({ frameId: null, direction: 0, speed: 0 });
-    const lastPointerPositionRef = useRef(null);
+    // Stores autoscroll state for current drag gesture
+    const autoScrollRef = useRef({
+        speed: 0,
+        frameId: null,
+        lastTimestamp: 0,
+        lastCursorY: null
+    });
 
     const nodes = useMemo(() => React.Children.toArray(children), [children]);
 
@@ -138,9 +143,10 @@ const EditableNodeList = ({
         if (autoScrollRef.current.frameId) {
             cancelAnimationFrame(autoScrollRef.current.frameId);
         }
-        autoScrollRef.current.frameId = 0;
-        autoScrollRef.current.lastTimestamp = 0;
         autoScrollRef.current.speed = 0;
+        autoScrollRef.current.frameId = null;
+        autoScrollRef.current.lastTimestamp = 0;
+        autoScrollRef.current.lastCursorY = null;
     };
 
     // Takes timestamp from requestAnimationFrame, updates scroll position
@@ -193,7 +199,7 @@ const EditableNodeList = ({
             }
 
             // Check which node is under cursor after scroll, update selection
-            const index = getIndexFromPoint(lastPointerPositionRef.current.y);
+            const index = getIndexFromPoint(autoScrollRef.current.lastCursorY);
             if (index !== null && index !== dragStateRef.current.lastEventIndex) {
                 dragStateRef.current.lastEventIndex = index;
                 applyRangeSelection(dragStateRef.current, index);
@@ -241,7 +247,6 @@ const EditableNodeList = ({
         window.removeEventListener('pointerup', pointerHandlersRef.current.up);
         window.removeEventListener('pointercancel', pointerHandlersRef.current.cancel);
         pointerHandlersRef.current = { move: null, up: null, cancel: null };
-        lastPointerPositionRef.current = null;
         dragStateRef.current = null;
         stopAutoScroll();
     };
@@ -274,20 +279,11 @@ const EditableNodeList = ({
         dragStateRef.current = state;
 
         // Store pointer position (used for autoscroll)
-        lastPointerPositionRef.current = getClampedPosition(
-            event.clientX,
-            event.clientY
-        );
+        autoScrollRef.current.lastCursorY = getClampedY(event.clientY);
 
         const handlePointerMove = (moveEvent) => {
             // Ignore pointers that did not start drag (multitouch)
             if (moveEvent.pointerId !== dragStateRef.current.pointerId) return;
-
-            // Update last pointer position (used for autoscroll)
-            lastPointerPositionRef.current = getClampedPosition(
-                moveEvent.clientX,
-                moveEvent.clientY
-            );
 
             // Get index of node under pointer (null if not over a node)
             const newIndex = getIndexFromPoint(moveEvent.clientY);
@@ -297,6 +293,8 @@ const EditableNodeList = ({
                 applyRangeSelection(state, newIndex);
             }
 
+            // Update last pointer position for autoscroll
+            autoScrollRef.current.lastCursorY = getClampedY(moveEvent.clientY);
             // Calculate autoscroll speed (0 if pointer not in top/bottom zones)
             autoScrollRef.current.speed = getAutoScrollSpeed(moveEvent.clientY);
             // Start autoscroll loop if speed not zero and not already running
