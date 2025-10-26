@@ -31,6 +31,60 @@ const renderTestComponent = (editing=true, nodes=DEFAULT_NODES) => {
     return { ...component, controller: controller };
 };
 
+// Takes parent and list elements
+// Mocks parent with the same height as list (flex parent expands to fit)
+const mockFlexParentBounds = (container) => {
+    const list = container.querySelector('.flex.flex-col');
+    const parent = list.parentElement;
+    Object.defineProperty(list, 'clientHeight', { configurable: true, value: 500 });
+    parent.getBoundingClientRect = jest.fn(() => ({
+        top: 80,
+        bottom: 920,
+        left: 190,
+        right: 610,
+        width: 420,
+        height: 840
+    }));
+    Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 700 });
+    list.getBoundingClientRect = jest.fn(() => ({
+        top: 80,
+        bottom: 920,
+        left: 200,
+        right: 600,
+        width: 400,
+        height: 840
+    }));
+    return { parent, list };
+};
+
+// Takes parent and list elements
+// Mocks list with greater height than parent (fixed-height parent with overflow)
+const mockFixedHeightParentBounds = (container) => {
+    const list = container.querySelector('.flex.flex-col');
+    const parent = list.parentElement;
+    Object.defineProperty(list, 'clientHeight', { configurable: true, value: 1200 });
+    Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 600 });
+    Object.defineProperty(parent, 'scrollTop', { configurable: true, writable: true, value: 320 });
+    Object.defineProperty(parent, 'scrollHeight', { configurable: true, value: 1600 });
+    parent.getBoundingClientRect = jest.fn(() => ({
+        top: 0,
+        bottom: 600,
+        left: 190,
+        right: 610,
+        width: 420,
+        height: 600
+    }));
+    list.getBoundingClientRect = jest.fn(() => ({
+        top: 0,
+        bottom: 1200,
+        left: 200,
+        right: 600,
+        width: 400,
+        height: 1200
+    }));
+    return { parent, list };
+};
+
 describe('EditableNodeList', () => {
     // Controls which element elementsFromPoint mock returns
     // Will return button if set to existing index, otherwise empty array
@@ -465,17 +519,6 @@ describe('EditableNodeList autoscroll', () => {
     beforeEach(() => {
         jest.useFakeTimers({ doNotFake: ['Date'] });
 
-        // Mock getBoundingClientRect to return list wrapper dimensions on iOS
-        // (used by getIndexFromPoint to get center of list)
-        Element.prototype.getBoundingClientRect = jest.fn(() => ({
-            top: 100,
-            bottom: 500,
-            left: 46,
-            right: 382,
-            width: 336,
-            height: 400
-        }));
-
         // Mock document.elementsFromPoint to return the element with
         // data-editable-index attribute matching elementUnderCursorIndex
         elementUnderCursorIndex = null;
@@ -532,30 +575,10 @@ describe('EditableNodeList autoscroll', () => {
     it('scrolls document when pointer enters bottom scroll zone', () => {
         // Render component, get list element and parent + overlay buttons
         const { container, controller } = renderTestComponent(true, SCROLL_NODES);
-        const list = container.querySelector('.flex.flex-col');
-        const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
 
         // Simulate flex parent (greater than or equal to list height)
-        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 500 });
-        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 700 });
-        // Mock bounding rect for list and parent
-        parent.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 920,
-            left: 190,
-            right: 610,
-            width: 420,
-            height: 840
-        }));
-        list.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 920,
-            left: 200,
-            right: 600,
-            width: 400,
-            height: 840
-        }));
+        mockFlexParentBounds(container);
 
         // Simulate user starting click on first node
         elementUnderCursorIndex = 0;
@@ -602,32 +625,9 @@ describe('EditableNodeList autoscroll', () => {
     it('scrolls overflow container when pointer enters top scroll zone', () => {
         // Render component, get list element and parent + overlay buttons
         const { container, controller } = renderTestComponent(true, SCROLL_NODES);
-        const list = container.querySelector('.flex.flex-col');
-        const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
-
         // Simulate fixed-height parent with overflow (less than list height)
-        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 1200 });
-        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 600 });
-        Object.defineProperty(parent, 'scrollTop', { configurable: true, writable: true, value: 320 });
-        Object.defineProperty(parent, 'scrollHeight', { configurable: true, value: 1600 });
-        // Mock bounding rect for list and parent
-        list.getBoundingClientRect = jest.fn(() => ({
-            top: 0,
-            bottom: 1200,
-            left: 200,
-            right: 600,
-            width: 400,
-            height: 1200
-        }));
-        parent.getBoundingClientRect = jest.fn(() => ({
-            top: 0,
-            bottom: 600,
-            left: 190,
-            right: 610,
-            width: 420,
-            height: 600
-        }));
+        const { parent, _ } = mockFixedHeightParentBounds(container);
 
         // Simulate user starting click on 4th node
         elementUnderCursorIndex = 3;
@@ -666,32 +666,12 @@ describe('EditableNodeList autoscroll', () => {
     });
 
     it('stops autoscroll when top/bottom of page reached', () => {
-        // Render component, get list element and parent + overlay buttons
+        // Render component, get overlay buttons
         const { container } = renderTestComponent(true, SCROLL_NODES);
-        const list = container.querySelector('.flex.flex-col');
-        const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
-
         // Simulate flex parent (greater than or equal to list height)
-        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 500 });
-        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 700 });
-        // Mock bounding rect for list and parent
-        parent.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 920,
-            left: 190,
-            right: 610,
-            width: 420,
-            height: 840
-        }));
-        list.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 920,
-            left: 200,
-            right: 600,
-            width: 400,
-            height: 840
-        }));
+        mockFlexParentBounds(container);
+
         // Set page height so max scroll position is close to current scrollY
         Object.defineProperty(document.documentElement, 'scrollHeight', {
             configurable: true,
@@ -740,34 +720,13 @@ describe('EditableNodeList autoscroll', () => {
     });
 
     it('stops autoscroll when top/bottom of parent div reached', () => {
-        // Render component, get list element and parent + overlay buttons
+        // Render component, get parent (scroll container) + overlay buttons
         const { container } = renderTestComponent(true, SCROLL_NODES);
-        const list = container.querySelector('.flex.flex-col');
-        const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
-
         // Simulate fixed-height parent with overflow (less than list height)
-        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 1200 });
-        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 600 });
+        const { parent, _ } = mockFixedHeightParentBounds(container);
+        // Start closer to top (fewer scroll events)
         Object.defineProperty(parent, 'scrollTop', { configurable: true, writable: true, value: 16 });
-        Object.defineProperty(parent, 'scrollHeight', { configurable: true, value: 1600 });
-        // Mock bounding rect for list and parent
-        list.getBoundingClientRect = jest.fn(() => ({
-            top: 0,
-            bottom: 1200,
-            left: 200,
-            right: 600,
-            width: 400,
-            height: 1200
-        }));
-        parent.getBoundingClientRect = jest.fn(() => ({
-            top: 0,
-            bottom: 600,
-            left: 190,
-            right: 610,
-            width: 420,
-            height: 600
-        }));
 
         // Simulate user starting click, moving cursor to top autoscroll zone
         firePointerEvent(buttons[3], 'pointerdown', {
@@ -812,32 +771,12 @@ describe('EditableNodeList autoscroll', () => {
     });
 
     it('stops autoscroll when cursor moves out of autoscroll zone', () => {
-        // Render component, get list element and parent + overlay buttons
+        // Render component, get overlay buttons
         const { container } = renderTestComponent(true, SCROLL_NODES);
-        const list = container.querySelector('.flex.flex-col');
-        const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
-
         // Simulate flex parent (greater than or equal to list height)
-        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 500 });
-        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 700 });
-        // Mock bounding rect for list and parent
-        parent.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 920,
-            left: 190,
-            right: 610,
-            width: 420,
-            height: 840
-        }));
-        list.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 920,
-            left: 200,
-            right: 600,
-            width: 400,
-            height: 840
-        }));
+        mockFlexParentBounds(container);
+
         // Set page height so max scroll position is close to current scrollY
         Object.defineProperty(document.documentElement, 'scrollHeight', {
             configurable: true,
@@ -882,33 +821,11 @@ describe('EditableNodeList autoscroll', () => {
     });
 
     it('does not autoscroll when list is fully offscreen', () => {
-        // Render component, get list element and parent + overlay buttons
+        // Render component, get overlay buttons
         const { container } = renderTestComponent(true, SCROLL_NODES);
-        const list = container.querySelector('.flex.flex-col');
-        const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
-
         // Simulate flex parent (greater than or equal to list height)
-        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 800 });
-        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 900 });
-
-        // Mock bounding rect for list and parent
-        parent.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 980,
-            left: 190,
-            right: 610,
-            width: 420,
-            height: 900
-        }));
-        list.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 980,
-            left: 200,
-            right: 600,
-            width: 400,
-            height: 900
-        }));
+        const { parent, list } = mockFlexParentBounds(container);
 
         // Simulate user starting click on first node, moving cursor off screen
         // (should start autoscroll, offscreen gets clamped to autoscroll zone)
@@ -971,32 +888,11 @@ describe('EditableNodeList autoscroll', () => {
     });
 
     it('does not autoscroll when user right clicks and drags', () => {
-        // Render component, get list element and parent + overlay buttons
+        // Render component, get overlay buttons
         const { container } = renderTestComponent(true, SCROLL_NODES);
-        const list = container.querySelector('.flex.flex-col');
-        const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
-
         // Simulate flex parent (greater than or equal to list height)
-        Object.defineProperty(list, 'clientHeight', { configurable: true, value: 500 });
-        Object.defineProperty(parent, 'clientHeight', { configurable: true, value: 700 });
-        // Mock bounding rect for list and parent
-        parent.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 920,
-            left: 190,
-            right: 610,
-            width: 420,
-            height: 840
-        }));
-        list.getBoundingClientRect = jest.fn(() => ({
-            top: 80,
-            bottom: 920,
-            left: 200,
-            right: 600,
-            width: 400,
-            height: 840
-        }));
+        mockFlexParentBounds(container);
 
         // Simulate user right clicking and dragging to bottom autoscroll zone
         firePointerEvent(buttons[0], 'pointerdown', {
