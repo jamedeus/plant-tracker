@@ -338,6 +338,13 @@ const EditableNodeList = ({
         }
     }, [editing]);
 
+    // Toggles selection when user presses enter or space while item focused
+    const handleKeyDown = (event, key) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            controller.toggle(key);
+        }
+    };
+
     return (
         <div
             ref={listRef}
@@ -370,10 +377,13 @@ const EditableNodeList = ({
                                 // No touch actions to prevent scrolling page
                                 // (allows dragging to select on mobile)
                                 className={clsx(
-                                    'absolute -inset-2 z-20',
+                                    'absolute -inset-2 z-20 outline-accent',
+                                    'focus-visible:rounded-[1.25rem]',
+                                    'focus-visible:outline-2 -outline-offset-1',
                                     'cursor-pointer touch-none select-none'
                                 )}
                                 onPointerDown={event => beginDrag(event, index)}
+                                onKeyDown={event => handleKeyDown(event, key)}
                                 aria-label={label}
                                 data-editable-index={index}
                             />

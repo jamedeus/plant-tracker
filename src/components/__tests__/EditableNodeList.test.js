@@ -90,6 +90,28 @@ describe('EditableNodeList', () => {
         expect(controller.getSnapshot()).toEqual(new Set(['node-2']));
     });
 
+    it('toggles selection when pressing enter or space on focused item', () => {
+        // Render component, get overlay button for first node
+        const { container, controller } = renderTestComponent();
+        const button = container.querySelector('button');
+
+        // Confirm nothing is selected
+        expect(controller.getSnapshot()).toEqual(new Set());
+
+        // Press enter while button focused, confirm selected
+        button.focus();
+        fireEvent.keyDown(button, { key: 'Enter' });
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
+
+        // Press space while button focused, confirm unselected
+        fireEvent.keyDown(button, { key: ' ' });
+        expect(controller.getSnapshot()).toEqual(new Set());
+
+        // Press other key, confirm selection does not change
+        fireEvent.keyDown(button, { key: 'y' });
+        expect(controller.getSnapshot()).toEqual(new Set());
+    });
+
     it('selects multiple nodes when user clicks and drags', () => {
         // Render component, get overlay buttons that cover each node
         const { container, controller } = renderTestComponent();
