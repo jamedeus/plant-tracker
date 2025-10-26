@@ -1,6 +1,7 @@
 import PlantCard from '../PlantCard';
 import FilterColumn from '../FilterColumn';
 import { createEditableNodeListController } from '../editableNodeListController';
+import { firePointerEvent } from './EditableNodeList.test';
 
 const plants = [
     {
@@ -95,7 +96,6 @@ describe('FilterColumn', () => {
                 CardComponent={PlantCard}
                 editing={false}
                 controller={selectionController}
-                selected={{current: []}}
                 ignoreKeys={[
                     'uuid',
                     'created',
@@ -145,46 +145,37 @@ describe('FilterColumn', () => {
         // and "Favorite plant"
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(3);
         expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
+        expect(component.getByText('Unnamed plant 2')).toBeInTheDocument();
         expect(component.getByText('Favorite plant')).toBeInTheDocument();
 
         // Type "calathea", should only show "Favorite plant" (matches species)
         await user.clear(filterInput);
         await user.type(filterInput, 'calathea');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('Favorite plant')).toBeInTheDocument();
 
         // Type "6", should only show "mini palm tree" (matches 6 inch pot)
         await user.clear(filterInput);
         await user.type(filterInput, '6');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('mini palm tree')).toBeInTheDocument();
 
         // Type "really", should only show "mini palm tree" (matches description)
         await user.clear(filterInput);
         await user.type(filterInput, 'really');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('mini palm tree')).toBeInTheDocument();
 
         // Type "yard", should only show "Unnamed plant 1" (matches group name)
         await user.clear(filterInput);
         await user.type(filterInput, 'yard');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
     });
@@ -193,25 +184,19 @@ describe('FilterColumn', () => {
         // Type part of UUID, should remove all cards
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, '2c0991a08806');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Type part of timestamp, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, '2024-03-01');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Type part of thumbnail URL, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, 'IMG_8');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(0);
     });
 
@@ -219,16 +204,12 @@ describe('FilterColumn', () => {
         // Type random characters in field, confirm no cards visible
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'ffduiwafh');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Click clear button, confirm all 4 cards reappear
         await user.click(component.getByTitle("Clear filter input"));
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(5);
     });
 
@@ -323,9 +304,7 @@ describe('FilterColumn', () => {
         // Simulate user typing in filter input
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
 
         // Confirm page scrolled to prevent whole column going off screen
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
@@ -341,9 +320,7 @@ describe('FilterColumn', () => {
         // Simulate user typing in filter input
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
 
         // Confirm page did NOT scroll (height change cannot push column off
         // screen if top is below the navbar)
@@ -427,7 +404,6 @@ describe('FilterColumn', () => {
                 CardComponent={PlantCard}
                 editing={false}
                 controller={createEditableNodeListController()}
-                selected={{current: []}}
                 ignoreKeys={[]}
                 sortByKeys={[
                     {key: 'display_name', display: 'Name'}
@@ -459,7 +435,6 @@ describe('FilterColumn optional parameters', () => {
             CardComponent: PlantCard,
             editing: false,
             controller: createEditableNodeListController(),
-            selected: {current: []},
             ignoreKeys: [
                 'uuid',
                 'last_watered',
@@ -507,17 +482,13 @@ describe('FilterColumn optional parameters', () => {
         // Type part of UUID, confirm 1 card still present
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, '2c0991a08806');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(1);
 
         // Type part of timestamp, confirm all cards still present
         await user.clear(filterInput);
         await user.type(filterInput, '2024-03-01');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(4);
     });
 
@@ -589,9 +560,7 @@ describe('FilterColumn optional parameters', () => {
         // Type "plant" in filter input, wait for rerender (debounced)
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(3);
 
         // Confirm that query was written to sessionStorage
@@ -604,9 +573,7 @@ describe('FilterColumn optional parameters', () => {
 
         // Clear input, confirm query was updated in sessionStorage
         await user.clear(filterInput);
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(200);
-        });
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
         expect(component.container.querySelectorAll('.card').length).toBe(5);
         persistedState = JSON.parse(sessionStorage.getItem('unittest'));
         expect(persistedState).toEqual({
@@ -637,5 +604,95 @@ describe('FilterColumn optional parameters', () => {
         expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[3].innerHTML).toBe("mini palm tree");
         expect(titles[4].innerHTML).toBe("Favorite plant");
+    });
+
+    it('unselects items that are no longer in list after filtering', async () => {
+        // Render with editing = true and controller to check selection
+        const controller = createEditableNodeListController();
+        const args = { ...baseArgs, editing: true, controller: controller };
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const component = render(
+            <FilterColumn {...args} />
+        );
+
+        // Confirm 5 cards, none selected
+        expect(component.container.querySelectorAll('.card').length).toBe(5);
+        expect(controller.getSnapshot()).toEqual(new Set());
+
+        // Select "mini palm tree", confirm controller updated selection
+        await user.click(component.getByLabelText('Select mini palm tree'));
+        expect(controller.getSnapshot()).toEqual(new Set(['49a55f1f-5703-4f5e-acad-2c0991a08806']));
+
+        // Filter to "calathea", should only show "Favorite plant" (species)
+        const filterInput = component.getByRole('textbox');
+        await user.type(filterInput, 'calathea');
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
+        expect(component.container.querySelectorAll('.card').length).toBe(1);
+        expect(component.getByText('Favorite plant')).toBeInTheDocument();
+
+        // Confirm selection was cleared (mini palm tree no longer in list)
+        expect(controller.getSnapshot()).toEqual(new Set());
+
+        // Clear selection, confirm all 5 cards reappear
+        await user.clear(filterInput);
+        expect(component.container.querySelectorAll('.card').length).toBe(5);
+
+        // Select "Favorite plant", confirm controller updated selection
+        await user.click(component.getByLabelText('Select Favorite plant'));
+        expect(controller.getSnapshot()).toEqual(new Set(['9c9d1767-a97f-4ca8-ad6e-b706ff943ff2']));
+
+        // Filter to "calathea" again, confirm selection did NOT change (still visible)
+        await user.type(filterInput, 'calathea');
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
+        expect(component.container.querySelectorAll('.card').length).toBe(1);
+        expect(controller.getSnapshot()).toEqual(new Set(['9c9d1767-a97f-4ca8-ad6e-b706ff943ff2']));
+    });
+
+    // Original bug: EditableNodeList did not reset shift-click selection state
+    // when children changed. When the user selected a node its index was stored
+    // (shift-click range start point), but when children changed it did not
+    // change even though the order probably did. If the user then shift-clicked
+    // after filtering it would select everything from the clicked node to
+    // whichever node now had the original index.
+    it('clears shift click state when children change', async () => {
+        // Render with editing = true and controller to check selection
+        const controller = createEditableNodeListController();
+        const args = { ...baseArgs, editing: true, controller: controller };
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const component = render(
+            <FilterColumn {...args} />
+        );
+
+        // Confirm 5 cards, none selected
+        expect(component.container.querySelectorAll('.card').length).toBe(5);
+        expect(controller.getSnapshot()).toEqual(new Set());
+
+        // Select "mini palm tree", confirm controller updated selection
+        await user.click(component.getByLabelText('Select mini palm tree'));
+        expect(controller.getSnapshot()).toEqual(new Set(['49a55f1f-5703-4f5e-acad-2c0991a08806']));
+
+        // Type "plant", should only show "Unnamed plant 1", "Unnamed plant 2",
+        // and "Favorite plant"
+        const filterInput = component.getByRole('textbox');
+        await user.type(filterInput, 'plant');
+        await act(async () => await jest.advanceTimersByTimeAsync(200));
+        expect(component.container.querySelectorAll('.card').length).toBe(3);
+        expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
+        expect(component.getByText('Unnamed plant 2')).toBeInTheDocument();
+        expect(component.getByText('Favorite plant')).toBeInTheDocument();
+
+        // Shift-click Favorite plant (last button)
+        const lastButton = component.getByLabelText('Select Favorite plant')
+        firePointerEvent(lastButton, 'pointerdown', {
+            pointerId: 32,
+            button: 0,
+            clientX: 210,
+            clientY: 320,
+            shiftKey: true
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 32 });
+
+        // Confirm only Favorite plant is selected (did not select range)
+        expect(controller.getSnapshot()).toEqual(new Set(['9c9d1767-a97f-4ca8-ad6e-b706ff943ff2']));
     });
 });

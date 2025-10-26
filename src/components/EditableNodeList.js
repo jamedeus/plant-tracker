@@ -362,6 +362,20 @@ const EditableNodeList = ({
         window.addEventListener('pointercancel', handlePointerEnd);
     };
 
+    // Handle EditableNodeList children changing (deleted, filtered, etc)
+    useEffect(() => {
+        // Unselect items that are no longer in list
+        const next = new Set(controller.getSnapshot());
+        next.forEach(key => !itemKeys.includes(key) && next.delete(key));
+        controller.replace(next);
+        // Reset shift-click state (anchor index probably moved)
+        shiftClickRef.current = {
+            initialIndex: null,
+            mode: null,
+            originalSelection: null
+        };
+    }, [itemKeys]);
+
     // Remove listeners when component unmounts
     useEffect(() => finishDrag, []);
 

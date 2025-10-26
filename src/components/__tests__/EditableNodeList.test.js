@@ -7,7 +7,7 @@ const SCROLL_NODES = Array.from({ length: 20 }, (_, index) => `node-${index + 1}
 
 // Helper to simulate pointer events that supports pointerId (fireEvent doesn't)
 // Uses MouseEvent instead of PointerEvent because jsdom hasn't implemented it
-const firePointerEvent = (target, type, props) => {
+export const firePointerEvent = (target, type, props) => {
     const eventProps = { bubbles: true, cancelable: true, ...props };
     const event = new window.MouseEvent(type, eventProps);
     if (props.pointerId !== undefined) {
@@ -31,8 +31,8 @@ const renderTestComponent = (editing=true, nodes=DEFAULT_NODES) => {
     return { ...component, controller: controller };
 };
 
-// Takes parent and list elements
-// Mocks parent with the same height as list (flex parent expands to fit)
+// Takes container returned by renderTestComponent, returns parent and list
+// elements with parent height mocked to match list (flex parent expands to fit)
 const mockFlexParentBounds = (container) => {
     const list = container.querySelector('.flex.flex-col');
     const parent = list.parentElement;
@@ -57,8 +57,8 @@ const mockFlexParentBounds = (container) => {
     return { parent, list };
 };
 
-// Takes parent and list elements
-// Mocks list with greater height than parent (fixed-height parent with overflow)
+// Takes container returned by renderTestComponent, returns parent and list
+// elements with greater list height than parent (fixed-height parent with overflow)
 const mockFixedHeightParentBounds = (container) => {
     const list = container.querySelector('.flex.flex-col');
     const parent = list.parentElement;
