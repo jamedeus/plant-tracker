@@ -2,6 +2,8 @@ import EditableNodeList from '../EditableNodeList';
 import { createEditableNodeListController } from '../editableNodeListController';
 
 const DEFAULT_NODES = ['node-1', 'node-2', 'node-3'];
+// Mock enough nodes to make list scrollable
+const SCROLL_NODES = Array.from({ length: 20 }, (_, index) => `node-${index + 1}`);
 
 // Helper to simulate pointer events that supports pointerId (fireEvent doesn't)
 // Uses MouseEvent instead of PointerEvent because jsdom hasn't implemented it
@@ -269,12 +271,180 @@ describe('EditableNodeList', () => {
         // Confirm nothing is selected
         expect(controller.getSnapshot()).toEqual(new Set([]));
     });
+
+    it('selects a range of nodes when user shift-clicks', async () => {
+        // Render component, get overlay buttons that cover each node
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const { container, controller } = renderTestComponent(true, SCROLL_NODES);
+        const buttons = container.querySelectorAll('button');
+
+        // Click second button, confirm selected
+        await user.click(buttons[1]);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-2']));
+
+        // Shift-click fourth button, confirm nodes between 2 and 4 are selected
+        firePointerEvent(buttons[3], 'pointerdown', {
+            pointerId: 32,
+            button: 0,
+            clientX: 210,
+            clientY: 320,
+            shiftKey: true
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 32 });
+        expect(controller.getSnapshot()).toEqual(new Set(['node-2', 'node-3', 'node-4']));
+
+        // Shift-click first button, confirm nodes between 1 and 2 are selected,
+        // but nodes after 2 were unselected
+        firePointerEvent(buttons[0], 'pointerdown', {
+            pointerId: 33,
+            button: 0,
+            clientX: 210,
+            clientY: 220,
+            shiftKey: true
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 33 });
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1', 'node-2']));
+    });
+
+    it('extends drag selection in either direction when user shift-clicks', () => {
+        // Render component, get overlay buttons that cover each node
+        const { container, controller } = renderTestComponent(true, SCROLL_NODES);
+        const buttons = container.querySelectorAll('button');
+
+        // Simulate user starting click on third node, dragging to fifth node
+        elementUnderCursorIndex = 2;
+        firePointerEvent(buttons[2], 'pointerdown', {
+            pointerId: 41,
+            button: 0,
+            clientX: 210,
+            clientY: 300
+        });
+        elementUnderCursorIndex = 4;
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 41,
+            clientX: 210,
+            clientY: 360
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 41 });
+        // Confirm al 3 nodes are now selected
+        expect(controller.getSnapshot()).toEqual(new Set(['node-3', 'node-4', 'node-5']));
+
+        // Simulate user shift-clicking on seventh node (no drag)
+        firePointerEvent(buttons[6], 'pointerdown', {
+            pointerId: 42,
+            button: 0,
+            clientX: 210,
+            clientY: 380,
+            shiftKey: true
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 42 });
+        // Confirm all nodes between existing range and 7 are selected
+        expect(controller.getSnapshot()).toEqual(new Set([
+            'node-3',
+            'node-4',
+            'node-5',
+            'node-6',
+            'node-7'
+        ]));
+
+        // Simulate user shift-clicking on first node (no drag)
+        firePointerEvent(buttons[0], 'pointerdown', {
+            pointerId: 43,
+            button: 0,
+            clientX: 210,
+            clientY: 220,
+            shiftKey: true
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 43 });
+        // Confirm all nodes between existing range and 1 are selected, but
+        // nodes from the first shift-click are unselected
+        expect(controller.getSnapshot()).toEqual(new Set([
+            'node-1',
+            'node-2',
+            'node-3',
+            'node-4',
+            'node-5'
+        ]));
+    });
+
+    it('unselects a range of selected nodes when user shift-clicks', async () => {
+        // Render component, get overlay buttons that cover each node
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const { container, controller } = renderTestComponent(true, SCROLL_NODES);
+        const buttons = container.querySelectorAll('button');
+
+        // Click second, third, and fourth buttons (no drag)
+        await user.click(buttons[1]);
+        await user.click(buttons[2]);
+        await user.click(buttons[3]);
+        // Confirm all 3 nodes are now selected
+        expect(controller.getSnapshot()).toEqual(new Set(['node-2', 'node-3', 'node-4']));
+
+        // Click third button again (no drag), confirm unselected
+        await user.click(buttons[3]);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-2', 'node-3']));
+
+        // Shift-click first button, confirm all nodes are unselected
+        firePointerEvent(buttons[0], 'pointerdown', {
+            pointerId: 55,
+            button: 0,
+            clientX: 210,
+            clientY: 220,
+            shiftKey: true
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 55 });
+        expect(controller.getSnapshot()).toEqual(new Set());
+    });
+
+    it('unselects drag-selected nodes when user shift-clicks over same range', async () => {
+        // Render component, get overlay buttons that cover each node
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        const { container, controller } = renderTestComponent(true, SCROLL_NODES);
+        const buttons = container.querySelectorAll('button');
+
+        // Simulate user starting click on fourth node, dragging to eighth node
+        elementUnderCursorIndex = 3;
+        firePointerEvent(buttons[3], 'pointerdown', {
+            pointerId: 61,
+            button: 0,
+            clientX: 210,
+            clientY: 320
+        });
+        elementUnderCursorIndex = 7;
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 61,
+            clientX: 210,
+            clientY: 420
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 61 });
+        // Confirm all 5 nodes are selected
+        expect(controller.getSnapshot()).toEqual(new Set([
+            'node-4',
+            'node-5',
+            'node-6',
+            'node-7',
+            'node-8'
+        ]));
+
+        // Simulate user clicking (no drag) on eighth node, confirm unselected
+        await user.click(buttons[7]);
+        expect(controller.getSnapshot()).toEqual(new Set(['node-4', 'node-5', 'node-6', 'node-7']));
+
+        // Simulate user shift-clicking on second node (no drag)
+        firePointerEvent(buttons[1], 'pointerdown', {
+            pointerId: 63,
+            button: 0,
+            clientX: 210,
+            clientY: 260,
+            shiftKey: true
+        });
+        firePointerEvent(window, 'pointerup', { pointerId: 63 });
+        // Confirm all nodes are unselected (shift-clicked node was above range)
+        expect(controller.getSnapshot()).toEqual(new Set());
+    });
 });
 
 describe('EditableNodeList autoscroll', () => {
-    // Mock enough nodes to make list scrollable
-    const nodes = Array.from({ length: 20 }, (_, index) => `node-${index + 1}`);
-
     // Controls which element elementsFromPoint mock returns
     // Will return button if set to existing index, otherwise empty array
     let elementUnderCursorIndex;
@@ -361,7 +531,7 @@ describe('EditableNodeList autoscroll', () => {
 
     it('scrolls document when pointer enters bottom scroll zone', () => {
         // Render component, get list element and parent + overlay buttons
-        const { container, controller } = renderTestComponent(true, nodes);
+        const { container, controller } = renderTestComponent(true, SCROLL_NODES);
         const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
@@ -431,7 +601,7 @@ describe('EditableNodeList autoscroll', () => {
 
     it('scrolls overflow container when pointer enters top scroll zone', () => {
         // Render component, get list element and parent + overlay buttons
-        const { container, controller } = renderTestComponent(true, nodes);
+        const { container, controller } = renderTestComponent(true, SCROLL_NODES);
         const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
@@ -497,7 +667,7 @@ describe('EditableNodeList autoscroll', () => {
 
     it('stops autoscroll when top/bottom of page reached', () => {
         // Render component, get list element and parent + overlay buttons
-        const { container } = renderTestComponent(true, nodes);
+        const { container } = renderTestComponent(true, SCROLL_NODES);
         const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
@@ -571,7 +741,7 @@ describe('EditableNodeList autoscroll', () => {
 
     it('stops autoscroll when top/bottom of parent div reached', () => {
         // Render component, get list element and parent + overlay buttons
-        const { container } = renderTestComponent(true, nodes);
+        const { container } = renderTestComponent(true, SCROLL_NODES);
         const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
@@ -643,7 +813,7 @@ describe('EditableNodeList autoscroll', () => {
 
     it('stops autoscroll when cursor moves out of autoscroll zone', () => {
         // Render component, get list element and parent + overlay buttons
-        const { container } = renderTestComponent(true, nodes);
+        const { container } = renderTestComponent(true, SCROLL_NODES);
         const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
@@ -713,7 +883,7 @@ describe('EditableNodeList autoscroll', () => {
 
     it('does not autoscroll when list is fully offscreen', () => {
         // Render component, get list element and parent + overlay buttons
-        const { container } = renderTestComponent(true, nodes);
+        const { container } = renderTestComponent(true, SCROLL_NODES);
         const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
@@ -802,7 +972,7 @@ describe('EditableNodeList autoscroll', () => {
 
     it('does not autoscroll when user right clicks and drags', () => {
         // Render component, get list element and parent + overlay buttons
-        const { container } = renderTestComponent(true, nodes);
+        const { container } = renderTestComponent(true, SCROLL_NODES);
         const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');

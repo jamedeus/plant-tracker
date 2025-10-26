@@ -71,6 +71,12 @@ const EditableNodeList = ({
         lastTimestamp: 0,
         lastCursorY: null
     });
+    // Stores state passed to applyRangeSelection when user shift-clicks
+    const shiftClickRef = useRef({
+        initialIndex: null,
+        mode: null,
+        originalSelection: null
+    });
 
     const nodes = useMemo(() => React.Children.toArray(children), [children]);
 
@@ -243,6 +249,15 @@ const EditableNodeList = ({
     // Remove all pointer listeners set by beginDrag and clear state refs.
     // Runs on click end, cancel, when editing toggles off, and on unmount.
     const finishDrag = () => {
+        // Save last index, mode, and selection in case user shift-clicks
+        if (dragStateRef.current) {
+            shiftClickRef.current = {
+                initialIndex: dragStateRef.current.lastEventIndex,
+                mode: dragStateRef.current.mode,
+                originalSelection: new Set(controller.getSnapshot())
+            };
+        }
+
         window.removeEventListener('pointermove', pointerHandlersRef.current.move);
         window.removeEventListener('pointerup', pointerHandlersRef.current.up);
         window.removeEventListener('pointercancel', pointerHandlersRef.current.cancel);
@@ -259,6 +274,17 @@ const EditableNodeList = ({
         // Ignore right click drag (must be left click)
         if (event.button !== undefined && event.button !== 0) return;
 
+        // Shift click: update selection and exit without starting drag (unless
+        // this is the first click, shift-click needs 2 points to select range)
+        if (
+            event.shiftKey &&
+            shiftClickRef.current.initialIndex !== null &&
+            shiftClickRef.current.originalSelection
+        ) {
+            applyRangeSelection(shiftClickRef.current, index);
+            return;
+        }
+
         // Get key of node where drag started + selection when drag started
         const key = itemKeys[index];
         const originalSelection = new Set(controller.getSnapshot());
@@ -267,6 +293,14 @@ const EditableNodeList = ({
 
         // Toggle clicked node selected state immediately (before drag)
         controller.toggle(key);
+
+        // Save last index, mode, and selection in case user shift-clicks after
+        // dragging (add/subtract to range selected during drag)
+        shiftClickRef.current = {
+            initialIndex: index,
+            mode,
+            originalSelection
+        };
 
         // Store state in dragStateRef (used by other handlers)
         const state = {
