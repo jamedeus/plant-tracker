@@ -425,17 +425,13 @@ exports[`App matches snapshot 1`] = `
           >
             <div
               class="flex relative"
-              data-editable-index="0"
-              data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             >
               <div
                 class="absolute flex h-full z-0"
               >
-                <input
-                  aria-label="Select Test Plant"
+                <div
+                  aria-checked="false"
                   class="radio my-auto"
-                  tabindex="-1"
-                  type="checkbox"
                 />
               </div>
               <div
@@ -566,17 +562,13 @@ exports[`App matches snapshot 1`] = `
             </div>
             <div
               class="flex relative"
-              data-editable-index="1"
-              data-editable-key="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
             >
               <div
                 class="absolute flex h-full z-0"
               >
-                <input
-                  aria-label="Select node"
+                <div
+                  aria-checked="false"
                   class="radio my-auto"
-                  tabindex="-1"
-                  type="checkbox"
                 />
               </div>
               <div
@@ -706,17 +698,13 @@ exports[`App matches snapshot 1`] = `
             </div>
             <div
               class="flex relative"
-              data-editable-index="2"
-              data-editable-key="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
             >
               <div
                 class="absolute flex h-full z-0"
               >
-                <input
-                  aria-label="Select Newest plant"
+                <div
+                  aria-checked="false"
                   class="radio my-auto"
-                  tabindex="-1"
-                  type="checkbox"
                 />
               </div>
               <div
@@ -1316,17 +1304,13 @@ exports[`App matches snapshot when group is archived 1`] = `
           >
             <div
               class="flex relative"
-              data-editable-index="0"
-              data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             >
               <div
                 class="absolute flex h-full z-0"
               >
-                <input
-                  aria-label="Select Test Plant"
+                <div
+                  aria-checked="false"
                   class="radio my-auto"
-                  tabindex="-1"
-                  type="checkbox"
                 />
               </div>
               <div
@@ -1457,17 +1441,13 @@ exports[`App matches snapshot when group is archived 1`] = `
             </div>
             <div
               class="flex relative"
-              data-editable-index="1"
-              data-editable-key="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
             >
               <div
                 class="absolute flex h-full z-0"
               >
-                <input
-                  aria-label="Select node"
+                <div
+                  aria-checked="false"
                   class="radio my-auto"
-                  tabindex="-1"
-                  type="checkbox"
                 />
               </div>
               <div
@@ -1597,17 +1577,13 @@ exports[`App matches snapshot when group is archived 1`] = `
             </div>
             <div
               class="flex relative"
-              data-editable-index="2"
-              data-editable-key="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
             >
               <div
                 class="absolute flex h-full z-0"
               >
-                <input
-                  aria-label="Select Newest plant"
+                <div
+                  aria-checked="false"
                   class="radio my-auto"
-                  tabindex="-1"
-                  type="checkbox"
                 />
               </div>
               <div

@@ -324,17 +324,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             >
               <div
                 class="flex relative"
-                data-editable-index="0"
-                data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
               >
                 <div
                   class="absolute flex h-full z-0"
                 >
-                  <input
-                    aria-label="Select Test Plant"
+                  <div
+                    aria-checked="false"
                     class="radio my-auto"
-                    tabindex="-1"
-                    type="checkbox"
                   />
                 </div>
                 <div
@@ -588,17 +584,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             >
               <div
                 class="flex relative"
-                data-editable-index="0"
-                data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
               >
                 <div
                   class="absolute flex h-full z-0"
                 >
-                  <input
-                    aria-label="Select Test group"
+                  <div
+                    aria-checked="false"
                     class="radio my-auto"
-                    tabindex="-1"
-                    type="checkbox"
                   />
                 </div>
                 <div
@@ -1431,17 +1423,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
             >
               <div
                 class="flex relative"
-                data-editable-index="0"
-                data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
               >
                 <div
                   class="absolute flex h-full z-0"
                 >
-                  <input
-                    aria-label="Select Test group"
+                  <div
+                    aria-checked="false"
                     class="radio my-auto"
-                    tabindex="-1"
-                    type="checkbox"
                   />
                 </div>
                 <div
@@ -2047,17 +2035,13 @@ exports[`App matches snapshot when only plants exist 1`] = `
             >
               <div
                 class="flex relative"
-                data-editable-index="0"
-                data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
               >
                 <div
                   class="absolute flex h-full z-0"
                 >
-                  <input
-                    aria-label="Select Test Plant"
+                  <div
+                    aria-checked="false"
                     class="radio my-auto"
-                    tabindex="-1"
-                    type="checkbox"
                   />
                 </div>
                 <div
@@ -2699,17 +2683,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             >
               <div
                 class="flex relative"
-                data-editable-index="0"
-                data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
               >
                 <div
                   class="absolute flex h-full z-0"
                 >
-                  <input
-                    aria-label="Select Test Plant"
+                  <div
+                    aria-checked="false"
                     class="radio my-auto"
-                    tabindex="-1"
-                    type="checkbox"
                   />
                 </div>
                 <div
@@ -2985,17 +2965,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             >
               <div
                 class="flex relative"
-                data-editable-index="0"
-                data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
               >
                 <div
                   class="absolute flex h-full z-0"
                 >
-                  <input
-                    aria-label="Select Test group"
+                  <div
+                    aria-checked="false"
                     class="radio my-auto"
-                    tabindex="-1"
-                    type="checkbox"
                   />
                 </div>
                 <div
@@ -3623,17 +3599,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             >
               <div
                 class="flex relative"
-                data-editable-index="0"
-                data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
               >
                 <div
                   class="absolute flex h-full z-0"
                 >
-                  <input
-                    aria-label="Select Test Plant"
+                  <div
+                    aria-checked="false"
                     class="radio my-auto"
-                    tabindex="-1"
-                    type="checkbox"
                   />
                 </div>
                 <div
@@ -3909,17 +3881,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             >
               <div
                 class="flex relative"
-                data-editable-index="0"
-                data-editable-key="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
               >
                 <div
                   class="absolute flex h-full z-0"
                 >
-                  <input
-                    aria-label="Select Test group"
+                  <div
+                    aria-checked="false"
                     class="radio my-auto"
-                    tabindex="-1"
-                    type="checkbox"
                   />
                 </div>
                 <div

@@ -298,10 +298,10 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByLabelText('Select Newest plant'));
 
-        // Click Remove plants dropdown option, select first plant card
+        // Click Remove plants dropdown option, unselect first plant card
         // (RemovePlantsModal was removed, now selected from PlantsCol)
         await user.click(app.getByTestId("remove_plants_option"));
-        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Unselect Test Plant'));
 
         // Mock fetch function to return expected response, click Remove button
         mockFetchResponse({

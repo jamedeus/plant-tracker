@@ -344,25 +344,17 @@ const EditableNodeList = ({
             className={clsx("flex flex-col gap-4", editing && "select-none")}
         >
             {nodes.map((node, index) => {
-                // Get node key, check if selected (checkbox state)
                 const key = itemKeys[index];
                 const isSelected = selected.has(key);
+                const name = node.props?.name || 'node';
+                const label = `${isSelected ? 'Unselect' : 'Select'} ${name}`;
 
                 return (
-                    <div
-                        key={key}
-                        className="flex relative"
-                        data-editable-index={index}
-                        data-editable-key={key}
-                    >
+                    <div key={key} className="flex relative">
                         <div className="absolute flex h-full z-0">
-                            <input
-                                type="checkbox"
-                                tabIndex={editing ? 0 : -1}
-                                checked={isSelected}
-                                onChange={() => controller.toggle(key)}
+                            <div
                                 className="radio my-auto"
-                                aria-label={`Select ${node.props?.name || 'node'}`}
+                                aria-checked={isSelected}
                             />
                         </div>
                         <div className={clsx(
@@ -375,7 +367,6 @@ const EditableNodeList = ({
                         {editing && (
                             <button
                                 type="button"
-                                tabIndex={-1}
                                 // Cover full node (click anywhere to select)
                                 // No touch actions to prevent scrolling page
                                 // (allows dragging to select on mobile)
@@ -384,7 +375,8 @@ const EditableNodeList = ({
                                     'cursor-pointer touch-none select-none'
                                 )}
                                 onPointerDown={event => beginDrag(event, index)}
-                                aria-hidden="true"
+                                aria-label={label}
+                                data-editable-index={index}
                             />
                         )}
                     </div>

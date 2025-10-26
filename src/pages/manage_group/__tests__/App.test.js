@@ -336,7 +336,7 @@ describe('App', () => {
 
         // Click the second option twice (unselect, should not be in payload)
         await user.click(app.getByLabelText('Select Third test plant'));
-        await user.click(app.getByLabelText('Select Third test plant'));
+        await user.click(app.getByLabelText('Unselect Third test plant'));
 
         // Select the first plant option, click Add button
         await user.click(app.getByLabelText('Select Another test plant'));

@@ -416,7 +416,7 @@ describe('App', () => {
         expect(app.queryByText('2 plants selected')).not.toBeNull();
 
         // Unselect first plant, confirm text changed back to 1 plant selected
-        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Unselect Test Plant'));
         await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('1 plant selected')).not.toBeNull();
     });

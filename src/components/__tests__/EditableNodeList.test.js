@@ -340,7 +340,7 @@ describe('EditableNodeList autoscroll', () => {
     it('scrolls document when pointer enters bottom scroll zone', () => {
         // Render component, get list element and parent + overlay buttons
         const { container, controller } = renderTestComponent(true, nodes);
-        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
 
@@ -410,7 +410,7 @@ describe('EditableNodeList autoscroll', () => {
     it('scrolls overflow container when pointer enters top scroll zone', () => {
         // Render component, get list element and parent + overlay buttons
         const { container, controller } = renderTestComponent(true, nodes);
-        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
 
@@ -476,7 +476,7 @@ describe('EditableNodeList autoscroll', () => {
     it('stops autoscroll when top/bottom of page reached', () => {
         // Render component, get list element and parent + overlay buttons
         const { container } = renderTestComponent(true, nodes);
-        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
 
@@ -550,7 +550,7 @@ describe('EditableNodeList autoscroll', () => {
     it('stops autoscroll when top/bottom of parent div reached', () => {
         // Render component, get list element and parent + overlay buttons
         const { container } = renderTestComponent(true, nodes);
-        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
 
@@ -622,7 +622,7 @@ describe('EditableNodeList autoscroll', () => {
     it('stops autoscroll when cursor moves out of autoscroll zone', () => {
         // Render component, get list element and parent + overlay buttons
         const { container } = renderTestComponent(true, nodes);
-        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
 
@@ -692,7 +692,7 @@ describe('EditableNodeList autoscroll', () => {
     it('does not autoscroll when list is fully offscreen', () => {
         // Render component, get list element and parent + overlay buttons
         const { container } = renderTestComponent(true, nodes);
-        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
 
@@ -781,7 +781,7 @@ describe('EditableNodeList autoscroll', () => {
     it('does not autoscroll when user right clicks and drags', () => {
         // Render component, get list element and parent + overlay buttons
         const { container } = renderTestComponent(true, nodes);
-        const list = container.querySelector('[data-editable-index="0"]').parentElement;
+        const list = container.querySelector('.flex.flex-col');
         const parent = list.parentElement;
         const buttons = container.querySelectorAll('button');
 
