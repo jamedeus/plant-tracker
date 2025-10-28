@@ -97,11 +97,14 @@ const EditableNodeList = ({
     );
 
     // Swipe right to enter edit mode (if onStartEditing callback given)
+    const gesturesEnabled = Boolean(onStartEditing && !editing);
     const swipeHandlers = useSwipeable({
         onSwipedRight: onStartEditing,
         delta: 25,
         preventScrollOnSwipe: true,
-        trackMouse: false
+        trackMouse: false,
+        // Remove listeners when editing is true
+        trackTouch: gesturesEnabled
     });
 
     // Takes dragStateRef.current and index of node cursor is currently over
@@ -411,8 +414,7 @@ const EditableNodeList = ({
             ref={listRef}
             className={clsx("flex flex-col gap-4", editing && "select-none")}
             // Add swipe handler if onStartEditing callback given
-            // Remove once editing (breaks drag to select)
-            {...(onStartEditing && !editing ? swipeHandlers : {})}
+            {...(gesturesEnabled ? swipeHandlers : {})}
         >
             {nodes.map((node, index) => {
                 const key = itemKeys[index];

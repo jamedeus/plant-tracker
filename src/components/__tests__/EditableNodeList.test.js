@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import EditableNodeList from '../EditableNodeList';
 import { createEditableNodeListController } from '../editableNodeListController';
 
@@ -502,18 +503,45 @@ describe('EditableNodeList', () => {
     });
 
     it('calls onStartEditing callback when user swipes right', () => {
-        // Render component with onStartEditing callback, get list element
+        // Create test component with controlled editing state that actually
+        // changes when onStartEditing is called
         const onStartEditing = jest.fn();
-        const { container } = renderTestComponent(false, DEFAULT_NODES, onStartEditing);
-        const list = container.querySelector('.flex.flex-col');
+        const TestComponent = () => {
+            const [editing, setEditing] = useState(false);
+            return (
+                <EditableNodeList
+                    editing={editing}
+                    controller={createEditableNodeListController()}
+                    onStartEditing={() => {
+                        onStartEditing();
+                        setEditing(true);
+                    }}
+                >
+                    {DEFAULT_NODES.map((name) => (
+                        <div key={name}>{name}</div>
+                    ))}
+                </EditableNodeList>
+            );
+        };
+        // Render, get list element, confirm callback not called
+        const { container } = render(<TestComponent />);
+        const getList = () => container.querySelector('.flex.flex-col');
         expect(onStartEditing).not.toHaveBeenCalled();
 
         // Simulate user swiping right to enter edit mode
-        fireEvent.touchStart(list, {touches: [{ clientX: 50, clientY: 10 }]});
-        fireEvent.touchMove(list, {touches: [{ clientX:  1000, clientY: 10 }]});
-        fireEvent.touchEnd(list, {changedTouches: [{ clientX:  100, clientY: 10 }]});
+        fireEvent.touchStart(getList(), { touches: [{ clientX: 50, clientY: 10 }] });
+        fireEvent.touchMove(getList(), { touches: [{ clientX: 1000, clientY: 10 }] });
+        fireEvent.touchEnd(getList(), { changedTouches: [{ clientX: 100, clientY: 10 }] });
 
         // Confirm callback ran
+        expect(onStartEditing).toHaveBeenCalledTimes(1);
+
+        // Simulate user swiping right when editing is already true
+        fireEvent.touchStart(getList(), { touches: [{ clientX: 50, clientY: 10 }] });
+        fireEvent.touchMove(getList(), { touches: [{ clientX: 1000, clientY: 10 }] });
+        fireEvent.touchEnd(getList(), { changedTouches: [{ clientX: 100, clientY: 10 }] });
+
+        // Confirm callback did NOT run again
         expect(onStartEditing).toHaveBeenCalledTimes(1);
     });
 
