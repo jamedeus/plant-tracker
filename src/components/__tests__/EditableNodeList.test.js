@@ -531,6 +531,20 @@ describe('EditableNodeList', () => {
         // Confirm callback did NOT run
         expect(onStartEditing).not.toHaveBeenCalled();
     });
+
+    // Native drag (link elements like Plant/GroupCard) prevents swiping right
+    // to start editing, need to block drag event
+    it('prevents dragging nodes inside list on desktop', () => {
+        // Render component with editing=false, get list element
+        const { container } = renderTestComponent(false, DEFAULT_NODES, jest.fn());
+        const list = container.querySelector('.flex.flex-col');
+
+        // Simulate user starting drag on list
+        const event = new Event('dragstart', { bubbles: true, cancelable: true });
+        list.dispatchEvent(event);
+        // Confirm event was blocked
+        expect(event.defaultPrevented).toBe(true);
+    });
 });
 
 describe('EditableNodeList autoscroll', () => {

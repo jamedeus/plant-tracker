@@ -413,6 +413,8 @@ const EditableNodeList = ({
             // Add swipe handler if onStartEditing callback given
             // Remove once editing (breaks drag to select)
             {...(onStartEditing && !editing ? swipeHandlers : {})}
+            // Disable native drag on link elements (breaks swipe gestures)
+            onDragStartCapture={(event) => event.preventDefault()}
         >
             {nodes.map((node, index) => {
                 const key = itemKeys[index];
