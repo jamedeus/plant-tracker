@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
+import React, { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useSwipeable } from 'react-swipeable';
@@ -96,29 +96,12 @@ const EditableNodeList = ({
         controller.getSnapshot
     );
 
-    // Adds one-time listener to block next click if it is still inside list
-    // Prevents swipe right gesture from clicking PlantCard on desktop
-    const blockNextClick = useCallback(() => {
-        const handler = (event) => {
-            // Allow click if outside list (fixes edge case if cursor outside
-            // window when pointerUp fires causing listener to persist until
-            // next click, which may be unrelated)
-            if (!listRef.current?.contains?.(event.target)) return;
-            event.preventDefault();
-            event.stopPropagation();
-        };
-        document.addEventListener('click', handler, { capture: true, once: true });
-    }, []);
-
     // Swipe right to enter edit mode (if onStartEditing callback given)
     const swipeHandlers = useSwipeable({
-        onSwipedRight: (eventData) => {
-            blockNextClick(eventData.event);
-            onStartEditing();
-        },
+        onSwipedRight: onStartEditing,
         delta: 25,
         preventScrollOnSwipe: true,
-        trackMouse: true
+        trackMouse: false
     });
 
     // Takes dragStateRef.current and index of node cursor is currently over
@@ -430,8 +413,6 @@ const EditableNodeList = ({
             // Add swipe handler if onStartEditing callback given
             // Remove once editing (breaks drag to select)
             {...(onStartEditing && !editing ? swipeHandlers : {})}
-            // Disable native drag on link elements (breaks swipe gestures)
-            onDragStartCapture={(event) => event.preventDefault()}
         >
             {nodes.map((node, index) => {
                 const key = itemKeys[index];
