@@ -270,6 +270,7 @@ FilterInput.propTypes = {
 // - CardComponent: A JSX component rendered for each item in contents.
 // - editing: Bool that controls EditableNodeList checkbox visibility.
 // - controller: EditableNodeListController object use to track selection.
+// - onStartEditing: passthrough to EditableNodeList
 // - ignoreKeys: Array of strings matching attributes in contents objects that
 //   should be ignored when user types in filter input.
 // - sortByKeys: Array of objects with `key` and display attributes, populates
@@ -286,6 +287,7 @@ const FilterColumn = ({
     CardComponent,
     editing,
     controller,
+    onStartEditing,
     ignoreKeys=[],
     sortByKeys=[],
     defaultSortKey=null,
@@ -408,6 +410,7 @@ const FilterColumn = ({
             <EditableNodeList
                 editing={editing}
                 controller={controller}
+                onStartEditing={onStartEditing}
                 scrollZoneOffsetTop={180}
             >
                 {sortByKey(state.currentContents, state.sortKey).map((item) => (
@@ -429,6 +432,7 @@ FilterColumn.propTypes = {
     CardComponent: PropTypes.elementType.isRequired,
     editing: PropTypes.bool,
     controller: controllerPropTypes.isRequired,
+    onStartEditing: PropTypes.func,
     ignoreKeys: PropTypes.array,
     sortByKeys: PropTypes.array,
     defaultSortKey: PropTypes.string,

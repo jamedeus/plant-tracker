@@ -18,7 +18,7 @@ const IGNORE_KEYS = [
 ];
 
 // Renders FilterColumn with GroupCard for each item in groups param (array)
-const GroupsCol = ({ groups, editing, selectionController, storageKey, onOpenTitle, children }) => {
+const GroupsCol = ({ groups, editing, selectionController, onStartEditing, storageKey, onOpenTitle, children }) => {
     return (
         <FilterColumn
             title="Groups"
@@ -27,6 +27,7 @@ const GroupsCol = ({ groups, editing, selectionController, storageKey, onOpenTit
             CardComponent={GroupCard}
             editing={editing}
             controller={selectionController}
+            onStartEditing={onStartEditing}
             ignoreKeys={IGNORE_KEYS}
             sortByKeys={SORT_BY_KEYS}
             defaultSortKey='created'
@@ -41,6 +42,7 @@ GroupsCol.propTypes = {
     groups: PropTypes.objectOf(groupDetailsProptypes).isRequired,
     editing: PropTypes.bool.isRequired,
     selectionController: controllerPropTypes.isRequired,
+    onStartEditing: PropTypes.func,
     storageKey: PropTypes.string,
     onOpenTitle: PropTypes.func,
     children: PropTypes.node

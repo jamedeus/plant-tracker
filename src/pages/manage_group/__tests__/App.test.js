@@ -216,6 +216,23 @@ describe('App', () => {
         expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
     });
 
+    it('shows checkboxes when user swipes right on plant cards', async () => {
+        // Get reference to plants column and list div
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
+        const list = plantsCol.querySelector('.flex.flex-col');
+        // Checkboxes are rendered underneath card with position: absolute, so
+        // they are not visible until margin-left is added to the card wrapper
+        expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
+
+        // Simulate user swiping right to show checkboxes
+        fireEvent.touchStart(list, {touches: [{ clientX: 50, clientY: 10 }]});
+        fireEvent.touchMove(list, {touches: [{ clientX:  1000, clientY: 10 }]});
+        fireEvent.touchEnd(list, {changedTouches: [{ clientX:  100, clientY: 10 }]});
+
+        // Confirm checkboxes appear
+        expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(3);
+    });
+
     it('sends correct payload when only 1 plant is watered', async () => {
         // Mock fetch function to return expected response
         mockFetchResponse({

@@ -22,7 +22,7 @@ const IGNORE_KEYS = [
 ];
 
 // Renders FilterColumn with PlantCard for each item in plants param (array)
-const PlantsCol = ({ plants, editing, selectionController, storageKey, titleOptions, onOpenTitle, children }) => {
+const PlantsCol = ({ plants, editing, selectionController, onStartEditing, storageKey, titleOptions, onOpenTitle, children }) => {
     return (
         <FilterColumn
             title="Plants"
@@ -32,6 +32,7 @@ const PlantsCol = ({ plants, editing, selectionController, storageKey, titleOpti
             CardComponent={PlantCard}
             editing={editing}
             controller={selectionController}
+            onStartEditing={onStartEditing}
             ignoreKeys={IGNORE_KEYS}
             sortByKeys={SORT_BY_KEYS}
             defaultSortKey='created'
@@ -46,6 +47,7 @@ PlantsCol.propTypes = {
     plants: PropTypes.objectOf(plantDetailsProptypes).isRequired,
     editing: PropTypes.bool.isRequired,
     selectionController: controllerPropTypes.isRequired,
+    onStartEditing: PropTypes.func,
     storageKey: PropTypes.string,
     titleOptions: PropTypes.node,
     onOpenTitle: PropTypes.func,

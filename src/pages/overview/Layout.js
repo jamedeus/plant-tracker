@@ -172,6 +172,7 @@ const Layout = () => {
                             plants={plants}
                             editing={editing || addingEvents}
                             selectionController={selectedPlantsController}
+                            onStartEditing={toggleAddingEvents}
                             storageKey='overviewPlantsColumn'
                             // Archived overview: Click title to enter edit mode
                             onOpenTitle={archivedOverview ? toggleEditing : null}
@@ -211,6 +212,7 @@ const Layout = () => {
                             groups={groups}
                             editing={editing}
                             selectionController={selectedGroupsController}
+                            onStartEditing={toggleEditing}
                             storageKey='overviewGroupsColumn'
                             onOpenTitle={toggleEditing}
                         >

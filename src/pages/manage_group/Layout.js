@@ -56,6 +56,12 @@ function Layout() {
     // Hide event buttons if no plants OR selecting plants to remove/add events
     const hideEventButtons = addEventsMode || removingPlants || noPlants;
 
+    // Show AddEventsFooter, hide RemovePlantsFooter
+    const startAddingEvents = useCallback(() => {
+        setAddEventsMode(1);
+        stopRemovingPlants();
+    }, []);
+
     // Show RemovePlantsFooter, hide AddEventsFooter, close dropdown menu
     const startRemovingPlants = useCallback(() => {
         setRemovingPlants(true);
@@ -194,6 +200,7 @@ function Layout() {
                     plants={plantDetails}
                     editing={Boolean(addEventsMode) || removingPlants}
                     selectionController={selectedPlantsController}
+                    onStartEditing={startAddingEvents}
                     storageKey={`group-${groupDetails.uuid}`}
                     // Render dropdown with add/remove options unless no plants
                     titleOptions={noPlants ? null : PlantsColTitleOptions}

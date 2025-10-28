@@ -19,10 +19,14 @@ export const firePointerEvent = (target, type, props) => {
     fireEvent(target, event);
 };
 
-const renderTestComponent = (editing=true, nodes=DEFAULT_NODES) => {
+const renderTestComponent = (editing=true, nodes=DEFAULT_NODES, onStartEditing) => {
     const controller = createEditableNodeListController();
     const component = render(
-        <EditableNodeList editing={editing} controller={controller}>
+        <EditableNodeList
+            editing={editing}
+            controller={controller}
+            onStartEditing={onStartEditing}
+        >
             {nodes.map((name) => (
                 <div key={name}>{name}</div>
             ))}
@@ -495,6 +499,37 @@ describe('EditableNodeList', () => {
         firePointerEvent(window, 'pointerup', { pointerId: 63 });
         // Confirm all nodes are unselected (shift-clicked node was above range)
         expect(controller.getSnapshot()).toEqual(new Set());
+    });
+
+    it('calls onStartEditing callback when user swipes right', () => {
+        // Render component with onStartEditing callback, get list element
+        const onStartEditing = jest.fn();
+        const { container } = renderTestComponent(false, DEFAULT_NODES, onStartEditing);
+        const list = container.querySelector('.flex.flex-col');
+        expect(onStartEditing).not.toHaveBeenCalled();
+
+        // Simulate user swiping right to enter edit mode
+        fireEvent.touchStart(list, {touches: [{ clientX: 50, clientY: 10 }]});
+        fireEvent.touchMove(list, {touches: [{ clientX:  1000, clientY: 10 }]});
+        fireEvent.touchEnd(list, {changedTouches: [{ clientX:  100, clientY: 10 }]});
+
+        // Confirm callback ran
+        expect(onStartEditing).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not call onStartEditing if user swipes right while editing', () => {
+        // Render component with onStartEditing callback and editing=true, get list element
+        const onStartEditing = jest.fn();
+        const { container } = renderTestComponent(true, DEFAULT_NODES, onStartEditing);
+        const list = container.querySelector('.flex.flex-col');
+
+        // Simulate user swiping right to enter edit mode
+        fireEvent.touchStart(list, {touches: [{ clientX: 50, clientY: 10 }]});
+        fireEvent.touchMove(list, {touches: [{ clientX:  1000, clientY: 10 }]});
+        fireEvent.touchEnd(list, {changedTouches: [{ clientX:  100, clientY: 10 }]});
+
+        // Confirm callback did NOT run
+        expect(onStartEditing).not.toHaveBeenCalled();
     });
 });
 

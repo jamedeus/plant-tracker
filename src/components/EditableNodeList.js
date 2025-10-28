@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { useSwipeable } from 'react-swipeable';
 import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
 // Takes array of selected item keys, object with details of each item (keys
@@ -46,6 +47,9 @@ const getClampedY = (y) => Math.min(Math.max(y, 0), window.innerHeight - 1);
 // When editing is true nodes shrink to show hidden checkbox, clicking anywhere
 // on node or checkbox toggles selection in controller.
 //
+// If optional onStartEditing callback is given it will be called if user swipes
+// right to show checkboxes (must be a function that sets editing to true).
+//
 // Clicking and dragging selects all nodes the cursor passes over and scrolls
 // page when cursor nears top/bottom. Optional scrollZoneHeight prop configures
 // scroll zone height (px) and the optional offset props adjust boundaries where
@@ -54,6 +58,7 @@ const EditableNodeList = ({
     editing,
     controller,
     children,
+    onStartEditing,
     scrollZoneHeight=112,
     scrollZoneOffsetTop=0,
     scrollZoneOffsetBottom=0
@@ -90,6 +95,14 @@ const EditableNodeList = ({
         controller.subscribe,
         controller.getSnapshot
     );
+
+    // Swipe right to enter edit mode (if onStartEditing callback given)
+    const swipeHandlers = useSwipeable({
+        onSwipedRight: onStartEditing,
+        delta: 25,
+        preventScrollOnSwipe: true,
+        trackMouse: true
+    });
 
     // Takes dragStateRef.current and index of node cursor is currently over
     // Selects/unselects all nodes between node where drag started and current
@@ -397,6 +410,9 @@ const EditableNodeList = ({
         <div
             ref={listRef}
             className={clsx("flex flex-col gap-4", editing && "select-none")}
+            // Add swipe handler if onStartEditing callback given
+            // Remove once editing (breaks drag to select)
+            {...(onStartEditing && !editing ? swipeHandlers : {})}
         >
             {nodes.map((node, index) => {
                 const key = itemKeys[index];
@@ -447,6 +463,7 @@ EditableNodeList.propTypes = {
     editing: PropTypes.bool.isRequired,
     controller: controllerPropTypes.isRequired,
     children: PropTypes.node,
+    onStartEditing: PropTypes.func,
     scrollZoneHeight: PropTypes.number,
     scrollZoneOffsetTop: PropTypes.number,
     scrollZoneOffsetBottom: PropTypes.number
