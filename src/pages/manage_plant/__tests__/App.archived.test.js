@@ -73,7 +73,7 @@ describe('App', () => {
             expect(app.queryByText(/Scanning it will no longer/)).toBeNull();
         });
 
-        // Confirm corect payload sent to /change_uuid endpoint
+        // Confirm correct payload sent to /change_uuid endpoint
         expect(global.fetch).toHaveBeenCalledWith('/change_uuid', {
             method: 'POST',
             body: JSON.stringify({

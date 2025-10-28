@@ -188,7 +188,7 @@ describe('DivisionModal', () => {
             headers: postHeaders
         });
 
-        // Simulate clicking button to register aother child plant
+        // Simulate clicking button to register another child plant
         mockPlantSpeciesOptionsResponse();
         mockUuidv4.mockReturnValue('child-uuid-2');
         await user.click(app.getByRole('button', { name: 'Register without QR code' }));
@@ -223,7 +223,7 @@ describe('DivisionModal', () => {
             headers: postHeaders
         });
 
-        // Simulate clicking button to register aother child plant
+        // Simulate clicking button to register another child plant
         mockPlantSpeciesOptionsResponse();
         mockUuidv4.mockReturnValue('child-uuid-3');
         await user.click(app.getByRole('button', { name: 'Register without QR code' }));
@@ -258,7 +258,7 @@ describe('DivisionModal', () => {
             headers: postHeaders
         });
 
-        // Confirm funciton used to generate title works for large numbers
+        // Confirm function used to generate title works for large numbers
         expect(intToOrdinal(11)).toBe('11th');
         expect(intToOrdinal(12)).toBe('12th');
         expect(intToOrdinal(13)).toBe('13th');

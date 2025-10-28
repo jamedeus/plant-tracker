@@ -5,7 +5,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 // Takes endpoint and POST body, makes backend request with csrftoken.
 // Handles 401 response automatically by redirecting to login page.
 //
-// Proccesses response if either optional callback (onSuccess or onError) given.
+// Processes response if either optional callback (onSuccess or onError) given.
 // Decodes response and passes to onSuccess if successful, onError if failed.
 // If onError not given decodes response and shows error in ErrorModal.
 // Returns true if successful, false if failed.

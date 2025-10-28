@@ -682,7 +682,7 @@ describe('FilterColumn optional parameters', () => {
         expect(component.getByText('Favorite plant')).toBeInTheDocument();
 
         // Shift-click Favorite plant (last button)
-        const lastButton = component.getByLabelText('Select Favorite plant')
+        const lastButton = component.getByLabelText('Select Favorite plant');
         firePointerEvent(lastButton, 'pointerdown', {
             pointerId: 32,
             button: 0,

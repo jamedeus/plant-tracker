@@ -189,7 +189,7 @@ describe('Group ChangeQrScanner', () => {
         );
     });
 
-    // Regresssion test, was possible to open navigation scanner (top right
+    // Regression test, was possible to open navigation scanner (top right
     // button) then open change QR scanner (button inside title drawer) on top
     // of it. When close button was clicked only change QR scanner closed
     // (confusing UX, looks like nothing happened, have to close second one).
