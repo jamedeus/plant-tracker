@@ -559,6 +559,71 @@ describe('EditableNodeList', () => {
         // Confirm callback did NOT run
         expect(onStartEditing).not.toHaveBeenCalled();
     });
+
+    it('calls onStartEditing callback when user long presses item in list', () => {
+        // Render component with onStartEditing callback
+        const onStartEditing = jest.fn();
+        const { getByText } = renderTestComponent(false, DEFAULT_NODES, onStartEditing);
+
+        // Simulate user pressing first node for 400ms
+        firePointerEvent(getByText('node-1'), 'pointerdown', {
+            pointerId: 51,
+            button: 0,
+            clientX: 200,
+            clientY: 220
+        });
+        act(() => jest.advanceTimersByTime(400));
+
+        // Confirm onStartEditing callback ran
+        expect(onStartEditing).toHaveBeenCalledTimes(1);
+        firePointerEvent(window, 'pointerup', { pointerId: 51 });
+    });
+
+    it('does not call onStartEditing callback when user releases long press early', () => {
+        // Render component with onStartEditing callback
+        const onStartEditing = jest.fn();
+        const { getByText } = renderTestComponent(false, DEFAULT_NODES, onStartEditing);
+
+        // Simulate user pressing first node for 200ms
+        firePointerEvent(getByText('node-1'), 'pointerdown', {
+            pointerId: 52,
+            button: 0,
+            clientX: 200,
+            clientY: 220
+        });
+        act(() => jest.advanceTimersByTime(200));
+        firePointerEvent(window, 'pointerup', { pointerId: 52 });
+
+        // Fast forward past end of timeout, confirm callback did not run
+        act(() => jest.advanceTimersByTime(200));
+        expect(onStartEditing).not.toHaveBeenCalled();
+    });
+
+    it('does not call onStartEditing callback when user moves cursor during press', () => {
+        // Render component with onStartEditing callback
+        const onStartEditing = jest.fn();
+        const { getByText } = renderTestComponent(false, DEFAULT_NODES, onStartEditing);
+
+        // Simulate user pressing first node for 150ms
+        firePointerEvent(getByText('node-1'), 'pointerdown', {
+            pointerId: 53,
+            button: 0,
+            clientX: 200,
+            clientY: 220
+        });
+        act(() => jest.advanceTimersByTime(150));
+
+        // Simulate user moving cursor 10px during long press
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 53,
+            clientX: 210,
+            clientY: 220
+        });
+
+        // Fast forward past end of timeout, confirm callback did not run
+        act(() => jest.advanceTimersByTime(200));
+        expect(onStartEditing).not.toHaveBeenCalled();
+    });
 });
 
 describe('EditableNodeList autoscroll', () => {

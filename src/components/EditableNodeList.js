@@ -47,8 +47,9 @@ const getClampedY = (y) => Math.min(Math.max(y, 0), window.innerHeight - 1);
 // When editing is true nodes shrink to show hidden checkbox, clicking anywhere
 // on node or checkbox toggles selection in controller.
 //
-// If optional onStartEditing callback is given it will be called if user swipes
-// right to show checkboxes (must be a function that sets editing to true).
+// If optional onStartEditing callback is given (must be a function that sets
+// editing to true) it will be called if user swipes right to show checkboxes
+// or long presses anywhere in the list for 300ms.
 //
 // Clicking and dragging selects all nodes the cursor passes over and scrolls
 // page when cursor nears top/bottom. Optional scrollZoneHeight prop configures
@@ -81,6 +82,13 @@ const EditableNodeList = ({
         initialIndex: null,
         mode: null,
         originalSelection: null
+    });
+    // Stores state for long press gestures (if onStartEditing callback given)
+    const longPressRef = useRef({
+        timeoutId: null,
+        pointerId: null,
+        start: { x: 0, y: 0 },
+        cleanup: null
     });
 
     const nodes = useMemo(() => React.Children.toArray(children), [children]);
@@ -409,10 +417,87 @@ const EditableNodeList = ({
         }
     };
 
+    // Cancels long press setTimeout and clears timeoutId state
+    const clearLongPressTimeout = () => {
+        if (longPressRef.current.timeoutId !== null) {
+            window.clearTimeout(longPressRef.current.timeoutId);
+            longPressRef.current.timeoutId = null;
+        }
+    };
+
+    // Cancels long press setTimeout, removes listeners, and clears all state
+    const resetLongPressState = () => {
+        if (longPressRef.current.cleanup) {
+            longPressRef.current.cleanup();
+            longPressRef.current.cleanup = null;
+        }
+        clearLongPressTimeout();
+        longPressRef.current.pointerId = null;
+    };
+
+    // Starts long press countdown, adds listeners to cancel if pointer moves or
+    // click released too soon
+    const beginLongPress = (event) => {
+        // Ignore right click long press (must be left click)
+        if (event.button !== undefined && event.button !== 0) return;
+        // Ignore if another long press already active (multitouch)
+        if (event.isPrimary === false) return;
+
+        // Cancel long press if pointer moved more than 6px in any direction
+        const handlePointerMove = (moveEvent) => {
+            // Ignore pointers that did not start long press (multitouch)
+            if (moveEvent.pointerId !== longPressRef.current.pointerId) return;
+            // Skip if already canceled/completed
+            if (longPressRef.current.timeoutId === null) return;
+
+            const deltaX = Math.abs(moveEvent.clientX - longPressRef.current.start.x);
+            const deltaY = Math.abs(moveEvent.clientY - longPressRef.current.start.y);
+            if (Math.max(deltaX, deltaY) > 6) {
+                resetLongPressState();
+            }
+        };
+
+        // Cancel setTimeout and clear state if released before timeout
+        const handlePointerUp = (endEvent) => {
+            // Ignore pointers that did not start long press (multitouch)
+            if (endEvent.pointerId !== longPressRef.current.pointerId) return;
+            resetLongPressState();
+        };
+
+        // Add listeners to cancel long press if cursor moved or click released
+        window.addEventListener('pointermove', handlePointerMove);
+        window.addEventListener('pointerup', handlePointerUp);
+        window.addEventListener('pointercancel', handlePointerUp);
+        // Save callback to remove listeners
+        longPressRef.current.cleanup = () => {
+            window.removeEventListener('pointermove', handlePointerMove);
+            window.removeEventListener('pointerup', handlePointerUp);
+            window.removeEventListener('pointercancel', handlePointerUp);
+        };
+
+        // Save state used to cancel long press if pointer moves
+        longPressRef.current.pointerId = event.pointerId;
+        longPressRef.current.start = { x: event.clientX, y: event.clientY };
+
+        // Start timeout to run onStartEditing callback if not cancelled early
+        clearLongPressTimeout();
+        longPressRef.current.timeoutId = window.setTimeout(() => {
+            longPressRef.current.timeoutId = null;
+            onStartEditing();
+            resetLongPressState();
+        }, 300);
+    };
+
+    // Cancel long press when component unmounts
+    useEffect(() => resetLongPressState, []);
+
     return (
         <div
             ref={listRef}
             className={clsx("flex flex-col gap-4", editing && "select-none")}
+            onPointerDownCapture={gesturesEnabled ? beginLongPress : undefined}
+            // Prevent safari open in new tab popup during long press
+            style={{ WebkitTouchCallout: 'none' }}
             // Add swipe handler if onStartEditing callback given
             {...(gesturesEnabled ? swipeHandlers : {})}
         >
