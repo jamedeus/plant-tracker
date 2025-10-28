@@ -441,14 +441,12 @@ const EditableNodeList = ({
         // Ignore right click long press (must be left click)
         if (event.button !== undefined && event.button !== 0) return;
         // Ignore if another long press already active (multitouch)
-        if (event.isPrimary === false) return;
+        if (longPressRef.current.pointerId !== null) return;
 
         // Cancel long press if pointer moved more than 6px in any direction
         const handlePointerMove = (moveEvent) => {
             // Ignore pointers that did not start long press (multitouch)
             if (moveEvent.pointerId !== longPressRef.current.pointerId) return;
-            // Skip if already canceled/completed
-            if (longPressRef.current.timeoutId === null) return;
 
             const deltaX = Math.abs(moveEvent.clientX - longPressRef.current.start.x);
             const deltaY = Math.abs(moveEvent.clientY - longPressRef.current.start.y);

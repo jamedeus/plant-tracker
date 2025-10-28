@@ -572,7 +572,14 @@ describe('EditableNodeList', () => {
             clientX: 200,
             clientY: 220
         });
-        act(() => jest.advanceTimersByTime(400));
+        act(() => jest.advanceTimersByTime(200));
+        // Simulate cursor moving 2px (below cancel threshold) during press
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 51,
+            clientX: 202,
+            clientY: 218
+        });
+        act(() => jest.advanceTimersByTime(200));
 
         // Confirm onStartEditing callback ran
         expect(onStartEditing).toHaveBeenCalledTimes(1);
@@ -623,6 +630,87 @@ describe('EditableNodeList', () => {
         // Fast forward past end of timeout, confirm callback did not run
         act(() => jest.advanceTimersByTime(200));
         expect(onStartEditing).not.toHaveBeenCalled();
+        firePointerEvent(window, 'pointerup', { pointerId: 53 });
+    });
+
+    it('does not call onStartEditing callback when user holds right clicks', () => {
+        // Render component with onStartEditing callback
+        const onStartEditing = jest.fn();
+        const { getByText } = renderTestComponent(false, DEFAULT_NODES, onStartEditing);
+
+        // Simulate user right clicking first node for 200ms
+        firePointerEvent(getByText('node-1'), 'pointerdown', {
+            pointerId: 1,
+            button: 2,
+            clientX: 240,
+            clientY: 120
+        });
+        act(() => jest.advanceTimersByTime(400));
+
+        // Confirm onStartEditing callback did NOT run
+        expect(onStartEditing).not.toHaveBeenCalled();
+        firePointerEvent(window, 'pointerup', { pointerId: 51 });
+    });
+
+    it('ignores second pointer during long press', () => {
+        // Render component with onStartEditing callback
+        const onStartEditing = jest.fn();
+        const { getByText } = renderTestComponent(false, DEFAULT_NODES, onStartEditing);
+
+        // Simulate user pressing first node for 150ms
+        firePointerEvent(getByText('node-1'), 'pointerdown', {
+            pointerId: 53,
+            button: 0,
+            clientX: 200,
+            clientY: 220
+        });
+        act(() => jest.advanceTimersByTime(150));
+
+        // Simulate user pressing first node with another finger
+        firePointerEvent(getByText('node-1'), 'pointerdown', {
+            pointerId: 7,
+            button: 0,
+            clientX: 200,
+            clientY: 220
+        });
+        act(() => jest.advanceTimersByTime(1));
+        firePointerEvent(window, 'pointerup', { pointerId: 53 });
+        act(() => jest.advanceTimersByTime(500));
+
+        // Confirm onStartEditing callback did NOT run even though second click
+        // is over threshold (never started timer)
+        expect(onStartEditing).not.toHaveBeenCalled();
+    });
+
+    it('ignores move events from other pointers during long press', () => {
+        // Render component with onStartEditing callback
+        const onStartEditing = jest.fn();
+        const { getByText } = renderTestComponent(false, DEFAULT_NODES, onStartEditing);
+
+        // Simulate user pressing first node for 150ms
+        firePointerEvent(getByText('node-1'), 'pointerdown', {
+            pointerId: 53,
+            button: 0,
+            clientX: 200,
+            clientY: 220
+        });
+        act(() => jest.advanceTimersByTime(150));
+
+        // Simulate user moving different pointer (multitouch) more than 6px and
+        // then releasing click (would cancel long press if same pointer)
+        firePointerEvent(window, 'pointermove', {
+            pointerId: 7,
+            clientX: 210,
+            clientY: 220
+        });
+        act(() => jest.advanceTimersByTime(50));
+        firePointerEvent(window, 'pointerup', { pointerId: 7 });
+
+        // Fast forward past end of timeout, confirm callback ran even though
+        // other pointers moved/released click
+        act(() => jest.advanceTimersByTime(200));
+        expect(onStartEditing).toHaveBeenCalledTimes(1);
+        firePointerEvent(window, 'pointerup', { pointerId: 53 });
     });
 });
 
