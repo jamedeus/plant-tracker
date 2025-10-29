@@ -58,10 +58,10 @@ module.exports = (env, argv) => {
             spa: './src/index.js',
         },
         output: {
-            path: path.resolve('backend/plant_tracker/static/plant_tracker/'),
+            path: path.resolve('dist'),
             filename: '[name].js',
             clean: {
-                keep: /\.(?:png|svg|ico)$/i
+                keep: /\.(?:png|svg|ico|html)$/i
             }
         },
         devServer: {

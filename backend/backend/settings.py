@@ -357,3 +357,13 @@ STATIC_HOST = os.environ.get("STATIC_URL", "")
 STATIC_URL = STATIC_HOST + "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+FRONTEND_DIST_DIR = BASE_DIR.parent / "dist"
+try:
+    FRONTEND_DIST_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    pass
+
+STATICFILES_DIRS = []
+if FRONTEND_DIST_DIR.exists():
+    STATICFILES_DIRS.append(FRONTEND_DIST_DIR)

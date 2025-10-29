@@ -7,6 +7,7 @@ WORKDIR /build
 
 # Copy source and config files
 COPY src/ ./src/
+COPY dist/ ./dist/
 COPY babel.config.cjs .
 COPY package.json .
 COPY package-lock.json .
@@ -47,7 +48,7 @@ COPY backend/plant_tracker /mnt/backend/plant_tracker
 COPY backend/qr-code-logo.svg /mnt/backend/qr-code-logo.svg
 
 # Copy JS bundles from node build stage
-COPY --from=node_build /build/backend/plant_tracker/static/plant_tracker/* /mnt/backend/plant_tracker/static/plant_tracker/
+COPY --from=node_build /build/dist/ /mnt/dist/
 
 # Copy python dependencies from build stage
 COPY --from=py_build /usr/local/lib/python3.13/site-packages/ /usr/local/lib/python3.13/site-packages/

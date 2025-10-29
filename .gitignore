@@ -10,6 +10,9 @@ backend/staticfiles/
 backend/data/
 backend/*.json
 backend/*.tar
+dist/*.mp3
+dist/*.css
+dist/*.js
 node_modules/
 *.png
 *.jpg

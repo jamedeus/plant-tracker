@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Plant Tracker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="./favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="stylesheet" type="text/css" href="./spa.css">
+    <script defer src="./react-common.js"></script>
+    <script defer src="./libs.js"></script>
+    <script defer src="./icons.js"></script>
+    <script defer src="./spa.js"></script>
+    <!-- Prevent visual flash on page load in dark mode -->
+    <style>
+        html[data-theme="dark"] body {
+            background: #1D232A;
+        }
+    </style>
+    <!-- Set theme dataset attribute from localStorage (or default to dark) -->
+    <script>
+        const initialTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', initialTheme);
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        window.USER_ACCOUNTS_ENABLED = true;
+    </script>
+</body>
+</html>
