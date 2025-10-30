@@ -375,7 +375,7 @@ describe('App', () => {
         // Confirm 4th card was rendered for newly added plant
         const titles = plantsCol.querySelectorAll('.card-title');
         expect(titles.length).toBe(4);
-        expect(titles[3].innerHTML).toBe('Another test plant');
+        expect(titles[3].innerHTML).toBe('Another test plant'.replace(/ /g, '&nbsp;'));
     });
 
     it('sends correct payload when plants are removed from group', async () => {
@@ -430,8 +430,8 @@ describe('App', () => {
         // Confirm selected plant was removed from plant list
         const titles = plantsCol.querySelectorAll('.card-title');
         expect(titles.length).toBe(2);
-        expect(titles[0].innerHTML).toBe('Unnamed Spider Plant');
-        expect(titles[1].innerHTML).toBe('Newest plant');
+        expect(titles[0].innerHTML).toBe('Unnamed Spider Plant'.replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe('Newest plant'.replace(/ /g, '&nbsp;'));
 
         // Confirm floating footer disappeared
         expect(floatingFooter.classList).toContain('floating-footer-hidden');

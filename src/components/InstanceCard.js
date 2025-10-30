@@ -64,14 +64,16 @@ const InstanceCard = memo(function InstanceCard({
 
                     {/* Card body */}
                     <div className={clsx(
-                        'card-body max-w-full my-auto',
+                        'card-body max-w-full my-auto overflow-hidden',
                         thumbnail ? 'text-start' : 'text-center'
                     )}>
                         <h2 className={clsx(
                             'card-title line-clamp-1 break-words',
                             thumbnail ? 'pr-8' : 'text-center px-8'
                         )}>
-                            {title}
+                            {/* Replace spaces with non-breaking spaces */}
+                            {/* Always truncate at same length, not at space */}
+                            {title.replace(/ /g, '\u00A0')}
                         </h2>
                         {subtitle}
                     </div>

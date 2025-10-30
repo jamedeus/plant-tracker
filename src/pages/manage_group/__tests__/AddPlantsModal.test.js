@@ -43,8 +43,8 @@ describe('AddPlantsModal', () => {
         await waitFor(() => {
             const titles = component.container.querySelectorAll('.card-title');
             expect(titles.length).toBe(2);
-            expect(titles[0].innerHTML).toBe("Another test plant");
-            expect(titles[1].innerHTML).toBe("Third test plant");
+            expect(titles[0].innerHTML).toBe("Another test plant".replace(/ /g, '&nbsp;'));
+            expect(titles[1].innerHTML).toBe("Third test plant".replace(/ /g, '&nbsp;'));
         });
     });
 

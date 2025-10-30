@@ -216,22 +216,22 @@ describe('FilterColumn', () => {
     it('sorts cards correctly when sort dropdown option is clicked', async () => {
         // Get array of card titles, confirm expected default order
         let titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("mini palm tree");
-        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[2].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[3].innerHTML).toBe("Favorite plant");
-        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[0].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
 
         // Click the Name option in sort dropdown
         await user.click(component.getByText('Name'));
 
         // Confirm cards were sorted alphabetically by name (case insensitive)
         titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Favorite plant");
-        expect(titles[1].innerHTML).toBe("mini palm tree");
-        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[3].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[0].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
 
         // Confirm a down arrow icon appeared next to name
         let nameOption = component.getByText('Name').closest('li');
@@ -243,11 +243,11 @@ describe('FilterColumn', () => {
 
         // Confirm cards were sorted reverse alphabetically by name
         titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Unnamed plant 2");
-        expect(titles[1].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[3].innerHTML).toBe("mini palm tree");
-        expect(titles[4].innerHTML).toBe("Favorite plant");
+        expect(titles[0].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
 
         // Confirm the down arrow rotated 180 degrees (up arrow)
         nameOption = component.getByText('Name').closest('li');
@@ -261,22 +261,22 @@ describe('FilterColumn', () => {
 
         // Confirm cards sorted alphabetically, plants without species are last
         let titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Favorite plant");
-        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[2].innerHTML).toBe("mini palm tree");
-        expect(titles[3].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[0].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
 
         // Click the Species option in sort dropdown again (reverse direction)
         await user.click(component.getByText('Species'));
 
         // Confirm cards sorted reverse alphabetically, plants without species are first
         titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[1].innerHTML).toBe("Unnamed plant 2");
-        expect(titles[2].innerHTML).toBe("mini palm tree");
-        expect(titles[3].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[4].innerHTML).toBe("Favorite plant");
+        expect(titles[0].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
     });
 
     it('sorts null to top of list when selected key is last_watered', async () => {
@@ -286,11 +286,11 @@ describe('FilterColumn', () => {
         // Confirm "Never watered" is sorted to top followed by least-recently
         // watered (not to the bottom with most-recently watered)
         const titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[1].innerHTML).toBe("Favorite plant");
-        expect(titles[2].innerHTML).toBe("mini palm tree");
-        expect(titles[3].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[0].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
     });
 
     it('scrolls top of column into the viewport when filter query changes', async () => {
@@ -415,10 +415,10 @@ describe('FilterColumn', () => {
         // Confirm names are sorted sequentially by suffix (10 comes last, not
         // after 1 like it would with pure lexical sort)
         let titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Plant 1");
-        expect(titles[1].innerHTML).toBe("Plant 2");
-        expect(titles[2].innerHTML).toBe("Plant 3");
-        expect(titles[3].innerHTML).toBe("Plant 10");
+        expect(titles[0].innerHTML).toBe("Plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("Plant 2".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("Plant 3".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("Plant 10".replace(/ /g, '&nbsp;'));
     });
 });
 
@@ -501,11 +501,11 @@ describe('FilterColumn optional parameters', () => {
 
         // Confirm cards are sorted alphabetically by default
         const titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Favorite plant");
-        expect(titles[1].innerHTML).toBe("mini palm tree");
-        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[3].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[0].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
     });
 
     it('sorts cards in same order as contents array if defaultSortKey arg empty', () => {
@@ -517,11 +517,11 @@ describe('FilterColumn optional parameters', () => {
 
         // Confirm cards are in same order as contents array
         const titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("mini palm tree");
-        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[2].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[3].innerHTML).toBe("Unnamed plant 2");
-        expect(titles[4].innerHTML).toBe("Favorite plant");
+        expect(titles[0].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
 
         // Confirm arrow icon is not present on any dropdown option
         const options = component.container.querySelector('.dropdown-content');
@@ -599,11 +599,11 @@ describe('FilterColumn optional parameters', () => {
 
         // Confirm cards were sorted reverse alphabetically by name
         const titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Unnamed plant 2");
-        expect(titles[1].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[3].innerHTML).toBe("mini palm tree");
-        expect(titles[4].innerHTML).toBe("Favorite plant");
+        expect(titles[0].innerHTML).toBe("Unnamed plant 2".replace(/ /g, '&nbsp;'));
+        expect(titles[1].innerHTML).toBe("Unnamed plant 1".replace(/ /g, '&nbsp;'));
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia".replace(/ /g, '&nbsp;'));
+        expect(titles[3].innerHTML).toBe("mini palm tree".replace(/ /g, '&nbsp;'));
+        expect(titles[4].innerHTML).toBe("Favorite plant".replace(/ /g, '&nbsp;'));
     });
 
     it('unselects items that are no longer in list after filtering', async () => {

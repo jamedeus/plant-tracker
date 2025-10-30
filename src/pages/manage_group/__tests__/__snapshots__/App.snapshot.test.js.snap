@@ -448,12 +448,12 @@ exports[`App matches snapshot 1`] = `
                       class="card card-side relative h-24"
                     >
                       <div
-                        class="card-body max-w-full my-auto text-center"
+                        class="card-body max-w-full my-auto overflow-hidden text-center"
                       >
                         <h2
                           class="card-title line-clamp-1 break-words text-center px-8"
                         >
-                          Test Plant
+                          Test Plant
                         </h2>
                         <span
                           class="line-clamp-1"
@@ -591,12 +591,12 @@ exports[`App matches snapshot 1`] = `
                         />
                       </figure>
                       <div
-                        class="card-body max-w-full my-auto text-start"
+                        class="card-body max-w-full my-auto overflow-hidden text-start"
                       >
                         <h2
                           class="card-title line-clamp-1 break-words pr-8"
                         >
-                          Unnamed Spider Plant
+                          Unnamed Spider Plant
                         </h2>
                         <span
                           class="line-clamp-1"
@@ -711,12 +711,12 @@ exports[`App matches snapshot 1`] = `
                       class="card card-side relative h-24"
                     >
                       <div
-                        class="card-body max-w-full my-auto text-center"
+                        class="card-body max-w-full my-auto overflow-hidden text-center"
                       >
                         <h2
                           class="card-title line-clamp-1 break-words text-center px-8"
                         >
-                          Newest plant
+                          Newest plant
                         </h2>
                         <span>
                           Never watered
@@ -1312,12 +1312,12 @@ exports[`App matches snapshot when group is archived 1`] = `
                       class="card card-side relative h-24"
                     >
                       <div
-                        class="card-body max-w-full my-auto text-center"
+                        class="card-body max-w-full my-auto overflow-hidden text-center"
                       >
                         <h2
                           class="card-title line-clamp-1 break-words text-center px-8"
                         >
-                          Test Plant
+                          Test Plant
                         </h2>
                         <span
                           class="line-clamp-1"
@@ -1455,12 +1455,12 @@ exports[`App matches snapshot when group is archived 1`] = `
                         />
                       </figure>
                       <div
-                        class="card-body max-w-full my-auto text-start"
+                        class="card-body max-w-full my-auto overflow-hidden text-start"
                       >
                         <h2
                           class="card-title line-clamp-1 break-words pr-8"
                         >
-                          Unnamed Spider Plant
+                          Unnamed Spider Plant
                         </h2>
                         <span
                           class="line-clamp-1"
@@ -1575,12 +1575,12 @@ exports[`App matches snapshot when group is archived 1`] = `
                       class="card card-side relative h-24"
                     >
                       <div
-                        class="card-body max-w-full my-auto text-center"
+                        class="card-body max-w-full my-auto overflow-hidden text-center"
                       >
                         <h2
                           class="card-title line-clamp-1 break-words text-center px-8"
                         >
-                          Newest plant
+                          Newest plant
                         </h2>
                         <span>
                           Never watered

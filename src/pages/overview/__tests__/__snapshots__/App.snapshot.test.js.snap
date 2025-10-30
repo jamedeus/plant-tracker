@@ -358,12 +358,12 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           />
                         </figure>
                         <div
-                          class="card-body max-w-full my-auto text-start"
+                          class="card-body max-w-full my-auto overflow-hidden text-start"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words pr-8"
                           >
-                            Test Plant
+                            Test Plant
                           </h2>
                           <span
                             class="line-clamp-1"
@@ -602,12 +602,12 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="card card-side relative h-24"
                       >
                         <div
-                          class="card-body max-w-full my-auto text-center"
+                          class="card-body max-w-full my-auto overflow-hidden text-center"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words text-center px-8"
                           >
-                            Test group
+                            Test group
                           </h2>
                           <p>
                             Contains 
@@ -1436,12 +1436,12 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         class="card card-side relative h-24"
                       >
                         <div
-                          class="card-body max-w-full my-auto text-center"
+                          class="card-body max-w-full my-auto overflow-hidden text-center"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words text-center px-8"
                           >
-                            Test group
+                            Test group
                           </h2>
                           <p>
                             Contains 
@@ -2054,12 +2054,12 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           />
                         </figure>
                         <div
-                          class="card-body max-w-full my-auto text-start"
+                          class="card-body max-w-full my-auto overflow-hidden text-start"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words pr-8"
                           >
-                            Test Plant
+                            Test Plant
                           </h2>
                           <span
                             class="line-clamp-1"
@@ -2697,12 +2697,12 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           />
                         </figure>
                         <div
-                          class="card-body max-w-full my-auto text-start"
+                          class="card-body max-w-full my-auto overflow-hidden text-start"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words pr-8"
                           >
-                            Test Plant
+                            Test Plant
                           </h2>
                           <span
                             class="line-clamp-1"
@@ -2963,12 +2963,12 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="card card-side relative h-24"
                       >
                         <div
-                          class="card-body max-w-full my-auto text-center"
+                          class="card-body max-w-full my-auto overflow-hidden text-center"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words text-center px-8"
                           >
-                            Test group
+                            Test group
                           </h2>
                           <p>
                             Contains 
@@ -3603,12 +3603,12 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           />
                         </figure>
                         <div
-                          class="card-body max-w-full my-auto text-start"
+                          class="card-body max-w-full my-auto overflow-hidden text-start"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words pr-8"
                           >
-                            Test Plant
+                            Test Plant
                           </h2>
                           <span
                             class="line-clamp-1"
@@ -3869,12 +3869,12 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="card card-side relative h-24"
                       >
                         <div
-                          class="card-body max-w-full my-auto text-center"
+                          class="card-body max-w-full my-auto overflow-hidden text-center"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words text-center px-8"
                           >
-                            Test group
+                            Test group
                           </h2>
                           <p>
                             Contains 
