@@ -69,7 +69,7 @@ const EditableNodeList = ({
     // Stores state for current drag gesture (null if not dragging)
     const dragStateRef = useRef(null);
     // Stores event handlers for current drag gesture (used for cleanup)
-    const pointerHandlersRef = useRef({ move: null, up: null, cancel: null });
+    const pointerHandlersRef = useRef({ move: null, end: null });
     // Stores autoscroll state for current drag gesture
     const autoScrollRef = useRef({
         speed: 0,
@@ -282,10 +282,11 @@ const EditableNodeList = ({
             };
         }
 
+        window.removeEventListener('wheel', pointerHandlersRef.current.move);
         window.removeEventListener('pointermove', pointerHandlersRef.current.move);
-        window.removeEventListener('pointerup', pointerHandlersRef.current.up);
-        window.removeEventListener('pointercancel', pointerHandlersRef.current.cancel);
-        pointerHandlersRef.current = { move: null, up: null, cancel: null };
+        window.removeEventListener('pointerup', pointerHandlersRef.current.end);
+        window.removeEventListener('pointercancel', pointerHandlersRef.current.end);
+        pointerHandlersRef.current = { move: null, end: null };
         dragStateRef.current = null;
         stopAutoScroll();
     };
@@ -341,7 +342,10 @@ const EditableNodeList = ({
 
         const handlePointerMove = (moveEvent) => {
             // Ignore pointers that did not start drag (multitouch)
-            if (moveEvent.pointerId !== dragStateRef.current.pointerId) return;
+            if (
+                moveEvent.type === 'pointermove' &&
+                moveEvent.pointerId !== dragStateRef.current.pointerId
+            ) return;
 
             // Get index of node under pointer (null if not over a node)
             const newIndex = getIndexFromPoint(moveEvent.clientY);
@@ -373,11 +377,11 @@ const EditableNodeList = ({
         // Store handlers so finishDrag can remove them when click released
         pointerHandlersRef.current = {
             move: handlePointerMove,
-            up: handlePointerEnd,
-            cancel: handlePointerEnd,
+            end: handlePointerEnd,
         };
 
         // Update selection when pointer moves
+        window.addEventListener('wheel', handlePointerMove);
         window.addEventListener('pointermove', handlePointerMove);
         // End drag (remove listeners) when touch/click released
         window.addEventListener('pointerup', handlePointerEnd);

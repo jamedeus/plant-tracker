@@ -251,6 +251,43 @@ describe('EditableNodeList', () => {
         expect(controller.getSnapshot()).toEqual(new Set([]));
     });
 
+    it('updates selection when user scrolls mouse wheel while dragging', () => {
+        // Render component, get overlay buttons that cover each node
+        const { container, controller } = renderTestComponent();
+        const buttons = container.querySelectorAll('button');
+
+        // Simulate user starting click on first node
+        elementUnderCursorIndex = 0;
+        firePointerEvent(buttons[0], 'pointerdown', {
+            pointerId: 7,
+            button: 0,
+            clientX: 200,
+            clientY: 220
+        });
+        // Confirm first node selected immediately (before drag/scroll)
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1']));
+
+        // Simulate user scrolling with mouse wheel until third node is under cursor
+        elementUnderCursorIndex = 2;
+        fireEvent.wheel(window, {
+            clientX: 200,
+            clientY: 360
+        });
+        // Confirm all 3 nodes are now selected
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1', 'node-2', 'node-3']));
+
+        // Release click, scroll until fifth node is under cursor
+        firePointerEvent(window, 'pointerup', { pointerId: 7 });
+        elementUnderCursorIndex = 4;
+        fireEvent.wheel(window, {
+            clientX: 200,
+            clientY: 500
+        });
+
+        // Confirm selection did not change (only selects while click held)
+        expect(controller.getSnapshot()).toEqual(new Set(['node-1', 'node-2', 'node-3']));
+    });
+
     it('ignores drag from second pointer (multitouch) when drag already in progress', () => {
         // Render component, get overlay buttons that cover each node
         const { container, controller } = renderTestComponent();
