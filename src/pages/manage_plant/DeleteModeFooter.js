@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useRef } from 'react';
 import FloatingFooter from 'src/components/FloatingFooter';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,6 +23,8 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
         (sum, arr) => sum + arr.length, 0
     );
     const totalSelected = totalSelectedEvents + selectedPhotos.length + selectedNotes.length;
+    // Track number from previous render (detect first selected/last unselected)
+    const previousTotalRef = useRef(totalSelected);
 
     // Controls text shown in footer (instructions or number selected)
     const [footerText, setFooterText] = useState('');
@@ -44,6 +46,13 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
     // Update instructions text when total selected changes
     useEffect(() => {
+        // Read total from previous run, overwrite with current for next run
+        const prevTotal = previousTotalRef.current;
+        previousTotalRef.current = totalSelected;
+        // Fade text when first item selected or last item unselected
+        // (first selected: total=0 new=1, last unselected: total=1 new=0)
+        setShouldFade(prevTotal + totalSelected === 1 || totalSelected === 0);
+        // Update footer text
         setNumberSelectedText();
     }, [totalSelected]);
 
@@ -98,7 +107,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
         <FloatingFooter
             visible={deleteMode}
             text={footerText}
-            fadeText={totalSelected <= 1 || shouldFade}
+            fadeText={shouldFade}
             onClose={cancelDeleteMode}
         >
             <button
