@@ -1541,8 +1541,8 @@ exports[`App matches snapshot 1`] = `
               data-testid="2024-03-01-events"
             >
               <span
-                class="event-marker"
-                title="2024-03-01T15:45:44+00:00"
+                class="event-marker tooltip"
+                data-tip="7:45 AM"
               >
                 <span
                   class="event-marker-content"
@@ -1565,8 +1565,8 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </span>
               <span
-                class="event-marker"
-                title="2024-03-01T15:45:44+00:00"
+                class="event-marker tooltip"
+                data-tip="7:45 AM"
               >
                 <span
                   class="event-marker-content"
@@ -1671,8 +1671,8 @@ exports[`App matches snapshot 1`] = `
               data-testid="2024-02-29-events"
             >
               <span
-                class="event-marker"
-                title="2024-02-29T10:20:15+00:00"
+                class="event-marker tooltip"
+                data-tip="2:20 AM"
               >
                 <span
                   class="event-marker-content"
@@ -1732,8 +1732,8 @@ exports[`App matches snapshot 1`] = `
               data-testid="2024-02-26-events"
             >
               <span
-                class="event-marker"
-                title="2024-02-26T12:44:12+00:00"
+                class="event-marker tooltip"
+                data-tip="4:44 AM"
               >
                 <span
                   class="event-marker-content"
@@ -3501,8 +3501,8 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-testid="2024-03-01-events"
             >
               <span
-                class="event-marker"
-                title="2024-03-01T15:45:44+00:00"
+                class="event-marker tooltip"
+                data-tip="7:45 AM"
               >
                 <span
                   class="event-marker-content"
@@ -3525,8 +3525,8 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </span>
               </span>
               <span
-                class="event-marker"
-                title="2024-03-01T15:45:44+00:00"
+                class="event-marker tooltip"
+                data-tip="7:45 AM"
               >
                 <span
                   class="event-marker-content"
@@ -3631,8 +3631,8 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-testid="2024-02-29-events"
             >
               <span
-                class="event-marker"
-                title="2024-02-29T10:20:15+00:00"
+                class="event-marker tooltip"
+                data-tip="2:20 AM"
               >
                 <span
                   class="event-marker-content"
@@ -3692,8 +3692,8 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-testid="2024-02-26-events"
             >
               <span
-                class="event-marker"
-                title="2024-02-26T12:44:12+00:00"
+                class="event-marker tooltip"
+                data-tip="4:44 AM"
               >
                 <span
                   class="event-marker-content"

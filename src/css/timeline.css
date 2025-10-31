@@ -38,7 +38,7 @@
 }
 
 .timeline-day {
-    @apply flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden;
+    @apply flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0;
 }
 
 .timeline-day-events {
@@ -77,6 +77,14 @@
     /* Scale down contents when selected */
     &.selected > .event-marker-content {
         @apply scale-90;
+    }
+
+    /* Tooltip (event timestamps) */
+    &::before {
+        @apply max-w-fit;
+    }
+    &::before, &::after {
+        @apply bg-base-300 translate-y-3 md:translate-y-2;
     }
 }
 

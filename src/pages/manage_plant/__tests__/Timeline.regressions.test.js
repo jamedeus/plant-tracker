@@ -159,8 +159,8 @@ describe('Timeline regressions', () => {
 
         // Confirm "Divided from" marker and repot event are in timeline
         expect(app.getByText('Divided from')).toBeInTheDocument();
-        expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toBeInTheDocument();
-        expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toHaveTextContent('Repoted');
+        expect(app.container.querySelector('[data-tip="8:19 PM"]')).toBeInTheDocument();
+        expect(app.container.querySelector('[data-tip="8:19 PM"]')).toHaveTextContent('Repoted');
 
         // Mock fetch to return response when repot event is deleted
         mockFetchResponse({
@@ -225,8 +225,8 @@ describe('Timeline regressions', () => {
 
         // Confirm "Divided into" marker and repot event are in timeline
         expect(app.getByText(/Divided into/)).toBeInTheDocument();
-        expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toBeInTheDocument();
-        expect(app.getByTitle('2024-02-11T04:19:23+00:00')).toHaveTextContent('Repoted');
+        expect(app.container.querySelector('[data-tip="8:19 PM"]')).toBeInTheDocument();
+        expect(app.container.querySelector('[data-tip="8:19 PM"]')).toHaveTextContent('Repoted');
 
         // Mock fetch to return response when repot event is deleted
         mockFetchResponse({

@@ -728,8 +728,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-04-17-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -789,8 +789,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-04-16-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-16T22:19:47+00:00"
+            class="event-marker tooltip"
+            data-tip="2:19 PM"
           >
             <span
               class="event-marker-content"
@@ -850,8 +850,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-04-15-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-15T22:27:59+00:00"
+            class="event-marker tooltip"
+            data-tip="2:27 PM"
           >
             <span
               class="event-marker-content"
@@ -911,9 +911,9 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-04-14-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-14T22:08:58+00:00
-2024-04-14T19:02:53+00:00"
+            class="event-marker tooltip"
+            data-tip="2:08 PM
+11:02 AM"
           >
             <span
               class="event-marker-content"
@@ -973,8 +973,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-04-13-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-13T22:08:58+00:00"
+            class="event-marker tooltip"
+            data-tip="2:08 PM"
           >
             <span
               class="event-marker-content"
@@ -997,8 +997,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-04-14T01:36:43+00:00"
+            class="event-marker tooltip"
+            data-tip="5:36 PM"
           >
             <span
               class="event-marker-content"
@@ -1021,8 +1021,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-04-14T01:36:43+00:00"
+            class="event-marker tooltip"
+            data-tip="5:36 PM"
           >
             <span
               class="event-marker-content"
@@ -1082,8 +1082,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-04-12-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-12T18:00:52+00:00"
+            class="event-marker tooltip"
+            data-tip="10:00 AM"
           >
             <span
               class="event-marker-content"
@@ -1106,8 +1106,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-04-12T19:33:57+00:00"
+            class="event-marker tooltip"
+            data-tip="11:33 AM"
           >
             <span
               class="event-marker-content"
@@ -1167,8 +1167,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-04-11-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-11T19:04:20+00:00"
+            class="event-marker tooltip"
+            data-tip="11:04 AM"
           >
             <span
               class="event-marker-content"
@@ -1234,8 +1234,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-31-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-01T05:17:43+00:00"
+            class="event-marker tooltip"
+            data-tip="9:17 PM"
           >
             <span
               class="event-marker-content"
@@ -1295,8 +1295,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-25-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-26T02:49:18+00:00"
+            class="event-marker tooltip"
+            data-tip="6:49 PM"
           >
             <span
               class="event-marker-content"
@@ -1319,8 +1319,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-26T02:49:18+00:00"
+            class="event-marker tooltip"
+            data-tip="6:49 PM"
           >
             <span
               class="event-marker-content"
@@ -1343,8 +1343,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-26T02:49:18+00:00"
+            class="event-marker tooltip"
+            data-tip="6:49 PM"
           >
             <span
               class="event-marker-content"
@@ -1549,8 +1549,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-24-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-25T02:50:21+00:00"
+            class="event-marker tooltip"
+            data-tip="6:50 PM"
           >
             <span
               class="event-marker-content"
@@ -1573,8 +1573,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-25T02:50:21+00:00"
+            class="event-marker tooltip"
+            data-tip="6:50 PM"
           >
             <span
               class="event-marker-content"
@@ -1634,8 +1634,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-23-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-24T01:51:30+00:00"
+            class="event-marker tooltip"
+            data-tip="5:51 PM"
           >
             <span
               class="event-marker-content"
@@ -1658,8 +1658,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-24T01:51:30+00:00"
+            class="event-marker tooltip"
+            data-tip="5:51 PM"
           >
             <span
               class="event-marker-content"
@@ -1719,8 +1719,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-22-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-23T05:20:10+00:00"
+            class="event-marker tooltip"
+            data-tip="9:20 PM"
           >
             <span
               class="event-marker-content"
@@ -1743,8 +1743,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-23T05:20:10+00:00"
+            class="event-marker tooltip"
+            data-tip="9:20 PM"
           >
             <span
               class="event-marker-content"
@@ -1804,8 +1804,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-21-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-22T01:51:30+00:00"
+            class="event-marker tooltip"
+            data-tip="5:51 PM"
           >
             <span
               class="event-marker-content"
@@ -1828,8 +1828,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-22T01:51:30+00:00"
+            class="event-marker tooltip"
+            data-tip="5:51 PM"
           >
             <span
               class="event-marker-content"
@@ -1889,8 +1889,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-17-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -1950,8 +1950,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-13-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-13T22:20:00+00:00"
+            class="event-marker tooltip"
+            data-tip="2:20 PM"
           >
             <span
               class="event-marker-content"
@@ -2011,8 +2011,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-03-12-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-13T07:35:00+00:00"
+            class="event-marker tooltip"
+            data-tip="11:35 PM"
           >
             <span
               class="event-marker-content"
@@ -2277,8 +2277,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-02-17-events"
         >
           <span
-            class="event-marker"
-            title="2024-02-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -2344,8 +2344,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2024-01-17-events"
         >
           <span
-            class="event-marker"
-            title="2024-01-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -2411,8 +2411,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-12-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-12-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -2478,8 +2478,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-11-22-events"
         >
           <span
-            class="event-marker"
-            title="2023-11-23T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -2502,8 +2502,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2023-11-23T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -2563,8 +2563,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-11-21-events"
         >
           <span
-            class="event-marker"
-            title="2023-11-22T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -2587,8 +2587,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2023-11-22T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -2661,8 +2661,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-11-20-events"
         >
           <span
-            class="event-marker"
-            title="2023-11-21T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -2722,8 +2722,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-11-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-11-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -2746,8 +2746,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2023-11-18T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -2770,8 +2770,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2023-11-18T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -2837,8 +2837,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-10-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-10-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -2904,8 +2904,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-09-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-09-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3069,8 +3069,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-08-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-08-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3136,8 +3136,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-07-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-07-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3203,8 +3203,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-06-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-06-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3270,8 +3270,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-05-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-05-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3337,8 +3337,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-04-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-04-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3404,8 +3404,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-03-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-03-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3471,8 +3471,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-02-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-02-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3538,8 +3538,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           data-testid="2023-01-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-01-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -3959,8 +3959,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-04-17-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -4020,8 +4020,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-04-16-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-16T22:19:47+00:00"
+            class="event-marker tooltip"
+            data-tip="2:19 PM"
           >
             <span
               class="event-marker-content"
@@ -4081,8 +4081,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-04-15-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-15T22:27:59+00:00"
+            class="event-marker tooltip"
+            data-tip="2:27 PM"
           >
             <span
               class="event-marker-content"
@@ -4142,9 +4142,9 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-04-14-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-14T22:08:58+00:00
-2024-04-14T19:02:53+00:00"
+            class="event-marker tooltip"
+            data-tip="2:08 PM
+11:02 AM"
           >
             <span
               class="event-marker-content"
@@ -4204,8 +4204,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-04-13-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-13T22:08:58+00:00"
+            class="event-marker tooltip"
+            data-tip="2:08 PM"
           >
             <span
               class="event-marker-content"
@@ -4228,8 +4228,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-04-14T01:36:43+00:00"
+            class="event-marker tooltip"
+            data-tip="5:36 PM"
           >
             <span
               class="event-marker-content"
@@ -4252,8 +4252,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-04-14T01:36:43+00:00"
+            class="event-marker tooltip"
+            data-tip="5:36 PM"
           >
             <span
               class="event-marker-content"
@@ -4313,8 +4313,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-04-12-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-12T18:00:52+00:00"
+            class="event-marker tooltip"
+            data-tip="10:00 AM"
           >
             <span
               class="event-marker-content"
@@ -4337,8 +4337,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-04-12T19:33:57+00:00"
+            class="event-marker tooltip"
+            data-tip="11:33 AM"
           >
             <span
               class="event-marker-content"
@@ -4398,8 +4398,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-04-11-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-11T19:04:20+00:00"
+            class="event-marker tooltip"
+            data-tip="11:04 AM"
           >
             <span
               class="event-marker-content"
@@ -4465,8 +4465,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-31-events"
         >
           <span
-            class="event-marker"
-            title="2024-04-01T05:17:43+00:00"
+            class="event-marker tooltip"
+            data-tip="9:17 PM"
           >
             <span
               class="event-marker-content"
@@ -4526,8 +4526,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-25-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-26T02:49:18+00:00"
+            class="event-marker tooltip"
+            data-tip="6:49 PM"
           >
             <span
               class="event-marker-content"
@@ -4550,8 +4550,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-26T02:49:18+00:00"
+            class="event-marker tooltip"
+            data-tip="6:49 PM"
           >
             <span
               class="event-marker-content"
@@ -4574,8 +4574,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-26T02:49:18+00:00"
+            class="event-marker tooltip"
+            data-tip="6:49 PM"
           >
             <span
               class="event-marker-content"
@@ -4780,8 +4780,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-24-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-25T02:50:21+00:00"
+            class="event-marker tooltip"
+            data-tip="6:50 PM"
           >
             <span
               class="event-marker-content"
@@ -4804,8 +4804,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-25T02:50:21+00:00"
+            class="event-marker tooltip"
+            data-tip="6:50 PM"
           >
             <span
               class="event-marker-content"
@@ -4865,8 +4865,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-23-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-24T01:51:30+00:00"
+            class="event-marker tooltip"
+            data-tip="5:51 PM"
           >
             <span
               class="event-marker-content"
@@ -4889,8 +4889,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-24T01:51:30+00:00"
+            class="event-marker tooltip"
+            data-tip="5:51 PM"
           >
             <span
               class="event-marker-content"
@@ -4950,8 +4950,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-22-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-23T05:20:10+00:00"
+            class="event-marker tooltip"
+            data-tip="9:20 PM"
           >
             <span
               class="event-marker-content"
@@ -4974,8 +4974,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-23T05:20:10+00:00"
+            class="event-marker tooltip"
+            data-tip="9:20 PM"
           >
             <span
               class="event-marker-content"
@@ -5035,8 +5035,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-21-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-22T01:51:30+00:00"
+            class="event-marker tooltip"
+            data-tip="5:51 PM"
           >
             <span
               class="event-marker-content"
@@ -5059,8 +5059,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2024-03-22T01:51:30+00:00"
+            class="event-marker tooltip"
+            data-tip="5:51 PM"
           >
             <span
               class="event-marker-content"
@@ -5120,8 +5120,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-17-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -5181,8 +5181,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-13-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-13T22:20:00+00:00"
+            class="event-marker tooltip"
+            data-tip="2:20 PM"
           >
             <span
               class="event-marker-content"
@@ -5242,8 +5242,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-03-12-events"
         >
           <span
-            class="event-marker"
-            title="2024-03-13T07:35:00+00:00"
+            class="event-marker tooltip"
+            data-tip="11:35 PM"
           >
             <span
               class="event-marker-content"
@@ -5508,8 +5508,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-02-17-events"
         >
           <span
-            class="event-marker"
-            title="2024-02-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -5575,8 +5575,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2024-01-17-events"
         >
           <span
-            class="event-marker"
-            title="2024-01-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -5642,8 +5642,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-12-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-12-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -5709,8 +5709,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-11-22-events"
         >
           <span
-            class="event-marker"
-            title="2023-11-23T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -5733,8 +5733,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2023-11-23T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -5794,8 +5794,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-11-21-events"
         >
           <span
-            class="event-marker"
-            title="2023-11-22T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -5818,8 +5818,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2023-11-22T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -5892,8 +5892,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-11-20-events"
         >
           <span
-            class="event-marker"
-            title="2023-11-21T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -5953,8 +5953,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-11-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-11-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -5977,8 +5977,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2023-11-18T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -6001,8 +6001,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </span>
           </span>
           <span
-            class="event-marker"
-            title="2023-11-18T01:38:19+00:00"
+            class="event-marker tooltip"
+            data-tip="5:38 PM"
           >
             <span
               class="event-marker-content"
@@ -6068,8 +6068,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-10-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-10-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6135,8 +6135,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-09-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-09-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6300,8 +6300,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-08-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-08-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6367,8 +6367,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-07-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-07-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6434,8 +6434,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-06-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-06-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6501,8 +6501,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-05-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-05-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6568,8 +6568,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-04-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-04-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6635,8 +6635,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-03-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-03-17T21:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="1:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6702,8 +6702,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-02-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-02-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"
@@ -6769,8 +6769,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           data-testid="2023-01-17-events"
         >
           <span
-            class="event-marker"
-            title="2023-01-17T22:21:41+00:00"
+            class="event-marker tooltip"
+            data-tip="2:21 PM"
           >
             <span
               class="event-marker-content"

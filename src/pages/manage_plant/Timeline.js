@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, memo, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useLayoutEffect, useMemo, memo, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
@@ -312,11 +312,19 @@ const EventMarker = memo(function EventMarker({ eventType, timestamps }) {
         !deleteMode && setSelected(false);
     }, [deleteMode]);
 
+    // Convert ISO timestamps to HH:MM AM/PM strings, 1 per line
+    const tooltipText = useMemo(() => timestamps.map(timestamp =>
+        DateTime.fromISO(timestamp).toFormat('h:mm\u00A0a')
+    ).join('\n'), [timestamps]);
+
     return (
         <span
-            className={clsx("event-marker", selected && "selected")}
+            className={clsx(
+                "event-marker tooltip",
+                selected && "selected"
+            )}
             onClick={deleteMode ? handleClick : null}
-            title={timestamps.join('\n')}
+            data-tip={deleteMode ? '' : tooltipText}
         >
             <span className="event-marker-content">
                 {eventIconMap[eventType]}
