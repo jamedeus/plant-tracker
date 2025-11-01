@@ -115,8 +115,9 @@ describe('Delete mode', () => {
     // released. This happened because the HoldToConfirm onHoldStop callback
     // contained a closure with totalSelected from before the selection changed.
     it('does not show incorrect footer text if selection changed right after release', async () => {
-        // Enter delete mode
+        // Enter delete mode, confirm footer contains initial instructions text
         await user.click(app.getByText('Edit timeline'));
+        expect(app.queryByText('Select timeline items to delete')).not.toBeNull();
 
         // Select water event and note
         await user.click(
@@ -126,8 +127,9 @@ describe('Delete mode', () => {
         await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
         await act(async () => await jest.advanceTimersByTimeAsync(150));
 
-        // Confirm footer says "2 items selected" (not "Hold to confirm")
+        // Confirm footer says "2 items selected" (not instructions)
         expect(app.queryByText('2 items selected')).not.toBeNull();
+        expect(app.queryByText('Select timeline items to delete')).toBeNull();
         expect(app.queryByText('Hold to confirm')).toBeNull();
 
         // Simulate user holding delete button for .5 seconds, releasing early
@@ -148,7 +150,8 @@ describe('Delete mode', () => {
         // Wait for 750ms timeout (when footer text would have changed if we
         // didn't modify selection), confirm footer still shows correct number
         // of items (not number selected when click was released)
-        await act(async () => await jest.advanceTimersByTimeAsync(900));
+        await act(async () => await jest.advanceTimersByTimeAsync(750));
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('1 item selected')).not.toBeNull();
         expect(app.queryByText('2 items selected')).toBeNull();
         expect(app.queryByText('Hold to confirm')).toBeNull();

@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useRef } from 'react';
+import React, { memo, useState, useMemo, useRef } from 'react';
 import FloatingFooter from 'src/components/FloatingFooter';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,57 +22,44 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const totalSelectedEvents = Object.values(selectedEvents).reduce(
         (sum, arr) => sum + arr.length, 0
     );
-    // Store total in ref so setNumberSelectedText always gets current value
-    // (even when called from closure created when passed to onHoldStop)
-    const totalSelectedRef = useRef(
-        totalSelectedEvents + selectedPhotos.length + selectedNotes.length
-    );
+    const totalSelected = totalSelectedEvents + selectedPhotos.length + selectedNotes.length;
 
-    // Controls text shown in footer (instructions or number selected)
-    const [footerText, setFooterText] = useState('');
+    // Tracks number selected in previous render
+    // Used to detect when first selected/last unselected
+    const previousTotalRef = useRef(totalSelected);
+
     // Alternate text shown while holding button and shortly after
+    // Replaces number selected when non-null, always has fade transition
     const [alternateText, setAlternateText] = useState(null);
+
     // Controls whether there is a fade transition when footer text changes
-    // Should fade when changing from instructions to number selected, or when
-    // changing to "Hold to confirm", but not when number of selected changes
-    const [shouldFade, setShouldFade] = useState(false);
-
-    // Sets footer text to number of selected items (or instructions if none)
-    const setNumberSelectedText = () => {
-        const count = totalSelectedRef.current;
-        setFooterText(count > 0 ? (
-            `${count} item${count !== 1 ? 's' : ''} selected`
-        ) : (
-            'Select timeline items to delete'
-        ));
-    };
-
-    // Update instructions text when total selected changes
-    useEffect(() => {
+    // Should fade when all text changes but not when number of selected changes
+    const shouldFade = useMemo(() => {
         // Read total from previous run, overwrite with current for next run
-        const prevTotal = totalSelectedRef.current;
-        const newTotal = totalSelectedEvents + selectedPhotos.length + selectedNotes.length;
-        totalSelectedRef.current = newTotal;
+        const prevTotal = previousTotalRef.current;
+        previousTotalRef.current = totalSelected;
+
+        // Fade if alternateText set
+        if (alternateText) return true;
+
         // Fade text when first item selected or last item unselected
         // (first selected: total=0 new=1, last unselected: total=1 new=0)
-        setShouldFade(prevTotal + newTotal === 1 || newTotal === 0);
-        // Update footer text
-        setNumberSelectedText();
-    }, [totalSelectedEvents, selectedPhotos, selectedNotes]);
+        // Also fade when number did not change (text manually changed)
+        return prevTotal + totalSelected === 1 || prevTotal === totalSelected;
+    }, [alternateText, totalSelected, deleteMode]);
+
+    // Controls text shown in footer
+    const footerText = alternateText || (
+        totalSelected > 0
+            ? `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
+            : 'Select timeline items to delete'
+    );
 
     // Fade out number of selected items, fade in "Hold to confirm"
-    const handleHoldDeleteStart = () => {
-        setAlternateText('Hold to confirm');
-        setShouldFade(true);
-    };
+    const handleHoldDeleteStart = () => setAlternateText('Hold to confirm');
 
     // Fade out "Hold to confirm", fade in number of selected items
-    const handleHoldDeleteStop = () => {
-        setAlternateText(null);
-        setShouldFade(true);
-        // Keep fade enabled until new text fades in
-        setTimeout(() => setShouldFade(false), 250);
-    };
+    const handleHoldDeleteStop = () => setAlternateText(null);
 
     const cancelDeleteMode = () => {
         dispatch(deleteModeChanged({editing: false}));
@@ -111,7 +98,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     return (
         <FloatingFooter
             visible={deleteMode}
-            text={alternateText || footerText}
+            text={footerText}
             fadeText={shouldFade}
             onClose={cancelDeleteMode}
         >
