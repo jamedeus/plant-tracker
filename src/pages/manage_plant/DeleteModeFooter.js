@@ -22,9 +22,11 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const totalSelectedEvents = Object.values(selectedEvents).reduce(
         (sum, arr) => sum + arr.length, 0
     );
-    const totalSelected = totalSelectedEvents + selectedPhotos.length + selectedNotes.length;
-    // Track number from previous render (detect first selected/last unselected)
-    const previousTotalRef = useRef(totalSelected);
+    // Store total in ref so setNumberSelectedText always gets current value
+    // (even when called from closure created when passed to onHoldStop)
+    const totalSelectedRef = useRef(
+        totalSelectedEvents + selectedPhotos.length + selectedNotes.length
+    );
 
     // Controls text shown in footer (instructions or number selected)
     const [footerText, setFooterText] = useState('');
@@ -35,27 +37,26 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
     // Sets footer text to number of selected items (or instructions if none)
     const setNumberSelectedText = () => {
-        const count = previousTotalRef.current;
-        setFooterText(
-            count > 0 ? (
-                `${count} item${count !== 1 ? 's' : ''} selected`
-            ) : (
-                'Select timeline items to delete'
-            )
-        );
+        const count = totalSelectedRef.current;
+        setFooterText(count > 0 ? (
+            `${count} item${count !== 1 ? 's' : ''} selected`
+        ) : (
+            'Select timeline items to delete'
+        ));
     };
 
     // Update instructions text when total selected changes
     useEffect(() => {
         // Read total from previous run, overwrite with current for next run
-        const prevTotal = previousTotalRef.current;
-        previousTotalRef.current = totalSelected;
+        const prevTotal = totalSelectedRef.current;
+        const newTotal = totalSelectedEvents + selectedPhotos.length + selectedNotes.length;
+        totalSelectedRef.current = newTotal;
         // Fade text when first item selected or last item unselected
         // (first selected: total=0 new=1, last unselected: total=1 new=0)
-        setShouldFade(prevTotal + totalSelected === 1 || totalSelected === 0);
+        setShouldFade(prevTotal + newTotal === 1 || newTotal === 0);
         // Update footer text
         setNumberSelectedText();
-    }, [totalSelected]);
+    }, [totalSelectedEvents, selectedPhotos, selectedNotes]);
 
     // Fade out number of selected items, fade in "Hold to confirm"
     const handleHoldDeleteStart = () => {
