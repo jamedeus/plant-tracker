@@ -1,9 +1,9 @@
-import React, { memo, useState, useMemo, useRef } from 'react';
-import FloatingFooter from 'src/components/FloatingFooter';
+import React, { memo, useState } from 'react';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteModeChanged } from './interfaceSlice';
 import { eventsDeleted, photosDeleted, notesDeleted } from './timelineSlice';
+import SelectItemsFooter from 'src/components/SelectItemsFooter';
 import HoldToConfirm from 'src/components/HoldToConfirm';
 
 const DeleteModeFooter = memo(function DeleteModeFooter() {
@@ -24,36 +24,8 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     );
     const totalSelected = totalSelectedEvents + selectedPhotos.length + selectedNotes.length;
 
-    // Tracks number selected in previous render
-    // Used to detect when first selected/last unselected
-    const previousTotalRef = useRef(totalSelected);
-
-    // Alternate text shown while holding button and shortly after
-    // Replaces number selected when non-null, always has fade transition
+    // Alternate text replaces number selected when non-null (always fades)
     const [alternateText, setAlternateText] = useState(null);
-
-    // Controls whether there is a fade transition when footer text changes
-    // Should fade when all text changes but not when number of selected changes
-    const shouldFade = useMemo(() => {
-        // Read total from previous run, overwrite with current for next run
-        const prevTotal = previousTotalRef.current;
-        previousTotalRef.current = totalSelected;
-
-        // Fade if alternateText set
-        if (alternateText) return true;
-
-        // Fade text when first item selected or last item unselected
-        // (first selected: total=0 new=1, last unselected: total=1 new=0)
-        // Also fade when number did not change (text manually changed)
-        return prevTotal + totalSelected === 1 || prevTotal === totalSelected;
-    }, [alternateText, totalSelected, deleteMode]);
-
-    // Controls text shown in footer
-    const footerText = alternateText || (
-        totalSelected > 0
-            ? `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
-            : 'Select timeline items to delete'
-    );
 
     // Fade out number of selected items, fade in "Hold to confirm"
     const handleHoldDeleteStart = () => setAlternateText('Hold to confirm');
@@ -96,11 +68,13 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     };
 
     return (
-        <FloatingFooter
+        <SelectItemsFooter
             visible={deleteMode}
-            text={footerText}
-            fadeText={shouldFade}
             onClose={cancelDeleteMode}
+            itemName="item"
+            itemsSelected={totalSelected}
+            initialText="Select timeline items to delete"
+            alternateText={alternateText}
         >
             <button
                 className="btn btn-neutral w-20"
@@ -117,7 +91,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
                 onHoldStart={handleHoldDeleteStart}
                 onHoldStop={handleHoldDeleteStop}
             />
-        </FloatingFooter>
+        </SelectItemsFooter>
     );
 });
 

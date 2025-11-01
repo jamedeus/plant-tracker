@@ -1,7 +1,7 @@
-import React, { memo, useMemo, useRef, useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useSyncExternalStore } from 'react';
 import PropTypes from 'prop-types';
-import FloatingFooter from 'src/components/FloatingFooter';
+import SelectItemsFooter from './SelectItemsFooter';
 import controllerPropTypes from 'src/types/editableNodeListControllerPropTypes';
 
 // Helper component renders action buttons for one or more EditableNodeList.
@@ -53,45 +53,20 @@ const EditableNodeListActions = memo(function EditableNodeListActions({
     // Updates (render) when other components manipulate controller selection
     const totalSelected = useSyncExternalStore(subscribe, getSnapshot);
 
-    // Tracks number selected in previous render
-    // Used to detect when first selected/last unselected
-    const previousTotalRef = useRef(totalSelected);
-
-    // Controls whether there is a fade transition when footer text changes
-    // Should fade when all text changes but not when number of selected changes
-    const shouldFade = useMemo(() => {
-        // Read total from previous run, overwrite with current for next run
-        const prevTotal = previousTotalRef.current;
-        previousTotalRef.current = totalSelected;
-
-        // Fade if alternateText set
-        if (alternateText) return true;
-
-        // Fade text when first item selected or last item unselected
-        // (first selected: total=0 new=1, last unselected: total=1 new=0)
-        // Also fade when number did not change (text manually changed)
-        return prevTotal + totalSelected === 1 || prevTotal === totalSelected;
-    }, [alternateText, totalSelected, visible]);
-
-    // Controls text shown in footer
-    const footerText = alternateText || (
-        totalSelected > 0
-            ? `${totalSelected} ${itemName}${totalSelected !== 1 ? 's' : ''} selected`
-            : initialText
-    );
-
     return (
-        <FloatingFooter
+        <SelectItemsFooter
             visible={visible}
-            text={footerText}
-            fadeText={shouldFade}
             onClose={onClose}
+            itemName={itemName}
+            itemsSelected={totalSelected}
+            initialText={initialText}
+            alternateText={alternateText}
             closeButton={closeButton}
             closeButtonAriaLabel={closeButtonAriaLabel}
             testId={testId}
         >
             {children}
-        </FloatingFooter>
+        </SelectItemsFooter>
     );
 });
 
