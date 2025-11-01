@@ -360,9 +360,9 @@ describe('App', () => {
         });
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm dot and marker are still present (second event still exists)
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
@@ -434,9 +434,9 @@ describe('App', () => {
         });
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm March 1 TimelineDay was removed (only 1 dot and marker left)
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
@@ -557,9 +557,9 @@ describe('App', () => {
         await user.click(app.getByTitle('12:54 PM - March 1, 2024'));
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm the deleted photo is no longer in the timeline
         expect(app.getByTitle('12:52 PM - March 1, 2024')).not.toBeNull();
@@ -612,9 +612,9 @@ describe('App', () => {
         await user.click(app.getByTitle('12:52 PM - June 21, 2024'));
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm Gallery and Edit timeline dropdown options were removed
         expect(app.queryByText('Gallery')).toBeNull();
@@ -675,9 +675,9 @@ describe('App', () => {
         });
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm Edit timeline dropdown option was removed
         expect(app.queryByText('Edit timeline')).toBeNull();

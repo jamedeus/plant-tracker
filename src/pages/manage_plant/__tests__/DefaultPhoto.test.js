@@ -184,9 +184,9 @@ describe('Plant with photos but no configured default photo', () => {
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByRole("button", {name: "Delete"});
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm default photo thumbnail changed to most-recent remaining photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
@@ -213,9 +213,9 @@ describe('Plant with photos but no configured default photo', () => {
         await user.click(app.getByTitle('02:52 AM - March 21, 2024'));
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByRole("button", {name: "Delete"});
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm default photo thumbnail unrendered
         expect(app.queryByTestId('defaultPhotoThumbnail')).toBeNull();
@@ -306,9 +306,9 @@ describe('Plant with default photo configured', () => {
         await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByRole("button", {name: "Delete"});
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm default photo thumbnail changed to most-recent remaining photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(

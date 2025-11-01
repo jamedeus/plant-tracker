@@ -95,9 +95,9 @@ describe('App', () => {
             'button',
             { name: 'Press and hold to delete selected plants and groups' }
         );
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
@@ -150,9 +150,9 @@ describe('App', () => {
             'button',
             { name: 'Press and hold to delete selected plants and groups' }
         );
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
@@ -208,9 +208,9 @@ describe('App', () => {
             'button',
             { name: 'Press and hold to delete selected plants and groups' }
         );
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm error modal appeared

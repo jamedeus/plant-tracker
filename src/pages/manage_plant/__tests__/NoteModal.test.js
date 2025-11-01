@@ -191,9 +191,9 @@ describe('Edit existing note', () => {
 
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /delete_plant_notes endpoint
         expect(fetch).toHaveBeenCalledWith('/delete_plant_notes', {
@@ -240,9 +240,9 @@ describe('Edit existing note', () => {
 
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text

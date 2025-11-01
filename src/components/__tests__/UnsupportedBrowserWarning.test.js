@@ -178,11 +178,8 @@ describe('UnsupportedBrowserWarning', () => {
         const { getByRole, queryByText } = render(<UnsupportedBrowserWarning />);
 
         const button = getByRole('button', { name: 'Continue anyway' });
-        fireEvent.mouseDown(button);
-
-        act(() => {
-            jest.advanceTimersByTime(2000);
-        });
+        fireEvent.pointerDown(button);
+        act(() => jest.advanceTimersByTime(2000));
 
         expect(sessionStorage.getItem('browser-support-dismissed')).toBe('1');
         expect(queryByText('Your browser is not supported')).toBeNull();

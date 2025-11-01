@@ -387,9 +387,9 @@ describe('App', () => {
         );
         // Simulate user holding delete button for 1.5 seconds
         const button1 = app.getByText('Delete');
-        fireEvent.mouseDown(button1);
+        fireEvent.pointerDown(button1);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button1);
+        fireEvent.pointerUp(button1);
 
         // Confirm both water event icons disappeared
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
@@ -496,9 +496,9 @@ describe('App', () => {
 
         // Simulate user holding delete button for 1.5 seconds
         const button = within(editModal).getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm timeline no longer contains note text
         expect(within(timeline).queryByText(
@@ -597,9 +597,9 @@ describe('App', () => {
         });
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm 2025 menu option was removed
         expect(quickNav.children.length).toBe(1);

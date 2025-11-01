@@ -149,9 +149,9 @@ describe('Delete mode', () => {
 
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /delete_plant_events endpoint
         expect(global.fetch).toHaveBeenCalledWith('/delete_plant_events', {
@@ -188,9 +188,9 @@ describe('Delete mode', () => {
 
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /delete_plant_notes endpoint
         expect(global.fetch).toHaveBeenCalledWith('/delete_plant_notes', {
@@ -222,9 +222,9 @@ describe('Delete mode', () => {
 
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /delete_plant_photos endpoint
         expect(global.fetch).toHaveBeenCalledWith('/delete_plant_photos', {
@@ -263,9 +263,9 @@ describe('Delete mode', () => {
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to all endpoints
         expect(global.fetch).toHaveBeenCalledTimes(3);
@@ -332,9 +332,9 @@ describe('Delete mode', () => {
         // Hold delete button, confirm only second newest event (selected in
         // current session) posted (confirms first session selection was cleared)
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
         expect(global.fetch).toHaveBeenCalledTimes(1);
         expect(global.fetch).toHaveBeenCalledWith('/delete_plant_events', {
             method: 'POST',
@@ -364,9 +364,9 @@ describe('Delete mode', () => {
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
@@ -387,9 +387,9 @@ describe('Delete mode', () => {
         await user.click(app.getByText('Edit timeline'));
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text
@@ -410,9 +410,9 @@ describe('Delete mode', () => {
         await user.click(app.getByText('Edit timeline'));
         await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm modal appeared with arbitrary error text

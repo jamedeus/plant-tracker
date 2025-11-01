@@ -90,9 +90,9 @@ describe('App', () => {
             'button',
             { name: 'Press and hold to delete selected plants and groups' }
         );
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
@@ -111,9 +111,9 @@ describe('App', () => {
 
         // Enter edit mode, hold delete button again
         await user.click(app.getByTestId('edit_plants_option'));
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm no request was made (selection cleared after first request)
         expect(global.fetch).not.toHaveBeenCalled();

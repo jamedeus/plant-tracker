@@ -179,9 +179,9 @@ describe('Timeline regressions', () => {
 
         // Hold delete button for 1.5 seconds, confirm repot event is deleted
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
         expect(global.fetch).toHaveBeenCalled();
 
         // Confirm repot event was deleted, "Divided from" marker still exists
@@ -245,9 +245,9 @@ describe('Timeline regressions', () => {
 
         // Hold delete button for 1.5 seconds, confirm repot event is deleted
         const button = app.getByText('Delete');
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
         expect(global.fetch).toHaveBeenCalled();
 
         // Confirm repot event was deleted, "Divided into" marker still exists

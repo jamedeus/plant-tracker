@@ -98,9 +98,9 @@ describe('App', () => {
             'button',
             { name: 'Press and hold to delete selected plants and groups' }
         );
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
@@ -153,9 +153,9 @@ describe('App', () => {
             'button',
             { name: 'Press and hold to delete selected plants and groups' }
         );
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
@@ -250,9 +250,9 @@ describe('App', () => {
             'button',
             { name: 'Press and hold to delete selected plants and groups' }
         );
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm NOT redirected to overview (still have plants)
         expect(globalMockNavigate).not.toHaveBeenCalled();
@@ -272,9 +272,9 @@ describe('App', () => {
         await user.click(app.getByLabelText('Select Second Test Plant'));
 
         // Click delete button in floating div, hold for 2.5 seconds, release
-        fireEvent.mouseDown(button);
+        fireEvent.pointerDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
-        fireEvent.mouseUp(button);
+        fireEvent.pointerUp(button);
 
         // Confirm redirected to overview
         expect(globalMockNavigate).toHaveBeenCalledWith('/');
