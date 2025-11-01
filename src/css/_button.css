@@ -167,7 +167,7 @@
 }
 
 @utility btn-soft {
-    &:not(:hover, :active, :disabled, [disabled]) {
+    &:not(:hover, :active:focus, :disabled, [disabled]) {
         --btn-fg: var(--btn-color, var(--color-base-content));
         --btn-bg: color-mix(
             in oklab,
