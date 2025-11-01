@@ -125,6 +125,30 @@ describe('HoldToConfirm', () => {
         expect(onHoldStop).toHaveBeenCalled();
     });
 
+    it('does NOT run onHoldStop callback when user is not holding button', () => {
+        // Confirm onHoldStop callback not called
+        expect(onHoldStop).not.toHaveBeenCalled();
+
+        // Simulate user moving cursor over button without clicking
+        const button = component.getByRole('button');
+        fireEvent.mouseEnter(button);
+        fireEvent.mouseLeave(button);
+        act(() => jest.advanceTimersByTime(750));
+
+        // Confirm onHoldStop callback did NOT run
+        expect(onHoldStop).not.toHaveBeenCalled();
+
+        // Simulate user starting click outside button
+        fireEvent.pointerDown(component.container.querySelector('div'));
+        // Simulate user moving cursor over button and releasing click
+        fireEvent.mouseEnter(button);
+        fireEvent.pointerUp(button);
+        act(() => jest.advanceTimersByTime(750));
+
+        // Confirm onHoldStop callback did NOT run
+        expect(onHoldStop).not.toHaveBeenCalled();
+    });
+
     it('behaves like normal button when timeout is 0', () => {
         // Render HoldToConfirm with 0ms timeout
         const noDelay = render(

@@ -34,6 +34,10 @@ const HoldToConfirm = ({
         setShowTooltip(true);
         // Call onHoldStart callback if given
         onHoldStart && onHoldStart();
+        // Add listeners to cancel timer if hold released
+        buttonRef.current.addEventListener('pointerup', handleRelease);
+        buttonRef.current.addEventListener('mouseleave', handleRelease);
+        buttonRef.current.addEventListener('touchcancel', handleRelease);
     };
 
     const handleRelease = () => {
@@ -49,6 +53,10 @@ const HoldToConfirm = ({
             // Call onHoldStop callback if given
             onHoldStop && onHoldStop();
         }, 750);
+        // Remove release listeners
+        buttonRef.current.removeEventListener('pointerup', handleRelease);
+        buttonRef.current.removeEventListener('mouseleave', handleRelease);
+        buttonRef.current.removeEventListener('touchcancel', handleRelease);
     };
 
     const handleTouchMove = (event) => {
@@ -88,10 +96,7 @@ const HoldToConfirm = ({
                 aria-label={buttonAriaLabel}
                 style={{ '--hold-duration': `${timeout}ms` }}
                 onPointerDown={handleHold}
-                onPointerUp={handleRelease}
-                onMouseLeave={handleRelease}
                 onTouchMove={handleTouchMove}
-                onTouchCancel={handleRelease}
                 // Only add onClick if timeout is 0 (no confirmation)
                 onClick={!timeout ? handleHold : null}
                 ref={buttonRef}
