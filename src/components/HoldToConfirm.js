@@ -87,12 +87,10 @@ const HoldToConfirm = ({
                 )}
                 aria-label={buttonAriaLabel}
                 style={{ '--hold-duration': `${timeout}ms` }}
-                onMouseDown={handleHold}
-                onTouchStart={handleHold}
-                onMouseUp={handleRelease}
+                onPointerDown={handleHold}
+                onPointerUp={handleRelease}
                 onMouseLeave={handleRelease}
                 onTouchMove={handleTouchMove}
-                onTouchEnd={handleRelease}
                 onTouchCancel={handleRelease}
                 // Only add onClick if timeout is 0 (no confirmation)
                 onClick={!timeout ? handleHold : null}
