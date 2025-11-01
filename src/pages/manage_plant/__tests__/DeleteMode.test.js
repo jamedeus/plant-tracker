@@ -140,15 +140,15 @@ describe('Delete mode', () => {
         expect(app.queryByText('Hold to confirm')).not.toBeNull();
         expect(app.queryByText('2 items selected')).toBeNull();
 
-        // Unselect note, confirm footer changes to number selected
+        // Unselect note, confirm footer text does not change
         await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
         await act(async () => await jest.advanceTimersByTimeAsync(150));
-        expect(app.queryByText('1 item selected')).not.toBeNull();
+        expect(app.queryByText('Hold to confirm')).not.toBeNull();
 
         // Wait for 750ms timeout (when footer text would have changed if we
         // didn't modify selection), confirm footer still shows correct number
         // of items (not number selected when click was released)
-        await act(async () => await jest.advanceTimersByTimeAsync(750));
+        await act(async () => await jest.advanceTimersByTimeAsync(900));
         expect(app.queryByText('1 item selected')).not.toBeNull();
         expect(app.queryByText('2 items selected')).toBeNull();
         expect(app.queryByText('Hold to confirm')).toBeNull();

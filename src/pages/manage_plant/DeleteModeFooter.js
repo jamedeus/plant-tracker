@@ -30,6 +30,8 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
     // Controls text shown in footer (instructions or number selected)
     const [footerText, setFooterText] = useState('');
+    // Alternate text shown while holding button and shortly after
+    const [alternateText, setAlternateText] = useState(null);
     // Controls whether there is a fade transition when footer text changes
     // Should fade when changing from instructions to number selected, or when
     // changing to "Hold to confirm", but not when number of selected changes
@@ -60,13 +62,14 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
     // Fade out number of selected items, fade in "Hold to confirm"
     const handleHoldDeleteStart = () => {
-        setFooterText('Hold to confirm');
+        setAlternateText('Hold to confirm');
         setShouldFade(true);
     };
 
     // Fade out "Hold to confirm", fade in number of selected items
     const handleHoldDeleteStop = () => {
-        setNumberSelectedText();
+        setAlternateText(null);
+        setShouldFade(true);
         // Keep fade enabled until new text fades in
         setTimeout(() => setShouldFade(false), 250);
     };
@@ -108,7 +111,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     return (
         <FloatingFooter
             visible={deleteMode}
-            text={footerText}
+            text={alternateText || footerText}
             fadeText={shouldFade}
             onClose={cancelDeleteMode}
         >
