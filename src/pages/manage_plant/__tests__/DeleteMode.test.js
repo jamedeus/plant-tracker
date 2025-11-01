@@ -108,6 +108,52 @@ describe('Delete mode', () => {
         expect(app.queryByText('1 item selected')).toBeNull();
     });
 
+    // Regression test, original issue: If user released delete button and then
+    // changed selection before 750ms timeout when "Hold to confirm" changes
+    // back to number of selected items the number would update correctly, but
+    // when the timeout ran it would revert to the number selected when click
+    // released. This happened because the HoldToConfirm onHoldStop callback
+    // contained a closure with totalSelected from before the selection changed.
+    it('does not show incorrect footer text if selection changed right after release', async () => {
+        // Enter delete mode
+        await user.click(app.getByText('Edit timeline'));
+
+        // Select water event and note
+        await user.click(
+            within(app.getByTestId("2024-03-01-events")).getByText("Watered")
+        );
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
+        await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
+
+        // Confirm footer says "2 items selected" (not "Hold to confirm")
+        expect(app.queryByText('2 items selected')).not.toBeNull();
+        expect(app.queryByText('Hold to confirm')).toBeNull();
+
+        // Simulate user holding delete button for .5 seconds, releasing early
+        const button = app.getByText('Delete');
+        fireEvent.pointerDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(500));
+        fireEvent.pointerUp(button);
+
+        // Confirm footer still says "Hold to confirm" (not number selected)
+        expect(app.queryByText('Hold to confirm')).not.toBeNull();
+        expect(app.queryByText('2 items selected')).toBeNull();
+
+        // Unselect note, confirm footer changes to number selected
+        await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
+        expect(app.queryByText('1 item selected')).not.toBeNull();
+
+        // Wait for 750ms timeout (when footer text would have changed if we
+        // didn't modify selection), confirm footer still shows correct number
+        // of items (not number selected when click was released)
+        await act(async () => await jest.advanceTimersByTimeAsync(750));
+        expect(app.queryByText('1 item selected')).not.toBeNull();
+        expect(app.queryByText('2 items selected')).toBeNull();
+        expect(app.queryByText('Hold to confirm')).toBeNull();
+    });
+
     it('sends correct payload when events are deleted', async () => {
         // Mock fetch function to return expected response
         mockFetchResponse({

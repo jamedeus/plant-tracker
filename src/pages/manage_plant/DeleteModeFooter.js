@@ -35,9 +35,10 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
     // Sets footer text to number of selected items (or instructions if none)
     const setNumberSelectedText = () => {
+        const count = previousTotalRef.current;
         setFooterText(
-            totalSelected > 0 ? (
-                `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
+            count > 0 ? (
+                `${count} item${count !== 1 ? 's' : ''} selected`
             ) : (
                 'Select timeline items to delete'
             )
