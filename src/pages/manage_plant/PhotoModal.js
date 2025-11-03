@@ -1,76 +1,30 @@
-import React, { useState, useRef, useCallback, useLayoutEffect, memo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
-import LoadingAnimation from 'src/components/LoadingAnimation';
-import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded } from './timelineSlice';
 import 'src/css/photomodal.css';
 
-// Grid row with delete button next to filename
-const Row = memo(function Row({ filename, removeFile }) {
-    return (
-        <>
-            <div className="my-auto py-3 pe-4">
-                <button
-                    className="btn-close"
-                    onClick={() => removeFile(filename)}
-                    title={`Unselect ${filename}`}
-                >
-                    <CloseButtonIcon />
-                </button>
-            </div>
-            <div className="text-lg leading-8 w-full text-center py-3 ps-4">
-                <p className="w-full line-clamp-1">{filename}</p>
-            </div>
-        </>
-    );
-});
-
-Row.propTypes = {
-    filename: PropTypes.string.isRequired,
-    removeFile: PropTypes.func.isRequired
-};
-
-const PhotoModal = ({ close, setTitle }) => {
+const PhotoModal = ({ close }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
-    // File input ref, used to remove selected files when X buttons clicked
-    const inputRef = useRef(null);
+    // Track number of pending uploads (shows loading animation under buttons)
+    const [pendingCount, setPendingCount] = useState(0);
 
-    // State updated when user selects files, used in submit hook and to
-    // render row for each selected file with X button to unselect
-    const [selectedFiles, setSelectedFiles] = useState([]);
+    const uploadFiles = useCallback(async (files) => {
+        // Start loading animation (or increase count if already running)
+        setPendingCount((prev) => prev + files.length);
 
-    // State to control loading animation visibility
-    const [uploading, setUploading] = useState(false);
-    useLayoutEffect(() =>
-        setTitle(uploading ? "Uploading..." : "Upload Photos"),
-    [uploading]);
-
-    const handleSelect = (event) => {
-        setSelectedFiles([
-            ...selectedFiles,
-            ...Array.from(event.target.files)
-        ]);
-    };
-
-    const handleSubmit = async () => {
-        // Start loading animation
-        setUploading(true);
-
-        // Create FormData containing all photos + plant UUID
         const formData = new FormData();
-        selectedFiles.forEach((file, index) => {
+        files.forEach((file, index) => {
             formData.append(`photo_${index}`, file);
         });
         formData.append('plant_id', plantID);
 
-        // Post FormData to backend
         const response = await fetch('/add_plant_photos', {
             method: 'POST',
             body: formData,
@@ -86,16 +40,13 @@ const PhotoModal = ({ close, setTitle }) => {
             if (data.urls.length) {
                 dispatch(photosAdded(data.urls));
             }
-
-            // Close modal, show error if any photos failed
-            close();
+            // Show error if any photos failed
             if (data.failed.length) {
                 const num = data.failed.length;
                 const list = data.failed.join('\n');
                 openErrorModal(`Failed to upload ${num} photos:\n${list}`);
             }
         } else {
-            setUploading(false);
             // Redirect to login page if user not signed in/session expired
             if (response.status === 401) {
                 navigate('/accounts/login/');
@@ -115,76 +66,69 @@ const PhotoModal = ({ close, setTitle }) => {
                 }
             }
         }
-    };
 
-    // Handler for delete button shown next to each selected file
-    const removeFile = useCallback((filename) => {
-        // Remove deleted file from state
-        setSelectedFiles((prevSelectedFiles) => {
-            return prevSelectedFiles.filter(file => file.name !== filename);
-        });
+        // Stop loading animation (or decrease count if more pending uploads)
+        setPendingCount((prev) => Math.max(0, prev - files.length));
+    }, [dispatch, navigate, plantID]);
 
-        // Copy input FileList into array, remove deleted file
-        const inputFiles = Array.from(inputRef.current.files);
-        const newFiles = inputFiles.filter(file => file.name !== filename);
-
-        // Add remaining files to DataTransfer, overwrite input FileList
-        const data = new DataTransfer();
-        for (let file of newFiles) {
-            data.items.add(file);
+    const handleSelect = useCallback((event) => {
+        // Upload selected files
+        if (event.target.files.length) {
+            uploadFiles(Array.from(event.target.files));
         }
-        inputRef.current.files = data.files;
-    }, []);
+        // Clear input (prevent duplicates if user selects more)
+        event.target.value = '';
+    }, [uploadFiles]);
 
     return (
-        <>
-            {/* Photo select/unselect input, shown until user clicks submit */}
-            <div className={uploading ? "hidden" : "flex flex-col"}>
-                <div className={
-                    "min-h-36 flex flex-col justify-center items-center mt-2"
-                }>
-                    <input
-                        ref={inputRef}
-                        type="file"
-                        accept="image/*"
-                        multiple="multiple"
-                        className="file-input w-full max-w-xs"
-                        onChange={handleSelect}
-                        data-testid="photo-input"
-                    />
-                    <div className="selected-files-grid">
-                        {selectedFiles.map(file => (
-                            <Row
-                                key={file.name}
-                                filename={file.name}
-                                removeFile={removeFile}
-                            />
-                        ))}
-                    </div>
-                </div>
+        <div className="flex flex-col justify-center items-center gap-8 min-h-72">
+            <div className="flex flex-col mt-16 gap-4 w-full max-w-xs">
+                {/* Select existing photos from device */}
+                <input
+                    id="photo-input"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handleSelect}
+                    data-testid="photo-input"
+                />
+                <label htmlFor="photo-input" className="btn btn-accent">
+                    Select photos
+                </label>
 
-                <div className="modal-action">
-                    <button
-                        className="btn btn-accent"
-                        onClick={handleSubmit}
-                        disabled={!selectedFiles.length}
-                    >
-                        Upload
-                    </button>
-                </div>
+                {/* Take new photo */}
+                <input
+                    id="photo-camera-input"
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    onChange={handleSelect}
+                    data-testid="photo-camera-input"
+                />
+                <label htmlFor="photo-camera-input" className="btn btn-accent">
+                    Take photo
+                </label>
             </div>
 
-            {/* Loading animation shown after user clicks submit */}
-            <div className={uploading ? "flex flex-col" : "hidden"}>
-                <LoadingAnimation className="mx-auto" />
+            {/* Show pending upload count while uploading */}
+            <div className="flex flex-col h-15 items-center gap-2">
+                {pendingCount > 0 && (
+                    <>
+                        <span className="loading loading-dots loading-lg text-primary" />
+                        <span className="font-medium">
+                            Uploading {pendingCount} photo{pendingCount === 1 ? '' : 's'}...
+                        </span>
+                    </>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
 PhotoModal.propTypes = {
-    close: PropTypes.func.isRequired,
-    setTitle: PropTypes.func.isRequired
+    close: PropTypes.func.isRequired
 };
 
 export default PhotoModal;

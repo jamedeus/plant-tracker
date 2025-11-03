@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('PhotoModal', () => {
-    let app, user, mockClose;
+    let app, mockClose;
 
     beforeEach(async () => {
         // Allow fast forwarding
@@ -31,12 +31,11 @@ describe('PhotoModal', () => {
 
         mockClose = jest.fn();
 
-        // Render modal + create userEvent instance to use in tests
-        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        // Render modal
         app = render(
             <>
                 <ReduxProvider initialState={mockContext}>
-                    <PhotoModal close={mockClose} setTitle={jest.fn()} />
+                    <PhotoModal close={mockClose} />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />
@@ -81,9 +80,6 @@ describe('PhotoModal', () => {
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1, file2] } });
 
-        // Simulate user clicking upload button
-        await user.click(app.getByText('Upload'));
-
         // Confirm correct data posted to /add_plant_photos endpoint
         expect(fetch).toHaveBeenCalledWith('/add_plant_photos', {
             method: 'POST',
@@ -98,48 +94,6 @@ describe('PhotoModal', () => {
         const formData = fetch.mock.calls[0][1].body;
         expect(formData.get('photo_0')).toEqual(file1);
         expect(formData.get('photo_1')).toEqual(file2);
-
-        // Confirm modal closed
-        expect(mockClose).toHaveBeenCalled();
-    });
-
-    it('removes selected files in PhotoModal when X buttons are clicked', async () => {
-        // Mock fetch function to return expected response
-        mockFetchResponse({
-            uploaded: "1 photo(s)",
-            failed: [],
-            urls: [
-                {
-                    timestamp: "2024-03-21T10:52:03",
-                    image: "/media/images/photo1.jpg",
-                    thumbnail: "/media/images/photo1_thumb.webp",
-                    preview: "/media/images/photo1_preview.webp",
-                    key: 12
-                }
-            ]
-        });
-
-        // Create 2 mock files
-        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
-        const file2 = new File(['file2'], 'file2.jpg', { type: 'image/jpeg' });
-
-        // Simulate user clicking input and selecting both mock files
-        const fileInput = app.getByTestId('photo-input');
-        fireEvent.change(fileInput, { target: { files: [file1, file2] } });
-
-        // Simulate user clicking delete button next to second file in list
-        await user.click(app.getByTitle('Unselect file2.jpg'));
-
-        // Confirm second file no longer shown on page
-        expect(app.queryByText('file2.jpg')).toBeNull();
-
-        // Simulate user clicking upload button
-        await user.click(app.getByText('Upload'));
-
-        // Confirm FormData posted to backend only contains first file
-        const formData = fetch.mock.calls[0][1].body;
-        expect(formData.get('photo_0')).toEqual(file1);
-        expect(formData.get('photo_1')).toBeNull();
     });
 
     it('shows error modal when photo uploads fail', async () => {
@@ -154,6 +108,9 @@ describe('PhotoModal', () => {
             urls: []
         });
 
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
+
         // Create 2 mock files
         const file1 = new File(['file1'], 'file1.heic', { type: 'image/heic' });
         const file2 = new File(['file2'], 'file2.heic', { type: 'image/heic' });
@@ -161,12 +118,6 @@ describe('PhotoModal', () => {
         // Simulate user clicking input and selecting mock files
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1, file2] } });
-
-        // Confirm error modal is not rendered
-        expect(app.queryByTestId('error-modal-body')).toBeNull();
-
-        // Simulate user clicking upload button
-        await user.click(app.getByText('Upload'));
 
         // Confirm error modal appeared with failed photo names
         await act(async () => await jest.advanceTimersByTimeAsync(100));
@@ -196,11 +147,10 @@ describe('PhotoModal', () => {
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
-        // Simulate user selecting a file and clicking upload
+        // Simulate user selecting a file
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1] } });
-        await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with error message
         await act(async () => await jest.advanceTimersByTimeAsync(100));
@@ -217,11 +167,10 @@ describe('PhotoModal', () => {
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
-        // Simulate user selecting a file and clicking upload
+        // Simulate user selecting a file
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1] } });
-        await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with arbitrary error text
         await act(async () => await jest.advanceTimersByTimeAsync(100));
@@ -244,11 +193,10 @@ describe('PhotoModal', () => {
         // Confirm error modal is not rendered
         expect(app.queryByTestId('error-modal-body')).toBeNull();
 
-        // Simulate user selecting a file and clicking upload
+        // Simulate user selecting a file
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1] } });
-        await user.click(app.getByText('Upload'));
 
         // Confirm modal appeared with unexpected response string
         await act(async () => await jest.advanceTimersByTimeAsync(100));
@@ -263,11 +211,11 @@ describe('PhotoModal', () => {
         // Mock fetch function to simulate user with an expired session
         mockFetchResponse({error: "authentication required"}, 401);
 
-        // Simulate user selecting a file and clicking upload
+        // Simulate user selecting a file
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1] } });
-        await user.click(app.getByText('Upload'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm redirected
         expect(mockNavigate).toHaveBeenCalledWith('/accounts/login/');

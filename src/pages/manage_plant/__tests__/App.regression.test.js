@@ -146,18 +146,8 @@ describe('App', () => {
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [file1, file2] } });
 
-        // Confirm names of both files appear in document (under file input)
-        expect(app.getByText('file1.jpg')).not.toBeNull();
-        expect(app.getByText('file2.jpg')).not.toBeNull();
-
-        // Simulate user clicking upload button
-        await user.click(app.getByText('Upload'));
-
-        // Confirm both filenames are no longer in document (selection reset)
-        await waitFor(() => {
-            expect(app.queryByText('file1.jpg')).toBeNull();
-            expect(app.queryByText('file2.jpg')).toBeNull();
-        });
+        // Confirm input was cleared
+        expect(fileInput.value).toBe('');
     });
 
     // Original bug: EventCalendar added a dot for each event in history, even
@@ -472,7 +462,7 @@ describe('App', () => {
             ]
         });
 
-        // Simulate user opening photo modal, selecting 2 files, and submitting
+        // Simulate user opening photo modal and selecting 2 files
         await user.click(app.getByText('Add photos'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
@@ -480,7 +470,7 @@ describe('App', () => {
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
             new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
         ] } });
-        await user.click(app.getByText('Upload'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
@@ -532,7 +522,7 @@ describe('App', () => {
             ]
         });
 
-        // Simulate user opening photo modal, selecting 2 files, and submitting
+        // Simulate user opening photo modal and selecting 2 files
         await user.click(app.getByText('Add photos'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
@@ -540,7 +530,7 @@ describe('App', () => {
             new File(['photo1'], 'photo1.jpg', { type: 'image/jpeg' }),
             new File(['photo2'], 'photo2.jpg', { type: 'image/jpeg' })
         ] } });
-        await user.click(app.getByText('Upload'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm both photos rendered to the timeline
         expect(app.getByTitle('12:52 PM - March 1, 2024')).not.toBeNull();
@@ -588,14 +578,14 @@ describe('App', () => {
             ]
         });
 
-        // Simulate user opening photo modal, selecting 1 photo, and submitting
+        // Simulate user opening photo modal and selecting 1 photo
         await user.click(app.getByText('Add photos'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
         ] } });
-        await user.click(app.getByText('Upload'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm Gallery and Edit timeline dropdown options appeared
         expect(app.queryByText('Gallery')).not.toBeNull();

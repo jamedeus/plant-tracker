@@ -82,7 +82,7 @@ describe('Plant with no photos (no default photo set)', () => {
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
             new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
         ] } });
-        await user.click(app.getByText('Upload'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm default photo thumbnail rendered with most-recent photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
@@ -158,7 +158,7 @@ describe('Plant with photos but no configured default photo', () => {
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
         ] } });
-        await user.click(app.getByText('Upload'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm default photo thumbnail changed to newer photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
@@ -281,7 +281,7 @@ describe('Plant with default photo configured', () => {
         fireEvent.change(fileInput, { target: { files: [
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
         ] } });
-        await user.click(app.getByText('Upload'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm default photo thumbnail url did not change
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(

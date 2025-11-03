@@ -536,7 +536,7 @@ describe('App', () => {
         expect(within(timeline).queryByTitle('12:52 PM - June 21, 2024')).toBeNull();
         expect(within(timeline).queryByTitle('12:54 PM - June 21, 2024')).toBeNull();
 
-        // Simulate user opening photo modal, selecting 2 files, and submitting
+        // Simulate user opening photo modal and selecting 2 files
         await user.click(app.getByText('Add photos'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         const fileInput = app.getByTestId('photo-input');
@@ -544,7 +544,7 @@ describe('App', () => {
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
             new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
         ] } });
-        await user.click(app.getByText('Upload'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm both mock photos rendered to the timeline
         expect(within(timeline).getByTitle('12:52 PM - June 21, 2024').firstChild.tagName).toBe('IMG');
