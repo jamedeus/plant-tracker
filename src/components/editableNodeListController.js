@@ -52,7 +52,7 @@ export const createEditableNodeListController = (initialSelected = []) => {
         bulkUnselect(keys) {
             let didChange = false;
             const nextSelected = new Set(selected);
-            Array.from(keys ?? []).forEach((key) => {
+            keys.forEach((key) => {
                 if (nextSelected.delete(key)) {
                     didChange = true;
                 }

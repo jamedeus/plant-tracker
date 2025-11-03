@@ -34,7 +34,7 @@ const EditableNodeListActions = memo(function EditableNodeListActions({
     const subscribe = useCallback((listener) => {
         // Store unsubscribe function returned by each subscribe call
         const unsubscribers = controllers.map((controller) =>
-            controller?.subscribe ? controller.subscribe(listener) : () => {}
+            controller.subscribe(listener)
         );
         // Return single function that calls all unsubscribe functions
         return () => unsubscribers.forEach((unsubscribe) => unsubscribe?.());
@@ -43,10 +43,9 @@ const EditableNodeListActions = memo(function EditableNodeListActions({
     // Merge getSnapshot methods from all controllers into single callback
     // Returns number of selected items in all controllers combined
     const getSnapshot = useCallback(() => {
-        return controllers.reduce((total, controller) => {
-            if (!controller) return total;
-            return total + controller.getSnapshot().size;
-        }, 0);
+        return controllers.reduce((total, controller) => (
+            total + controller.getSnapshot().size
+        ), 0);
     }, [controllers]);
 
     // Read total number of selected items from controllers
