@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { photosAdded } from './timelineSlice';
+import { photosAdded, pendingPhotosAdded, pendingPhotosResolved } from './timelineSlice';
 import 'src/css/photomodal.css';
 
 const PhotoModal = ({ close }) => {
@@ -18,6 +19,16 @@ const PhotoModal = ({ close }) => {
     const uploadFiles = useCallback(async (files) => {
         // Start loading animation (or increase count if already running)
         setPendingCount((prev) => prev + files.length);
+
+        // Add loading spinner to timeline for each pending upload
+        const pendingUploads = files.map((file) => {
+            const tempId = uuidv4();
+            const timestamp = new Date(
+                file.lastModified ? file.lastModified : Date.now()
+            ).toISOString();
+            return { tempId, timestamp };
+        });
+        dispatch(pendingPhotosAdded(pendingUploads));
 
         const formData = new FormData();
         files.forEach((file, index) => {
@@ -67,8 +78,13 @@ const PhotoModal = ({ close }) => {
             }
         }
 
+        // Remove loading spinners from timeline
+        dispatch(pendingPhotosResolved(
+            pendingUploads.map(({ tempId }) => tempId)
+        ));
         // Stop loading animation (or decrease count if more pending uploads)
         setPendingCount((prev) => Math.max(0, prev - files.length));
+
     }, [dispatch, navigate, plantID]);
 
     const handleSelect = useCallback((event) => {

@@ -31,6 +31,7 @@ import {
 import uuidPropType from 'src/types/uuidPropType';
 import dateKeyPropType from 'src/types/dateKeyPropType';
 import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
+import LoadingAnimation from 'src/components/LoadingAnimation';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {
@@ -408,6 +409,24 @@ DividedFromMarker.propTypes = {
     dateKey: dateKeyPropType.isRequired
 };
 
+const PendingPhotoThumbnail = memo(function PendingPhotoThumbnail({ timestamp }) {
+    const readable = timestampToReadable(timestamp);
+
+    return (
+        <div
+            className='photo-thumbnail-timeline flex items-center justify-center'
+            title={`Uploading photo (${readable})`}
+            aria-label={`Uploading photo (${readable})`}
+        >
+            <LoadingAnimation className="h-min" />
+        </div>
+    );
+});
+
+PendingPhotoThumbnail.propTypes = {
+    timestamp: isoTimestampTzPropType.isRequired
+};
+
 // Takes photo thumbnail URL, creation timestamp, and database key
 // Opens fullscreen gallery showing selected photo when clicked
 const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, index, photoKey }) {
@@ -670,6 +689,16 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     className="timeline-day-photos"
                     data-testid={`${dateKey}-photos`}
                 >
+                    {/* Pending photo uploads (spinner) */}
+                    {Object.values(contents.pendingPhotos ?? {}).sort((a, b) => {
+                        return a.timestamp.localeCompare(b.timestamp);
+                    }).reverse().map((photo) => (
+                        <PendingPhotoThumbnail
+                            key={`pending-${photo.tempId}`}
+                            timestamp={photo.timestamp}
+                        />
+                    ))}
+                    {/* Existing photo thumbnails */}
                     {Object.values(contents.photos).sort((a, b) => {
                         return a.timestamp.localeCompare(b.timestamp);
                     }).reverse().map((photo) => (

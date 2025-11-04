@@ -31,6 +31,7 @@ function removeDateKeyIfEmpty(state, dateKey) {
     if (state.timelineDays[dateKey] &&
         !Object.keys(state.timelineDays[dateKey].notes).length &&
         !Object.keys(state.timelineDays[dateKey].photos).length &&
+        !Object.keys(state.timelineDays[dateKey].pendingPhotos ?? {}).length &&
         !nonEmptyKeys(state.timelineDays[dateKey].events).length &&
         !state.timelineDays[dateKey].dividedFrom &&
         !state.timelineDays[dateKey].dividedInto
@@ -75,6 +76,8 @@ export const timelineSlice = createSlice({
         //   preview     (preview image URL)
         //   key         (backend database key used to delete photo)
         photos: [],
+        // Photos pending upload,
+        pendingPhotos: {},
         // Keys are year strings (YYYY), values are array of month strings (MM)
         navigationOptions: {},
         // Object with set key (true if default photo set, false if not) and
@@ -242,6 +245,30 @@ export const timelineSlice = createSlice({
             }
         },
 
+        // Takes array of objects with tempId and timestamp keys
+        pendingPhotosAdded(state, action) {
+            const pendingPhotos = action.payload || [];
+            pendingPhotos.forEach(({ tempId, timestamp }) => {
+                const dateKey = getDateKey(state, timestamp);
+                state.timelineDays[dateKey].pendingPhotos[tempId] = {
+                    tempId,
+                    timestamp
+                };
+                state.pendingPhotos[tempId] = dateKey;
+            });
+        },
+
+        // Takes array of tempIds, removes from pendingPhotos state
+        pendingPhotosResolved(state, action) {
+            const tempIds = action.payload || [];
+            tempIds.forEach((tempId) => {
+                const dateKey = state.pendingPhotos[tempId];
+                delete state.pendingPhotos[tempId];
+                delete state.timelineDays[dateKey].pendingPhotos[tempId];
+                removeDateKeyIfEmpty(state, dateKey);
+            });
+        },
+
         // Takes object with same keys as defaultPhoto state
         defaultPhotoChanged(state, action) {
             state.defaultPhoto = action.payload;
@@ -272,6 +299,8 @@ export const {
     noteEdited,
     notesDeleted,
     photosAdded,
+    pendingPhotosAdded,
+    pendingPhotosResolved,
     photosDeleted,
     defaultPhotoChanged,
     divisionEventCreated,
