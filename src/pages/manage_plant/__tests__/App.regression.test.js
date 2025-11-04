@@ -1,6 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
-import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import mockFetchResponse, { mockMultipleFetchResponses } from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
@@ -35,7 +35,7 @@ describe('App', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        act(() => jest.runAllTimers());
+        act(() => jest.runOnlyPendingTimers());
         jest.useRealTimers();
     });
 
@@ -440,27 +440,60 @@ describe('App', () => {
     // calendarDays[dateKey].events, which did not exist (dateKey missing).
     // This prevented the event from rendering to the timeline or calendar.
     it('does not fail to add first event to day with existing photos/notes', async () => {
-        // Mock expected API response when 2 photos are uploaded
-        mockFetchResponse({
-            uploaded: "2 photo(s)",
-            failed: [],
-            urls: [
-                {
-                    timestamp: "2024-03-01T20:52:03+00:00",
-                    image: "/media/images/photo1.jpg",
-                    thumbnail: "/media/images/photo1_thumb.webp",
-                    preview: "/media/images/photo1_preview.webp",
-                    key: 12
-                },
-                {
-                    timestamp: "2024-03-01T20:54:03+00:00",
-                    image: "/media/images/photo2.jpg",
-                    thumbnail: "/media/images/photo2_thumb.webp",
-                    preview: "/media/images/photo2_preview.webp",
-                    key: 13
-                }
-            ]
-        });
+        // Mock expected /add_plant_photos response when 2 photos are uploaded
+        // (pending) followed by /get_photo_upload_status response (completed)
+        mockMultipleFetchResponses([
+            [{
+                uploaded: "2 photo(s)",
+                failed: [],
+                urls: [
+                    {
+                        timestamp: "2024-03-01T20:52:03+00:00",
+                        image: "/media/images/photo1.jpg",
+                        thumbnail: null,
+                        preview: null,
+                        key: 12,
+                        pending: true
+                    },
+                    {
+                        timestamp: "2024-03-01T20:54:03+00:00",
+                        image: "/media/images/photo2.jpg",
+                        thumbnail: null,
+                        preview: null,
+                        key: 13,
+                        pending: true
+                    }
+                ]
+            }],
+            [{
+                photos: [
+                    {
+                        status: 'complete',
+                        plant_id: mockContextNoEvents.plant_details.uuid,
+                        photo_details: {
+                            timestamp: "2024-03-01T20:52:03+00:00",
+                            image: "/media/images/photo1.jpg",
+                            thumbnail: "/media/images/photo1_thumb.webp",
+                            preview: "/media/images/photo1_preview.webp",
+                            key: 12,
+                            pending: false
+                        }
+                    },
+                    {
+                        status: 'complete',
+                        plant_id: mockContextNoEvents.plant_details.uuid,
+                        photo_details: {
+                            timestamp: "2024-03-01T20:54:03+00:00",
+                            image: "/media/images/photo2.jpg",
+                            thumbnail: "/media/images/photo2_thumb.webp",
+                            preview: "/media/images/photo2_preview.webp",
+                            key: 13,
+                            pending: false
+                        }
+                    }
+                ]
+            }]
+        ]);
 
         // Simulate user opening photo modal and selecting 2 files
         await user.click(app.getByText('Add photos'));
@@ -471,6 +504,7 @@ describe('App', () => {
             new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
         ] } });
         await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
 
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
@@ -500,27 +534,60 @@ describe('App', () => {
     // but not the same reference, so strict equality check failed), resulting
     // in the last photo being deleted from the array.
     it('removes the correct photo from timelineDays state when photos are deleted', async () => {
-        // Mock expected API response when 2 photos are uploaded
-        mockFetchResponse({
-            uploaded: "2 photo(s)",
-            failed: [],
-            urls: [
-                {
-                    timestamp: "2024-03-01T20:54:03+00:00",
-                    image: "/media/images/photo1.jpg",
-                    thumbnail: "/media/images/photo1_thumb.webp",
-                    preview: "/media/images/photo1_preview.webp",
-                    key: 12
-                },
-                {
-                    timestamp: "2024-03-01T20:52:03+00:00",
-                    image: "/media/images/photo2.jpg",
-                    thumbnail: "/media/images/photo2_thumb.webp",
-                    preview: "/media/images/photo2_preview.webp",
-                    key: 13
-                }
-            ]
-        });
+        // Mock expected /add_plant_photos response when 2 photos are uploaded
+        // (pending) followed by /get_photo_upload_status response (completed)
+        mockMultipleFetchResponses([
+            [{
+                uploaded: "2 photo(s)",
+                failed: [],
+                urls: [
+                    {
+                        timestamp: "2024-03-01T20:54:03+00:00",
+                        image: "/media/images/photo1.jpg",
+                        thumbnail: null,
+                        preview: null,
+                        key: 12,
+                        pending: true
+                    },
+                    {
+                        timestamp: "2024-03-01T20:52:03+00:00",
+                        image: "/media/images/photo2.jpg",
+                        thumbnail: null,
+                        preview: null,
+                        key: 13,
+                        pending: true
+                    }
+                ]
+            }],
+            [{
+                photos: [
+                    {
+                        status: 'complete',
+                        plant_id: mockContextNoEvents.plant_details.uuid,
+                        photo_details: {
+                            timestamp: "2024-03-01T20:54:03+00:00",
+                            image: "/media/images/photo1.jpg",
+                            thumbnail: "/media/images/photo1_thumb.webp",
+                            preview: "/media/images/photo1_preview.webp",
+                            key: 12,
+                            pending: false
+                        }
+                    },
+                    {
+                        status: 'complete',
+                        plant_id: mockContextNoEvents.plant_details.uuid,
+                        photo_details: {
+                            timestamp: "2024-03-01T20:52:03+00:00",
+                            image: "/media/images/photo2.jpg",
+                            thumbnail: "/media/images/photo2_thumb.webp",
+                            preview: "/media/images/photo2_preview.webp",
+                            key: 13,
+                            pending: false
+                        }
+                    }
+                ]
+            }]
+        ]);
 
         // Simulate user opening photo modal and selecting 2 files
         await user.click(app.getByText('Add photos'));
@@ -531,6 +598,7 @@ describe('App', () => {
             new File(['photo2'], 'photo2.jpg', { type: 'image/jpeg' })
         ] } });
         await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
 
         // Confirm both photos rendered to the timeline
         expect(app.getByTitle('12:52 PM - March 1, 2024')).not.toBeNull();
@@ -563,20 +631,40 @@ describe('App', () => {
         expect(app.queryByText('Gallery')).toBeNull();
         expect(app.queryByText('Edit timeline')).toBeNull();
 
-        // Mock expected API response when photo is uploaded
-        mockFetchResponse({
-            uploaded: "1 photo(s)",
-            failed: [],
-            urls: [
-                {
-                    timestamp: "2024-06-21T20:52:03+00:00",
-                    image: "/media/images/photo1.jpg",
-                    thumbnail: "/media/images/photo1_thumb.webp",
-                    preview: "/media/images/photo1_preview.webp",
-                    key: 1
-                }
-            ]
-        });
+        // Mock expected /add_plant_photos response when photo is uploaded
+        // (pending) followed by /get_photo_upload_status response (completed)
+        mockMultipleFetchResponses([
+            [{
+                uploaded: "1 photo(s)",
+                failed: [],
+                urls: [
+                    {
+                        timestamp: "2024-06-21T20:52:03+00:00",
+                        image: "/media/images/photo1.jpg",
+                        thumbnail: null,
+                        preview: null,
+                        key: 1,
+                        pending: true
+                    }
+                ]
+            }],
+            [{
+                photos: [
+                    {
+                        status: 'complete',
+                        plant_id: mockContextNoEvents.plant_details.uuid,
+                        photo_details: {
+                            timestamp: "2024-06-21T20:52:03+00:00",
+                            image: "/media/images/photo1.jpg",
+                            thumbnail: "/media/images/photo1_thumb.webp",
+                            preview: "/media/images/photo1_preview.webp",
+                            key: 1,
+                            pending: false
+                        }
+                    },
+                ]
+            }]
+        ]);
 
         // Simulate user opening photo modal and selecting 1 photo
         await user.click(app.getByText('Add photos'));
@@ -586,6 +674,7 @@ describe('App', () => {
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
         ] } });
         await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
 
         // Confirm Gallery and Edit timeline dropdown options appeared
         expect(app.queryByText('Gallery')).not.toBeNull();

@@ -694,7 +694,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                         return a.timestamp.localeCompare(b.timestamp);
                     }).reverse().map((photo) => (
                         <PendingPhotoThumbnail
-                            key={`pending-${photo.tempId}`}
+                            key={`pending-${photo.key}`}
                             timestamp={photo.timestamp}
                         />
                     ))}

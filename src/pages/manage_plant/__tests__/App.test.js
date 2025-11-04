@@ -43,7 +43,7 @@ describe('App', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        act(() => jest.runAllTimers());
+        act(() => jest.runOnlyPendingTimers());
         jest.useRealTimers();
     });
 
@@ -514,17 +514,19 @@ describe('App', () => {
             urls: [
                 {
                     timestamp: "2024-06-21T20:52:03+00:00",
-                    image: "/media/images/photo1.jpg",
-                    thumbnail: "/media/images/photo1_thumb.webp",
-                    preview: "/media/images/photo1_preview.webp",
-                    key: 12
+                    photo: "/media/images/photo1.jpg",
+                    thumbnail: null,
+                    preview: null,
+                    key: 12,
+                    pending: true
                 },
                 {
                     timestamp: "2024-06-21T20:54:03+00:00",
-                    image: "/media/images/photo2.jpg",
-                    thumbnail: "/media/images/photo2_thumb.webp",
-                    preview: "/media/images/photo2_preview.webp",
-                    key: 13
+                    photo: "/media/images/photo2.jpg",
+                    thumbnail: null,
+                    preview: null,
+                    key: 13,
+                    pending: true
                 }
             ]
         });
@@ -545,6 +547,41 @@ describe('App', () => {
             new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
         ] } });
         await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm loading spinners appeared in timeline for both pending photos
+        expect(app.getByTitle('Uploading photo (12:52 PM - June 21, 2024)')).toBeInTheDocument();
+        expect(app.getByTitle('Uploading photo (12:54 PM - June 21, 2024)')).toBeInTheDocument();
+
+        // Mock /get_photo_upload_status response when photos finish processing
+        mockFetchResponse({
+            photos: [
+                {
+                    status: 'complete',
+                    plant_id: mockContext.plant_details.uuid,
+                    photo_details: {
+                        timestamp: "2024-06-21T20:52:03+00:00",
+                        photo: "/media/images/photo1.jpg",
+                        thumbnail: "/media/images/photo1_thumb.webp",
+                        preview: "/media/images/photo1_preview.webp",
+                        key: 12,
+                        pending: false
+                    }
+                },
+                {
+                    status: 'complete',
+                    plant_id: mockContext.plant_details.uuid,
+                    photo_details: {
+                        timestamp: "2024-06-21T20:54:03+00:00",
+                        photo: "/media/images/photo2.jpg",
+                        thumbnail: "/media/images/photo2_thumb.webp",
+                        preview: "/media/images/photo2_preview.webp",
+                        key: 13,
+                        pending: false
+                    }
+                }
+            ]
+        });
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
 
         // Confirm both mock photos rendered to the timeline
         expect(within(timeline).getByTitle('12:52 PM - June 21, 2024').firstChild.tagName).toBe('IMG');

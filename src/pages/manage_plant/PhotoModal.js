@@ -1,12 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded, pendingPhotosAdded, pendingPhotosResolved } from './timelineSlice';
+import sendPostRequest from 'src/utils/sendPostRequest';
 import 'src/css/photomodal.css';
+
+// Interval to check pending photo upload status
+const POLL_INTERVAL_MS = 2000;
 
 const PhotoModal = ({ close }) => {
     const navigate = useNavigate();
@@ -15,20 +18,74 @@ const PhotoModal = ({ close }) => {
 
     // Track number of pending uploads (shows loading animation under buttons)
     const [pendingCount, setPendingCount] = useState(0);
+    // Track ids of pending uploads (used to poll for status updates)
+    const pendingPhotoIdsRef = useRef([]);
+    // Track polling interval id (cancel when no more pending)
+    const pollingIntervalRef = useRef(null);
+
+    // Takes /get_photo_upload_status response, updates pending photos
+    const handlePendingStatus = useCallback((data) => {
+        if (!data?.photos?.length) return;
+
+        // Pending uploads that finished successfully
+        const completedPhotos = [];
+        // Pending upload ids that finished for any reason
+        const resolvedIds = [];
+        let failed = 0;
+
+        data.photos.forEach((photo) => {
+            if (photo.status === 'complete') {
+                completedPhotos.push(photo.photo_details);
+                resolvedIds.push(photo.photo_id);
+            } else if (photo.status === 'failed') {
+                resolvedIds.push(photo.photo_id);
+                failed += 1;
+            }
+        });
+
+        // Remove resolved photos from pendingPhotoIds and redux pendingPhotos
+        if (resolvedIds.length) {
+            dispatch(pendingPhotosResolved(resolvedIds));
+            // Remove from pending ref, stop polling if all photos resolved
+            pendingPhotoIdsRef.current = pendingPhotoIdsRef.current.filter(
+                (id) => !resolvedIds.includes(id)
+            );
+            if (!pendingPhotoIdsRef.current.length) {
+                stopPolling();
+            }
+            // Update number of pending uploads shown in modal
+            setPendingCount((prev) => Math.max(0, prev - resolvedIds.length));
+        }
+
+        // Add completed photos to redux photos state
+        if (completedPhotos.length) {
+            dispatch(photosAdded(completedPhotos));
+        }
+
+        // Show error if any photos failed
+        if (failed) {
+            openErrorModal(
+                `Failed to upload ${failed} photo${failed === 1 ? '' : 's'}.`
+            );
+        }
+    }, [dispatch]);
+
+    const pollPendingPhotos = async () => {
+        const payload = { plant_id: plantID, photo_ids: pendingPhotoIdsRef.current };
+        await sendPostRequest('/get_photo_upload_status', payload, handlePendingStatus);
+    };
+
+    const startPolling = useCallback(() => {
+        pollingIntervalRef.current = setInterval(pollPendingPhotos, POLL_INTERVAL_MS);
+    }, []);
+
+    const stopPolling = useCallback(() => {
+        clearInterval(pollingIntervalRef.current);
+    }, []);
 
     const uploadFiles = useCallback(async (files) => {
         // Start loading animation (or increase count if already running)
         setPendingCount((prev) => prev + files.length);
-
-        // Add loading spinner to timeline for each pending upload
-        const pendingUploads = files.map((file) => {
-            const tempId = uuidv4();
-            const timestamp = new Date(
-                file.lastModified ? file.lastModified : Date.now()
-            ).toISOString();
-            return { tempId, timestamp };
-        });
-        dispatch(pendingPhotosAdded(pendingUploads));
 
         const formData = new FormData();
         files.forEach((file, index) => {
@@ -46,10 +103,15 @@ const PhotoModal = ({ close }) => {
         });
 
         if (response.ok) {
-            // Update state with new photo URLs from response
+            // Update state with pending photo uploads from response
             const data = await response.json();
             if (data.urls.length) {
-                dispatch(photosAdded(data.urls));
+                dispatch(pendingPhotosAdded(data.urls));
+                pendingPhotoIdsRef.current = pendingPhotoIdsRef.current.concat(
+                    data.urls.map(photo => photo.key)
+                );
+                // Start polling pending upload status
+                startPolling();
             }
             // Show error if any photos failed
             if (data.failed.length) {
@@ -77,14 +139,6 @@ const PhotoModal = ({ close }) => {
                 }
             }
         }
-
-        // Remove loading spinners from timeline
-        dispatch(pendingPhotosResolved(
-            pendingUploads.map(({ tempId }) => tempId)
-        ));
-        // Stop loading animation (or decrease count if more pending uploads)
-        setPendingCount((prev) => Math.max(0, prev - files.length));
-
     }, [dispatch, navigate, plantID]);
 
     const handleSelect = useCallback((event) => {

@@ -245,26 +245,27 @@ export const timelineSlice = createSlice({
             }
         },
 
-        // Takes array of objects with tempId and timestamp keys
+        // Takes array of objects with key and timestamp keys
         pendingPhotosAdded(state, action) {
             const pendingPhotos = action.payload || [];
-            pendingPhotos.forEach(({ tempId, timestamp }) => {
+            pendingPhotos.forEach(({ key, timestamp }) => {
                 const dateKey = getDateKey(state, timestamp);
-                state.timelineDays[dateKey].pendingPhotos[tempId] = {
-                    tempId,
-                    timestamp
+                state.timelineDays[dateKey].pendingPhotos[key] = {
+                    key: key,
+                    timestamp,
+                    pending: true
                 };
-                state.pendingPhotos[tempId] = dateKey;
+                state.pendingPhotos[key] = dateKey;
             });
         },
 
-        // Takes array of tempIds, removes from pendingPhotos state
+        // Takes array of photo keys, removes from pendingPhotos state
         pendingPhotosResolved(state, action) {
-            const tempIds = action.payload || [];
-            tempIds.forEach((tempId) => {
-                const dateKey = state.pendingPhotos[tempId];
-                delete state.pendingPhotos[tempId];
-                delete state.timelineDays[dateKey].pendingPhotos[tempId];
+            const keys = action.payload || [];
+            keys.forEach((key) => {
+                const dateKey = state.pendingPhotos[key];
+                delete state.pendingPhotos[key];
+                delete state.timelineDays[dateKey]?.pendingPhotos[key];
                 removeDateKeyIfEmpty(state, dateKey);
             });
         },

@@ -39,7 +39,7 @@ describe('Plant with no photos (no default photo set)', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        act(() => jest.runAllTimers());
+        act(() => jest.runOnlyPendingTimers());
         jest.useRealTimers();
     });
 
@@ -60,16 +60,18 @@ describe('Plant with no photos (no default photo set)', () => {
                 {
                     timestamp: "2024-03-21T10:52:03+00:00",
                     photo: "/media/images/photo1.jpg",
-                    thumbnail: "/media/images/photo1_thumb.webp",
-                    preview: "/media/images/photo1_preview.webp",
-                    key: 1774
+                    thumbnail: null,
+                    preview: null,
+                    key: 1774,
+                    pending: true
                 },
                 {
                     timestamp: "2024-03-22T10:52:03+00:00",
                     photo: "/media/images/photo2.jpg",
-                    thumbnail: "/media/images/photo2_thumb.webp",
-                    preview: "/media/images/photo2_preview.webp",
-                    key: 1775
+                    thumbnail: null,
+                    preview: null,
+                    key: 1775,
+                    pending: true
                 }
             ]
         });
@@ -83,6 +85,37 @@ describe('Plant with no photos (no default photo set)', () => {
             new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
         ] } });
         await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Mock /get_photo_upload_status response when photo finishes processing
+        mockFetchResponse({
+            photos: [
+                {
+                    status: 'complete',
+                    plant_id: mockContext.plant_details.uuid,
+                    photo_details: {
+                        timestamp: "2024-03-21T10:52:03+00:00",
+                        photo: "/media/images/photo1.jpg",
+                        thumbnail: "/media/images/photo1_thumb.webp",
+                        preview: "/media/images/photo1_preview.webp",
+                        key: 1774,
+                        pending: false
+                    },
+                },
+                {
+                    status: 'complete',
+                    plant_id: mockContext.plant_details.uuid,
+                    photo_details: {
+                        timestamp: "2024-03-22T10:52:03+00:00",
+                        photo: "/media/images/photo2.jpg",
+                        thumbnail: "/media/images/photo2_thumb.webp",
+                        preview: "/media/images/photo2_preview.webp",
+                        key: 1775,
+                        pending: false
+                    },
+                },
+            ]
+        });
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
 
         // Confirm default photo thumbnail rendered with most-recent photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
@@ -118,7 +151,7 @@ describe('Plant with photos but no configured default photo', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        act(() => jest.runAllTimers());
+        act(() => jest.runOnlyPendingTimers());
         jest.useRealTimers();
     });
 
@@ -144,9 +177,10 @@ describe('Plant with photos but no configured default photo', () => {
                 {
                     timestamp: "2025-03-21T10:52:03+00:00",
                     photo: "/media/images/photo_new.jpg",
-                    thumbnail: "/media/images/photo_new_thumb.webp",
-                    preview: "/media/images/photo_new_preview.webp",
-                    key: 1774
+                    thumbnail: null,
+                    preview: null,
+                    key: 1774,
+                    pending: true
                 }
             ]
         });
@@ -159,6 +193,25 @@ describe('Plant with photos but no configured default photo', () => {
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
         ] } });
         await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Mock /get_photo_upload_status response when photo finishes processing
+        mockFetchResponse({
+            photos: [
+                {
+                    status: 'complete',
+                    plant_id: mockContext.plant_details.uuid,
+                    photo_details: {
+                        timestamp: "2025-03-21T10:52:03+00:00",
+                        photo: "/media/images/photo_new.jpg",
+                        thumbnail: "/media/images/photo_new_thumb.webp",
+                        preview: "/media/images/photo_new_preview.webp",
+                        key: 1774,
+                        pending: false
+                    }
+                },
+            ]
+        });
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
 
         // Confirm default photo thumbnail changed to newer photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
@@ -241,7 +294,7 @@ describe('Plant with default photo configured', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        act(() => jest.runAllTimers());
+        act(() => jest.runOnlyPendingTimers());
         jest.useRealTimers();
     });
 
@@ -267,9 +320,10 @@ describe('Plant with default photo configured', () => {
                 {
                     timestamp: "2025-03-21T10:52:03+00:00",
                     photo: "/media/images/photo_new.jpg",
-                    thumbnail: "/media/images/photo_new_thumb.webp",
-                    preview: "/media/images/photo_new_preview.webp",
-                    key: 1774
+                    thumbnail: null,
+                    preview: null,
+                    key: 1774,
+                    pending: true
                 }
             ]
         });
@@ -282,6 +336,25 @@ describe('Plant with default photo configured', () => {
             new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
         ] } });
         await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Mock /get_photo_upload_status response when photo finishes processing
+        mockFetchResponse({
+            photos: [
+                {
+                    status: 'complete',
+                    plant_id: mockContext.plant_details.uuid,
+                    photo_details: {
+                        timestamp: "2025-03-21T10:52:03+00:00",
+                        photo: "/media/images/photo_new.jpg",
+                        thumbnail: "/media/images/photo_new_thumb.webp",
+                        preview: "/media/images/photo_new_preview.webp",
+                        key: 1774,
+                        pending: false
+                    }
+                },
+            ]
+        });
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
 
         // Confirm default photo thumbnail url did not change
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
