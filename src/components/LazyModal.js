@@ -139,7 +139,9 @@ const LazyModal = forwardRef(function LazyModal({ load, initialTitle, className,
                 {modalTitle && <ModalTitle title={modalTitle} />}
 
                 {/* Show loading spinner while lazy loading contents bundle */}
-                <Suspense fallback={<LoadingAnimation className="mt-2 mx-auto" />}>
+                <Suspense fallback={
+                    <LoadingAnimation className="mx-auto my-8" />
+                }>
                     {LazyComponentRef.current && (
                         <LazyComponentRef.current
                             {...contentProps}

@@ -51,7 +51,7 @@ const RegisterGroup = ({ close, cancel, setTitle, addPlantToGroup }) => {
                 />
             )}
             {modalContents === "loading" && (
-                <LoadingAnimation className="mx-auto mt-20" />
+                <LoadingAnimation className="mx-auto mt-28" />
             )}
             {modalContents === "success" && (
                 <>
@@ -181,7 +181,7 @@ const GroupModal = ({ close, setTitle }) => {
     return options ? (
         <Options options={options} setTitle={setTitle} close={close} />
     ) : (
-        <LoadingAnimation className="m-auto" />
+        <LoadingAnimation className="mx-auto my-8" />
     );
 };
 

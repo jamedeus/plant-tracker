@@ -189,7 +189,7 @@ const PrintModal = memo(function PrintModal({ close, setOnClose, setTitle }) {
         case("loading"):
             return (
                 <>
-                    <LoadingAnimation className="mt-2 mx-auto" />
+                    <LoadingAnimation className="h-36 mt-2 mx-auto" />
                     <div className="modal-action">
                         <button className="btn btn-soft" onClick={cancel}>
                             Cancel

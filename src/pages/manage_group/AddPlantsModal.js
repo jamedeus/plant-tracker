@@ -96,7 +96,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ close }) {
             {options ? (
                 <Options options={options} close={close} />
             ) : (
-                <LoadingAnimation />
+                <LoadingAnimation className="my-8" />
             )}
         </div>
     );

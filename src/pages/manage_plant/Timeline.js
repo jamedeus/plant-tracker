@@ -418,7 +418,7 @@ const PendingPhotoThumbnail = memo(function PendingPhotoThumbnail({ timestamp })
             title={`Uploading photo (${readable})`}
             aria-label={`Uploading photo (${readable})`}
         >
-            <LoadingAnimation className="h-min" />
+            <LoadingAnimation />
         </div>
     );
 });
