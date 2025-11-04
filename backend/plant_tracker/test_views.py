@@ -811,10 +811,12 @@ class ManagePageTests(TestCase):
             photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
             plant=self.plant1
         )
+        photo1.finalize_upload()
         photo2 = Photo.objects.create(
             photo=create_mock_photo('2024:03:22 10:52:03', 'photo2.jpg'),
             plant=self.plant1
         )
+        photo2.finalize_upload()
 
         # Request management page, confirm status
         response = self.client.get(f'/manage/{self.plant1.uuid}')
@@ -841,14 +843,16 @@ class ManagePageTests(TestCase):
                     'photo': '/media/user_1/images/photo2.jpg',
                     'thumbnail': '/media/user_1/thumbnails/photo2_thumb.webp',
                     'preview': '/media/user_1/previews/photo2_preview.webp',
-                    'key': photo2.pk
+                    'key': photo2.pk,
+                    'pending': False
                 },
                 str(photo1.pk): {
                     'timestamp': '2024-03-21T10:52:03+00:00',
                     'photo': '/media/user_1/images/photo1.jpg',
                     'thumbnail': '/media/user_1/thumbnails/photo1_thumb.webp',
                     'preview': '/media/user_1/previews/photo1_preview.webp',
-                    'key': photo1.pk
+                    'key': photo1.pk,
+                    'pending': False
                 },
             }
         )
@@ -2200,21 +2204,23 @@ class PlantPhotoEndpointTests(TestCase):
         )
 
         # Confirm expected response
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 202)
         self.assertEqual(len(response.json()), 3)
         self.assertEqual(response.json()["uploaded"], "1 photo(s)")
         self.assertEqual(response.json()["failed"], [])
 
-        # Confirm response contains new photo creation timestamp, URL, primary key
+        # Confirm response contains new photo creation timestamp and primary key,
+        # but no URLs (pending, will be created by celery task)
         self.assertEqual(
             response.json()["urls"],
             [
                 {
                     "timestamp": "2024-03-22T10:52:03+00:00",
                     "photo": "/media/user_1/images/mock_photo.jpg",
-                    "thumbnail": "/media/user_1/thumbnails/mock_photo_thumb.webp",
-                    "preview": "/media/user_1/previews/mock_photo_preview.webp",
-                    "key": Photo.objects.all()[0].pk
+                    "thumbnail": None,
+                    "preview": None,
+                    "key": Photo.objects.all()[0].pk,
+                    "pending": True
                 }
             ]
         )
@@ -2251,7 +2257,7 @@ class PlantPhotoEndpointTests(TestCase):
             )
 
         # Confirm expected response
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 202)
         self.assertEqual(len(response.json()), 3)
         self.assertEqual(response.json()["uploaded"], "0 photo(s)")
         self.assertEqual(response.json()["failed"], ["mock_photo.jpg"])
@@ -2313,6 +2319,7 @@ class PlantPhotoEndpointTests(TestCase):
         # Create mock photo, add to database
         mock_photo = create_mock_photo('2024:03:21 10:52:03')
         photo = Photo.objects.create(photo=mock_photo, plant=self.plant)
+        photo.finalize_upload()
 
         # Confirm plant has no default_photo
         self.assertIsNone(self.plant.default_photo)
@@ -2334,7 +2341,8 @@ class PlantPhotoEndpointTests(TestCase):
                 'photo': '/media/user_1/images/mock_photo.jpg',
                 'thumbnail': '/media/user_1/thumbnails/mock_photo_thumb.webp',
                 'preview': '/media/user_1/previews/mock_photo_preview.webp',
-                'key': photo.pk
+                'key': photo.pk,
+                'pending': False
             }}
         )
         self.plant.refresh_from_db()

@@ -140,14 +140,17 @@ class PlantModelTests(TestCase):
             photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
             plant=self.plant
         )
+        photo1.finalize_upload()
         photo2 = Photo.objects.create(
             photo=create_mock_photo('2024:03:22 10:52:03', 'IMG2.jpg'),
             plant=self.plant
         )
+        photo2.finalize_upload()
         photo3 = Photo.objects.create(
             photo=create_mock_photo('2024:01:28 10:52:03', 'IMG3.jpg'),
             plant=self.plant
         )
+        photo3.finalize_upload()
 
         # Get object containing URLs
         photos = self.plant.get_photos()
@@ -161,21 +164,24 @@ class PlantModelTests(TestCase):
                     'photo': '/media/user_1/images/IMG2.jpg',
                     'thumbnail': '/media/user_1/thumbnails/IMG2_thumb.webp',
                     'preview': '/media/user_1/previews/IMG2_preview.webp',
-                    'key': photo2.pk
+                    'key': photo2.pk,
+                    'pending': False
                 },
                 photo1.pk: {
                     'timestamp': '2024-02-21T10:52:03+00:00',
                     'photo': '/media/user_1/images/IMG1.jpg',
                     'thumbnail': '/media/user_1/thumbnails/IMG1_thumb.webp',
                     'preview': '/media/user_1/previews/IMG1_preview.webp',
-                    'key': photo1.pk
+                    'key': photo1.pk,
+                    'pending': False
                 },
                 photo3.pk: {
                     'timestamp': '2024-01-28T10:52:03+00:00',
                     'photo': '/media/user_1/images/IMG3.jpg',
                     'thumbnail': '/media/user_1/thumbnails/IMG3_thumb.webp',
                     'preview': '/media/user_1/previews/IMG3_preview.webp',
-                    'key': photo3.pk
+                    'key': photo3.pk,
+                    'pending': False
                 },
             }
         )
@@ -199,10 +205,12 @@ class PlantModelTests(TestCase):
             photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
             plant=self.plant
         )
+        photo1.finalize_upload()
         photo2 = Photo.objects.create(
             photo=create_mock_photo('2024:03:22 10:52:03', 'IMG2.jpg'),
             plant=self.plant
         )
+        photo2.finalize_upload()
 
         # Confirm returns details of most-recent photo with set = False
         self.assertEqual(
@@ -213,7 +221,8 @@ class PlantModelTests(TestCase):
                 "photo": photo2.photo.url,
                 "thumbnail": photo2.thumbnail.url,
                 "preview": photo2.preview.url,
-                "key": photo2.pk
+                "key": photo2.pk,
+                "pending": False
             }
         )
 
@@ -229,7 +238,8 @@ class PlantModelTests(TestCase):
                 "photo": photo1.photo.url,
                 "thumbnail": photo1.thumbnail.url,
                 "preview": photo1.preview.url,
-                "key": photo1.pk
+                "key": photo1.pk,
+                "pending": False
             }
         )
 
@@ -376,6 +386,7 @@ class PhotoModelTests(TestCase):
             photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
             plant=self.plant
         )
+        self.photo.finalize_upload()
 
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
@@ -459,6 +470,7 @@ class PhotoModelTests(TestCase):
             plant=self.plant,
             photo=create_mock_photo(size=(160, 90))
         )
+        landscape.finalize_upload()
         self.assertEqual(landscape.thumbnail.height, landscape.thumbnail.width)
 
         # Create mock portrait photo, confirm thumbnail is square
@@ -466,6 +478,7 @@ class PhotoModelTests(TestCase):
             plant=self.plant,
             photo=create_mock_photo(size=(90, 160))
         )
+        portrait.finalize_upload()
         self.assertEqual(portrait.thumbnail.height, portrait.thumbnail.width)
 
         # Create mock suqare photo, confirm thumbnail is square
@@ -473,6 +486,7 @@ class PhotoModelTests(TestCase):
             plant=self.plant,
             photo=create_mock_photo(size=(10, 10))
         )
+        suqare.finalize_upload()
         self.assertEqual(suqare.thumbnail.height, suqare.thumbnail.width)
 
     def test_deletes_files_from_disk_when_photo_model_deleted(self):

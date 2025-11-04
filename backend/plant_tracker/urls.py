@@ -59,6 +59,7 @@ urlpatterns = [
     path('repot_plant', views.repot_plant, name='repot_plant'),
     path('divide_plant', views.divide_plant, name='divide_plant'),
     path('add_plant_photos', views.add_plant_photos, name='add_plant_photos'),
+    path('get_photo_upload_status', views.get_photo_upload_status, name='get_photo_upload_status'),
     path('delete_plant_photos', views.delete_plant_photos, name='delete_plant_photos'),
     path('set_plant_default_photo', views.set_plant_default_photo, name='set_plant_default_photo')
 ]

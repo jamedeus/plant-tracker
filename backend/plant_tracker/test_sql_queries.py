@@ -1166,8 +1166,8 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
-        # Confirm makes 4 queries when 1 photo uploaded
-        with self.assertNumQueries(4):
+        # Confirm makes 7 queries when 1 photo uploaded
+        with self.assertNumQueries(7):
             response = self.client.post(
                 '/add_plant_photos',
                 data={
@@ -1176,10 +1176,10 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
                 },
                 content_type=MULTIPART_CONTENT
             )
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.status_code, 202)
 
         # Confirm makes 6 queries when 3 photos uploaded
-        with self.assertNumQueries(6):
+        with self.assertNumQueries(17):
             response = self.client.post(
                 '/add_plant_photos',
                 data={
@@ -1190,14 +1190,14 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
                 },
                 content_type=MULTIPART_CONTENT
             )
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.status_code, 202)
 
         # Set plant default photo
         plant.default_photo = plant.photo_set.all()[0]
         plant.save()
 
         # Confirm makes 3 queries when 1 photo uploaded
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(5):
             response = self.client.post(
                 '/add_plant_photos',
                 data={
@@ -1206,7 +1206,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
                 },
                 content_type=MULTIPART_CONTENT
             )
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.status_code, 202)
 
     def test_delete_plant_photos_endpoint(self):
         '''/delete_plant_photos should make 7 database queries regardless of the
@@ -1216,12 +1216,15 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         photo1 = Photo.objects.create(
             photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
         )
+        photo1.finalize_upload()
         photo2 = Photo.objects.create(
             photo=create_mock_photo('2024:03:22 10:52:03'), plant=plant
         )
+        photo2.finalize_upload()
         photo3 = Photo.objects.create(
             photo=create_mock_photo('2024:03:23 10:52:03'), plant=plant
         )
+        photo3.finalize_upload()
 
         # Confirm makes 7 queries when 1 photo deleted
         with self.assertNumQueries(7):
@@ -1269,6 +1272,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         mock_photo = create_mock_photo('2024:03:21 10:52:03')
         photo = Photo.objects.create(photo=mock_photo, plant=plant)
+        photo.finalize_upload()
         with self.assertNumQueries(4):
             response = self.client.post('/set_plant_default_photo', {
                 'plant_id': str(plant.uuid),

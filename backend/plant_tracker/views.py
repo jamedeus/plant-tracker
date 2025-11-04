@@ -12,6 +12,7 @@ from django.http import JsonResponse
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.core.cache import cache
 from PIL import UnidentifiedImageError
 
 from .generate_qr_code_grid import generate_layout
@@ -41,6 +42,7 @@ from .get_state_views import (
     remove_instance_from_cached_overview_state,
     update_cached_overview_state_show_archive_bool
 )
+from .tasks import process_photo_upload
 
 
 @get_user_token
@@ -884,15 +886,15 @@ def add_plant_photos(request, user):
                 plant=plant
             )
             created.append(photo.get_details())
+
+            # Queue celery task to generate thumbnails
+            cache.set(
+                f"pending_photo_upload_{photo.pk}",
+                {'status': 'processing', 'plant_id': str(plant.uuid)}
+            )
+            process_photo_upload.delay(photo.pk)
         except UnidentifiedImageError:
             failed.append(request.FILES[key].name)
-
-    # Update thumbnail unless default photo set (most-recent may have changed)
-    if not plant.default_photo:
-        update_cached_overview_details_keys(
-            plant,
-            {'thumbnail': plant.get_thumbnail_url()}
-        )
 
     # Return list of new photo URLs (added to frontend state)
     return JsonResponse(
@@ -901,8 +903,37 @@ def add_plant_photos(request, user):
             "failed": failed,
             "urls": created
         },
-        status=200
+        status=202
     )
+
+
+@get_user_token
+@requires_json_post(["plant_id", "photo_ids"])
+@get_plant_from_post_body()
+def get_photo_upload_status(plant, data, **kwargs):
+    '''Returns status of requested pending photo uploads.
+    Requires JSON POST with plant_id and photo_ids keys.
+    '''
+    photo_ids = data.get('photo_ids')
+    statuses = []
+    for photo_id in photo_ids:
+        status = cache.get(f"pending_photo_upload_{photo_id}")
+        if status and status.get('plant_id') == str(plant.uuid):
+            status_payload = {
+                'photo_id': photo_id,
+                **status
+            }
+
+        # Cache not found or photo not owned by user
+        else:
+            status_payload = {
+                'photo_id': photo_id,
+                'status': 'unknown'
+            }
+
+        statuses.append(status_payload)
+
+    return JsonResponse({'photos': statuses}, status=200)
 
 
 @get_user_token

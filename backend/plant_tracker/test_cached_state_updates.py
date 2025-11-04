@@ -810,7 +810,7 @@ class EndpointStateUpdateTests(TestCase):
             data=data,
             content_type=MULTIPART_CONTENT
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 202)
 
         # Confirm cached overview state now has new photo thumbnail for plant1
         self.assertEqual(
@@ -831,7 +831,7 @@ class EndpointStateUpdateTests(TestCase):
             data=data,
             content_type=MULTIPART_CONTENT
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 202)
 
         # Confirm cached overview state has photo thumbnail for plant1
         self.assertEqual(
@@ -866,7 +866,7 @@ class EndpointStateUpdateTests(TestCase):
             data=data,
             content_type=MULTIPART_CONTENT
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 202)
         older_photo = Photo.objects.all()[0]
 
         # Confirm cached overview state used most-recent photo for thumbnail

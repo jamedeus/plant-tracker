@@ -55,6 +55,9 @@ class Photo(models.Model):
     # Timestamp will be read from exifdata by save method
     timestamp = models.DateTimeField(null=True, blank=True)
 
+    # True if celery task hasn't finished creating thumbnails yet
+    pending = models.BooleanField(default=True)
+
     # Required relation field matching Photo to correct Plant
     plant = models.ForeignKey('Plant', on_delete=models.CASCADE)
 
@@ -69,9 +72,10 @@ class Photo(models.Model):
         return {
             'timestamp': self.timestamp.isoformat(),
             'photo': self.photo.url,
-            'thumbnail': self.thumbnail.url,
-            'preview': self.preview.url,
-            'key': self.pk
+            'thumbnail': self.thumbnail.url if self.thumbnail else None,
+            'preview': self.preview.url if self.preview else None,
+            'key': self.pk,
+            'pending': self.pending
         }
 
     def _crop_to_square(self, image):
@@ -150,11 +154,13 @@ class Photo(models.Model):
             suffix='preview'
         )
 
-    def save(self, *args, **kwargs):
-        # Create thumbnail if it doesn't exist
-        if not self.thumbnail or not self.preview:
-            self._create_thumbnails()
+    def finalize_upload(self):
+        '''Creates thumbnails and clears pending flag (called by celery task).'''
+        self.pending = False
+        self._create_thumbnails()
+        self.save(update_fields=['pending', 'thumbnail', 'preview'])
 
+    def save(self, *args, **kwargs):
         # Copy exif timestamp to timestamp field when saved for the first time
         if not self.pk:
             # Read raw exif data
@@ -190,6 +196,11 @@ class Photo(models.Model):
             # Default to current time if no exif data found
             else:
                 self.timestamp = django_timezone.now()
+
+        # Create thumbnails images immediately if create_thumbnails is True
+        if kwargs.pop('create_thumbnails', False):
+            self._create_thumbnails()
+            self.pending = False
 
         super().save(*args, **kwargs)
 
