@@ -1,6 +1,7 @@
 import React from 'react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
+import { postHeaders } from 'src/testUtils/headers';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal from '../PhotoModal';
 import { ReduxProvider } from '../store';
@@ -56,19 +57,21 @@ describe('PhotoModal', () => {
                 {
                     timestamp: "2024-03-21T10:52:03+00:00",
                     image: "/media/images/photo1.jpg",
-                    thumbnail: "/media/images/photo1_thumb.webp",
-                    preview: "/media/images/photo1_preview.webp",
-                    key: 12
+                    thumbnail: null,
+                    preview: null,
+                    key: 12,
+                    pending: true
                 },
                 {
                     timestamp: "2024-03-22T10:52:03+00:00",
                     image: "/media/images/photo2.jpg",
-                    thumbnail: "/media/images/photo2_thumb.webp",
-                    preview: "/media/images/photo2_preview.webp",
-                    key: 13
+                    thumbnail: null,
+                    preview: null,
+                    key: 13,
+                    pending: true
                 }
             ]
-        });
+        }, 202);
 
         // Create 2 mock files
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
@@ -92,6 +95,89 @@ describe('PhotoModal', () => {
         const formData = fetch.mock.calls[0][1].body;
         expect(formData.get('photo_0')).toEqual(file1);
         expect(formData.get('photo_1')).toEqual(file2);
+    });
+
+    it('polls pending photo status until resolved after uploading', async () => {
+        // Mock fetch function to return expected response
+        mockFetchResponse({
+            uploaded: "1 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-03-21T10:52:03+00:00",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: null,
+                    preview: null,
+                    key: 12,
+                    pending: true
+                },
+            ]
+        }, 202);
+
+        // Confirm modal does not show number of pending photos
+        expect(app.queryByText('Uploading 1 photo...')).toBeNull();
+
+        // Simulate user clicking input and selecting mock file
+        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1] } });
+        expect(fetch).toHaveBeenCalledTimes(1);
+
+        // Confirm number of pending photos is shown in modal
+        expect(app.getByText('Uploading 1 photo...')).toBeInTheDocument();
+
+        // Mock /get_photo_upload_status response when photo still processing
+        mockFetchResponse({ photos: [{
+            status: 'processing',
+            photo_id: 12,
+            plant_id: mockContext.plant_details.uuid,
+        }]});
+
+        // Fast forward to next polling interval, confirm polled status
+        await act(async () => await jest.advanceTimersByTimeAsync(2000));
+        expect(fetch).toHaveBeenCalledWith('/get_photo_upload_status', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                photo_ids: [12]
+            }),
+            headers: postHeaders
+        });
+
+        // Confirm number of pending photos is shown in modal
+        expect(app.getByText('Uploading 1 photo...')).toBeInTheDocument();
+
+        // Mock /get_photo_upload_status response when photo resolved
+        mockFetchResponse({ photos: [{
+            status: 'complete',
+            photo_id: 12,
+            plant_id: mockContext.plant_details.uuid,
+            photo_details: {
+                timestamp: "2024-03-21T10:52:03+00:00",
+                image: "/media/images/photo1.jpg",
+                thumbnail: "/media/images/photo1_thumb.webp",
+                preview: "/media/images/photo1_preview.webp",
+                key: 12,
+                pending: false
+            },
+        }]});
+        await act(async () => await jest.advanceTimersByTimeAsync(2000));
+        expect(global.fetch).toHaveBeenCalledWith('/get_photo_upload_status', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                photo_ids: [12]
+            }),
+            headers: postHeaders
+        });
+        expect(global.fetch).toHaveBeenCalledTimes(1);
+
+        // Confirm number of pending photos disappeared
+        expect(app.queryByText('Uploading 1 photo...')).toBeNull();
+
+        // Fast forward to next polling interval, confirm did NOT poll status
+        await act(async () => await jest.advanceTimersByTimeAsync(2000));
+        expect(fetch).toHaveBeenCalledTimes(1);
     });
 
     it('shows error modal when photo uploads fail', async () => {
@@ -123,6 +209,66 @@ describe('PhotoModal', () => {
         expect(app.queryByText(/Failed to upload 2 photo(s)/)).not.toBeNull();
         expect(app.queryByText(/photo2.heic/)).not.toBeNull();
         expect(app.queryByText(/photo1.heic/)).not.toBeNull();
+    });
+
+    it('shows error modal when pending photo upload fails to resolve', async () => {
+        // Mock fetch function to return expected response
+        mockFetchResponse({
+            uploaded: "1 photo(s)",
+            failed: [],
+            urls: [
+                {
+                    timestamp: "2024-03-21T10:52:03+00:00",
+                    image: "/media/images/photo1.jpg",
+                    thumbnail: null,
+                    preview: null,
+                    key: 12,
+                    pending: true
+                },
+            ]
+        }, 202);
+
+        // Simulate user clicking input and selecting mock file
+        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1] } });
+        expect(fetch).toHaveBeenCalledTimes(1);
+
+        // Confirm number of pending photos is shown in modal
+        expect(app.getByText('Uploading 1 photo...')).toBeInTheDocument();
+
+        // Confirm error modal is not rendered
+        expect(app.queryByTestId('error-modal-body')).toBeNull();
+
+        // Mock /get_photo_upload_status response when photo processing failed
+        mockFetchResponse({ photos: [{
+            status: 'failed',
+            photo_id: 12,
+            plant_id: mockContext.plant_details.uuid,
+        }]});
+
+        // Fast forward to next polling interval, confirm polled status
+        await act(async () => await jest.advanceTimersByTimeAsync(2000));
+        expect(fetch).toHaveBeenCalledWith('/get_photo_upload_status', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                photo_ids: [12]
+            }),
+            headers: postHeaders
+        });
+
+        // Confirm error modal appeared with number of failed photos
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(app.getByTestId('error-modal-body')).toBeInTheDocument();
+        expect(app.queryByText(/Failed to upload 1 photo/)).not.toBeNull();
+
+        // Confirm number of pending photos disappeared
+        expect(app.queryByText('Uploading 1 photo...')).toBeNull();
+
+        // Fast forward to next polling interval, confirm did NOT poll status
+        await act(async () => await jest.advanceTimersByTimeAsync(2000));
+        expect(fetch).toHaveBeenCalledTimes(1);
     });
 
     it('shows error modal when payload exceeds proxy client_max_body_size', async () => {
