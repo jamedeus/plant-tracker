@@ -215,7 +215,6 @@ export const timelineSlice = createSlice({
             // If defaultPhoto not set: Use most-recent photo as default photo
             if (!state.defaultPhoto.set) {
                 state.defaultPhoto = { ...state.defaultPhoto, ...state.photos[0] };
-                console.log('new default photo', state.defaultPhoto);
             }
         },
 

@@ -462,13 +462,22 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, i
     );
 });
 
-PhotoThumbnail.propTypes = {
-    thumbnailUrl: PropTypes.string.isRequired,
-    timestamp: isoTimestampTzPropType.isRequired,
-    index: PropTypes.number.isRequired,
-    photoKey: PropTypes.number.isRequired,
-    pending: PropTypes.bool.isRequired
-};
+PhotoThumbnail.propTypes = PropTypes.oneOfType([
+    PropTypes.exact({
+        thumbnailUrl: PropTypes.oneOf([null]).isRequired,
+        timestamp: isoTimestampTzPropType.isRequired,
+        index: PropTypes.number.isRequired,
+        photoKey: PropTypes.number.isRequired,
+        pending: PropTypes.oneOf([true]).isRequired,
+    }),
+    PropTypes.exact({
+        thumbnailUrl: PropTypes.string.isRequired,
+        timestamp: isoTimestampTzPropType.isRequired,
+        index: PropTypes.number.isRequired,
+        photoKey: PropTypes.number.isRequired,
+        pending: PropTypes.oneOf([false]).isRequired,
+    }),
+]).isRequired;
 
 // Map collapsedNoteLines setting values to correct line clamp class
 const clampedLines = {
