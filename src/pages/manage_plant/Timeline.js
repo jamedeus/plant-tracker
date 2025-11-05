@@ -169,6 +169,7 @@ const Title = memo(function Title() {
                 ref={photoModal.ref}
                 initialTitle="Upload Photos"
                 ariaLabel="Upload plant photos"
+                keepContents={true}
                 load={() => import(/* webpackChunkName: "manage_plant_photo-modal" */ "./PhotoModal")}
             />
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
@@ -78,6 +78,9 @@ const PhotoModal = ({ close }) => {
     const stopPolling = useCallback(() => {
         clearInterval(pollingIntervalRef.current);
     }, []);
+
+    // Stop polling on unmount (page navigation, doesn't unmount modal closed)
+    useEffect(() => stopPolling, []);
 
     const uploadFiles = useCallback(async (files) => {
         // Start loading animation (or increase count if already running)
