@@ -761,61 +761,55 @@ class ViewRegressionTests(TestCase):
         overview_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
 
-    # def test_overview_does_not_break_if_plants_have_photos(self):
-    #     '''Issue: While optimizing postgres queries a bad annotation was written
-    #     that saved the wrong attribute of most-recent photo. This was done while
-    #     using a test fixture where no plants had photos, and unit tests did not
-    #     catch it because they never request overview state with photos
-    #     '''
-    #     self.maxDiff = None
+    def test_overview_does_not_break_if_plants_have_photos(self):
+        '''Issue: While optimizing postgres queries a bad annotation was written
+        that saved the wrong attribute of most-recent photo. This was done while
+        using a test fixture where no plants had photos, and unit tests did not
+        catch it because they never request overview state with photos
+        '''
 
-    #     # Create plant, add photo with /add_plant_photos endpoint
-    #     plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-    #     response = self.client.post(
-    #         '/add_plant_photos',
-    #         data={
-    #             'plant_id': str(plant.uuid),
-    #             'photo_0': create_mock_photo('2024:02:21 10:52:03', 'photo1.jpg')
-    #         },
-    #         content_type=MULTIPART_CONTENT
-    #     )
-    #     self.assertEqual(response.status_code, 202)
-    #     photo = Photo.objects.all()[0]
-    #     # Simulate celery finishing processing photo
-    #     photo.finalize_upload()
-    #     photo.refresh_from_db()
+        # Create plant, add photo with /add_plant_photos endpoint
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        response = self.client.post(
+            '/add_plant_photos',
+            data={
+                'plant_id': str(plant.uuid),
+                'photo_0': create_mock_photo('2024:02:21 10:52:03', 'photo1.jpg')
+            },
+            content_type=MULTIPART_CONTENT
+        )
+        self.assertEqual(response.status_code, 202)
+        photo = Photo.objects.all()[0]
 
-    #     # Request overview page state, should not raise exception
-    #     response = self.client.get('/get_overview_state')
-    #     self.assertEqual(response.status_code, 200)
+        # Request overview page state, should not raise exception
+        response = self.client.get('/get_overview_state')
+        self.assertEqual(response.status_code, 200)
 
-    #     # TODO figure out why this fails (thumbnail has extra random extension,
-    #     # seems like test environment filename conflict)
-    #     # Confirm state contains plant details and correct thumbnail
-    #     self.assertEqual(
-    #         response.json(),
-    #         {
-    #             'plants': {
-    #                 str(plant.uuid): {
-    #                     'name': None,
-    #                     'display_name': 'Unnamed plant 1',
-    #                     'uuid': str(plant.uuid),
-    #                     'archived': False,
-    #                     'created': plant.created.isoformat(),
-    #                     'species': None,
-    #                     'description': None,
-    #                     'pot_size': None,
-    #                     'last_watered': None,
-    #                     'last_fertilized': None,
-    #                     'thumbnail': photo.thumbnail.url,
-    #                     'group': None
-    #                 }
-    #             },
-    #             'groups': {},
-    #             'show_archive': False,
-    #             'title': 'Plant Overview'
-    #         }
-    #     )
+        # Confirm state contains plant details and correct thumbnail
+        self.assertEqual(
+            response.json(),
+            {
+                'plants': {
+                    str(plant.uuid): {
+                        'name': None,
+                        'display_name': 'Unnamed plant 1',
+                        'uuid': str(plant.uuid),
+                        'archived': False,
+                        'created': plant.created.isoformat(),
+                        'species': None,
+                        'description': None,
+                        'pot_size': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'thumbnail': photo.thumbnail.url,
+                        'group': None
+                    }
+                },
+                'groups': {},
+                'show_archive': False,
+                'title': 'Plant Overview'
+            }
+        )
 
     def test_should_not_be_able_to_add_other_users_plants_to_group(self):
         '''Issue: The /bulk_add_plants_to_group endpoint checked group ownership
