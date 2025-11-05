@@ -3,7 +3,7 @@
 # Start celery worker in background
 printf "Starting celery worker...\n"
 cd /mnt/backend || (printf "FATAL: Unable to find /mnt/backend\n" && exit)
-celery -A backend worker --uid "$(id -u celery)" &
+celery -A backend worker &
 
 # Generate database on first run, apply migrations in new releases
 printf "Running database migrations...\n"
