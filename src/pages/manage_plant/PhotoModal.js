@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { photosAdded, pendingPhotosAdded, pendingPhotosResolved } from './timelineSlice';
+import { photosAdded, pendingPhotosResolved } from './timelineSlice';
 import sendPostRequest from 'src/utils/sendPostRequest';
 import 'src/css/photomodal.css';
 
@@ -43,24 +43,20 @@ const PhotoModal = ({ close }) => {
             }
         });
 
-        // Remove resolved photos from pendingPhotoIds and redux pendingPhotos
-        if (resolvedIds.length) {
-            dispatch(pendingPhotosResolved(resolvedIds));
-            // Remove from pending ref, stop polling if all photos resolved
-            pendingPhotoIdsRef.current = pendingPhotoIdsRef.current.filter(
-                (id) => !resolvedIds.includes(id)
-            );
-            if (!pendingPhotoIdsRef.current.length) {
-                stopPolling();
-            }
-            // Update number of pending uploads shown in modal
-            setPendingCount((prev) => Math.max(0, prev - resolvedIds.length));
+        // Update redux state with completed photo details, remove pending flag
+        if (completedPhotos.length) {
+            dispatch(pendingPhotosResolved(completedPhotos));
         }
 
-        // Add completed photos to redux photos state
-        if (completedPhotos.length) {
-            dispatch(photosAdded(completedPhotos));
+        // Remove resolved photos from pending ref, stop polling if all resolved
+        pendingPhotoIdsRef.current = pendingPhotoIdsRef.current.filter(
+            (id) => !resolvedIds.includes(id)
+        );
+        if (!pendingPhotoIdsRef.current.length) {
+            stopPolling();
         }
+        // Update number of pending uploads shown in modal
+        setPendingCount((prev) => Math.max(0, prev - resolvedIds.length));
 
         // Show error if any photos failed
         if (failed) {
@@ -103,10 +99,10 @@ const PhotoModal = ({ close }) => {
         });
 
         if (response.ok) {
-            // Update state with pending photo uploads from response
+            // Add pending photos to redux state (will show spinner until done)
             const data = await response.json();
             if (data.urls.length) {
-                dispatch(pendingPhotosAdded(data.urls));
+                dispatch(photosAdded(data.urls));
                 pendingPhotoIdsRef.current = pendingPhotoIdsRef.current.concat(
                     data.urls.map(photo => photo.key)
                 );

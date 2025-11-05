@@ -409,30 +409,13 @@ DividedFromMarker.propTypes = {
     dateKey: dateKeyPropType.isRequired
 };
 
-const PendingPhotoThumbnail = memo(function PendingPhotoThumbnail({ timestamp }) {
-    const readable = timestampToReadable(timestamp);
-
-    return (
-        <div
-            className='photo-thumbnail-timeline flex items-center justify-center'
-            title={`Uploading photo (${readable})`}
-            aria-label={`Uploading photo (${readable})`}
-        >
-            <LoadingAnimation />
-        </div>
-    );
-});
-
-PendingPhotoThumbnail.propTypes = {
-    timestamp: isoTimestampTzPropType.isRequired
-};
-
 // Takes photo thumbnail URL, creation timestamp, and database key
 // Opens fullscreen gallery showing selected photo when clicked
-const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, index, photoKey }) {
+const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, index, photoKey, pending }) {
     const dispatch = useDispatch();
     const [selected, setSelected] = useState(false);
     const deleteMode = useSelector((state) => state.interface.deleteMode);
+    const readable = timestampToReadable(timestamp);
 
     const openGallery = () => {
         dispatch(photoGalleryIndexChanged({index: index}));
@@ -460,15 +443,21 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, i
                 selected && 'selected'
             )}
             onClick={deleteMode ? handleClick : openGallery}
-            title={timestampToReadable(timestamp)}
+            title={pending ? `Uploading photo (${readable})` : readable}
         >
-            <img
-                loading="lazy"
-                draggable={false}
-                className="photo-thumbnail"
-                src={thumbnailUrl}
-                alt={timestampToReadable(timestamp)}
-            />
+            {pending ? (
+                <div className="flex h-full items-center justify-center">
+                    <LoadingAnimation />
+                </div>
+            ) : (
+                <img
+                    loading="lazy"
+                    draggable={false}
+                    className="photo-thumbnail"
+                    src={thumbnailUrl}
+                    alt={readable}
+                />
+            )}
         </div>
     );
 });
@@ -477,7 +466,8 @@ PhotoThumbnail.propTypes = {
     thumbnailUrl: PropTypes.string.isRequired,
     timestamp: isoTimestampTzPropType.isRequired,
     index: PropTypes.number.isRequired,
-    photoKey: PropTypes.number.isRequired
+    photoKey: PropTypes.number.isRequired,
+    pending: PropTypes.bool.isRequired
 };
 
 // Map collapsedNoteLines setting values to correct line clamp class
@@ -689,16 +679,6 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     className="timeline-day-photos"
                     data-testid={`${dateKey}-photos`}
                 >
-                    {/* Pending photo uploads (spinner) */}
-                    {Object.values(contents.pendingPhotos ?? {}).sort((a, b) => {
-                        return a.timestamp.localeCompare(b.timestamp);
-                    }).reverse().map((photo) => (
-                        <PendingPhotoThumbnail
-                            key={`pending-${photo.key}`}
-                            timestamp={photo.timestamp}
-                        />
-                    ))}
-                    {/* Existing photo thumbnails */}
                     {Object.values(contents.photos).sort((a, b) => {
                         return a.timestamp.localeCompare(b.timestamp);
                     }).reverse().map((photo) => (
@@ -708,6 +688,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                             timestamp={photo.timestamp}
                             index={photos.indexOf(photo)}
                             photoKey={photo.key}
+                            pending={photo.pending}
                         />
                     ))}
                 </div>

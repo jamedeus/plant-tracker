@@ -26,8 +26,7 @@ const getTimelineDaysTemplate = () => ({
         repot: []
     },
     notes: {},
-    photos: {},
-    pendingPhotos: {}
+    photos: {}
 });
 
 // Takes timelineSlice state and new YYYY-MM-DD dateKey
@@ -154,7 +153,6 @@ export function ReduxProvider({ children, initialState }) {
             photos: sortPhotosChronologically(
                 Object.values(initialState.photos)
             ),
-            pendingPhotos: {},
             navigationOptions: {},
             defaultPhoto: initialState.default_photo,
             hasPhotos: Object.values(initialState.photos).length > 0,

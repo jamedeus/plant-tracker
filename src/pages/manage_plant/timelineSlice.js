@@ -31,7 +31,6 @@ function removeDateKeyIfEmpty(state, dateKey) {
     if (state.timelineDays[dateKey] &&
         !Object.keys(state.timelineDays[dateKey].notes).length &&
         !Object.keys(state.timelineDays[dateKey].photos).length &&
-        !Object.keys(state.timelineDays[dateKey].pendingPhotos ?? {}).length &&
         !nonEmptyKeys(state.timelineDays[dateKey].events).length &&
         !state.timelineDays[dateKey].dividedFrom &&
         !state.timelineDays[dateKey].dividedInto
@@ -76,8 +75,6 @@ export const timelineSlice = createSlice({
         //   preview     (preview image URL)
         //   key         (backend database key used to delete photo)
         photos: [],
-        // Photos pending upload,
-        pendingPhotos: {},
         // Keys are year strings (YYYY), values are array of month strings (MM)
         navigationOptions: {},
         // Object with set key (true if default photo set, false if not) and
@@ -195,14 +192,30 @@ export const timelineSlice = createSlice({
                 state.photos.concat(photos)
             );
 
-            // If defaultPhoto not set: Use most-recent photo as default photo
-            if (!state.defaultPhoto.set) {
-                state.defaultPhoto = { ...state.defaultPhoto, ...state.photos[0] };
-            }
-
             // First photo added: add gallery dropdown option
             if(!state.hasPhotos) {
                 state.hasPhotos = true;
+            }
+        },
+
+        // Takes array of photo details objects, updates photos and timelineDays
+        pendingPhotosResolved(state, action) {
+            const photos = action.payload;
+
+            // Overwrite pending photo objects in timelineDays and photos states
+            photos.forEach((resolved) => {
+                const dateKey = getDateKey(state, resolved.timestamp);
+                state.timelineDays[dateKey].photos[resolved.key] = resolved;
+                const index = state.photos.findIndex((p) => p.key === resolved.key);
+                if (index !== -1) {
+                    state.photos[index] = resolved;
+                }
+            });
+
+            // If defaultPhoto not set: Use most-recent photo as default photo
+            if (!state.defaultPhoto.set) {
+                state.defaultPhoto = { ...state.defaultPhoto, ...state.photos[0] };
+                console.log('new default photo', state.defaultPhoto);
             }
         },
 
@@ -245,31 +258,6 @@ export const timelineSlice = createSlice({
             }
         },
 
-        // Takes array of objects with key and timestamp keys
-        pendingPhotosAdded(state, action) {
-            const pendingPhotos = action.payload || [];
-            pendingPhotos.forEach(({ key, timestamp }) => {
-                const dateKey = getDateKey(state, timestamp);
-                state.timelineDays[dateKey].pendingPhotos[key] = {
-                    key: key,
-                    timestamp,
-                    pending: true
-                };
-                state.pendingPhotos[key] = dateKey;
-            });
-        },
-
-        // Takes array of photo keys, removes from pendingPhotos state
-        pendingPhotosResolved(state, action) {
-            const keys = action.payload || [];
-            keys.forEach((key) => {
-                const dateKey = state.pendingPhotos[key];
-                delete state.pendingPhotos[key];
-                delete state.timelineDays[dateKey]?.pendingPhotos[key];
-                removeDateKeyIfEmpty(state, dateKey);
-            });
-        },
-
         // Takes object with same keys as defaultPhoto state
         defaultPhotoChanged(state, action) {
             state.defaultPhoto = action.payload;
@@ -300,7 +288,6 @@ export const {
     noteEdited,
     notesDeleted,
     photosAdded,
-    pendingPhotosAdded,
     pendingPhotosResolved,
     photosDeleted,
     defaultPhotoChanged,
