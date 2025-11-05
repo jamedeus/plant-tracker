@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('PhotoModal', () => {
-    let app, mockClose;
+    let app;
 
     beforeEach(async () => {
         // Allow fast forwarding
@@ -29,13 +29,11 @@ describe('PhotoModal', () => {
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
         mockNavigate.mockReset();
 
-        mockClose = jest.fn();
-
         // Render modal
         app = render(
             <>
                 <ReduxProvider initialState={mockContext}>
-                    <PhotoModal close={mockClose} />
+                    <PhotoModal />
                 </ReduxProvider>
                 <Toast />
                 <ErrorModal />

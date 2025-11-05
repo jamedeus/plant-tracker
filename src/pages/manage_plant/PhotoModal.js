@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +10,7 @@ import 'src/css/photomodal.css';
 // Interval to check pending photo upload status
 const POLL_INTERVAL_MS = 2000;
 
-const PhotoModal = ({ close }) => {
+const PhotoModal = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
@@ -194,10 +193,6 @@ const PhotoModal = ({ close }) => {
             </div>
         </div>
     );
-};
-
-PhotoModal.propTypes = {
-    close: PropTypes.func.isRequired
 };
 
 export default PhotoModal;
