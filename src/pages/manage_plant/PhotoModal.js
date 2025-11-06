@@ -116,6 +116,8 @@ const PhotoModal = () => {
                 const num = data.failed.length;
                 const list = data.failed.join('\n');
                 openErrorModal(`Failed to upload ${num} photos:\n${list}`);
+                // Update number of pending uploads shown in modal
+                setPendingCount((prev) => Math.max(0, prev - num));
             }
         } else {
             // Redirect to login page if user not signed in/session expired
@@ -136,6 +138,8 @@ const PhotoModal = () => {
                     openErrorModal('Unexpected response from backend');
                 }
             }
+            // Update number of pending uploads shown in modal
+            setPendingCount((prev) => Math.max(0, prev - files.length));
         }
     }, [dispatch, navigate, plantID]);
 

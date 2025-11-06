@@ -209,6 +209,9 @@ describe('PhotoModal', () => {
         expect(app.queryByText(/Failed to upload 2 photo(s)/)).not.toBeNull();
         expect(app.queryByText(/photo2.heic/)).not.toBeNull();
         expect(app.queryByText(/photo1.heic/)).not.toBeNull();
+
+        // Confirm number of pending photos disappeared
+        expect(app.queryByText('Uploading 2 photos...')).toBeNull();
     });
 
     it('shows error modal when pending photo upload fails to resolve', async () => {
@@ -302,6 +305,9 @@ describe('PhotoModal', () => {
         expect(app.getByTestId('error-modal-body')).toHaveTextContent(
             'Your upload was too big to process.'
         );
+
+        // Confirm number of pending photos disappeared
+        expect(app.queryByText('Uploading 1 photo...')).toBeNull();
     });
 
     it('shows error in modal when API call fails', async () => {
