@@ -1166,8 +1166,8 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
-        # Confirm makes 7 queries when 1 photo uploaded
-        with self.assertNumQueries(7):
+        # Confirm makes 5 queries when 1 photo uploaded
+        with self.assertNumQueries(5):
             response = self.client.post(
                 '/add_plant_photos',
                 data={
@@ -1178,8 +1178,8 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             )
             self.assertEqual(response.status_code, 202)
 
-        # Confirm makes 6 queries when 3 photos uploaded
-        with self.assertNumQueries(17):
+        # Confirm makes 11 queries when 3 photos uploaded
+        with self.assertNumQueries(11):
             response = self.client.post(
                 '/add_plant_photos',
                 data={
@@ -1196,13 +1196,13 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         plant.default_photo = plant.photo_set.all()[0]
         plant.save()
 
-        # Confirm makes 3 queries when 1 photo uploaded
+        # Confirm makes 5 queries when 1 photo uploaded
         with self.assertNumQueries(5):
             response = self.client.post(
                 '/add_plant_photos',
                 data={
                     'plant_id': str(plant.uuid),
-                    'photo_0': create_mock_photo('2024:03:22 10:52:03')
+                    'photo_0': create_mock_photo('2024:03:22 10:52:07')
                 },
                 content_type=MULTIPART_CONTENT
             )

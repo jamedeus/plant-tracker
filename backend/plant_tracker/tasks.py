@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
+from django.db.models import IntegerField, OuterRef, Subquery
 from .models import Photo
 from .get_state_views import build_overview_state, update_cached_overview_details_keys
 
@@ -46,7 +47,17 @@ def process_photo_upload(photo_pk):
     try:
         photo = Photo.objects.select_related(
             'plant',
-            'plant__default_photo'
+            'plant__default_photo',
+            'plant__user'
+        ).annotate(
+            # Get primary key of most-recent photo associated with plant
+            plant_last_photo_pk=Subquery(
+                Photo.objects
+                    .filter(plant_id=OuterRef('plant_id'))
+                    .order_by('-timestamp')
+                    .values('pk')[:1],
+                output_field=IntegerField()
+            )
         ).get(pk=photo_pk)
     except Photo.DoesNotExist:
         cache.set(
@@ -75,10 +86,10 @@ def process_photo_upload(photo_pk):
         }
     )
 
-    # Update thumbnail in cached overview state unless default photo set
-    # (most-recent may have changed)
-    if not photo.plant.default_photo:
+    # Update thumbnail in cached overview state if default photo is not set and
+    # photo being processed is most-recent
+    if not photo.plant.default_photo and photo.plant_last_photo_pk == photo.pk:
         update_cached_overview_details_keys(
             photo.plant,
-            {'thumbnail': photo.plant.get_thumbnail_url()}
+            {'thumbnail': photo.thumbnail.url}
         )
