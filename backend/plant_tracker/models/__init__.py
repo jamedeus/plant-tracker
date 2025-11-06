@@ -2,7 +2,7 @@
 
 from .plant import Plant
 from .group import Group
-from .photo import Photo
+from .photo import Photo, extract_timestamp_from_exif
 from .uuid import UUID
 from .email_verification import UserEmailVerification
 from .events import (
@@ -18,6 +18,7 @@ __all__ = [
     "Plant",
     "Group",
     "Photo",
+    "extract_timestamp_from_exif",
     "WaterEvent",
     "FertilizeEvent",
     "PruneEvent",

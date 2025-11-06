@@ -2242,10 +2242,7 @@ class PlantPhotoEndpointTests(TestCase):
 
         # Post mock photo to add_plant_photos endpoint
         # Raise PIL.UnidentifiedImageError to simulate invalid file type
-        with patch(
-            'plant_tracker.models.Photo.objects.create',
-            side_effect=UnidentifiedImageError
-        ):
+        with patch('PIL.Image.open', side_effect=UnidentifiedImageError):
             data = {
                 'plant_id': str(self.plant.uuid),
                 'photo_0': create_mock_photo('2024:03:22 10:52:03')

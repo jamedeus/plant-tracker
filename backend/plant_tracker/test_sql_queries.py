@@ -1161,8 +1161,11 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_add_plant_photos_endpoint(self):
-        '''/add_plant_photos should make 3 database queries plus the number of
-        photos uploaded (1 INSERT per photo), or 2+n if default_photo not set.
+        '''/add_plant_photos should make 3 database queries (user auth, SELECT
+        plant, INSERT photo) plus 2x the number of photos uploaded.
+
+        In production all requests make 3 queries regardless of the number of
+        photos (the 2x queries are a SELECT and UPDATE that run in celery task).
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
@@ -1178,8 +1181,8 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             )
             self.assertEqual(response.status_code, 202)
 
-        # Confirm makes 11 queries when 3 photos uploaded
-        with self.assertNumQueries(11):
+        # Confirm makes 9 queries when 3 photos uploaded
+        with self.assertNumQueries(9):
             response = self.client.post(
                 '/add_plant_photos',
                 data={

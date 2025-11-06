@@ -13,7 +13,7 @@ from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.cache import cache
-from PIL import UnidentifiedImageError
+from PIL import Image, UnidentifiedImageError
 
 from .generate_qr_code_grid import generate_layout
 from .models import (
@@ -21,6 +21,7 @@ from .models import (
     Plant,
     RepotEvent,
     Photo,
+    extract_timestamp_from_exif,
     NoteEvent,
     DivisionEvent
 )
@@ -876,32 +877,38 @@ def add_plant_photos(request, user):
     if len(request.FILES) == 0:
         return JsonResponse({'error': 'no photos were sent'}, status=404)
 
-    # Instantiate model for each file in payload
+    # Filter out unsupported image types
     created = []
     failed = []
-    for key in request.FILES:
+    for file in request.FILES.values():
         try:
-            photo = Photo.objects.create(
-                photo=request.FILES[key],
-                plant=plant
-            )
-            created.append(photo.get_details())
-
-            # Queue celery task to generate thumbnails
-            cache.set(
-                f"pending_photo_upload_{photo.pk}",
-                {'status': 'processing', 'plant_id': str(plant.uuid)}
-            )
-            process_photo_upload.delay(photo.pk)
+            with Image.open(file) as image:
+                image.verify()
+            # Add Photo instance to list (saved in bulk_create below)
+            created.append(Photo(
+                photo=file,
+                plant=plant,
+                timestamp=extract_timestamp_from_exif(file)
+            ))
         except UnidentifiedImageError:
-            failed.append(request.FILES[key].name)
+            failed.append(file.name)
+
+    # Instantiate model for each valid file
+    Photo.objects.bulk_create(created)
+    # Queue celery tasks to generate thumbnails for each valid file
+    for photo in created:
+        cache.set(
+            f"pending_photo_upload_{photo.pk}",
+            {'status': 'processing', 'plant_id': str(plant.uuid)}
+        )
+        process_photo_upload.delay(photo.pk)
 
     # Return list of new photo URLs (added to frontend state)
     return JsonResponse(
         {
             "uploaded": f"{len(created)} photo(s)",
             "failed": failed,
-            "urls": created
+            "urls": [photo.get_details() for photo in created]
         },
         status=202
     )

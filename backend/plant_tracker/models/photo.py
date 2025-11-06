@@ -39,6 +39,44 @@ def user_thumb_path(instance, filename):
     return f"user_{instance.plant.user_id}/thumbnails/{filename}"
 
 
+def extract_timestamp_from_exif(file):
+    '''Takes file (self.photo), returns timestamp extracted from exif data.'''
+
+    # Read raw exif data
+    exif_raw = Image.open(file).info.get('exif')
+
+    if exif_raw:
+        exif_data = piexif.load(exif_raw)
+        # Parse Date/Time Original and Offset Time Original parameters
+        datetime_original = exif_data['Exif'].get(36867)
+        if datetime_original:
+            datetime_original = datetime_original.decode()
+        offset_original = exif_data['Exif'].get(36881)
+        if offset_original:
+            offset_original = offset_original.decode()
+
+        # If both found parse as original timezone + convert to UTC
+        if datetime_original and offset_original:
+            # Remove colon if present (not supported by strptime)
+            timestamp = datetime.strptime(
+                f"{datetime_original} {offset_original.replace(':', '')}",
+                f"{TIME_FORMAT} %z"
+            )
+            return timestamp.astimezone(timezone.utc)
+
+        # If offset not found parse as UTC
+        elif datetime_original:
+            timestamp = datetime.strptime(datetime_original, TIME_FORMAT)
+            return timestamp.astimezone(timezone.utc)
+
+        # Default to current time if neither exif param found
+        else:
+            return django_timezone.now()
+    # Default to current time if no exif data found
+    else:
+        return django_timezone.now()
+
+
 class Photo(models.Model):
     '''Stores a user-uploaded image of a specific plant.'''
 
@@ -163,39 +201,7 @@ class Photo(models.Model):
     def save(self, *args, **kwargs):
         # Copy exif timestamp to timestamp field when saved for the first time
         if not self.pk:
-            # Read raw exif data
-            exif_raw = Image.open(self.photo).info.get('exif')
-
-            if exif_raw:
-                exif_data = piexif.load(exif_raw)
-                # Parse Date/Time Original and Offset Time Original parameters
-                datetime_original = exif_data['Exif'].get(36867)
-                if datetime_original:
-                    datetime_original = datetime_original.decode()
-                offset_original = exif_data['Exif'].get(36881)
-                if offset_original:
-                    offset_original = offset_original.decode()
-
-                # If both found parse as original timezone + convert to UTC
-                if datetime_original and offset_original:
-                    # Remove colon if present (not supported by strptime)
-                    timestamp = datetime.strptime(
-                        f"{datetime_original} {offset_original.replace(':', '')}",
-                        f"{TIME_FORMAT} %z"
-                    )
-                    self.timestamp = timestamp.astimezone(timezone.utc)
-
-                # If offset not found parse as UTC
-                elif datetime_original:
-                    timestamp = datetime.strptime(datetime_original, TIME_FORMAT)
-                    self.timestamp = timestamp.astimezone(timezone.utc)
-
-                # Default to current time if neither exif param found
-                else:
-                    self.timestamp = django_timezone.now()
-            # Default to current time if no exif data found
-            else:
-                self.timestamp = django_timezone.now()
+            self.timestamp = extract_timestamp_from_exif(self.photo)
 
         # Create thumbnails images immediately if create_thumbnails is True
         if kwargs.pop('create_thumbnails', False):
