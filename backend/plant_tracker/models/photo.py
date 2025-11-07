@@ -194,9 +194,10 @@ class Photo(models.Model):
 
     def finalize_upload(self):
         '''Creates thumbnails and clears pending flag (called by celery task).'''
-        self.pending = False
-        self._create_thumbnails()
-        self.save(update_fields=['pending', 'thumbnail', 'preview'])
+        if not self.thumbnail.name or not self.preview.name:
+            self.pending = False
+            self._create_thumbnails()
+            self.save(update_fields=['pending', 'thumbnail', 'preview'])
 
     def save(self, *args, **kwargs):
         # Copy exif timestamp to timestamp field when saved for the first time

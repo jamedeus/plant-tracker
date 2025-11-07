@@ -525,6 +525,30 @@ class PhotoModelTests(TestCase):
         self.assertIsNotNone(photo.preview.name)
         self.assertFalse(photo.pending)
 
+    def test_finalize_upload_does_not_create_duplicate_thumbnails(self):
+        # Create photo, finalize upload, confirm thumbnails exist
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        photo = Photo.objects.create(
+            photo=create_mock_photo(name='photo.of.my.plant.flowering.jpg'),
+            plant=plant
+        )
+        photo.finalize_upload()
+        photo.refresh_from_db()
+        self.assertIsNotNone(photo.thumbnail.name)
+        self.assertIsNotNone(photo.preview.name)
+        self.assertFalse(photo.pending)
+
+        # Save name of thumbnail and preview
+        thumbnail_name = photo.thumbnail.name
+        preview_name = photo.preview.name
+
+        # Call finalize_upload again, confirm names did not change (no duplicates)
+        photo.finalize_upload()
+        photo.refresh_from_db()
+        self.assertEqual(photo.thumbnail.name, thumbnail_name)
+        self.assertEqual(photo.preview.name, preview_name)
+        self.assertFalse(photo.pending)
+
 
 class EventModelTests(TestCase):
     def setUp(self):
