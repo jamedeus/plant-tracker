@@ -1240,6 +1240,41 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
+    def test_get_photo_upload_status_endpoint_cache_expired(self):
+        '''/get_photo_upload_status should make 2 database queries plus the
+        number of requested photos whose cache keys have expired (db fallback).
+        '''
+
+        # Create 2 photos, simulate already processed (no cache keys)
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        photo1 = Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
+        )
+        photo1.finalize_upload()
+        photo2 = Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:04'), plant=plant
+        )
+        photo2.finalize_upload()
+        # Make sure no cache key
+        cache.delete(f"pending_photo_upload_{photo1.pk}")
+        cache.delete(f"pending_photo_upload_{photo2.pk}")
+
+        # Confirm makes 3 queries when requesting status for 1 completed photo
+        with self.assertNumQueries(3):
+            response = self.client.post('/get_photo_upload_status', {
+                'plant_id': str(plant.uuid),
+                'photo_ids': [photo1.pk]
+            })
+            self.assertEqual(response.status_code, 200)
+
+        # Confirm makes 4 queries when requesting status for 2 completed photos
+        with self.assertNumQueries(4):
+            response = self.client.post('/get_photo_upload_status', {
+                'plant_id': str(plant.uuid),
+                'photo_ids': [photo1.pk, photo2.pk]
+            })
+            self.assertEqual(response.status_code, 200)
+
     def test_delete_plant_photos_endpoint(self):
         '''/delete_plant_photos should make 7 database queries regardless of the
         number of photos deleted (or 6 if default_photo is set).

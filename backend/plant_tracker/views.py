@@ -925,18 +925,35 @@ def get_photo_upload_status(plant, data, **kwargs):
     statuses = []
     for photo_id in photo_ids:
         status = cache.get(f"pending_photo_upload_{photo_id}")
-        if status and status.get('plant_id') == str(plant.uuid):
-            status_payload = {
-                'photo_id': photo_id,
-                **status
-            }
+        if status:
+            if status.get('plant_id') == str(plant.uuid):
+                status_payload = {
+                    'photo_id': photo_id,
+                    **status
+                }
+            # Don't return status of photos owned by other users
+            else:
+                status_payload = {
+                    'photo_id': photo_id,
+                    'status': 'unknown'
+                }
 
-        # Cache not found or photo not owned by user
+        # Cache not found, query photo from database
         else:
-            status_payload = {
-                'photo_id': photo_id,
-                'status': 'unknown'
-            }
+            try:
+                photo = Photo.objects.select_related('plant').get(pk=photo_id)
+                status_payload = {
+                    'photo_id': photo_id,
+                    'plant_id': str(photo.plant.uuid),
+                    'status': 'processing' if photo.pending else 'complete'
+                }
+                if not photo.pending:
+                    status_payload['photo_details'] = photo.get_details()
+            except Photo.DoesNotExist:
+                status_payload = {
+                    'photo_id': photo_id,
+                    'status': 'unknown'
+                }
 
         statuses.append(status_payload)
 

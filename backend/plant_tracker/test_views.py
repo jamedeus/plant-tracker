@@ -2325,6 +2325,52 @@ class PlantPhotoEndpointTests(TestCase):
             ]
         })
 
+    def test_get_photo_upload_status_cache_key_expired(self):
+        # Create mock photo, add to database
+        mock_photo = create_mock_photo('2024:03:21 10:52:03')
+        photo = Photo.objects.create(photo=mock_photo, plant=self.plant)
+        # Simulate expired cache key (backend restarted before task ran)
+        cache.delete(f"pending_photo_upload_{photo.pk}")
+
+        # Post plant and photo primary keys to get_photo_upload_status endpoint
+        response = self.client.post('/get_photo_upload_status', {
+            'plant_id': str(self.plant.uuid),
+            'photo_ids': [photo.pk]
+        })
+
+        # Confirm response says processing (queried from database)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'photos': [
+                {
+                    'status': 'processing',
+                    'photo_id': photo.pk,
+                    'plant_id': str(self.plant.uuid)
+                }
+            ]
+        })
+
+        # Simulate celery task processing photo + cache expiring (5 minutes)
+        photo.finalize_upload()
+        cache.delete(f"pending_photo_upload_{photo.pk}")
+
+        # Check status again, confirm response contains photo details
+        response = self.client.post('/get_photo_upload_status', {
+            'plant_id': str(self.plant.uuid),
+            'photo_ids': [photo.pk]
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'photos': [
+                {
+                    'status': 'complete',
+                    'photo_id': photo.pk,
+                    'plant_id': str(self.plant.uuid),
+                    'photo_details': photo.get_details()
+                }
+            ]
+        })
+
     def test_get_photo_upload_status_invalid_photo_id(self):
         # Post non-existing photo primary keys to get_photo_upload_status endpoint
         response = self.client.post('/get_photo_upload_status', {
