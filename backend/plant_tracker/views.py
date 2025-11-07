@@ -896,10 +896,12 @@ def add_plant_photos(request, user):
     # Instantiate model for each valid file
     Photo.objects.bulk_create(created)
     # Queue celery tasks to generate thumbnails for each valid file
+    # Cache key will be overwritten by task when complete
     for photo in created:
         cache.set(
             f"pending_photo_upload_{photo.pk}",
-            {'status': 'processing', 'plant_id': str(plant.uuid)}
+            {'status': 'processing', 'plant_id': str(plant.uuid)},
+            None
         )
         process_photo_upload.delay(photo.pk)
 

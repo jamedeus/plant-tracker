@@ -71,6 +71,42 @@ class TaskTests(TestCase):
         # Confirm cached overview state was rebuilt (no longer dummy strings)
         self.assertIsInstance(cache.get(f'overview_state_{default_user.pk}'), dict)
 
+    def test_update_all_cached_states_pending_photo_uploads(self):
+        # Simulate pending photo upload that didn't complete before server stopped
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        photo = Photo.objects.create(
+            plant=plant,
+            photo=create_mock_photo('2024:03:21 10:52:03')
+        )
+        cache.set(
+            f"pending_photo_upload_{photo.pk}",
+            {'status': 'processing', 'plant_id': str(plant.uuid)}
+        )
+
+        # Confirm no thumbnail or preview generated, pending is `True`
+        self.assertIsNone(photo.thumbnail.name)
+        self.assertIsNone(photo.preview.name)
+        self.assertTrue(photo.pending)
+
+        # Call update_all_cached_states (runs when server restarts)
+        update_all_cached_states()
+
+        # Confirm thumbnail and preview were generated
+        photo.refresh_from_db()
+        self.assertIsNotNone(photo.thumbnail.name)
+        self.assertIsNotNone(photo.preview.name)
+        self.assertFalse(photo.pending)
+
+        # Confirm cached status changed to complete, details were added
+        self.assertEqual(
+            cache.get(f"pending_photo_upload_{photo.pk}"),
+            {
+                'status': 'complete',
+                'plant_id': str(plant.uuid),
+                'photo_details': photo.get_details()
+            }
+        )
+
     def test_process_photo_upload(self):
         # Simulate pending photo upload
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())

@@ -33,17 +33,26 @@ def update_cached_overview_state(user_pk):
 @shared_task()
 def update_all_cached_states():
     '''Updates all cached overview states that have keys in redis store.
+    Recreate tasks to generate thumbnails for pending photos (if any).
     Called when server starts to prevent serving outdated states.
     '''
 
     # Find cached overview states, parse user primary key from name, rebuild
     for key in cache.keys('overview_state_*'):
         update_cached_overview_state.delay(key.split('_')[-1])
+    # Queue tasks to process any pending photos that did not complete
+    for key in cache.keys('pending_photo_upload_*'):
+        status = cache.get(key)
+        if status.get('status') == 'processing':  # pragma: no branch
+            process_photo_upload.delay(key.split('_')[-1])
 
 
 @shared_task()
 def process_photo_upload(photo_pk):
-    '''Generates thumbnails for a pending photo upload.'''
+    '''Generates thumbnails for a pending photo upload.
+    Caches status and photo details under pending_photo_upload_{pk} key checked
+    by /get_photo_upload_status endpoint (expires after 5 minutes).
+    '''
     try:
         photo = Photo.objects.select_related(
             'plant',
@@ -62,7 +71,8 @@ def process_photo_upload(photo_pk):
     except Photo.DoesNotExist:
         cache.set(
             f"pending_photo_upload_{photo_pk}",
-            {'status': 'failed'}
+            {'status': 'failed'},
+            300
         )
         return
 
@@ -72,7 +82,8 @@ def process_photo_upload(photo_pk):
     except Exception as error:
         cache.set(
             f"pending_photo_upload_{photo_pk}",
-            {'status': 'failed', 'plant_id': str(photo.plant.uuid)}
+            {'status': 'failed', 'plant_id': str(photo.plant.uuid)},
+            300
         )
         raise error
 
@@ -83,7 +94,8 @@ def process_photo_upload(photo_pk):
             'status': 'complete',
             'plant_id': str(photo.plant.uuid),
             'photo_details': photo.get_details()
-        }
+        },
+        300
     )
 
     # Update thumbnail in cached overview state if default photo is not set and
