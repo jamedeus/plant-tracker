@@ -504,6 +504,27 @@ class PhotoModelTests(TestCase):
         self.assertFalse(os.path.exists(thumb_path))
         self.assertFalse(os.path.exists(preview_path))
 
+    def test_create_thumbnails_argument(self):
+        # Instantiate model, call save with no arguments
+        photo = Photo(
+            photo=create_mock_photo('2024:03:21 10:52:03', 'photo2.jpg'),
+            plant=self.plant
+        )
+        photo.save()
+
+        # Confirm thumbnail and preview were not generate, pending is True
+        self.assertIsNone(photo.thumbnail.name)
+        self.assertIsNone(photo.preview.name)
+        self.assertTrue(photo.pending)
+
+        # Call save with create_thumbnails=True
+        photo.save(create_thumbnails=True)
+
+        # Confirm thumbnail and preview were generated, pending is False
+        self.assertIsNotNone(photo.thumbnail.name)
+        self.assertIsNotNone(photo.preview.name)
+        self.assertFalse(photo.pending)
+
 
 class EventModelTests(TestCase):
     def setUp(self):

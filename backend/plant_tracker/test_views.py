@@ -2269,6 +2269,80 @@ class PlantPhotoEndpointTests(TestCase):
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.json(), {'error': 'must post FormData'})
 
+    def test_get_photo_upload_status(self):
+        # Create mock photo, add to database
+        mock_photo = create_mock_photo('2024:03:21 10:52:03')
+        photo = Photo.objects.create(photo=mock_photo, plant=self.plant)
+        # Simulate pending thumbnail creation
+        cache.set(
+            f"pending_photo_upload_{photo.pk}",
+            {'status': 'processing', 'plant_id': str(self.plant.uuid)}
+        )
+
+        # Post plant and photo primary keys to get_photo_upload_status endpoint
+        response = self.client.post('/get_photo_upload_status', {
+            'plant_id': str(self.plant.uuid),
+            'photo_ids': [photo.pk]
+        })
+
+        # Confirm response says processing
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'photos': [
+                {
+                    'status': 'processing',
+                    'photo_id': photo.pk,
+                    'plant_id': str(self.plant.uuid)
+                }
+            ]
+        })
+
+        # Simulate celery task processing photo
+        photo.finalize_upload()
+        cache.set(
+            f"pending_photo_upload_{photo.pk}",
+            {
+                'status': 'complete',
+                'plant_id': str(self.plant.uuid),
+                'photo_details': photo.get_details()
+            }
+        )
+
+        # Check status again, confirm response contains photo details
+        response = self.client.post('/get_photo_upload_status', {
+            'plant_id': str(self.plant.uuid),
+            'photo_ids': [photo.pk]
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'photos': [
+                {
+                    'status': 'complete',
+                    'photo_id': photo.pk,
+                    'plant_id': str(self.plant.uuid),
+                    'photo_details': photo.get_details()
+                }
+            ]
+        })
+
+    def test_get_photo_upload_status_invalid_photo_id(self):
+        # Post non-existing photo primary keys to get_photo_upload_status endpoint
+        response = self.client.post('/get_photo_upload_status', {
+            'plant_id': str(self.plant.uuid),
+            'photo_ids': [404]
+        })
+
+        # Confirm response contains status unknown
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'photos': [
+                {
+                    'status': 'unknown',
+                    'photo_id': 404
+                }
+            ]
+        })
+
     def test_delete_plant_photos(self):
         # Create 2 mock photos, add to database
         mock_photo1 = create_mock_photo('2024:03:21 10:52:03')

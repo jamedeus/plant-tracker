@@ -1211,6 +1211,35 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             )
             self.assertEqual(response.status_code, 202)
 
+    def test_get_photo_upload_status_endpoint(self):
+        '''/get_photo_upload_status should make 2 database queries regardless of
+        the number of pending uploads queried.
+        '''
+
+        # Simulate 3 pending photo uploads
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        for i in range(1, 4):
+            cache.set(
+                f"pending_photo_upload_{i}",
+                {'status': 'processing', 'plant_id': str(plant.uuid)}
+            )
+
+        # Confirm makes 2 queries when requesting status for 1 pending photo
+        with self.assertNumQueries(2):
+            response = self.client.post('/get_photo_upload_status', {
+                'plant_id': str(plant.uuid),
+                'photo_ids': [1]
+            })
+            self.assertEqual(response.status_code, 200)
+
+        # Confirm makes 2 queries when requesting status for 3 pending photos
+        with self.assertNumQueries(2):
+            response = self.client.post('/get_photo_upload_status', {
+                'plant_id': str(plant.uuid),
+                'photo_ids': [1, 2, 3]
+            })
+            self.assertEqual(response.status_code, 200)
+
     def test_delete_plant_photos_endpoint(self):
         '''/delete_plant_photos should make 7 database queries regardless of the
         number of photos deleted (or 6 if default_photo is set).
