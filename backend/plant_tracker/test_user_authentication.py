@@ -1420,6 +1420,12 @@ class MultiUserModeTests(TestCase):
             )
         )
         self.assertAuthenticationRequiredError(
+            self.client.post('/get_photo_upload_status', {
+                'plant_id': str(plant.uuid),
+                'photo_ids': [404]
+            })
+        )
+        self.assertAuthenticationRequiredError(
             self.client.post('/delete_plant_photos', {
                 'plant_id': str(plant.uuid),
                 'photos': [1]
@@ -1568,6 +1574,12 @@ class MultiUserModeTests(TestCase):
                 },
                 content_type=MULTIPART_CONTENT
             )
+        )
+        self.assertPlantIsOwnedByADifferentUserError(
+            self.client.post('/get_photo_upload_status', {
+                'plant_id': str(plant.uuid),
+                'photo_ids': [404]
+            })
         )
         self.assertPlantIsOwnedByADifferentUserError(
             self.client.post('/delete_plant_photos', {

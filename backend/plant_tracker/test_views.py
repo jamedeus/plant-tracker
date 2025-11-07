@@ -2389,6 +2389,34 @@ class PlantPhotoEndpointTests(TestCase):
             ]
         })
 
+    def test_get_photo_upload_status_owned_by_other_user(self):
+        # Create plant + photo owned by a different user
+        user = user_model.objects.create_user(username='unittest', password='12345')
+        other_user_plant = Plant.objects.create(user=user, uuid=uuid4())
+        mock_photo = create_mock_photo('2024:03:21 10:52:03')
+        photo = Photo.objects.create(photo=mock_photo, plant=other_user_plant)
+        cache.set(
+            f"pending_photo_upload_{photo.pk}",
+            {'status': 'processing', 'plant_id': str(other_user_plant.uuid)}
+        )
+
+        # Post plant id owned by logged in user + photo id owned by OTHER user
+        response = self.client.post('/get_photo_upload_status', {
+            'plant_id': str(self.plant.uuid),
+            'photo_ids': [photo.pk]
+        })
+
+        # Confirm response says unknown (don't reveal other user photo status)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'photos': [
+                {
+                    'status': 'unknown',
+                    'photo_id': photo.pk
+                }
+            ]
+        })
+
     def test_delete_plant_photos(self):
         # Create 2 mock photos, add to database
         mock_photo1 = create_mock_photo('2024:03:21 10:52:03')
