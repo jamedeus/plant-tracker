@@ -170,4 +170,4 @@ class Group(models.Model):
         if hasattr(self, 'plant_count'):
             return self.plant_count
         # Query from database if no annotation
-        return len(self.plant_set.all())
+        return self.plant_set.count()

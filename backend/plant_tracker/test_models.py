@@ -306,27 +306,27 @@ class GroupModelTests(TestCase):
 
     def test_water_all(self):
         # Confirm plants have no water events
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+        self.assertEqual(self.plant1.waterevent_set.count(), 0)
+        self.assertEqual(self.plant2.waterevent_set.count(), 0)
+        self.assertEqual(self.plant3.waterevent_set.count(), 0)
 
         # Call water_all, plants in group should have water event, other plant should not
         self.test_group.water_all(timezone.datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+        self.assertEqual(self.plant1.waterevent_set.count(), 1)
+        self.assertEqual(self.plant2.waterevent_set.count(), 1)
+        self.assertEqual(self.plant3.waterevent_set.count(), 0)
 
     def test_fertilize_all(self):
         # Confirm plants have no fertilize events
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+        self.assertEqual(self.plant1.fertilizeevent_set.count(), 0)
+        self.assertEqual(self.plant2.fertilizeevent_set.count(), 0)
+        self.assertEqual(self.plant3.fertilizeevent_set.count(), 0)
 
         # Call water_all, plants in group should have fertilize event, other plant should not
         self.test_group.fertilize_all(timezone.datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+        self.assertEqual(self.plant1.fertilizeevent_set.count(), 1)
+        self.assertEqual(self.plant2.fertilizeevent_set.count(), 1)
+        self.assertEqual(self.plant3.fertilizeevent_set.count(), 0)
 
     def test_change_group_uuid(self):
         # Call change_uuid endpoint, confirm response + uuid changed
@@ -571,62 +571,62 @@ class EventModelTests(TestCase):
     def test_duplicate_water_event(self):
         # Create WaterEvent, confirm 1 entry exists
         WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        self.assertEqual(WaterEvent.objects.count(), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
         with self.assertRaises(IntegrityError), transaction.atomic():
             WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        self.assertEqual(WaterEvent.objects.count(), 1)
 
     def test_duplicate_fertilize_event(self):
         # Create FertilizeEvent, confirm 1 entry exists
         FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        self.assertEqual(len(FertilizeEvent.objects.all()), 1)
+        self.assertEqual(FertilizeEvent.objects.count(), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
         with self.assertRaises(IntegrityError), transaction.atomic():
             FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
-        self.assertEqual(len(FertilizeEvent.objects.all()), 1)
+        self.assertEqual(FertilizeEvent.objects.count(), 1)
 
     def test_duplicate_prune_event(self):
         # Create PruneEvent, confirm 1 entry exists
         PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        self.assertEqual(len(PruneEvent.objects.all()), 1)
+        self.assertEqual(PruneEvent.objects.count(), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
         with self.assertRaises(IntegrityError), transaction.atomic():
             PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
-        self.assertEqual(len(PruneEvent.objects.all()), 1)
+        self.assertEqual(PruneEvent.objects.count(), 1)
 
     def test_duplicate_repot_event(self):
         # Create RepotEvent, confirm 1 entry exists
         RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        self.assertEqual(len(RepotEvent.objects.all()), 1)
+        self.assertEqual(RepotEvent.objects.count(), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
         with self.assertRaises(IntegrityError), transaction.atomic():
             RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
-        self.assertEqual(len(RepotEvent.objects.all()), 1)
+        self.assertEqual(RepotEvent.objects.count(), 1)
 
     def test_duplicate_note_event(self):
         # Create NoteEvent, confirm 1 entry exists
         NoteEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        self.assertEqual(NoteEvent.objects.count(), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
         with self.assertRaises(IntegrityError), transaction.atomic():
             NoteEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        self.assertEqual(NoteEvent.objects.count(), 1)
 
 
 class UniqueUUIDTests(TransactionTestCase):
@@ -676,7 +676,7 @@ class UniqueUUIDTests(TransactionTestCase):
             Group.objects.create(user=get_default_user(), uuid=plant.uuid)
 
         # Confirm only 1 UUID entry was added to database
-        self.assertEqual(len(UUID.objects.all()), 1)
+        self.assertEqual(UUID.objects.count(), 1)
 
     def test_group_uuid_must_be_unique(self):
         # Create existing group
@@ -691,7 +691,7 @@ class UniqueUUIDTests(TransactionTestCase):
             Plant.objects.create(user=get_default_user(), uuid=group.uuid)
 
         # Confirm only 1 UUID entry was added to database
-        self.assertEqual(len(UUID.objects.all()), 1)
+        self.assertEqual(UUID.objects.count(), 1)
 
     def test_create_duplicate_with_registration_endpoints(self):
         # Register plant, confirm success
@@ -708,7 +708,7 @@ class UniqueUUIDTests(TransactionTestCase):
         )
 
         # Confirm only 1 UUID entry was added to database
-        self.assertEqual(len(UUID.objects.all()), 1)
+        self.assertEqual(UUID.objects.count(), 1)
 
     def test_create_duplicate_with_registration_endpoints_race_condition(self):
         # Create UUID to register Plant and Group with
@@ -738,7 +738,7 @@ class UniqueUUIDTests(TransactionTestCase):
         )
 
         # Confirm only 1 UUID entry was added to database
-        self.assertEqual(len(UUID.objects.all()), 1)
+        self.assertEqual(UUID.objects.count(), 1)
 
     def test_create_duplicate_with_change_uuid_endpoint(self):
         # Create Plant and Group with different UUIDs
@@ -758,7 +758,7 @@ class UniqueUUIDTests(TransactionTestCase):
         )
 
         # Confirm only 2 UUID entries exist (changed UUID was dropped)
-        self.assertEqual(len(UUID.objects.all()), 2)
+        self.assertEqual(UUID.objects.count(), 2)
 
     def test_create_duplicate_with_change_uuid_endpoint_race_condition(self):
         # Create Plant and Group with different UUIDs
@@ -798,14 +798,14 @@ class UniqueUUIDTests(TransactionTestCase):
         )
 
         # Confirm only 2 UUID entries exist (changed UUID was dropped)
-        self.assertEqual(len(UUID.objects.all()), 2)
+        self.assertEqual(UUID.objects.count(), 2)
 
     def test_create_duplicate_by_directly_editing_models(self):
         # Create Plant and Group with different UUIDs
         plant = Plant.objects.create(user=self.user, uuid=uuid4())
         group = Group.objects.create(user=self.user, uuid=uuid4())
         # Confirm 2 UUIDs reserved in database
-        self.assertEqual(len(UUID.objects.all()), 2)
+        self.assertEqual(UUID.objects.count(), 2)
 
         # Confirm an exception is raised if Plant UUID changed to Group UUID
         with self.assertRaises(IntegrityError):
@@ -813,7 +813,7 @@ class UniqueUUIDTests(TransactionTestCase):
                 plant.uuid = group.uuid
                 plant.save()
         # Confirm still 2 UUIDs in database (reservation not cleared)
-        self.assertEqual(len(UUID.objects.all()), 2)
+        self.assertEqual(UUID.objects.count(), 2)
 
         # Refresh plant UUID from DB (local copy still has group uuid even
         # though save failed above)
@@ -825,4 +825,4 @@ class UniqueUUIDTests(TransactionTestCase):
                 group.uuid = plant.uuid
                 group.save()
         # Confirm still 2 UUIDs in database (reservation not cleared)
-        self.assertEqual(len(UUID.objects.all()), 2)
+        self.assertEqual(UUID.objects.count(), 2)

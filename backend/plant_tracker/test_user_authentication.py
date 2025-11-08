@@ -230,7 +230,7 @@ class AuthenticationEndpointTests(TestCase):
 
     def test_create_user_endpoint(self):
         # Confirm 2 users in database (default + test user from setUpClass)
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
         # Post new account credentials to create_user endpoint
         response = self.client.post('/accounts/create_user/', {
@@ -246,7 +246,7 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(response.json(), {"success": "account created"})
 
         # Confirm user created in database, did not store password as cleartext
-        self.assertEqual(len(user_model.objects.all()), 3)
+        self.assertEqual(user_model.objects.count(), 3)
         user = user_model.objects.get(username='newuser')
         self.assertNotEqual(user.password, 'acceptablepasswordlength')
 
@@ -256,7 +256,7 @@ class AuthenticationEndpointTests(TestCase):
 
     def test_create_user_sends_verification_email(self):
         # Confirm 2 users in database (default + test user from setUpClass)
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
         with patch('plant_tracker.auth_views.send_verification_email.delay') as mock_delay:
             response = self.client.post('/accounts/create_user/', {
@@ -281,7 +281,7 @@ class AuthenticationEndpointTests(TestCase):
 
     def test_create_user_endpoint_missing_fields(self):
         # Confirm 2 users in database (default + test user from setUpClass)
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
         # Post payload with no username to create_user endpoint
         response = self.client.post('/accounts/create_user/', {
@@ -297,11 +297,11 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(response.json(), {"error": ["missing required field"]})
 
         # Confirm no user created in database
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
     def test_create_user_endpoint_duplicate_username(self):
         # Confirm 2 users in database (default + test user from setUpClass)
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
         # Post same username as existing test user to create_user endpoint
         response = self.client.post('/accounts/create_user/', {
@@ -320,11 +320,11 @@ class AuthenticationEndpointTests(TestCase):
         )
 
         # Confirm no user created in database
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
     def test_create_user_endpoint_duplicate_email(self):
         # Confirm 2 users in database (default + test user from setUpClass)
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
         # Post same email as existing test user to create_user endpoint
         response = self.client.post('/accounts/create_user/', {
@@ -343,11 +343,11 @@ class AuthenticationEndpointTests(TestCase):
         )
 
         # Confirm no user created in database
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
     def test_create_user_endpoint_invalid_email(self):
         # Confirm 2 users in database (default + test user from setUpClass)
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
         # Post email address with invalid syntax to create_user endpoint
         response = self.client.post('/accounts/create_user/', {
@@ -366,11 +366,11 @@ class AuthenticationEndpointTests(TestCase):
         )
 
         # Confirm no user created in database
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
     def test_create_user_endpoint_common_password(self):
         # Confirm 2 users in database (default + test user from setUpClass)
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
         # Post password that is on the banned common passwords list
         response = self.client.post('/accounts/create_user/', {
@@ -389,7 +389,7 @@ class AuthenticationEndpointTests(TestCase):
         )
 
         # Confirm no user created in database
-        self.assertEqual(len(user_model.objects.all()), 2)
+        self.assertEqual(user_model.objects.count(), 2)
 
     def test_change_password_endpoint(self):
         # Log in with test user

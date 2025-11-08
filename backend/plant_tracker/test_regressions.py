@@ -76,16 +76,16 @@ class ModelRegressionTests(TestCase):
         # Create test plant and group, confirm 1 entry each
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(Group.objects.count(), 1)
 
         # Change both UUIDs, confirm no duplicates were created
         plant.uuid = uuid4()
         group.uuid = uuid4()
         plant.save()
         group.save()
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(Group.objects.count(), 1)
 
     def test_photos_with_no_exif_data_should_set_timestamp_to_upload_time(self):
         '''Issue: The timestamp field is populated in the save method using a
@@ -176,14 +176,14 @@ class ModelRegressionTests(TestCase):
         plant = Plant.objects.create(uuid=uuid4(), group=group, user=get_default_user())
 
         # Confirm 1 of each model exist, plant has correct relation to Group
-        self.assertEqual(len(Group.objects.all()), 1)
-        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(Group.objects.count(), 1)
+        self.assertEqual(Plant.objects.count(), 1)
         self.assertIs(plant.group, group)
 
         # Delete group, confirm group deleted but plant still exists
         group.delete()
-        self.assertEqual(len(Group.objects.all()), 0)
-        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(Group.objects.count(), 0)
+        self.assertEqual(Plant.objects.count(), 1)
 
         # Confirm Plant.group is now null
         plant.refresh_from_db()
@@ -320,10 +320,10 @@ class ViewRegressionTests(TestCase):
         WaterEvent.objects.create(plant=plant2, timestamp=timestamp)
 
         # Confirm 1 WaterEvent exists, plant2 has event, plants 1 and 3 do not
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
-        self.assertEqual(len(plant1.waterevent_set.all()), 0)
-        self.assertEqual(len(plant2.waterevent_set.all()), 1)
-        self.assertEqual(len(plant3.waterevent_set.all()), 0)
+        self.assertEqual(WaterEvent.objects.count(), 1)
+        self.assertEqual(plant1.waterevent_set.count(), 0)
+        self.assertEqual(plant2.waterevent_set.count(), 1)
+        self.assertEqual(plant3.waterevent_set.count(), 0)
 
         # Send bulk_add_plants_to_group request for all plants with same
         # timestamp as the existing WaterEvent
@@ -354,9 +354,9 @@ class ViewRegressionTests(TestCase):
         )
 
         # Confirm events were created for plants 1 and 3, but not 2
-        self.assertEqual(len(plant1.waterevent_set.all()), 1)
-        self.assertEqual(len(plant2.waterevent_set.all()), 1)
-        self.assertEqual(len(plant3.waterevent_set.all()), 1)
+        self.assertEqual(plant1.waterevent_set.count(), 1)
+        self.assertEqual(plant2.waterevent_set.count(), 1)
+        self.assertEqual(plant3.waterevent_set.count(), 1)
 
     def test_repot_plant_does_not_handle_duplicate_timestamp(self):
         '''Issue: The repot_plant endpoint did not handle errors while creating
@@ -368,7 +368,7 @@ class ViewRegressionTests(TestCase):
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         timestamp = timezone.now()
         RepotEvent.objects.create(plant=plant, timestamp=timestamp)
-        self.assertEqual(len(plant.repotevent_set.all()), 1)
+        self.assertEqual(plant.repotevent_set.count(), 1)
 
         # Send request to repot plant with same timestamp
         response = JSONClient().post('/repot_plant', {
@@ -383,7 +383,7 @@ class ViewRegressionTests(TestCase):
             response.json(),
             {"error": "Event with same timestamp already exists"}
         )
-        self.assertEqual(len(plant.repotevent_set.all()), 1)
+        self.assertEqual(plant.repotevent_set.count(), 1)
 
     def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
         '''Issue: delete_plant_photos looked up photos in the database using a
@@ -403,7 +403,7 @@ class ViewRegressionTests(TestCase):
             photo=create_mock_photo('2024:03:21 10:52:03'),
             plant=plant
         )
-        self.assertEqual(len(Photo.objects.all()), 2)
+        self.assertEqual(Photo.objects.count(), 2)
 
         # Make request to delete both photos from database
         response = JSONClient().post('/delete_plant_photos', {
@@ -413,7 +413,7 @@ class ViewRegressionTests(TestCase):
 
         # Should succeed despite duplicate timestamp, confirm removed from db
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(Photo.objects.all()), 0)
+        self.assertEqual(Photo.objects.count(), 0)
 
     def test_add_plant_photos_returns_timestamp_with_no_timezone(self):
         '''Issue: add_plant_photos returned a strftime string with no timezone,
@@ -470,7 +470,7 @@ class ViewRegressionTests(TestCase):
         '''
 
         test_plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        self.assertEqual(len(test_plant.photo_set.all()), 0)
+        self.assertEqual(test_plant.photo_set.count(), 0)
 
         # Create photo with RGBA color mode, post to add_plant_photos endpoint
         data = {
@@ -485,7 +485,7 @@ class ViewRegressionTests(TestCase):
 
         # Confirm upload was successful
         self.assertEqual(response.status_code, 202)
-        self.assertEqual(len(test_plant.photo_set.all()), 1)
+        self.assertEqual(test_plant.photo_set.count(), 1)
 
     def test_edit_plant_details_crashes_when_pot_size_is_null(self):
         '''Issue: The /edit_plant_details endpoint returns a modified version of
@@ -533,7 +533,7 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Confirm no plants in database
-        self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(Plant.objects.count(), 0)
 
         # Send register_plant request, confirm expected response
         test_id = uuid4()
@@ -566,7 +566,7 @@ class ViewRegressionTests(TestCase):
         )
 
         # Confirm only the first plant was created in database
-        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
         self.assertEqual(Plant.objects.all()[0].name, 'test plant')
 
     def test_register_group_uncaught_exception_if_uuid_already_exists(self):
@@ -580,7 +580,7 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Confirm no plants in database
-        self.assertEqual(len(Group.objects.all()), 0)
+        self.assertEqual(Group.objects.count(), 0)
 
         # Send register_group request, confirm expected response
         test_id = uuid4()
@@ -611,7 +611,7 @@ class ViewRegressionTests(TestCase):
         )
 
         # Confirm only the first group was created in database
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Group.objects.count(), 1)
         self.assertEqual(Group.objects.all()[0].name, 'test group')
 
     def test_register_endpoints_allow_creating_plant_and_group_with_same_uuid(self):
@@ -627,8 +627,8 @@ class ViewRegressionTests(TestCase):
         # Create plant and group
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(Group.objects.count(), 1)
 
         # Attempt to register group using plant's uuid, confirm expected error
         response = JSONClient().post('/register_group', {
@@ -658,8 +658,8 @@ class ViewRegressionTests(TestCase):
         )
 
         # Confirm no extra model entries were created
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(Group.objects.count(), 1)
 
     def test_edit_plant_details_fails_if_plant_has_photos(self):
         '''Issue: Plant.thumbnail_url and Plant.preview_url contained paths to
@@ -909,7 +909,7 @@ class ViewRegressionTests(TestCase):
         # Create plant + DivisionEvent
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         event = DivisionEvent.objects.create(plant=plant, timestamp=timezone.now())
-        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
 
         # Simulate frontend POSTing /register_plant payload with plant_key and
         # division_event_key containing int (should have cast to string)
@@ -931,7 +931,7 @@ class ViewRegressionTests(TestCase):
             'name': 'Unnamed plant 2',
             'uuid': str(test_id)
         })
-        self.assertEqual(len(Plant.objects.all()), 2)
+        self.assertEqual(Plant.objects.count(), 2)
 
 
 class CachedStateRegressionTests(TestCase):

@@ -302,8 +302,8 @@ class OverviewTests(TestCase):
         default_user = get_default_user()
         Plant.objects.create(uuid=plant_id, name='test plant', user=default_user)
         Group.objects.create(uuid=group_id, name='test group', user=default_user)
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(Group.objects.count(), 1)
 
         # Post both UUIDs to /bulk_delete_plants_and_groups
         response = self.client.post('/bulk_delete_plants_and_groups', {
@@ -319,8 +319,8 @@ class OverviewTests(TestCase):
             response.json(),
             {'deleted': [str(plant_id), str(group_id)], 'failed': []}
         )
-        self.assertEqual(len(Plant.objects.all()), 0)
-        self.assertEqual(len(Group.objects.all()), 0)
+        self.assertEqual(Plant.objects.count(), 0)
+        self.assertEqual(Group.objects.count(), 0)
 
         # Create plant owned by a different user
         user = user_model.objects.create_user(username='unittest', password='12345')
@@ -343,8 +343,8 @@ class OverviewTests(TestCase):
         default_user = get_default_user()
         Plant.objects.create(uuid=plant_id, name='test plant', user=default_user)
         Group.objects.create(uuid=group_id, name='test group', user=default_user)
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(Group.objects.count(), 1)
         self.assertFalse(Plant.objects.all()[0].archived)
         self.assertFalse(Group.objects.all()[0].archived)
 
@@ -363,8 +363,8 @@ class OverviewTests(TestCase):
             response.json(),
             {'archived': [str(plant_id), str(group_id)], 'failed': []}
         )
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(Group.objects.count(), 1)
         self.assertTrue(Plant.objects.all()[0].archived)
         self.assertTrue(Group.objects.all()[0].archived)
 
@@ -515,8 +515,8 @@ class RegistrationTests(TestCase):
 
     def test_register_plant_endpoint(self):
         # Confirm no plants or groups in database
-        self.assertEqual(len(Plant.objects.all()), 0)
-        self.assertEqual(len(Group.objects.all()), 0)
+        self.assertEqual(Plant.objects.count(), 0)
+        self.assertEqual(Group.objects.count(), 0)
 
         # Send plant registration request with extra spaces on some params
         test_id = uuid4()
@@ -537,10 +537,10 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm new plant exists in database, confirm no group was created
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Group.objects.all()), 0)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(Group.objects.count(), 0)
         # Confirm no repot event was created (not divided from existing plant)
-        self.assertEqual(len(RepotEvent.objects.all()), 0)
+        self.assertEqual(RepotEvent.objects.count(), 0)
 
         # Confirm plant has correct params, confirm extra spaces were removed
         plant = Plant.objects.get(uuid=test_id)
@@ -562,8 +562,8 @@ class RegistrationTests(TestCase):
             uuid=uuid4(),
             pot_size=8
         )
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(RepotEvent.objects.all()), 0)
+        self.assertEqual(Plant.objects.count(), 1)
+        self.assertEqual(RepotEvent.objects.count(), 0)
 
         # Simulate division in progress (user hit /divide_plant endpoint)
         division_event = DivisionEvent.objects.create(
@@ -593,7 +593,7 @@ class RegistrationTests(TestCase):
 
         # Confirm new plant was created, has reverse relation to original plant
         # and DivisionEvent
-        self.assertEqual(len(Plant.objects.all()), 2)
+        self.assertEqual(Plant.objects.count(), 2)
         new_plant = Plant.objects.get(name='Geoppertia prop')
         self.assertEqual(new_plant.divided_from, existing_plant)
         self.assertEqual(new_plant.divided_from_event, division_event)
@@ -602,7 +602,7 @@ class RegistrationTests(TestCase):
         self.assertIn(new_plant, existing_plant.children.all())
 
         # Confirm RepotEvent was created for new plant with same timestamp
-        self.assertEqual(len(RepotEvent.objects.all()), 1)
+        self.assertEqual(RepotEvent.objects.count(), 1)
         repot = RepotEvent.objects.all().first()
         self.assertEqual(repot.timestamp, new_plant.created)
         # Confirm RepotEvent has parent pot size for old, child pot size for new
@@ -611,8 +611,8 @@ class RegistrationTests(TestCase):
 
     def test_register_group_endpoint(self):
         # Confirm no plants or groups in database
-        self.assertEqual(len(Plant.objects.all()), 0)
-        self.assertEqual(len(Group.objects.all()), 0)
+        self.assertEqual(Plant.objects.count(), 0)
+        self.assertEqual(Group.objects.count(), 0)
 
         # Send plant registration request with extra spaces on some params
         test_id = uuid4()
@@ -632,8 +632,8 @@ class RegistrationTests(TestCase):
         })
 
         # Confirm new group exists in database, confirm no plant was created
-        self.assertEqual(len(Group.objects.all()), 1)
-        self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(Group.objects.count(), 1)
+        self.assertEqual(Plant.objects.count(), 0)
 
         # Confirm group has correct params, confirm extra spaces were removed
         group = Group.objects.get(uuid=test_id)
@@ -707,7 +707,7 @@ class RegistrationTests(TestCase):
         }})
 
         # Confirm no plants were added to database
-        self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(Plant.objects.count(), 0)
 
     def test_group_fields_max_length(self):
         # Send group registration request name longer than 50 characters
@@ -754,7 +754,7 @@ class RegistrationTests(TestCase):
         }})
 
         # Confirm no groups were added to database
-        self.assertEqual(len(Group.objects.all()), 0)
+        self.assertEqual(Group.objects.count(), 0)
 
 
 class ManagePageTests(TestCase):
@@ -1216,7 +1216,7 @@ class ManagePlantEndpointTests(TestCase):
         )
 
         # Confirm no additional plant created
-        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(Plant.objects.count(), 1)
 
         # Confirm details now match, leading/trailing spaces were removed
         self._refresh_test_models()
@@ -1245,7 +1245,7 @@ class ManagePlantEndpointTests(TestCase):
     def test_add_plant_to_group(self):
         # Confirm test plant and group have no database relation
         self.assertIsNone(self.plant.group)
-        self.assertEqual(len(self.group.plant_set.all()), 0)
+        self.assertEqual(self.group.plant_set.count(), 0)
 
         # Send add_plant_to_group request, confirm response
         response = self.client.post('/add_plant_to_group', {
@@ -1266,14 +1266,14 @@ class ManagePlantEndpointTests(TestCase):
         # Confirm database relation created
         self._refresh_test_models()
         self.assertEqual(self.plant.group, self.group)
-        self.assertEqual(len(self.group.plant_set.all()), 1)
+        self.assertEqual(self.group.plant_set.count(), 1)
 
     def test_remove_plant_from_group(self):
         # Add test plant to group, confirm relation
         self.plant.group = self.group
         self.plant.save()
         self.assertEqual(self.plant.group, self.group)
-        self.assertEqual(len(self.group.plant_set.all()), 1)
+        self.assertEqual(self.group.plant_set.count(), 1)
 
         # Send add_plant_to_group request, confirm response
         response = self.client.post('/remove_plant_from_group', {
@@ -1291,7 +1291,7 @@ class ManagePlantEndpointTests(TestCase):
         # Confirm database relation removed
         self._refresh_test_models()
         self.assertIsNone(self.plant.group)
-        self.assertEqual(len(self.group.plant_set.all()), 0)
+        self.assertEqual(self.group.plant_set.count(), 0)
 
     def test_repot_plant(self):
         # Set starting pot_size
@@ -1299,7 +1299,7 @@ class ManagePlantEndpointTests(TestCase):
         self.plant.save()
 
         # Confirm plant has no RepotEvents
-        self.assertEqual(len(self.plant.repotevent_set.all()), 0)
+        self.assertEqual(self.plant.repotevent_set.count(), 0)
 
         # Send repot_plant request
         response = self.client.post('/repot_plant', {
@@ -1320,7 +1320,7 @@ class ManagePlantEndpointTests(TestCase):
             }
         )
         self._refresh_test_models()
-        self.assertEqual(len(self.plant.repotevent_set.all()), 1)
+        self.assertEqual(self.plant.repotevent_set.count(), 1)
 
         # Confirm correct pot_size attributes on plant and event entries
         self.assertEqual(self.plant.pot_size, 6)
@@ -1345,7 +1345,7 @@ class ManagePlantEndpointTests(TestCase):
 
     def test_divide_plant(self):
         # Confirm plant has no DivisionEvents
-        self.assertEqual(len(self.plant.divisionevent_set.all()), 0)
+        self.assertEqual(self.plant.divisionevent_set.count(), 0)
 
         # Send divide_plant request
         response = self.client.post('/divide_plant', {
@@ -1368,13 +1368,13 @@ class ManagePlantEndpointTests(TestCase):
             }
         )
         self._refresh_test_models()
-        self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
+        self.assertEqual(self.plant.divisionevent_set.count(), 1)
 
     def test_divide_plant_duplicate_timestamp(self):
         # Create existing DivisionEvent
         timestamp = '2024-02-06T03:06:26.000Z'
         DivisionEvent.objects.create(plant=self.plant, timestamp=timestamp)
-        self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
+        self.assertEqual(self.plant.divisionevent_set.count(), 1)
 
         # Send divide_plant request with identical timestamp
         response = self.client.post('/divide_plant', {
@@ -1391,7 +1391,7 @@ class ManagePlantEndpointTests(TestCase):
 
         # Confirm no event was created
         self._refresh_test_models()
-        self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
+        self.assertEqual(self.plant.divisionevent_set.count(), 1)
 
     def test_get_add_to_group_options(self):
         # Confirm endpoint returns details of all existing groups
@@ -1465,7 +1465,7 @@ class ManageGroupEndpointTests(TestCase):
         )
 
         # Confirm no additional group created
-        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Group.objects.count(), 1)
 
         # Confirm details now match, leading/trailing spaces were removed
         self._refresh_test_models()
@@ -1498,7 +1498,7 @@ class ManageGroupEndpointTests(TestCase):
         # Confirm test plants are not in test group
         self.assertIsNone(self.plant1.group)
         self.assertIsNone(self.plant2.group)
-        self.assertEqual(len(self.group1.plant_set.all()), 0)
+        self.assertEqual(self.group1.plant_set.count(), 0)
 
         # Send bulk_add_plants_to_group request with both IDs + 1 fake ID
         response = self.client.post('/bulk_add_plants_to_group', {
@@ -1526,7 +1526,7 @@ class ManageGroupEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(self.plant1.group, self.group1)
         self.assertEqual(self.plant2.group, self.group1)
-        self.assertEqual(len(self.group1.plant_set.all()), 2)
+        self.assertEqual(self.group1.plant_set.count(), 2)
 
     def test_bulk_remove_plants_from_group(self):
         # Add 2 test plants to test group, confirm relation exists
@@ -1536,7 +1536,7 @@ class ManageGroupEndpointTests(TestCase):
         self.plant2.save()
         self.assertEqual(self.plant1.group, self.group1)
         self.assertEqual(self.plant2.group, self.group1)
-        self.assertEqual(len(self.group1.plant_set.all()), 2)
+        self.assertEqual(self.group1.plant_set.count(), 2)
 
         # Send bulk_add_plants_to_group request with both IDs + 1 fake ID
         response = self.client.post('/bulk_remove_plants_from_group', {
@@ -1565,7 +1565,7 @@ class ManageGroupEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertIsNone(self.plant1.group)
         self.assertIsNone(self.plant2.group)
-        self.assertEqual(len(self.group1.plant_set.all()), 0)
+        self.assertEqual(self.group1.plant_set.count(), 0)
 
     def test_get_plant_options(self):
         # Confirm endpoint returns dict with details of all plants
@@ -1722,7 +1722,7 @@ class PlantEventEndpointTests(TestCase):
     def test_add_water_event(self):
         # Confirm test plant has no water events
         self.assertIsNone(self.plant1.last_watered())
-        self.assertEqual(len(WaterEvent.objects.all()), 0)
+        self.assertEqual(WaterEvent.objects.count(), 0)
 
         # Send add_plant_event request, confirm response
         response = self.client.post('/add_plant_event', {
@@ -1741,13 +1741,13 @@ class PlantEventEndpointTests(TestCase):
         )
 
         # Confirm WaterEvent was created
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        self.assertEqual(WaterEvent.objects.count(), 1)
         self.assertEqual(self.plant1.last_watered(), '2024-02-06T03:06:26+00:00')
 
     def test_add_fertilize_event(self):
         # Confirm test plant has no fertilize events
         self.assertIsNone(self.plant1.last_fertilized())
-        self.assertEqual(len(FertilizeEvent.objects.all()), 0)
+        self.assertEqual(FertilizeEvent.objects.count(), 0)
 
         # Send add_plant_event request, confirm response
         response = self.client.post('/add_plant_event', {
@@ -1766,13 +1766,13 @@ class PlantEventEndpointTests(TestCase):
         )
 
         # Confirm FertilizeEvent was created
-        self.assertEqual(len(FertilizeEvent.objects.all()), 1)
+        self.assertEqual(FertilizeEvent.objects.count(), 1)
         self.assertEqual(self.plant1.last_fertilized(), '2024-02-06T03:06:26+00:00')
 
     def test_add_prune_event(self):
         # Confirm test plant has no prune events
         self.assertIsNone(self.plant1.last_pruned())
-        self.assertEqual(len(PruneEvent.objects.all()), 0)
+        self.assertEqual(PruneEvent.objects.count(), 0)
 
         # Send add_plant_event request, confirm response
         response = self.client.post('/add_plant_event', {
@@ -1791,13 +1791,13 @@ class PlantEventEndpointTests(TestCase):
         )
 
         # Confirm PruneEvent was created
-        self.assertEqual(len(PruneEvent.objects.all()), 1)
+        self.assertEqual(PruneEvent.objects.count(), 1)
         self.assertEqual(self.plant1.last_pruned(), '2024-02-06T03:06:26+00:00')
 
     def test_add_repot_event(self):
         # Confirm test plant has no repot events
         self.assertIsNone(self.plant1.last_repotted())
-        self.assertEqual(len(RepotEvent.objects.all()), 0)
+        self.assertEqual(RepotEvent.objects.count(), 0)
 
         # Send add_plant_event request, confirm response
         response = self.client.post('/add_plant_event', {
@@ -1816,14 +1816,14 @@ class PlantEventEndpointTests(TestCase):
         )
 
         # Confirm RepotEvent was created
-        self.assertEqual(len(RepotEvent.objects.all()), 1)
+        self.assertEqual(RepotEvent.objects.count(), 1)
         self.assertEqual(self.plant1.last_repotted(), '2024-02-06T03:06:26+00:00')
 
     def test_add_event_with_duplicate_timestamp(self):
         # Create WaterEvent manually, then attempt to create with API call
         timestamp = timezone.now()
         WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        self.assertEqual(WaterEvent.objects.count(), 1)
         response = self.client.post('/add_plant_event', {
             'plant_id': self.plant1.uuid,
             'timestamp': timestamp.isoformat(),
@@ -1835,12 +1835,12 @@ class PlantEventEndpointTests(TestCase):
             response.json(),
             {'error': 'event with same timestamp already exists'}
         )
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        self.assertEqual(WaterEvent.objects.count(), 1)
 
     def test_bulk_water_plants(self):
         # Confirm test plants have no WaterEvents
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
+        self.assertEqual(self.plant1.waterevent_set.count(), 0)
+        self.assertEqual(self.plant2.waterevent_set.count(), 0)
 
         # Send bulk_add_plants_to_group request with both IDs
         response = self.client.post('/bulk_add_plant_events', {
@@ -1864,13 +1864,13 @@ class PlantEventEndpointTests(TestCase):
                 "failed": [str(self.fake_id)]
             }
         )
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
+        self.assertEqual(self.plant1.waterevent_set.count(), 1)
+        self.assertEqual(self.plant2.waterevent_set.count(), 1)
 
     def test_bulk_fertilize_plants(self):
         # Confirm test plants have no FertilizeEvents
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
+        self.assertEqual(self.plant1.fertilizeevent_set.count(), 0)
+        self.assertEqual(self.plant2.fertilizeevent_set.count(), 0)
 
         # Send bulk_add_plants_to_group request with both IDs
         response = self.client.post('/bulk_add_plant_events', {
@@ -1894,8 +1894,8 @@ class PlantEventEndpointTests(TestCase):
                 "failed": [str(self.fake_id)]
             }
         )
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
+        self.assertEqual(self.plant1.fertilizeevent_set.count(), 1)
+        self.assertEqual(self.plant2.fertilizeevent_set.count(), 1)
 
     def test_delete_plant_events(self):
         # Create multiple events with different types, confirm number in db
@@ -1904,10 +1904,10 @@ class PlantEventEndpointTests(TestCase):
         FertilizeEvent.objects.create(plant=self.plant1, timestamp=timestamp)
         PruneEvent.objects.create(plant=self.plant1, timestamp=timestamp)
         RepotEvent.objects.create(plant=self.plant1, timestamp=timestamp)
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant1.pruneevent_set.all()), 1)
-        self.assertEqual(len(self.plant1.repotevent_set.all()), 1)
+        self.assertEqual(self.plant1.waterevent_set.count(), 1)
+        self.assertEqual(self.plant1.fertilizeevent_set.count(), 1)
+        self.assertEqual(self.plant1.pruneevent_set.count(), 1)
+        self.assertEqual(self.plant1.repotevent_set.count(), 1)
 
         # Post timestamp and type of each event to delete_plant_events endpoint
         response = self.client.post('/delete_plant_events', {
@@ -1931,10 +1931,10 @@ class PlantEventEndpointTests(TestCase):
                 "repot": [timestamp.isoformat()]
             }
         )
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant1.pruneevent_set.all()), 0)
-        self.assertEqual(len(self.plant1.repotevent_set.all()), 0)
+        self.assertEqual(self.plant1.waterevent_set.count(), 0)
+        self.assertEqual(self.plant1.fertilizeevent_set.count(), 0)
+        self.assertEqual(self.plant1.pruneevent_set.count(), 0)
+        self.assertEqual(self.plant1.repotevent_set.count(), 0)
 
     def test_delete_plant_events_does_not_exist(self):
         # Post payload containing event that does not exist
@@ -1982,8 +1982,8 @@ class NoteEventEndpointTests(TestCase):
 
     def test_add_note_event(self):
         # Confirm test plant has no note events
-        self.assertEqual(len(self.plant.noteevent_set.all()), 0)
-        self.assertEqual(len(NoteEvent.objects.all()), 0)
+        self.assertEqual(self.plant.noteevent_set.count(), 0)
+        self.assertEqual(NoteEvent.objects.count(), 0)
 
         # Send add_plant_note request with leading and trailing spaces on text
         response = self.client.post('/add_plant_note', {
@@ -2005,8 +2005,8 @@ class NoteEventEndpointTests(TestCase):
         )
 
         # Confirm NoteEvent was created, leading/trailing spaces were removed
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
-        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+        self.assertEqual(NoteEvent.objects.count(), 1)
+        self.assertEqual(self.plant.noteevent_set.count(), 1)
         self.assertEqual(
             NoteEvent.objects.all()[0].text,
             'plant is looking healthier than last week'
@@ -2016,7 +2016,7 @@ class NoteEventEndpointTests(TestCase):
         # Create NoteEvent manually, then attempt to create with API call
         timestamp = timezone.now()
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp)
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        self.assertEqual(NoteEvent.objects.count(), 1)
         response = self.client.post('/add_plant_note', {
             'plant_id': self.plant.uuid,
             'timestamp': timestamp.isoformat(),
@@ -2028,7 +2028,7 @@ class NoteEventEndpointTests(TestCase):
             response.json(),
             {"error": "Plant already has a note with the same timestamp"}
         )
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        self.assertEqual(NoteEvent.objects.count(), 1)
 
     def test_add_note_event_empty_text_field(self):
         # Send add_plant_note request with empty note_text param
@@ -2043,13 +2043,13 @@ class NoteEventEndpointTests(TestCase):
             response.json(),
             {"error": {"text": ["This field cannot be null."]}}
         )
-        self.assertEqual(len(NoteEvent.objects.all()), 0)
+        self.assertEqual(NoteEvent.objects.count(), 0)
 
     def test_edit_note_event(self):
         # Create NoteEvent with no text, confirm exists
         timestamp = timezone.now()
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="note")
-        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+        self.assertEqual(self.plant.noteevent_set.count(), 1)
 
         # Send edit_plant_note request with leading and trailing spaces on text
         response = self.client.post('/edit_plant_note', {
@@ -2071,7 +2071,7 @@ class NoteEventEndpointTests(TestCase):
         )
 
         # Confirm text of existing NoteEvent was updated, extra spaces removed
-        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+        self.assertEqual(self.plant.noteevent_set.count(), 1)
         self.assertEqual(
             NoteEvent.objects.get(timestamp=timestamp).text,
             'This is the text I forgot to add'
@@ -2093,7 +2093,7 @@ class NoteEventEndpointTests(TestCase):
         # Create NoteEvent, confirm exists
         timestamp = timezone.now()
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="note")
-        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+        self.assertEqual(self.plant.noteevent_set.count(), 1)
 
         # Send edit_plant_note request with empty note_text param
         response = self.client.post('/edit_plant_note', {
@@ -2108,14 +2108,14 @@ class NoteEventEndpointTests(TestCase):
             response.json(),
             {"error": {"text": ["This field cannot be null."]}}
         )
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        self.assertEqual(NoteEvent.objects.count(), 1)
         self.assertEqual(NoteEvent.objects.get(timestamp=timestamp).text, 'note')
 
     def test_delete_note_event(self):
         # Create NoteEvent, confirm exists
         timestamp = timezone.now()
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="note")
-        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+        self.assertEqual(self.plant.noteevent_set.count(), 1)
 
         # Send delete_plant_notes request, confirm response + event deleted
         response = self.client.post('/delete_plant_notes', {
@@ -2129,7 +2129,7 @@ class NoteEventEndpointTests(TestCase):
         )
 
         # Confirm NoteEvent was deleted
-        self.assertEqual(len(self.plant.noteevent_set.all()), 0)
+        self.assertEqual(self.plant.noteevent_set.count(), 0)
 
     def test_delete_note_event_target_does_not_exist(self):
         # Call delete_plant_notes endpoint with a timestamp that doesn't exist
@@ -2149,7 +2149,7 @@ class NoteEventEndpointTests(TestCase):
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp1, text="note1")
         timestamp2 = timezone.now()
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp2, text="note2")
-        self.assertEqual(len(self.plant.noteevent_set.all()), 2)
+        self.assertEqual(self.plant.noteevent_set.count(), 2)
 
         # Send delete_plant_notes request, confirm response + events deleted
         response = self.client.post('/delete_plant_notes', {
@@ -2163,7 +2163,7 @@ class NoteEventEndpointTests(TestCase):
         )
 
         # Confirm NoteEvents were deleted
-        self.assertEqual(len(self.plant.noteevent_set.all()), 0)
+        self.assertEqual(self.plant.noteevent_set.count(), 0)
 
 
 class PlantPhotoEndpointTests(TestCase):
@@ -2190,8 +2190,8 @@ class PlantPhotoEndpointTests(TestCase):
 
     def test_add_plant_photos(self):
         # Confirm no photos exist in database or plant reverse relation
-        self.assertEqual(len(Photo.objects.all()), 0)
-        self.assertEqual(len(self.plant.photo_set.all()), 0)
+        self.assertEqual(Photo.objects.count(), 0)
+        self.assertEqual(self.plant.photo_set.count(), 0)
 
         # Post mock photo to add_plant_photos endpoint
         data = {
@@ -2227,8 +2227,8 @@ class PlantPhotoEndpointTests(TestCase):
         )
 
         # Confirm Photo was added to database, reverse relation was created
-        self.assertEqual(len(Photo.objects.all()), 1)
-        self.assertEqual(len(self.plant.photo_set.all()), 1)
+        self.assertEqual(Photo.objects.count(), 1)
+        self.assertEqual(self.plant.photo_set.count(), 1)
 
         # Confirm Photo.timestamp was set from exif DateTimeOriginal param
         self.assertEqual(
@@ -2238,7 +2238,7 @@ class PlantPhotoEndpointTests(TestCase):
 
     def test_add_plant_photos_no_exif_data(self):
         # Confirm no photos exist in database
-        self.assertEqual(len(Photo.objects.all()), 0)
+        self.assertEqual(Photo.objects.count(), 0)
 
         # Post mock photo with no exif data, but include optional last_modified
         # object with epoch timestamp when photo was saved
@@ -2271,8 +2271,8 @@ class PlantPhotoEndpointTests(TestCase):
 
     def test_add_plant_photos_invalid_file_types(self):
         # Confirm no photos exist in database or plant reverse relation
-        self.assertEqual(len(Photo.objects.all()), 0)
-        self.assertEqual(len(self.plant.photo_set.all()), 0)
+        self.assertEqual(Photo.objects.count(), 0)
+        self.assertEqual(self.plant.photo_set.count(), 0)
 
         # Post mock photo to add_plant_photos endpoint
         # Raise PIL.UnidentifiedImageError to simulate invalid file type
@@ -2295,7 +2295,7 @@ class PlantPhotoEndpointTests(TestCase):
         self.assertEqual(response.json()["urls"], [])
 
         # Confirm Photo was not added to database
-        self.assertEqual(len(Photo.objects.all()), 0)
+        self.assertEqual(Photo.objects.count(), 0)
 
     def test_add_plant_photos_invalid_get_request(self):
         # Send GET request (expects FormData), confirm error
@@ -2457,7 +2457,7 @@ class PlantPhotoEndpointTests(TestCase):
         mock_photo2 = create_mock_photo('2024:03:22 10:52:03')
         photo1 = Photo.objects.create(photo=mock_photo1, plant=self.plant)
         photo2 = Photo.objects.create(photo=mock_photo2, plant=self.plant)
-        self.assertEqual(len(Photo.objects.all()), 2)
+        self.assertEqual(Photo.objects.count(), 2)
 
         # Post primary keys of both photos to delete_plant_photos endpoint
         # Add a non-existing primary key, should add to response failed section
@@ -2480,7 +2480,7 @@ class PlantPhotoEndpointTests(TestCase):
                 "failed": [999]
             }
         )
-        self.assertEqual(len(Photo.objects.all()), 0)
+        self.assertEqual(Photo.objects.count(), 0)
 
     def test_delete_plant_photos_target_does_not_exist(self):
         # Call delete_plant_photos endpoint with a photo that doesn't exist
