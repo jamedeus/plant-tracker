@@ -65,16 +65,12 @@ def extract_timestamp_from_exif(file):
             return timestamp.astimezone(timezone.utc)
 
         # If offset not found parse as UTC
-        elif datetime_original:
+        if datetime_original:
             timestamp = datetime.strptime(datetime_original, TIME_FORMAT)
             return timestamp.astimezone(timezone.utc)
 
-        # Default to current time if neither exif param found
-        else:
-            return django_timezone.now()
-    # Default to current time if no exif data found
-    else:
-        return django_timezone.now()
+    # Default to current time if no exif data found or both params missing
+    return django_timezone.now()
 
 
 class Photo(models.Model):

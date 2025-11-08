@@ -1,5 +1,7 @@
 '''Django API endpoint functions'''
 
+# pylint: disable=too-many-lines
+
 import base64
 from uuid import UUID
 from io import BytesIO
@@ -928,36 +930,35 @@ def get_photo_upload_status(plant, data, **kwargs):
     for photo_id in photo_ids:
         status = cache.get(f"pending_photo_upload_{photo_id}")
         if status:
+            # Only return status if photo is owned by requesting user
             if status.get('plant_id') == str(plant.uuid):
-                status_payload = {
+                statuses.append({
                     'photo_id': photo_id,
                     **status
-                }
-            # Don't return status of photos owned by other users
-            else:
-                status_payload = {
-                    'photo_id': photo_id,
-                    'status': 'unknown'
-                }
+                })
+                continue
 
         # Cache not found, query photo from database
         else:
             try:
                 photo = Photo.objects.select_related('plant').get(pk=photo_id)
-                status_payload = {
+                status = {
                     'photo_id': photo_id,
                     'plant_id': str(photo.plant.uuid),
                     'status': 'processing' if photo.pending else 'complete'
                 }
                 if not photo.pending:
-                    status_payload['photo_details'] = photo.get_details()
+                    status['photo_details'] = photo.get_details()
+                statuses.append(status)
+                continue
             except Photo.DoesNotExist:
-                status_payload = {
-                    'photo_id': photo_id,
-                    'status': 'unknown'
-                }
+                pass
 
-        statuses.append(status_payload)
+        # Photo not found or not owned by requesting user
+        statuses.append({
+            'photo_id': photo_id,
+            'status': 'unknown'
+        })
 
     return JsonResponse({'photos': statuses}, status=200)
 
