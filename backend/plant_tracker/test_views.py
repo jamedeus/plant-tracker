@@ -2,10 +2,11 @@
 
 import io
 import os
+import json
 import base64
 from uuid import uuid4
-from datetime import datetime
 from unittest.mock import patch
+from datetime import datetime, timezone as datetime_tz
 
 from django.conf import settings
 from django.test import TestCase
@@ -2233,6 +2234,39 @@ class PlantPhotoEndpointTests(TestCase):
         self.assertEqual(
             Photo.objects.all()[0].timestamp.strftime('%Y:%m:%d %H:%M:%S'),
             '2024:03:22 10:52:03'
+        )
+
+    def test_add_plant_photos_no_exif_data(self):
+        # Confirm no photos exist in database
+        self.assertEqual(len(Photo.objects.all()), 0)
+
+        # Post mock photo with no exif data, but include optional last_modified
+        # object with epoch timestamp when photo was saved
+        last_modified = datetime(2024, 5, 1, 12, 30, 0, tzinfo=datetime_tz.utc)
+        last_modified_ms = int(last_modified.timestamp() * 1000)
+        data = {
+            'plant_id': str(self.plant.uuid),
+            'photo_0': create_mock_photo(blank_exif=True),
+            'last_modified': json.dumps({'photo_0': last_modified_ms})
+        }
+        response = self.client.post(
+            '/add_plant_photos',
+            data=data,
+            content_type=MULTIPART_CONTENT
+        )
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 202)
+        self.assertEqual(response.json()["uploaded"], "1 photo(s)")
+        self.assertEqual(response.json()["failed"], [])
+
+        # Confirm photo timestamp matches last_modified (not current time)
+        photo = Photo.objects.all()[0]
+        self.assertIsNotNone(photo)
+        self.assertEqual(Photo.objects.all()[0].timestamp, last_modified)
+        self.assertEqual(
+            response.json()["urls"][0]["timestamp"],
+            last_modified.isoformat()
         )
 
     def test_add_plant_photos_invalid_file_types(self):

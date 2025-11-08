@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { v4 as uuidv4 } from 'uuid';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded, pendingPhotosResolved } from './timelineSlice';
@@ -85,11 +86,15 @@ const PhotoModal = () => {
         // Start loading animation (or increase count if already running)
         setPendingCount((prev) => prev + files.length);
 
+        // Build formData with photos + object with last modified times for each
+        const lastModifiedTimes = {};
         const formData = new FormData();
         files.forEach((file, index) => {
             formData.append(`photo_${index}`, file);
+            lastModifiedTimes[`photo_${index}`] = file.lastModified;
         });
         formData.append('plant_id', plantID);
+        formData.append('last_modified', JSON.stringify(lastModifiedTimes));
 
         const response = await fetch('/add_plant_photos', {
             method: 'POST',

@@ -39,8 +39,11 @@ def user_thumb_path(instance, filename):
     return f"user_{instance.plant.user_id}/thumbnails/{filename}"
 
 
-def extract_timestamp_from_exif(file):
-    '''Takes file (self.photo), returns timestamp extracted from exif data.'''
+def extract_timestamp_from_exif(file, last_modified=None):
+    '''Takes file (self.photo), returns timestamp extracted from exif data.
+    Optional last_modified arg (ms since epoch) is used as fallback if exif
+    params not found. Falls back to current time if no exif or last_modified.
+    '''
 
     # Read raw exif data
     exif_raw = Image.open(file).info.get('exif')
@@ -69,7 +72,11 @@ def extract_timestamp_from_exif(file):
             timestamp = datetime.strptime(datetime_original, TIME_FORMAT)
             return timestamp.astimezone(timezone.utc)
 
-    # Default to current time if no exif data found or both params missing
+    # Use last modified timestamp if no exif data or both params missing
+    if last_modified:
+        return datetime.fromtimestamp(last_modified / 1000.0, timezone.utc)
+
+    # Default to current time if no exif data and last_modified not given
     return django_timezone.now()
 
 

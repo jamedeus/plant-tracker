@@ -2,6 +2,7 @@
 
 # pylint: disable=too-many-lines
 
+import json
 import base64
 from uuid import UUID
 from io import BytesIO
@@ -858,6 +859,8 @@ def divide_plant(plant, timestamp, **kwargs):
 def add_plant_photos(request, user):
     '''Creates Photo model for each image in request body.
     Requires FormData with plant_id key (UUID) and one or more images.
+    Optional last_modified key is used as fallback timestamp if photo has no
+    exif data (must be json with photo name keys, ms since epoch values).
     '''
     if request.method != "POST":
         return JsonResponse({'error': 'must post FormData'}, status=405)
@@ -879,10 +882,13 @@ def add_plant_photos(request, user):
     if len(request.FILES) == 0:
         return JsonResponse({'error': 'no photos were sent'}, status=404)
 
+    # Parse last_modified json (fallback timestamps for photos with no exif)
+    last_modified = json.loads(request.POST.get('last_modified', '{}'))
+
     # Filter out unsupported image types
     created = []
     failed = []
-    for file in request.FILES.values():
+    for key, file in request.FILES.items():
         try:
             with Image.open(file) as image:
                 image.verify()
@@ -890,7 +896,10 @@ def add_plant_photos(request, user):
             created.append(Photo(
                 photo=file,
                 plant=plant,
-                timestamp=extract_timestamp_from_exif(file)
+                timestamp=extract_timestamp_from_exif(
+                    file,
+                    last_modified.get(key)
+                )
             ))
         except UnidentifiedImageError:
             failed.append(file.name)

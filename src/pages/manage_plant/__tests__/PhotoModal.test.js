@@ -74,8 +74,16 @@ describe('PhotoModal', () => {
         }, 202);
 
         // Create 2 mock files
-        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
-        const file2 = new File(['file2'], 'file2.jpg', { type: 'image/jpeg' });
+        const file1 = new File(
+            ['file1'],
+            'file1.jpg',
+            { type: 'image/jpeg', lastModified: 1711041600000 }
+        );
+        const file2 = new File(
+            ['file2'],
+            'file2.jpg',
+            { type: 'image/jpeg', lastModified: 1711128000000 }
+        );
 
         // Simulate user clicking input and selecting mock files
         const fileInput = app.getByTestId('photo-input');
@@ -95,6 +103,11 @@ describe('PhotoModal', () => {
         const formData = fetch.mock.calls[0][1].body;
         expect(formData.get('photo_0')).toEqual(file1);
         expect(formData.get('photo_1')).toEqual(file2);
+        expect(formData.get('plant_id')).toEqual(mockContext.plant_details.uuid);
+        expect(JSON.parse(formData.get('last_modified'))).toEqual({
+            photo_0: file1.lastModified,
+            photo_1: file2.lastModified,
+        });
     });
 
     it('polls pending photo status until resolved after uploading', async () => {
