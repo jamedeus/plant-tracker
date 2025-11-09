@@ -33,3 +33,15 @@ This should be updated when:
   * Updated when Plant photo deleted unless Plant default_photo set (`/delete_plant_photos`)
   * Updated when Plant default_photo changed (`/set_plant_default_photo`)
   * Overwritten when server restarts (`tasks.update_all_cached_states`)
+
+### `pending_photo_upload_{photo_primary_key}`
+- Stores status of pending photo upload (async thumbnail generation)
+- Name includes database primary key of photo
+- Set by `views.add_plant_photos` (one per photo)
+  * Never expires
+  * Value is `{'status': 'processing', 'plant_id': {plant.uuid}`
+- Overwritten by `tasks.process_photo_upload` (async task)
+  * Expires after 5 minutes
+  * Value is `{'status': 'failed'}` if Photo no longer exists when task runs
+  * Value is `{'status': 'failed', 'plant_id': {plant.uuid}` if exception occurs while generating thumbnail
+  * Value is `{'status': 'complete', 'plant_id': {plant.uuid}, 'photo_details': {photo.get_details()}}` if thumbnail generated successfully
