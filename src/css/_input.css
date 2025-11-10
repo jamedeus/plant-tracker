@@ -16,9 +16,12 @@
     border-radius: var(--radius-field);
     border-width: var(--border);
     background-color: var(--color-base-100);
+    @apply outline-2 outline-transparent ease-in;
+    transition-property: outline-color border-color;
+    transition-duration: 200ms;
 
     &:focus, &:focus-within {
-        @apply outline-2 outline-accent border-accent;
+        @apply outline-accent border-accent;
     }
 
     /* Chromium: remove extra space before calendar icon */
@@ -40,9 +43,12 @@
     border-radius: var(--radius-field);
     border-width: var(--border);
     background-color: var(--color-base-100);
+    @apply outline-2 outline-transparent ease-in;
+    transition-property: outline-color border-color;
+    transition-duration: 200ms;
 
     &:focus, &:focus-within {
-        @apply outline-2 outline-accent border-accent;
+        @apply outline-accent border-accent;
     }
 }
 
