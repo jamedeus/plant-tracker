@@ -1072,6 +1072,64 @@ class UnnamedIndexRegressionTests(TestCase):
             ['Unnamed plant 1', 'Unnamed plant 3']
         )
 
+    def test_overview_shows_correct_unnamed_index_when_unnamed_plants_are_archived(self):
+        '''Issue: The plant and group with_overview_annotation methods assumed
+        queryset contained all plants/groups owned by user and simply counted
+        unnamed plants/groups in the queryset. When unnamed plants/groups were
+        archived they no longer appeared in the overview page queryset (and the
+        archived overview queryset only contained these, not non-archived ones).
+        This caused the incorrect indices for all unnamed plants/groups created
+        after the archived ones. Example: If "Unnamed plant 3" was archived then
+        "Unnamed plant 4" would become "Unnamed plant 3" on the overview.
+
+        The with_overview_annotation method now uses a subquery to count all
+        unnamed plants owned by the user, even if they are not in the queryset.
+        '''
+
+        # Create 3 unnamed plants and groups with creation times 1 minute apart
+        user = get_default_user()
+        plants = []
+        groups = []
+        now = timezone.now()
+        for offset in range(3):
+            timestamp = now + timedelta(minutes=offset)
+            plant = Plant.objects.create(uuid=uuid4(), user=user)
+            plant.created=timestamp
+            plant.save()
+            plants.append(plant)
+            group = Group.objects.create(uuid=uuid4(), user=user)
+            group.created=timestamp
+            group.save()
+            groups.append(group)
+
+        # Archive Unnamed plant 2 and Unnamed group 2
+        plants[1].archived = True
+        plants[1].save()
+        groups[1].archived = True
+        groups[1].save()
+
+        # Build overview state, confirm plants and groups have correct indices
+        state = build_overview_state(user)
+        self.assertEqual(
+            [plant['display_name'] for plant in state['plants'].values()],
+            ['Unnamed plant 1', 'Unnamed plant 3']
+        )
+        self.assertEqual(
+            [group['display_name'] for group in state['groups'].values()],
+            ['Unnamed group 1', 'Unnamed group 3']
+        )
+
+        # Build archived overview state, confirm plants and groups have correct indices
+        state = build_overview_state(user, archived=True)
+        self.assertEqual(
+            list(state['plants'].values())[0]['display_name'],
+            'Unnamed plant 2'
+        )
+        self.assertEqual(
+            list(state['groups'].values())[0]['display_name'],
+            'Unnamed group 2'
+        )
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):
