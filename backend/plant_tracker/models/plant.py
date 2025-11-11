@@ -10,7 +10,7 @@ from django.core.files.storage import default_storage
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.functions import JSONObject, Cast
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import F, Case, When, Value, Subquery, OuterRef, Exists, JSONField
+from django.db.models import F, Subquery, OuterRef, Exists, JSONField
 
 from .annotations import unnamed_index_annotation
 
@@ -23,19 +23,12 @@ if TYPE_CHECKING:  # pragma: no cover
 class PlantQueryset(models.QuerySet):
     '''Custom queryset methods for the Plant model.'''
 
-    def with_is_unnamed_annotation(self):
-        '''Adds is_unnamed attribute (True if no name or species, default False).'''
-        return self.annotate(
-            is_unnamed=Case(
-                When(name__isnull=True, species__isnull=True, then=Value(True)),
-                default=Value(False)
-            )
-        )
-
     def with_unnamed_index_annotation(self):
-        '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
-        return self.annotate(**unnamed_index_annotation())
-
+        '''Adds unnamed_index attribute (sequential ints) if name and species are null.'''
+        return self.annotate(**unnamed_index_annotation(
+            self.model,
+            null_fields=["name", "species"]
+        ))
 
     def with_last_watered_time_annotation(self):
         '''Adds last_watered_time attribute (most-recent WaterEvent timestamp).'''
@@ -103,8 +96,6 @@ class PlantQueryset(models.QuerySet):
             self
                 # Consistent order so unnamed plant index doesn't shift
                 .order_by('created')
-                # Label unnamed plants with no species (gets sequential name)
-                .with_is_unnamed_annotation()
                 # Add unnamed_index (used to build "Unnamed plant <index>" names)
                 .with_unnamed_index_annotation()
                 # Add last_watered_time

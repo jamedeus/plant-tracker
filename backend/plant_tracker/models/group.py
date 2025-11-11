@@ -4,8 +4,8 @@
 
 from django.db import models
 from django.conf import settings
+from django.db.models import Count
 from django.utils.functional import cached_property
-from django.db.models import Case, When, Value, Count
 
 from .events import WaterEvent, FertilizeEvent
 from .annotations import unnamed_index_annotation
@@ -14,18 +14,12 @@ from .annotations import unnamed_index_annotation
 class GroupQueryset(models.QuerySet):
     '''Custom queryset methods for the Group model.'''
 
-    def with_is_unnamed_annotation(self):
-        '''Adds is_unnamed attribute (True if no name or location, default False).'''
-        return self.annotate(
-            is_unnamed=Case(
-                When(name__isnull=True, location__isnull=True, then=Value(True)),
-                default=Value(False)
-            )
-        )
-
     def with_unnamed_index_annotation(self):
-        '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
-        return self.annotate(**unnamed_index_annotation())
+        '''Adds unnamed_index attribute (sequential ints) if name and location are null.'''
+        return self.annotate(**unnamed_index_annotation(
+            self.model,
+            null_fields=["name", "location"]
+        ))
 
     def with_group_plant_count_annotation(self):
         '''Adds plant_count attribute (number of plants in group).'''
@@ -38,8 +32,6 @@ class GroupQueryset(models.QuerySet):
         return (
             self
                 .order_by('created')
-                # Label unnamed groups with no location (gets sequential name)
-                .with_is_unnamed_annotation()
                 # Add unnamed_index (used to build "Unnamed group <index>" names)
                 .with_unnamed_index_annotation()
                 # Add plant_count (number of plants in group)

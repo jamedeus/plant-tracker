@@ -3,7 +3,7 @@
 import threading
 from uuid import uuid4
 from types import NoneType
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.utils import timezone
@@ -14,7 +14,11 @@ from django.db import IntegrityError, connections
 from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
 
-from .get_state_views import build_overview_state, get_overview_state
+from .get_state_views import (
+    build_manage_group_state,
+    build_overview_state,
+    get_overview_state
+)
 from .models import (
     Group,
     Plant,
@@ -932,6 +936,141 @@ class ViewRegressionTests(TestCase):
             'uuid': str(test_id)
         })
         self.assertEqual(Plant.objects.count(), 2)
+
+
+class UnnamedIndexRegressionTests(TestCase):
+    def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
+        # Revert back to SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = True
+
+    def test_manage_group_state_uses_global_unnamed_indices(self):
+        '''Issue: build_manage_group_state uses plant with_overview_annotation
+        method to annotate unnamed_index on all plants with no name or species.
+        This was originally for the overview state (where queryset contains all
+        plants owned by user) and simply counted unnamed plants in the queryset.
+        When it was called on the manage_group queryset (only contains plants in
+        group) the unnamed plant indices started at 1 even if this did not match
+        the global unnamed index (ie if the first unnamed plant in the group was
+        "Unnamed plant 3" it would become "Unnamed plant 1").
+
+        The with_overview_annotation method now uses a subquery to count all
+        unnamed plants owned by the user, even if they are not in the queryset.
+        '''
+
+        # Create group
+        user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=user)
+
+        # Create 5 unnamed plants with creation times 1 minute apart
+        plants = []
+        now = timezone.now()
+        for offset in range(5):
+            plant = Plant.objects.create(uuid=uuid4(), user=user)
+            plant.created=now + timedelta(minutes=offset)
+            plant.save()
+            plants.append(plant)
+
+        # Add Unnamed plant 2 and Unnamed plant 4 to group
+        for index in (1, 3):
+            plants[index].group = group
+            plants[index].save(update_fields=['group'])
+
+        # Build manage_group state, confirm plants have correct display_name
+        state = build_manage_group_state(group)
+        self.assertEqual(
+            state['plants'][str(plants[1].uuid)]['display_name'],
+            'Unnamed plant 2'
+        )
+        self.assertEqual(
+            state['plants'][str(plants[3].uuid)]['display_name'],
+            'Unnamed plant 4'
+        )
+
+    def test_bulk_add_plants_to_group_response_uses_global_unnamed_indices(self):
+        '''Issue: /bulk_add_plants_to_group uses plant with_overview_annotation
+        method to annotate unnamed_index on all plants with no name or species.
+        This was originally for the overview state (where queryset contains all
+        plants owned by user) and simply counted unnamed plants in the queryset.
+        When it was called on the /bulk_add_plants_to_group queryset (only
+        contains plants in request payload) the unnamed plant indices started at
+        1 even if this did not match the global unnamed index (ie if the first
+        unnamed plant was "Unnamed plant 3" it would become "Unnamed plant 1").
+        This caused incorrect names to appear on the frontend.
+
+        The with_overview_annotation method now uses a subquery to count all
+        unnamed plants owned by the user, even if they are not in the queryset.
+        '''
+
+        # Create group
+        user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=user)
+
+        # Create 5 unnamed plants with creation times 1 minute apart
+        plants = []
+        now = timezone.now()
+        for offset in range(5):
+            plant = Plant.objects.create(uuid=uuid4(), user=user)
+            plant.created=now + timedelta(minutes=offset)
+            plant.save()
+            plants.append(plant)
+
+        # Add Unnamed plant 2 and Unnamed plant 4 to group
+        response = JSONClient().post('/bulk_add_plants_to_group', {
+            'group_id': group.uuid,
+            'plants': [plants[1].uuid, plants[3].uuid]
+        })
+
+        # Confirm response contains correct names (not Unnamed plant 1 and 2)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [plant['display_name'] for plant in response.json()['added']],
+            ['Unnamed plant 2', 'Unnamed plant 4']
+        )
+
+    def test_bulk_remove_plants_from_group_preserves_unnamed_indices(self):
+        '''Issue: /bulk_remove_plants_from_group uses plant with_overview_annotation
+        method to annotate unnamed_index on all plants with no name or species.
+        This was originally for the overview state (where queryset contains all
+        plants owned by user) and simply counted unnamed plants in the queryset.
+        When it was called on the /bulk_remove_plants_from_group queryset (only
+        contains plants in request payload) the unnamed plant indices started at
+        1 even if this did not match the global unnamed index (ie if the first
+        unnamed plant was "Unnamed plant 3" it would become "Unnamed plant 1").
+        This did not cause issues but would if frontend used the response.
+
+        The with_overview_annotation method now uses a subquery to count all
+        unnamed plants owned by the user, even if they are not in the queryset.
+        '''
+
+        # Create group
+        user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=user)
+
+        # Create 5 unnamed plants with creation times 1 minute apart, add to group
+        plants = []
+        now = timezone.now()
+        for offset in range(5):
+            plant = Plant.objects.create(uuid=uuid4(), user=user)
+            plant.created=now + timedelta(minutes=offset)
+            plant.group = group
+            plant.save()
+            plants.append(plant)
+
+        # Remove Unnamed plant 2 and Unnamed plant 4 from group
+        response = JSONClient().post('/bulk_remove_plants_from_group', {
+            'group_id': group.uuid,
+            'plants': [plants[0].uuid, plants[2].uuid]
+        })
+
+        # Confirm response contains correct names (not Unnamed plant 1 and 2)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [plant['display_name'] for plant in response.json()['removed']],
+            ['Unnamed plant 1', 'Unnamed plant 3']
+        )
 
 
 class CachedStateRegressionTests(TestCase):
