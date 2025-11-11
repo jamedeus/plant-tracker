@@ -221,10 +221,9 @@ class SqlQueriesPerPageTests(TestCase):
     def test_manage_plant_page(self):
         '''Loading a manage_plant page should make 1 database query.
 
-        Requesting the manage plant state should make:
-        - 6 queries if Plant has no photos
-        - 4 queries if Plant has photos (no query for photo)
-        - 4 queries if Plant has default_photo (no query for photo)
+        Requesting the manage plant state should make 5 queries regardless of
+        whether plant is named (no extra query for unnamed index) or has photos
+        (no extra query for last photo when annotation is None).
         '''
         plant = Plant.objects.all()[0]
 
@@ -232,25 +231,25 @@ class SqlQueriesPerPageTests(TestCase):
             response = self.client.get(f'/manage/{plant.uuid}')
             self.assertEqual(response.status_code, 200)
 
-        # Request state, confirm 6 queries
-        with self.assertNumQueries(6):
+        # Request state (no name or photos), confirm 5 queries
+        with self.assertNumQueries(5):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
 
+        # Set name, request again (name, no photos), confirm still 5 queries
         plant.name = 'has name'
         plant.save()
-
-        with self.assertNumQueries(6):
+        with self.assertNumQueries(5):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
 
-        # Add photo, confirm 5 queries (no most-recent query, has annotation)
+        # Add photo, confirm still 5 queries (no most-recent query, has annotation)
         photo = Photo.objects.create(
             photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
         )
@@ -272,14 +271,16 @@ class SqlQueriesPerPageTests(TestCase):
 
     def test_manage_group_page(self):
         '''Loading a manage_group page should make 1 database query.
-        Requesting the manage group state should make 4 queries.
+
+        Requesting the manage group state should make 4 queries regardless of
+        whether group is named (no extra query for unnamed index).
         '''
         group = Group.objects.all()[0]
         with self.assertNumQueries(1):
             response = self.client.get(f'/manage/{group.uuid}')
             self.assertEqual(response.status_code, 200)
 
-        # Request state, confirm 4 queries
+        # Request state (no name), confirm 4 queries
         with self.assertNumQueries(4):
             response = self.client.get(
                 f'/get_manage_state/{group.uuid}',

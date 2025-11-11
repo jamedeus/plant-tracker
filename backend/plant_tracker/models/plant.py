@@ -20,6 +20,17 @@ if TYPE_CHECKING:  # pragma: no cover
     from .events import DivisionEvent
 
 
+# Placeholder returned by get_default_photo_details when no photos exist
+DEFAULT_PHOTO_DETAILS_PLACEHOLDER = {
+    'set': False,
+    'timestamp': None,
+    'photo': None,
+    'thumbnail': None,
+    'preview': None,
+    'key': None
+}
+
+
 class PlantQueryset(models.QuerySet):
     '''Custom queryset methods for the Plant model.'''
 
@@ -379,6 +390,8 @@ class Plant(models.Model):
                     'preview': default_storage.url(self.last_photo_details['preview']),
                     'key': self.last_photo_details['key']
                 }
+            # Annotation is None: no photos, skip query below
+            return DEFAULT_PHOTO_DETAILS_PLACEHOLDER
 
         # Query from database if no annotation
         try:
@@ -387,14 +400,7 @@ class Plant(models.Model):
                 **self.photo_set.all().order_by('-timestamp')[0].get_details()
             )
         except IndexError:
-            return {
-                'set': False,
-                'timestamp': None,
-                'photo': None,
-                'thumbnail': None,
-                'preview': None,
-                'key': None
-            }
+            return DEFAULT_PHOTO_DETAILS_PLACEHOLDER
 
     @cached_property
     def default_photo_details(self):
