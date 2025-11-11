@@ -241,7 +241,7 @@ def edit_plant_details(user, plant, data, **kwargs):
     '''
 
     # Check if plant was unnamed before editing
-    unnamed_before = not plant.name and not plant.species
+    unnamed_before = plant.is_unnamed()
 
     # Overwrite database params with user values (remove extra whitespace)
     plant.name = data["name"]
@@ -255,11 +255,9 @@ def edit_plant_details(user, plant, data, **kwargs):
     except ValidationError as error:
         return JsonResponse({"error": error.message_dict}, status=400)
 
-    # Check if plant is unnamed after editing
-    unnamed_after = not plant.name and not plant.species
     # Clear cached overview state if plant was named or unnamed (need to update
     # all sequential "Unnamed plant n" display names)
-    if unnamed_before ^ unnamed_after:
+    if unnamed_before ^ plant.is_unnamed():
         cache.delete(f'overview_state_{user.pk}')
     # Otherwise update edited plant details in cached overview state
     else:
@@ -290,7 +288,7 @@ def edit_group_details(user, group, data, **kwargs):
     '''
 
     # Check if group was unnamed before editing
-    unnamed_before = not group.name and not group.location
+    unnamed_before = group.is_unnamed()
 
     # Overwrite database params with user values
     group.name = data["name"]
@@ -303,11 +301,9 @@ def edit_group_details(user, group, data, **kwargs):
     except ValidationError as error:
         return JsonResponse({"error": error.message_dict}, status=400)
 
-    # Check if group is unnamed after editing
-    unnamed_after = not group.name and not group.location
     # Clear cached overview state if group was named or unnamed (need to update
     # all sequential "Unnamed group n" display names)
-    if unnamed_before ^ unnamed_after:
+    if unnamed_before ^ group.is_unnamed():
         cache.delete(f'overview_state_{user.pk}')
     # Otherwise update edited group details in cached overview state
     else:

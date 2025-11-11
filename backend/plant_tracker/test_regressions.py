@@ -1144,7 +1144,7 @@ class UnnamedIndexRegressionTests(TestCase):
         # Create 2 unnamed plants
         user = get_default_user()
         plant1 = Plant.objects.create(uuid=uuid4(), user=user)
-        plant2 = Plant.objects.create(uuid=uuid4(), user=user)
+        Plant.objects.create(uuid=uuid4(), user=user)
 
         # Confirm initial names in overview state
         state = get_overview_state(user)
@@ -1199,7 +1199,7 @@ class UnnamedIndexRegressionTests(TestCase):
         # Create 2 unnamed groups
         user = get_default_user()
         group1 = Group.objects.create(uuid=uuid4(), user=user)
-        group2 = Group.objects.create(uuid=uuid4(), user=user)
+        Group.objects.create(uuid=uuid4(), user=user)
 
         # Confirm initial names in overview state
         state = get_overview_state(user)
@@ -1252,7 +1252,7 @@ class UnnamedIndexRegressionTests(TestCase):
         # Create 2 unnamed plants
         user = get_default_user()
         plant1 = Plant.objects.create(uuid=uuid4(), user=user)
-        plant2 = Plant.objects.create(uuid=uuid4(), user=user)
+        Plant.objects.create(uuid=uuid4(), user=user)
 
         # Confirm initial names in overview state
         state = get_overview_state(user)
@@ -1288,7 +1288,7 @@ class UnnamedIndexRegressionTests(TestCase):
         # Create 2 unnamed groups
         user = get_default_user()
         group1 = Group.objects.create(uuid=uuid4(), user=user)
-        group2 = Group.objects.create(uuid=uuid4(), user=user)
+        Group.objects.create(uuid=uuid4(), user=user)
 
         # Confirm initial names in overview state
         state = get_overview_state(user)
