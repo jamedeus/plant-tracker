@@ -444,6 +444,29 @@ class EndpointStateUpdateTests(TestCase):
             0
         )
 
+    def test_bulk_delete_unnamed_plants(self):
+        '''The cached overview state should clear when an unnamed plant is
+        deleted (changes unnamed index of other plants).
+        '''
+
+        # Confirm plants are in cached overview state
+        plant1_uuid = str(self.plant1.uuid)
+        plant2_uuid = str(self.plant2.uuid)
+        self.assertTrue(plant1_uuid in self.load_cached_overview_state()['plants'])
+        self.assertTrue(plant2_uuid in self.load_cached_overview_state()['plants'])
+
+        # Delete plants with /bulk_delete_plants_and_groups endpoint
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [
+                plant1_uuid,
+                plant2_uuid
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state was cleared
+        self.assertIsNone(self.load_cached_overview_state())
+
     def test_bulk_archive_plants(self):
         '''The cached overview state should update when a plant is deleted.'''
 
@@ -503,6 +526,29 @@ class EndpointStateUpdateTests(TestCase):
         self.assertFalse(group1_uuid in updated_overview_state['groups'])
         self.assertFalse(group2_uuid in updated_overview_state['groups'])
         self.assertEqual(len(updated_overview_state['groups']), 0)
+
+    def test_bulk_delete_unnamed_groups(self):
+        '''The cached overview state should clear when an unnamed group is
+        deleted (changes unnamed index of other groups).
+        '''
+
+        # Confirm groups are in cached overview state
+        group1_uuid = str(self.group1.uuid)
+        group2_uuid = str(self.group2.uuid)
+        self.assertTrue(group1_uuid in self.load_cached_overview_state()['groups'])
+        self.assertTrue(group2_uuid in self.load_cached_overview_state()['groups'])
+
+        # Delete groups with /bulk_delete_plants_and_groups endpoint
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [
+                group1_uuid,
+                group2_uuid
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state was cleared
+        self.assertIsNone(self.load_cached_overview_state())
 
     def test_bulk_archive_groups(self):
         '''The cached overview state should update and the cached group state
