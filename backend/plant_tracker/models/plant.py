@@ -264,6 +264,10 @@ class Plant(models.Model):
     def __str__(self):
         return f"{self.get_display_name()} ({self.uuid})"
 
+    def is_unnamed(self):
+        '''Returns True if plant is unnamed (has no name or species).'''
+        return not self.name and not self.species
+
     def get_display_name(self):
         '''Returns frontend display string determined from attributes.
         If name attribute is set returns name attribute.

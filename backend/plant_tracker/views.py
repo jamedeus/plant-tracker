@@ -336,19 +336,30 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
     deleted = []
     failed = []
     groups_to_update = []
+    cache_cleared = False
 
     plants = Plant.objects.filter(uuid__in=data["uuids"]).select_related("user", "group")
     groups = Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
+
+    # Clear cached overview state if unnamed plant/group is being deleted
+    # (need to update all sequential "Unnamed plant/group n" display names)
+    for instance in chain(plants, groups):
+        if instance.is_unnamed():
+            cache.delete(f'overview_state_{user.pk}')
+            cache_cleared = True
+            break
+
     for instance in chain(plants, groups):
         # Make sure instance owned by user
         if instance.user == user:
             # If plant is in group: save group (need to update number of plants)
-            if hasattr(instance, 'group') and instance.group:
+            if not cache_cleared and hasattr(instance, 'group') and instance.group:
                 if instance.group not in groups_to_update:
                     groups_to_update.append(instance.group)
             deleted.append(instance.uuid)
-            # Remove from cached overview state
-            remove_instance_from_cached_overview_state(instance)
+            # Remove from cached overview state (unless it was already cleared)
+            if not cache_cleared:
+                remove_instance_from_cached_overview_state(instance)
         else:
             failed.append(instance.uuid)
 
@@ -371,7 +382,8 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
 
     # Update show_archive bool in cached overview state (remove archived
     # overview link from dropdown if last archived plant/group deleted)
-    update_cached_overview_state_show_archive_bool(user)
+    if not cache_cleared:
+        update_cached_overview_state_show_archive_bool(user)
 
     return JsonResponse(
         {"deleted": deleted, "failed": failed},

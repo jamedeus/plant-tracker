@@ -377,6 +377,13 @@ class EndpointStateUpdateTests(TestCase):
     def test_bulk_delete_plants(self):
         '''The cached overview state should update when a plant is deleted.'''
 
+        # Simulate existing plants with name or species set (not unnamed)
+        self.plant1.name = 'Plant 1'
+        self.plant1.save()
+        self.plant2.species = 'Fittonia'
+        self.plant2.save()
+        build_overview_state(self.user)
+
         # Confirm plants are in cached overview state
         plant1_uuid = str(self.plant1.uuid)
         plant2_uuid = str(self.plant2.uuid)
@@ -402,6 +409,13 @@ class EndpointStateUpdateTests(TestCase):
         '''The cached overview state should update the number of plants in a
         group when one of the plants is deleted.
         '''
+
+        # Simulate existing plants with name or species set (not unnamed)
+        self.plant1.name = 'Plant 1'
+        self.plant1.save()
+        self.plant2.species = 'Fittonia'
+        self.plant2.save()
+        build_overview_state(self.user)
 
         # Add plant1 to group1 with /add_plant_to_group endpoint
         response = self.client.post('/add_plant_to_group', {
@@ -460,7 +474,14 @@ class EndpointStateUpdateTests(TestCase):
         should be deleted when a group is deleted.
         '''
 
-        # Confirm groups are in cached overview state, have own cached states
+        # Simulate existing groups with name or location set (not unnamed)
+        self.group1.name = 'Group 1'
+        self.group1.save()
+        self.group2.location = 'Outside'
+        self.group2.save()
+        build_overview_state(self.user)
+
+        # Confirm groups are in cached overview state
         group1_uuid = str(self.group1.uuid)
         group2_uuid = str(self.group2.uuid)
         initial_overview_state = self.load_cached_overview_state()

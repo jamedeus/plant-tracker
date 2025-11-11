@@ -1238,6 +1238,78 @@ class UnnamedIndexRegressionTests(TestCase):
             ['Unnamed group 1', 'Unnamed group 2']
         )
 
+    def test_overview_updates_unnamed_index_when_unnamed_plant_is_deleted(self):
+        '''Issue: The /bulk_delete_plants_and_groups endpoint only removed the
+        deleted items from cached overview state. When an unnamed plant was
+        deleted the indices of all other unnamed plants decremented, but this
+        was not reflected in the cached state. This caused incorrect names to
+        be shown on the overview page.
+
+        The /bulk_delete_plants_and_groups endpoint now clears cached overview
+        state when an unnamed plant is deleted (rebuilds next time page loaded).
+        '''
+
+        # Create 2 unnamed plants
+        user = get_default_user()
+        plant1 = Plant.objects.create(uuid=uuid4(), user=user)
+        plant2 = Plant.objects.create(uuid=uuid4(), user=user)
+
+        # Confirm initial names in overview state
+        state = get_overview_state(user)
+        self.assertEqual(
+            [plant['display_name'] for plant in state['plants'].values()],
+            ['Unnamed plant 1', 'Unnamed plant 2']
+        )
+
+        # Delete first plant
+        response = JSONClient().post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(plant1.uuid)]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm name of second plant updated in overview state (after rebuilt)
+        state = get_overview_state(user)
+        self.assertEqual(
+            [plant['display_name'] for plant in state['plants'].values()],
+            ['Unnamed plant 1']
+        )
+
+    def test_overview_updates_unnamed_index_when_unnamed_group_is_deleted(self):
+        '''Issue: The /bulk_delete_groups_and_groups endpoint only removed the
+        deleted items from cached overview state. When an unnamed group was
+        deleted the indices of all other unnamed groups decremented, but this
+        was not reflected in the cached state. This caused incorrect names to
+        be shown on the overview page.
+
+        The /bulk_delete_groups_and_groups endpoint now clears cached overview
+        state when an unnamed group is deleted (rebuilds next time page loaded).
+        '''
+
+        # Create 2 unnamed groups
+        user = get_default_user()
+        group1 = Group.objects.create(uuid=uuid4(), user=user)
+        group2 = Group.objects.create(uuid=uuid4(), user=user)
+
+        # Confirm initial names in overview state
+        state = get_overview_state(user)
+        self.assertEqual(
+            [group['display_name'] for group in state['groups'].values()],
+            ['Unnamed group 1', 'Unnamed group 2']
+        )
+
+        # Delete first group
+        response = JSONClient().post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(group1.uuid)]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm name of second group updated in overview state (after rebuilt)
+        state = get_overview_state(user)
+        self.assertEqual(
+            [group['display_name'] for group in state['groups'].values()],
+            ['Unnamed group 1']
+        )
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):
@@ -1587,7 +1659,7 @@ class CachedStateRegressionTests(TestCase):
         # Create group with 1 plant
         user = get_default_user()
         group = Group.objects.create(uuid=uuid4(), user=user)
-        plant = Plant.objects.create(uuid=uuid4(), group=group, user=user)
+        plant = Plant.objects.create(uuid=uuid4(), group=group, user=user, name='Plant 1')
 
         # Confirm overview state says 1 plant in group
         self.assertEqual(
