@@ -114,6 +114,8 @@ class PlantQueryset(models.QuerySet):
         '''
         return (
             self
+                # Add unnamed_index (used to build "Unnamed plant <index>" names)
+                .with_unnamed_index_annotation()
                 # Add last_watered_time
                 .with_last_watered_time_annotation()
                 # Add last_fertilized_time

@@ -42,7 +42,13 @@ class GroupQueryset(models.QuerySet):
         '''Adds full annotations for manage_grouo page (avoids separate queries
         for number of plants in group and user).
         '''
-        return self.with_group_plant_count_annotation().select_related('user')
+        return (
+            self
+                # Add unnamed_index (used to build "Unnamed group <index>" names)
+                .with_unnamed_index_annotation()
+                .with_group_plant_count_annotation()
+                .select_related('user')
+        )
 
     def get_by_uuid(self, uuid):
         '''Returns Group model instance matching UUID, or None if not found.'''

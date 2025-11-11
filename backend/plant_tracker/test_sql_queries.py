@@ -222,10 +222,9 @@ class SqlQueriesPerPageTests(TestCase):
         '''Loading a manage_plant page should make 1 database query.
 
         Requesting the manage plant state should make:
-        - 7 queries if Plant is unnamed (has to get unnamed_index + photo)
-        - 6 queries if Plant is named (no extra query for name, query for photo)
-        - 4 queries if Plant is named and has photos (no query for photo)
-        - 4 queries if Plant is named and has default_photo (no query for photo)
+        - 6 queries if Plant has no photos
+        - 4 queries if Plant has photos (no query for photo)
+        - 4 queries if Plant has default_photo (no query for photo)
         '''
         plant = Plant.objects.all()[0]
 
@@ -233,8 +232,8 @@ class SqlQueriesPerPageTests(TestCase):
             response = self.client.get(f'/manage/{plant.uuid}')
             self.assertEqual(response.status_code, 200)
 
-        # Request state, confirm 7 queries
-        with self.assertNumQueries(7):
+        # Request state, confirm 6 queries
+        with self.assertNumQueries(6):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
@@ -273,25 +272,22 @@ class SqlQueriesPerPageTests(TestCase):
 
     def test_manage_group_page(self):
         '''Loading a manage_group page should make 1 database query.
-
-        Requesting the manage group state should make:
-        - 5 queries if Group is unnamed (has to get unnamed_index)
-        - 4 queries if Group is named (no extra query for name)
+        Requesting the manage group state should make 4 queries.
         '''
         group = Group.objects.all()[0]
         with self.assertNumQueries(1):
             response = self.client.get(f'/manage/{group.uuid}')
             self.assertEqual(response.status_code, 200)
 
-        # Request state, confirm 5 queries
-        with self.assertNumQueries(5):
+        # Request state, confirm 4 queries
+        with self.assertNumQueries(4):
             response = self.client.get(
                 f'/get_manage_state/{group.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
 
-        # Set name, request state again, confirm 4 queries
+        # Set name, request state again, confirm still 4 queries
         group.name = 'has name'
         group.save()
         with self.assertNumQueries(4):
