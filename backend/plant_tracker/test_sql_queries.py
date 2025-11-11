@@ -33,7 +33,7 @@ from .models import (
     NoteEvent,
     UserEmailVerification
 )
-from .get_state_views import build_overview_state
+from .get_state_views import get_overview_state
 from .view_decorators import get_default_user, events_map
 from .auth_views import email_verification_token_generator
 from .unit_test_helpers import (
@@ -344,15 +344,15 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         # Save default user to use in tests
         cls.default_user = get_default_user()
 
-        # Make sure overview state is cached (avoid full build when updated)
-        build_overview_state(cls.default_user)
-
     def setUp(self):
         # Clear cached user instance
         get_default_user.cache_clear()
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
+
+        # Make sure overview state is cached (avoid full build when updated)
+        get_overview_state(self.default_user)
 
     def test_get_qr_codes(self):
         '''/get_qr_codes should not query the database.'''

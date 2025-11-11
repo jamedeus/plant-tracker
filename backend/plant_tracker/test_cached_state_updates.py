@@ -242,10 +242,15 @@ class EndpointStateUpdateTests(TestCase):
     def test_edit_plant_details(self):
         '''The cached overview state should update when plant details are edited.'''
 
-        # Confirm plant has no details in cached overview state
+        # Simulate existing plant with species set
+        self.plant1.species = 'typo'
+        self.plant1.save()
+        build_overview_state(self.user)
+
+        # Confirm plant has correct details in cached overview state
         initial_overview_state = self.load_cached_overview_state()
         self.assertIsNone(initial_overview_state['plants'][str(self.plant1.uuid)]['name'])
-        self.assertIsNone(initial_overview_state['plants'][str(self.plant1.uuid)]['species'])
+        self.assertEqual(initial_overview_state['plants'][str(self.plant1.uuid)]['species'], 'typo')
         self.assertIsNone(initial_overview_state['plants'][str(self.plant1.uuid)]['description'])
         self.assertIsNone(initial_overview_state['plants'][str(self.plant1.uuid)]['pot_size'])
 
@@ -266,13 +271,56 @@ class EndpointStateUpdateTests(TestCase):
         self.assertEqual(updated_overview_state['plants'][str(self.plant1.uuid)]['description'], '300 feet tall')
         self.assertEqual(updated_overview_state['plants'][str(self.plant1.uuid)]['pot_size'], 4)
 
+    def test_edit_plant_details_unnamed_plant(self):
+        '''The cached overview state should clear when an unnamed plant is named
+        or a named plant is unnamed (changes unnamed index of other plants).
+        '''
+
+        # Confirm cached overview state exists
+        self.assertIsNotNone(self.load_cached_overview_state())
+
+        # Name a previously unnamed plant with /edit_plant_details endpoint
+        response = self.client.post('/edit_plant_details', {
+            'plant_id': self.plant1.uuid,
+            'name': 'plant name',
+            'species': 'Giant Sequoia',
+            'description': '300 feet tall',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state was cleared
+        self.assertIsNone(self.load_cached_overview_state())
+
+        # Rebuild overview state, confirm re-cached
+        build_overview_state(self.user)
+        self.assertIsNotNone(self.load_cached_overview_state())
+
+        # Remove plant name and species with /edit_plant_details endpoint
+        response = self.client.post('/edit_plant_details', {
+            'plant_id': self.plant1.uuid,
+            'name': '',
+            'species': '',
+            'description': '300 feet tall',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state was cleared
+        self.assertIsNone(self.load_cached_overview_state())
+
     def test_edit_group_details(self):
         '''The cached overview state should update when group details are edited.'''
+
+        # Simulate existing group with location set
+        self.group1.location = 'Inside'
+        self.group1.save()
+        build_overview_state(self.user)
 
         # Confirm no details in cached overview state
         initial_overview_state = self.load_cached_overview_state()
         self.assertIsNone(initial_overview_state['groups'][str(self.group1.uuid)]['name'])
-        self.assertIsNone(initial_overview_state['groups'][str(self.group1.uuid)]['location'])
+        self.assertEqual(initial_overview_state['groups'][str(self.group1.uuid)]['location'], 'Inside')
         self.assertIsNone(initial_overview_state['groups'][str(self.group1.uuid)]['description'])
 
         # Edit group details with /edit_group_details endpoint
@@ -280,8 +328,7 @@ class EndpointStateUpdateTests(TestCase):
             'group_id': self.group1.uuid,
             'name': 'group name',
             'location': 'Outside',
-            'description': 'Back yard',
-            'pot_size': '4'
+            'description': 'Back yard'
         })
         self.assertEqual(response.status_code, 200)
 
@@ -290,6 +337,42 @@ class EndpointStateUpdateTests(TestCase):
         self.assertEqual(updated_overview_state['groups'][str(self.group1.uuid)]['name'], 'group name')
         self.assertEqual(updated_overview_state['groups'][str(self.group1.uuid)]['location'], 'Outside')
         self.assertEqual(updated_overview_state['groups'][str(self.group1.uuid)]['description'], 'Back yard')
+
+    def test_edit_group_details_unnamed_group(self):
+        '''The cached overview state should clear when an unnamed group is named
+        or a named group is unnamed (changes unnamed index of other groups).
+        '''
+
+        # Confirm cached overview state exists
+        self.assertIsNotNone(self.load_cached_overview_state())
+
+        # Name a previously unnamed group with /edit_group_details endpoint
+        response = self.client.post('/edit_group_details', {
+            'group_id': self.group1.uuid,
+            'name': 'group name',
+            'location': 'Outside',
+            'description': 'Back yard'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state was cleared
+        self.assertIsNone(self.load_cached_overview_state())
+
+        # Rebuild overview state, confirm re-cached
+        build_overview_state(self.user)
+        self.assertIsNotNone(self.load_cached_overview_state())
+
+        # Remove group name and location with /edit_group_details endpoint
+        response = self.client.post('/edit_group_details', {
+            'group_id': self.group1.uuid,
+            'name': '',
+            'location': '',
+            'description': 'Back yard'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state was cleared
+        self.assertIsNone(self.load_cached_overview_state())
 
     def test_bulk_delete_plants(self):
         '''The cached overview state should update when a plant is deleted.'''

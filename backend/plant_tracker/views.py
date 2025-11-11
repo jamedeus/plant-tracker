@@ -234,11 +234,14 @@ def change_uuid(instance, data, **kwargs):
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body()
 @clean_payload_data
-def edit_plant_details(plant, data, **kwargs):
+def edit_plant_details(user, plant, data, **kwargs):
     '''Updates description attributes of existing Plant entry.
     Requires JSON POST with plant_id (uuid), name, species, description
     (string), and pot_size (int) keys.
     '''
+
+    # Check if plant was unnamed before editing
+    unnamed_before = not plant.name and not plant.species
 
     # Overwrite database params with user values (remove extra whitespace)
     plant.name = data["name"]
@@ -249,7 +252,17 @@ def edit_plant_details(plant, data, **kwargs):
     try:
         plant.clean_fields(exclude=['user', 'group', 'default_photo'])
         plant.save()
-        # Update details in cached overview state
+    except ValidationError as error:
+        return JsonResponse({"error": error.message_dict}, status=400)
+
+    # Check if plant is unnamed after editing
+    unnamed_after = not plant.name and not plant.species
+    # Clear cached overview state if plant was named or unnamed (need to update
+    # all sequential "Unnamed plant n" display names)
+    if unnamed_before ^ unnamed_after:
+        cache.delete(f'overview_state_{user.pk}')
+    # Otherwise update edited plant details in cached overview state
+    else:
         update_cached_overview_details_keys(
             plant,
             {
@@ -261,9 +274,6 @@ def edit_plant_details(plant, data, **kwargs):
             }
         )
 
-    except ValidationError as error:
-        return JsonResponse({"error": error.message_dict}, status=400)
-
     # Return modified payload with new display_name
     del data["plant_id"]
     data["display_name"] = plant.get_display_name()
@@ -274,10 +284,13 @@ def edit_plant_details(plant, data, **kwargs):
 @requires_json_post(["group_id", "name", "location", "description"])
 @get_group_from_post_body()
 @clean_payload_data
-def edit_group_details(group, data, **kwargs):
+def edit_group_details(user, group, data, **kwargs):
     '''Updates description attributes of existing Group entry.
     Requires JSON POST with group_id (uuid), name, and location (string) keys.
     '''
+
+    # Check if group was unnamed before editing
+    unnamed_before = not group.name and not group.location
 
     # Overwrite database params with user values
     group.name = data["name"]
@@ -287,7 +300,17 @@ def edit_group_details(group, data, **kwargs):
     try:
         group.clean_fields(exclude=['user'])
         group.save()
-        # Update details in cached overview state
+    except ValidationError as error:
+        return JsonResponse({"error": error.message_dict}, status=400)
+
+    # Check if group is unnamed after editing
+    unnamed_after = not group.name and not group.location
+    # Clear cached overview state if group was named or unnamed (need to update
+    # all sequential "Unnamed group n" display names)
+    if unnamed_before ^ unnamed_after:
+        cache.delete(f'overview_state_{user.pk}')
+    # Otherwise update edited group details in cached overview state
+    else:
         update_cached_overview_details_keys(
             group,
             {
@@ -297,8 +320,6 @@ def edit_group_details(group, data, **kwargs):
                 'description': group.description
             }
         )
-    except ValidationError as error:
-        return JsonResponse({"error": error.message_dict}, status=400)
 
     # Return modified payload with new display_name
     del data["group_id"]

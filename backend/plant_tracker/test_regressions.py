@@ -1130,6 +1130,114 @@ class UnnamedIndexRegressionTests(TestCase):
             'Unnamed group 2'
         )
 
+    def test_overview_updates_unnamed_indices_when_plant_is_named_or_unnamed(self):
+        '''Issue: The /edit_plant_details endpoint only updates the edited item
+        in cached overview state. When an unnamed plant is named the indices of
+        all other unnamed plants decrement (or increment when a named plant's
+        name is removed), but this was not reflected in the cached state. This
+        caused incorrect names to be shown on the overview page.
+
+        The /edit_plant_details endpoint now clears cached overview state when
+        an unnamed item is named or a named item becomes unnamed.
+        '''
+
+        # Create 2 unnamed plants
+        user = get_default_user()
+        plant1 = Plant.objects.create(uuid=uuid4(), user=user)
+        plant2 = Plant.objects.create(uuid=uuid4(), user=user)
+
+        # Confirm initial names in overview state
+        state = get_overview_state(user)
+        self.assertEqual(
+            [plant['display_name'] for plant in state['plants'].values()],
+            ['Unnamed plant 1', 'Unnamed plant 2']
+        )
+
+        # Give the first plant a name
+        JSONClient().post('/edit_plant_details', {
+            'plant_id': str(plant1.uuid),
+            'name': 'new plant name',
+            'species': '',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Confirm second plant is now "Unnamed plant 1" in overview state
+        state = get_overview_state(user)
+        self.assertEqual(
+            [plant['display_name'] for plant in state['plants'].values()],
+            ['new plant name', 'Unnamed plant 1']
+        )
+
+        # Remove first plant's name
+        JSONClient().post('/edit_plant_details', {
+            'plant_id': str(plant1.uuid),
+            'name': '',
+            'species': '',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Confirm second plant is now "Unnamed plant 2" in overview state
+        state = get_overview_state(user)
+        self.assertEqual(
+            [plant['display_name'] for plant in state['plants'].values()],
+            ['Unnamed plant 1', 'Unnamed plant 2']
+        )
+
+    def test_overview_updates_unnamed_indices_when_group_is_named_or_unnamed(self):
+        '''Issue: The /edit_group_details endpoint only updates the edited item
+        in cached overview state. When an unnamed group is named the indices of
+        all other unnamed groups decrement (or increment when a named group's
+        name is removed), but this was not reflected in the cached state. This
+        caused incorrect names to be shown on the overview page.
+
+        The /edit_group_details endpoint now clears cached overview state when
+        an unnamed item is named or a named item becomes unnamed.
+        '''
+
+        # Create 2 unnamed groups
+        user = get_default_user()
+        group1 = Group.objects.create(uuid=uuid4(), user=user)
+        group2 = Group.objects.create(uuid=uuid4(), user=user)
+
+        # Confirm initial names in overview state
+        state = get_overview_state(user)
+        self.assertEqual(
+            [group['display_name'] for group in state['groups'].values()],
+            ['Unnamed group 1', 'Unnamed group 2']
+        )
+
+        # Give the first group a name
+        JSONClient().post('/edit_group_details', {
+            'group_id': str(group1.uuid),
+            'name': 'new group name',
+            'location': '',
+            'description': ''
+        })
+
+        # Confirm second group is now "Unnamed group 1" in overview state
+        state = get_overview_state(user)
+        self.assertEqual(
+            [group['display_name'] for group in state['groups'].values()],
+            ['new group name', 'Unnamed group 1']
+        )
+
+        # Remove first group's name
+        JSONClient().post('/edit_group_details', {
+            'group_id': str(group1.uuid),
+            'name': '',
+            'location': '',
+            'description': ''
+        })
+
+        # Confirm second group is now "Unnamed group 2" in overview state
+        state = get_overview_state(user)
+        self.assertEqual(
+            [group['display_name'] for group in state['groups'].values()],
+            ['Unnamed group 1', 'Unnamed group 2']
+        )
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):
