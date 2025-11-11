@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRevalidator } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
@@ -37,7 +37,7 @@ function App({ initialState }) {
     };
 
     // Used to change page after successful registration
-    const navigate = useNavigate();
+    const { revalidate } = useRevalidator();
 
     const handleRegister = async () => {
         const endpoint = visibleForm === 0 ? '/register_plant' : '/register_group';
@@ -48,8 +48,8 @@ function App({ initialState }) {
                 visibleForm === 0 ? plantFormRef.current : groupFormRef.current
             ))
         };
-        // Reload route (switch to manage page) if successful
-        const onSuccess = () => navigate(window.location.pathname);
+        // Revalidate route (switch to manage page) if successful
+        const onSuccess = () => revalidate();
         await sendPostRequest(endpoint, payload, onSuccess);
     };
 

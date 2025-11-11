@@ -3,6 +3,13 @@ import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 import { mockContext } from './mockContext';
 
+// Mock useRevalidator to return a mock (no react-router provider in tests)
+const mockRevalidate = jest.fn();
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useRevalidator: () => ({ revalidate: mockRevalidate })
+}));
+
 describe('App', () => {
     beforeAll(() => {
         // Mock /get_plant_species_options response (requested when page loads)

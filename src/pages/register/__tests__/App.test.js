@@ -7,6 +7,13 @@ import { ErrorModal } from 'src/components/ErrorModal';
 import App from '../App';
 import { mockContext } from './mockContext';
 
+// Mock useRevalidator to return a mock (no react-router provider in tests)
+const mockRevalidate = jest.fn();
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useRevalidator: () => ({ revalidate: mockRevalidate })
+}));
+
 // Mock the global navigate function used by sendPostRequest
 jest.mock('src/navigate', () => ({
     navigate: jest.fn(),
@@ -32,6 +39,7 @@ describe('App', () => {
         // Mock window.location (querystring parsed when page loads)
         mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
         globalMockNavigate.mockReset();
+        mockRevalidate.mockReset();
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
