@@ -127,7 +127,7 @@ class Group(models.Model):
 
         # Query database for unnamed index if annotation not present
         unnamed_index = Group.objects.filter(
-            user=self.user,
+            user_id=self.user_id,
             name__isnull=True,
             location__isnull=True,
             created__lte=self.created

@@ -298,7 +298,7 @@ class Plant(models.Model):
 
         # Query database for unnamed index if annotation not present
         unnamed_index = Plant.objects.filter(
-            user=self.user,
+            user_id=self.user_id,
             name__isnull=True,
             species__isnull=True,
             created__lte=self.created

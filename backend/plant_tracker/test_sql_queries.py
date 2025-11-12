@@ -253,6 +253,7 @@ class SqlQueriesPerPageTests(TestCase):
         photo = Photo.objects.create(
             photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
         )
+        photo.finalize_upload()
         with self.assertNumQueries(5):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
@@ -262,6 +263,30 @@ class SqlQueriesPerPageTests(TestCase):
 
         # Set default, confirm 5 queries (no most-recent query, has annotation)
         plant.default_photo = photo
+        plant.save()
+        with self.assertNumQueries(5):
+            response = self.client.get(
+                f'/get_manage_state/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
+            self.assertEqual(response.status_code, 200)
+
+        # Add plant to a group
+        group = Group.objects.first()
+        plant.group = group
+        plant.save()
+
+        # Request again, confirm makes 6 queries (+1 to get unnamed group name)
+        with self.assertNumQueries(6):
+            response = self.client.get(
+                f'/get_manage_state/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
+            self.assertEqual(response.status_code, 200)
+
+        # Name group, request again, confirm makes 5 queries
+        group.name = 'Test group'
+        group.save()
         with self.assertNumQueries(5):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
