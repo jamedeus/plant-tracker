@@ -894,15 +894,11 @@ def add_plant_photos(request, user):
     if request.method != "POST":
         return JsonResponse({'error': 'must post FormData'}, status=405)
 
-    plant = (
-        Plant.objects
-            .select_related('user', 'default_photo')
-            .get_by_uuid(request.POST.get("plant_id"))
-    )
+    plant = Plant.objects.get_by_uuid(request.POST.get("plant_id"))
     if not plant:
         return JsonResponse({'error': 'unable to find plant'}, status=404)
 
-    if user != plant.user:
+    if user.pk != plant.user_id:
         return JsonResponse(
             {"error": "plant is owned by a different user"},
             status=403

@@ -56,7 +56,6 @@ def process_photo_upload(photo_pk):
     try:
         photo = Photo.objects.select_related(
             'plant',
-            'plant__default_photo',
             'plant__user'
         ).annotate(
             # Get primary key of most-recent photo associated with plant
@@ -100,7 +99,7 @@ def process_photo_upload(photo_pk):
 
     # Update thumbnail in cached overview state if default photo is not set and
     # photo being processed is most-recent
-    if not photo.plant.default_photo and photo.plant_last_photo_pk == photo.pk:
+    if not photo.plant.default_photo_id and photo.plant_last_photo_pk == photo.pk:
         update_cached_overview_details_keys(
             photo.plant,
             {'thumbnail': photo.thumbnail.url}
