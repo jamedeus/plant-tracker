@@ -937,6 +937,64 @@ class ViewRegressionTests(TestCase):
         })
         self.assertEqual(Plant.objects.count(), 2)
 
+    def test_get_photo_upload_status_returns_urls_of_photos_owned_by_other_users(self):
+        '''Issue: /get_photo_upload_status originally confirmed that requesting
+        user owned photos by comparing the plant_id key in cached status object
+        with plant_id in request body (decorator would have returned 403 if user
+        did not own plant). When 1a2a16c8 added database fallback (queries any
+        photo ID from database without checking ownership) it became possible to
+        craft a malicious request that returned URLs of photos owned by any user
+        as long as their cached status had expired (5 minutes after upload).
+        '''
+
+        # Disable SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = False
+
+        # Create 2 users with 1 plant each
+        user_model = get_user_model()
+        user1 = user_model.objects.create_user(
+            username='user1',
+            password='123',
+            email='user1@gmail.com'
+        )
+        user1_plant = Plant.objects.create(user=user1, uuid=uuid4())
+        user2 = user_model.objects.create_user(
+            username='user2',
+            password='123',
+            email='user2@gmail.com'
+        )
+        user2_plant = Plant.objects.create(user=user2, uuid=uuid4())
+
+        # Create photo owned by user1, confirm no cached status object
+        photo = Photo.objects.create(
+            photo=create_mock_photo(name='photo1.jpg'),
+            plant=user1_plant
+        )
+        photo.finalize_upload()
+        self.assertIsNone(cache.get(f"pending_photo_upload_{photo.pk}"))
+
+        # Sign in as user2
+        client = JSONClient()
+        client.login(username='user2', password='123')
+
+        # Send malicious request with user2's plant_id (bypass initial ownership
+        # check) but user1's photo_id (could randomly guess or walk sequentially)
+        response = client.post('/get_photo_upload_status', {
+            'plant_id': str(user2_plant.uuid),
+            'photo_ids': [photo.pk]
+        })
+
+        # Confirm response does not reveal photo URLs
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'photos': [
+                {
+                    'status': 'unknown',
+                    'photo_id': photo.pk
+                }
+            ]
+        })
+
 
 class UnnamedIndexRegressionTests(TestCase):
     def setUp(self):

@@ -972,16 +972,17 @@ def get_photo_upload_status(plant, data, **kwargs):
         # Cache not found, query photo from database
         else:
             try:
-                photo = Photo.objects.select_related('plant').get(pk=photo_id)
-                status = {
-                    'photo_id': photo_id,
-                    'plant_id': str(photo.plant.uuid),
-                    'status': 'processing' if photo.pending else 'complete'
-                }
-                if not photo.pending:
-                    status['photo_details'] = photo.get_details()
-                statuses.append(status)
-                continue
+                photo = Photo.objects.get(pk=photo_id)
+                if photo.plant_id == plant.pk:
+                    status = {
+                        'photo_id': photo_id,
+                        'plant_id': str(plant.uuid),
+                        'status': 'processing' if photo.pending else 'complete'
+                    }
+                    if not photo.pending:
+                        status['photo_details'] = photo.get_details()
+                    statuses.append(status)
+                    continue
             except Photo.DoesNotExist:
                 pass
 
