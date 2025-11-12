@@ -61,7 +61,7 @@ def build_manage_group_state(group):
     '''Builds state parsed by manage_group react app and returns.'''
 
     plants = Plant.objects.filter(
-        user=group.user,
+        user_id=group.user_id,
         group_id=group.pk
     ).with_overview_annotation()
 
@@ -248,7 +248,7 @@ def get_manage_state(request, uuid, user):
 
     if model_type == 'plant':
         plant = Plant.objects.get_with_manage_plant_annotation(uuid)
-        if plant.user != user:
+        if plant.user_id != user.pk:
             return JsonResponse(
                 {"error": "plant is owned by a different user"},
                 status=403
@@ -261,7 +261,7 @@ def get_manage_state(request, uuid, user):
 
     if model_type == 'group':
         group = Group.objects.get_with_manage_group_annotation(uuid)
-        if group.user != user:
+        if group.user_id != user.pk:
             return JsonResponse(
                 {"error": "group is owned by a different user"},
                 status=403

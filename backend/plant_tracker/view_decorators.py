@@ -147,11 +147,14 @@ def get_plant_from_post_body(select_related=None, **kwargs):
                     {"error": "plant_id key is not a valid UUID"},
                     status=400
                 )
-            if 'user' in kwargs and plant.user != kwargs['user']:
-                return JsonResponse(
-                    {"error": "plant is owned by a different user"},
-                    status=403
-                )
+            if 'user' in kwargs:
+                if plant.user_id != kwargs['user'].pk:
+                    return JsonResponse(
+                        {"error": "plant is owned by a different user"},
+                        status=403
+                    )
+                # Add user to plant (avoids extra query)
+                plant.user = kwargs['user']
             return func(plant=plant, data=data, **kwargs)
         return wrapper
     return decorator
@@ -187,11 +190,14 @@ def get_group_from_post_body(select_related=None, **kwargs):
                     {"error": "group_id key is not a valid UUID"},
                     status=400
                 )
-            if 'user' in kwargs and group.user != kwargs['user']:
-                return JsonResponse(
-                    {"error": "group is owned by a different user"},
-                    status=403
-                )
+            if 'user' in kwargs:
+                if group.user_id != kwargs['user'].pk:
+                    return JsonResponse(
+                        {"error": "group is owned by a different user"},
+                        status=403
+                    )
+                # Add user to group (avoids extra query)
+                group.user = kwargs['user']
             return func(group=group, data=data, **kwargs)
         return wrapper
     return decorator
@@ -212,11 +218,7 @@ def get_plant_or_group_by_uuid(uuid, annotate=False):
     if not model_type:
         return None
     if annotate:
-        return (
-            model_type_map[model_type].objects
-                .select_related('user')
-                .get_with_overview_annotation(uuid)
-        )
+        return model_type_map[model_type].objects.get_with_overview_annotation(uuid)
     return model_type_map[model_type].objects.get_by_uuid(uuid)
 
 
@@ -249,11 +251,14 @@ def get_qr_instance_from_post_body(annotate=False, **kwargs):
                     {"error": "uuid key is not a valid UUID"},
                     status=400
                 )
-            if 'user' in kwargs and instance.user != kwargs['user']:
-                return JsonResponse(
-                    {"error": "instance is owned by a different user"},
-                    status=403
-                )
+            if 'user' in kwargs:
+                if instance.user_id != kwargs['user'].pk:
+                    return JsonResponse(
+                        {"error": "instance is owned by a different user"},
+                        status=403
+                    )
+                # Add user to instance (avoids extra query)
+                instance.user = kwargs['user']
             return func(instance=instance, data=data, **kwargs)
         return wrapper
     return decorator

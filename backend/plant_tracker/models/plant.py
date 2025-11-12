@@ -139,8 +139,6 @@ class PlantQueryset(models.QuerySet):
                 .select_related('group')
                 # Include parent plant + division event if plant was divided
                 .select_related('divided_from', 'divided_from_event')
-                # Include user (avoids extra query to check ownership)
-                .select_related('user')
                 # Add <event_type>_timetamps attributes containing lists of
                 # event timestamps (sorted chronologically at database level)
                 .annotate(
@@ -176,7 +174,7 @@ class PlantQueryset(models.QuerySet):
 
     def get_by_uuid(self, uuid):
         '''Returns Plant model instance matching UUID, or None if not found.'''
-        return self.filter(uuid=uuid).select_related('user').first()
+        return self.filter(uuid=uuid).first()
 
     def get_with_overview_annotation(self, uuid):
         '''Takes UUID, returns matching Plant with full overview annotations.'''

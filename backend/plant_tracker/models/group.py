@@ -47,12 +47,11 @@ class GroupQueryset(models.QuerySet):
                 # Add unnamed_index (used to build "Unnamed group <index>" names)
                 .with_unnamed_index_annotation()
                 .with_group_plant_count_annotation()
-                .select_related('user')
         )
 
     def get_by_uuid(self, uuid):
         '''Returns Group model instance matching UUID, or None if not found.'''
-        return self.filter(uuid=uuid).select_related('user').first()
+        return self.filter(uuid=uuid).first()
 
     def get_with_overview_annotation(self, uuid):
         '''Takes UUID, returns matching Group with full overview annotations.'''
