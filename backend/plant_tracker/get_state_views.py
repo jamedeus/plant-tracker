@@ -78,16 +78,16 @@ def build_manage_group_state(group):
     }
 
 
-def has_archived_entries(user):
-    '''Takes user, returns True if user has at least 1 archived plant or group.'''
+def has_archived_entries(user_id):
+    '''Takes user_id, returns True if user has at least 1 archived plant or group.'''
     plant_queryset = (
         Plant.objects
-        .filter(user=user, archived=True)
+        .filter(user_id=user_id, archived=True)
         .values('uuid')[:1]
     )
     group_queryset = (
         Group.objects
-        .filter(user=user, archived=True)
+        .filter(user_id=user_id, archived=True)
         .values('uuid')[:1]
     )
     return bool(plant_queryset.union(group_queryset))
@@ -111,20 +111,20 @@ def build_overview_state(user, archived=False):
     '''
 
     # Only show link to archived overview if at least 1 archived plant or group
-    show_archive = has_archived_entries(user)
+    show_archive = has_archived_entries(user.pk)
 
     # Don't build archived overview state if no archived plants or groups
     if archived and not show_archive:
         return None
 
     groups = Group.objects.filter(
-        user=user,
+        user_id=user.pk,
         archived=archived
     ).with_overview_annotation()
 
     plants = (
         Plant.objects
-            .filter(user=user, archived=archived)
+            .filter(user_id=user.pk, archived=archived)
             .with_overview_annotation()
             # Prefetch Group entry if plant is in a group (copy from annotated
             # group queryset above, avoids extra queries)
@@ -161,6 +161,16 @@ def get_overview_state(user):
     return state
 
 
+def get_overview_state_from_instance(instance):
+    '''Takes plant or group, returns overview state for user that owns entry.
+    Loads state from cache if present, builds from database if not found.
+    '''
+    state = cache.get(f'overview_state_{instance.user_id}')
+    if state is None:
+        state = build_overview_state(instance.user)
+    return state
+
+
 def get_instance_overview_state_key(instance):
     '''Returns overview state key for a Plant (plants) or Group (groups).'''
     return f'{instance._meta.model_name}s'
@@ -174,11 +184,11 @@ def update_cached_overview_details_keys(instance, update_dict):
 
     Cannot use to add new entries to cached state (only updates if uuid exists).
     '''
-    state = get_overview_state(instance.user)
+    state = get_overview_state_from_instance(instance)
     key = get_instance_overview_state_key(instance)
     if str(instance.uuid) in state[key]:
         state[key][str(instance.uuid)].update(update_dict)
-        cache.set(f'overview_state_{instance.user.pk}', state, None)
+        cache.set(f'overview_state_{instance.user_id}', state, None)
 
 
 def add_instance_to_cached_overview_state(instance):
@@ -189,24 +199,24 @@ def add_instance_to_cached_overview_state(instance):
         remove_instance_from_cached_overview_state(instance)
     else:
         key = get_instance_overview_state_key(instance)
-        state = get_overview_state(instance.user)
+        state = get_overview_state_from_instance(instance)
         state[key][str(instance.uuid)] = instance.get_details()
-        cache.set(f'overview_state_{instance.user.pk}', state, None)
+        cache.set(f'overview_state_{instance.user_id}', state, None)
 
 
 def remove_instance_from_cached_overview_state(instance):
     '''Takes plant or group entry, removes from cached overview state.'''
     key = get_instance_overview_state_key(instance)
-    state = get_overview_state(instance.user)
+    state = get_overview_state_from_instance(instance)
     if str(instance.uuid) in state[key]:
         del state[key][str(instance.uuid)]
-        cache.set(f'overview_state_{instance.user.pk}', state, None)
+        cache.set(f'overview_state_{instance.user_id}', state, None)
 
 
 def update_cached_overview_state_show_archive_bool(user):
     '''Updates show_archive bool in cached overview state.'''
     state = get_overview_state(user)
-    state['show_archive'] = has_archived_entries(user)
+    state['show_archive'] = has_archived_entries(user.pk)
     cache.set(f'overview_state_{user.pk}', state, None)
 
 

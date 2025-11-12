@@ -334,8 +334,8 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
     groups_to_update = []
     cache_cleared = False
 
-    plants = Plant.objects.filter(uuid__in=data["uuids"]).select_related("user", "group")
-    groups = Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
+    plants = Plant.objects.filter(uuid__in=data["uuids"]).select_related("group")
+    groups = Group.objects.filter(uuid__in=data["uuids"])
 
     # Clear cached overview state if unnamed plant/group is being deleted
     # (need to update all sequential "Unnamed plant/group n" display names)
@@ -347,7 +347,7 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
 
     for instance in chain(plants, groups):
         # Make sure instance owned by user
-        if instance.user == user:
+        if instance.user_id == user.pk:
             # If plant is in group: save group (need to update number of plants)
             if not cache_cleared and hasattr(instance, 'group') and instance.group:
                 if instance.group not in groups_to_update:
@@ -397,11 +397,11 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
     archived = []
     failed = []
 
-    plants = Plant.objects.filter(uuid__in=data["uuids"]).select_related("user")
-    groups = Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
+    plants = Plant.objects.filter(uuid__in=data["uuids"])
+    groups = Group.objects.filter(uuid__in=data["uuids"])
     for instance in chain(plants, groups):
         # Make sure instance owned by user
-        if instance.user == user:
+        if instance.user_id == user.pk:
             instance.archived = data["archived"]
             archived.append(instance.uuid)
             # Add to cached overview state if un-archived, remove if archived
@@ -488,7 +488,6 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
             .with_uuid_as_string_annotation()
             .with_last_watered_time_annotation()
             .with_last_fertilized_time_annotation()
-            .select_related("user")
     )
 
     # Get lists of UUIDs that were found and not found in database
@@ -752,7 +751,6 @@ def bulk_add_plants_to_group(user, group, data, **kwargs):
             .filter(uuid__in=data["plants"], user=user)
             .with_uuid_as_string_annotation()
             .with_overview_annotation()
-            .select_related("user")
     )
 
     # Get list of UUIDs that were not found in database
@@ -788,7 +786,6 @@ def bulk_remove_plants_from_group(user, data, group, **kwargs):
             .filter(uuid__in=data["plants"], user=user)
             .with_uuid_as_string_annotation()
             .with_overview_annotation()
-            .select_related("user")
     )
 
     # Get list of UUIDs that were not found in database
