@@ -193,8 +193,7 @@ class PlantQueryset(models.QuerySet):
             str(plant.uuid): plant.get_details()
             for plant in self.filter(user=user, archived=False)
                 .with_overview_annotation()
-                .select_related('group')
-            if plant.group is None
+            if plant.group_id is None
         }
 
 
