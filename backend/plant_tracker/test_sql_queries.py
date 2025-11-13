@@ -341,6 +341,53 @@ class SqlQueriesPerPageTests(TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+    def test_manage_plant_state_with_division_events(self):
+        '''Requesting the manage plant state for a plant with DivisionEvents
+        should make 7 queries regardless of the number of DivisionEvents or
+        child plants.
+        '''
+
+        # Create 1 DivisionEvent with 1 child plant
+        plant = Plant.objects.first()
+        event = DivisionEvent.objects.create(plant=plant, timestamp=timezone.now())
+        Plant.objects.create(
+            uuid=uuid4(),
+            user=get_default_user(),
+            name="Child 1",
+            divided_from=plant,
+            divided_from_event=event
+        )
+
+        # Request parent plant state, confirm 7 queries
+        with self.assertNumQueries(7):
+            response = self.client.get(
+                f'/get_manage_state/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
+            self.assertEqual(response.status_code, 200)
+
+        # Create another DivisionEvent with 2 child plants
+        event = DivisionEvent.objects.create(
+            plant=plant,
+            timestamp=datetime.fromisoformat('2024-04-21T00:13:37+00:00')
+        )
+        for i in range(0, 2):
+            Plant.objects.create(
+                uuid=uuid4(),
+                user=get_default_user(),
+                name=f"Child {i + 1}",
+                divided_from=plant,
+                divided_from_event=event
+            )
+
+        # Request parent plant state again, confirm still 7 queries
+        with self.assertNumQueries(7):
+            response = self.client.get(
+                f'/get_manage_state/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
+            self.assertEqual(response.status_code, 200)
+
     def test_manage_group_page(self):
         '''Loading a manage_group page should make 1 database query.
 

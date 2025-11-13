@@ -426,7 +426,7 @@ class Plant(models.Model):
                 {'name': child.display_name, 'uuid': str(child.uuid)}
                 for child in event.created_plants.all()
             ]
-            for event in self.divisionevent_set.all()
+            for event in self.divisionevent_set.prefetch_related('created_plants')
         }
 
     def _get_most_recent_timestamp(self, queryset):
