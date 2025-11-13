@@ -29,6 +29,7 @@ from .models import (
     FertilizeEvent,
     PruneEvent,
     RepotEvent,
+    DivisionEvent,
     Photo,
     NoteEvent,
     UserEmailVerification
@@ -185,6 +186,34 @@ class SqlQueriesPerPageTests(TestCase):
             response = self.client.get('/get_overview_state')
             self.assertEqual(response.status_code, 200)
 
+    def test_get_overview_page_state_with_photos(self):
+        '''Requesting the overview page state with no plants in groups should
+        make 4 queries whether plants have photos/default_photo or not.
+        '''
+
+        # Load with no cache and no photos, confirm 4 queries
+        cache.clear()
+        with self.assertNumQueries(4):
+            response = self.client.get('/get_overview_state')
+            self.assertEqual(response.status_code, 200)
+
+        # Add plant photo, confirm still 4 queries
+        plant = Plant.objects.all()[0]
+        photo = Photo.objects.create(photo=create_mock_photo(), plant=plant)
+        photo.finalize_upload()
+        cache.clear()
+        with self.assertNumQueries(4):
+            response = self.client.get('/get_overview_state')
+            self.assertEqual(response.status_code, 200)
+
+        # Set plant default photo, confirm still 4 queries
+        plant.default_photo = photo
+        plant.save()
+        cache.clear()
+        with self.assertNumQueries(4):
+            response = self.client.get('/get_overview_state')
+            self.assertEqual(response.status_code, 200)
+
     def test_archived_overview_page(self):
         '''Loading the archived overview should make 1 database query.
 
@@ -222,8 +251,9 @@ class SqlQueriesPerPageTests(TestCase):
         '''Loading a manage_plant page should make 1 database query.
 
         Requesting the manage plant state should make 5 queries regardless of
-        whether plant is named (no extra query for unnamed index) or has photos
-        (no extra query for last photo when annotation is None).
+        whether plant is named (no extra query for unnamed index), has photos
+        (no extra query for last photo when annotation is None) or has parent
+        (no extra query for parent details).
         '''
         plant = Plant.objects.all()[0]
 
@@ -290,6 +320,23 @@ class SqlQueriesPerPageTests(TestCase):
         with self.assertNumQueries(5):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
+                HTTP_ACCEPT='application/json'
+            )
+            self.assertEqual(response.status_code, 200)
+
+        # Create DivisionEvent + child plant
+        event = DivisionEvent.objects.create(plant=plant, timestamp=timezone.now())
+        child = Plant.objects.create(
+            uuid=uuid4(),
+            user=get_default_user(),
+            divided_from=plant,
+            divided_from_event=event
+        )
+
+        # Request child plant state, confirm 5 queries (no extra for parent)
+        with self.assertNumQueries(5):
+            response = self.client.get(
+                f'/get_manage_state/{child.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
