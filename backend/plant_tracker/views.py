@@ -389,19 +389,14 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
     Requires JSON POST with uuids (list of uuids) and archived (bool) keys.
     '''
     archived = []
-    failed = []
 
-    plants = Plant.objects.filter(uuid__in=data["uuids"])
-    groups = Group.objects.filter(uuid__in=data["uuids"])
+    plants = Plant.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
+    groups = Group.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
     for instance in chain(plants, groups):
-        # Make sure instance owned by user
-        if instance.user_id == user.pk:
-            instance.archived = data["archived"]
-            archived.append(instance.uuid)
-            # Add to cached overview state if un-archived, remove if archived
-            add_instance_to_cached_overview_state(instance)
-        else:
-            failed.append(instance.uuid)
+        archived.append(instance.uuid)
+        instance.archived = data["archived"]
+        # Add to cached overview state if un-archived, remove if archived
+        add_instance_to_cached_overview_state(instance)
 
     # Update all plants in 1 query, all groups in 1 query
     Plant.objects.bulk_update(plants, ["archived"])
@@ -411,7 +406,7 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
     update_cached_overview_state_show_archive_bool(user)
 
     return JsonResponse(
-        {"archived": archived, "failed": failed},
+        {"archived": archived},
         status=200 if archived else 400
     )
 

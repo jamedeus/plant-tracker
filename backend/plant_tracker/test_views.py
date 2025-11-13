@@ -361,7 +361,7 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {'archived': [str(plant_id), str(group_id)], 'failed': []}
+            {'archived': [str(plant_id), str(group_id)]}
         )
         self.assertEqual(Plant.objects.count(), 1)
         self.assertEqual(Group.objects.count(), 1)
@@ -378,10 +378,11 @@ class OverviewTests(TestCase):
             'archived': True
         })
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {'archived': [], 'failed': [str(plant.uuid)]}
-        )
+        self.assertEqual(response.json(), {'archived': []})
+
+        # Confirm plant was not archived
+        plant.refresh_from_db()
+        self.assertFalse(plant.archived)
 
 
 class ArchivedOverviewTests(TestCase):
