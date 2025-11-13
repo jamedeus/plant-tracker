@@ -979,7 +979,7 @@ def get_photo_upload_status(plant, data, **kwargs):
 
 @get_user_token
 @requires_json_post(["plant_id", "photos"])
-@get_plant_from_post_body(select_related='default_photo')
+@get_plant_from_post_body()
 def delete_plant_photos(plant, data, **kwargs):
     '''Deletes a list of Photos associated with a specific Plant.
     Requires JSON POST with plant_id (uuid) and photos (list of db keys).
@@ -995,8 +995,16 @@ def delete_plant_photos(plant, data, **kwargs):
     # Delete all found photos
     photos.delete()
 
-    # Update thumbnail unless default photo set (most-recent may have changed)
-    if not plant.default_photo:
+    # Default photo not set: update thumbnail (most-recent may have changed)
+    if not plant.default_photo_id:
+        update_cached_overview_details_keys(
+            plant,
+            {'thumbnail': plant.get_thumbnail_url()}
+        )
+    # Default photo deleted: update thumbnail
+    elif plant.default_photo_id in deleted:
+        # Prevent get_thumbnail_url reading cached entry (no longer exists)
+        plant.default_photo = None
         update_cached_overview_details_keys(
             plant,
             {'thumbnail': plant.get_thumbnail_url()}

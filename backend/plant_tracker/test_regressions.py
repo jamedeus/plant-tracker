@@ -1618,6 +1618,43 @@ class CachedStateRegressionTests(TestCase):
             }
         )
 
+    def test_cached_overview_state_not_updated_when_default_photo_is_deleted(self):
+        '''Issue: /delete_plant_photos updated cached overview state if default
+        photo was not set (most-recent photo may have changed) but not if it was
+        set. When the configured default photo was deleted the cached overview
+        state was not updated and continued to serve the URL of the deleted
+        photo (404 once browser loses cache).
+        '''
+
+        # Create test plant with default photo set
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        photo = Photo.objects.create(
+            photo=create_mock_photo(name='photo1.jpg'),
+            plant=plant
+        )
+        photo.finalize_upload()
+        plant.default_photo = photo
+        plant.save()
+
+        # Confirm cached overview state has correct thumbnail
+        build_overview_state(plant.user)
+        overview_state = cache.get(f'overview_state_{plant.user.pk}')
+        self.assertEqual(
+            overview_state['plants'][str(plant.uuid)]['thumbnail'],
+            '/media/user_1/thumbnails/photo1_thumb.webp'
+        )
+
+        # Delete configured default photo with /delete_plant_photos endpoint
+        response = JSONClient().post('/delete_plant_photos', {
+            'plant_id': str(plant.uuid),
+            'photos': [photo.pk]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm thumbnail was removed from cached overview state
+        overview_state = cache.get(f'overview_state_{plant.user.pk}')
+        self.assertIsNone(overview_state['plants'][str(plant.uuid)]['thumbnail'])
+
     def test_watering_plant_removes_group_key_from_cached_state(self):
         '''Issue: the manage_plant state `plant_details` key (dict returned by
         Plant.get_details) had an extra key `group` (added after building dict).
