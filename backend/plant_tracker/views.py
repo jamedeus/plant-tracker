@@ -345,7 +345,7 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
             break
 
     for instance in chain(plants, groups):
-        deleted.append(instance.uuid)
+        deleted.append(str(instance.uuid))
         if not cache_cleared:
             # Remove from cached overview state
             remove_instance_from_cached_overview_state(instance)
@@ -376,7 +376,7 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
         update_cached_overview_state_show_archive_bool(user)
 
     return JsonResponse(
-        {"deleted": deleted},
+        {"deleted": deleted, "failed": list(set(data["uuids"]) - set(deleted))},
         status=200 if deleted else 400
     )
 
@@ -393,7 +393,7 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
     plants = Plant.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
     groups = Group.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
     for instance in chain(plants, groups):
-        archived.append(instance.uuid)
+        archived.append(str(instance.uuid))
         instance.archived = data["archived"]
         # Add to cached overview state if un-archived, remove if archived
         add_instance_to_cached_overview_state(instance)
@@ -406,7 +406,7 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
     update_cached_overview_state_show_archive_bool(user)
 
     return JsonResponse(
-        {"archived": archived},
+        {"archived": archived, "failed": list(set(data["uuids"]) - set(archived))},
         status=200 if archived else 400
     )
 

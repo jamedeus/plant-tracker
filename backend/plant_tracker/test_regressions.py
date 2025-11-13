@@ -1037,7 +1037,10 @@ class ViewRegressionTests(TestCase):
 
         # Confirm response says nothing was deleted
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {'deleted': []})
+        self.assertEqual(
+            response.json(),
+            {'deleted': [], 'failed': [str(user1_plant.uuid), str(user1_group.uuid)]}
+        )
 
         # Confirm plant and group were not deleted
         self.assertEqual(Plant.objects.count(), 2)
