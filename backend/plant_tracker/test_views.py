@@ -317,7 +317,7 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {'deleted': [str(plant_id), str(group_id)], 'failed': []}
+            {'deleted': [str(plant_id), str(group_id)]}
         )
         self.assertEqual(Plant.objects.count(), 0)
         self.assertEqual(Group.objects.count(), 0)
@@ -331,10 +331,10 @@ class OverviewTests(TestCase):
             'uuids': [str(plant.uuid)]
         })
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {'deleted': [], 'failed': [str(plant.uuid)]}
-        )
+        self.assertEqual(response.json(), {'deleted': []})
+
+        # Confirm plant still in database
+        self.assertEqual(Plant.objects.count(), 1)
 
     def test_bulk_archive_plants_and_groups(self):
         # Create test plant and group, confirm both exist in database and are not archived

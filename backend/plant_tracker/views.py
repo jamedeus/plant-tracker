@@ -330,12 +330,11 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
     Requires JSON POST with uuids key (list of plant or group uuids).
     '''
     deleted = []
-    failed = []
-    groups_to_update = []
+    groups_to_update = set([])
     cache_cleared = False
 
-    plants = Plant.objects.filter(uuid__in=data["uuids"]).select_related("group")
-    groups = Group.objects.filter(uuid__in=data["uuids"])
+    plants = Plant.objects.filter(user_id=user.pk, uuid__in=data["uuids"]).select_related("group")
+    groups = Group.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
 
     # Clear cached overview state if unnamed plant/group is being deleted
     # (need to update all sequential "Unnamed plant/group n" display names)
@@ -346,18 +345,13 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
             break
 
     for instance in chain(plants, groups):
-        # Make sure instance owned by user
-        if instance.user_id == user.pk:
-            # If plant is in group: save group (need to update number of plants)
-            if not cache_cleared and hasattr(instance, 'group') and instance.group:
-                if instance.group not in groups_to_update:
-                    groups_to_update.append(instance.group)
-            deleted.append(instance.uuid)
-            # Remove from cached overview state (unless it was already cleared)
-            if not cache_cleared:
-                remove_instance_from_cached_overview_state(instance)
-        else:
-            failed.append(instance.uuid)
+        deleted.append(instance.uuid)
+        if not cache_cleared:
+            # Remove from cached overview state
+            remove_instance_from_cached_overview_state(instance)
+            # Plant in group: save group (need to update number of plants)
+            if instance.__class__ == Plant and instance.group:
+                groups_to_update.add(instance.group)
 
     # Delete all plants in 1 query, all groups in 1 query
     # Conditionals avoid unnecessary query for empty queryset
@@ -382,7 +376,7 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
         update_cached_overview_state_show_archive_bool(user)
 
     return JsonResponse(
-        {"deleted": deleted, "failed": failed},
+        {"deleted": deleted},
         status=200 if deleted else 400
     )
 

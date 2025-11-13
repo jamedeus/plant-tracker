@@ -995,6 +995,54 @@ class ViewRegressionTests(TestCase):
             ]
         })
 
+    def test_bulk_delete_plants_and_groups_will_delete_entries_owned_by_other_user(self):
+        '''Issue: /bulk_delete_plants_and_groups checked ownership of each entry
+        before removing it from cached overview state, but not before deleting
+        it. This could be used by a malicious user to delete plants and groups
+        owned by other users if they knew the UUID (can extract from QR code).
+        '''
+
+        # Disable SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = False
+
+        # Create 2 users with 1 plant and group each
+        user_model = get_user_model()
+        user1 = user_model.objects.create_user(
+            username='user1',
+            password='123',
+            email='user1@gmail.com'
+        )
+        user1_plant = Plant.objects.create(user=user1, uuid=uuid4())
+        user1_group = Group.objects.create(user=user1, uuid=uuid4())
+        user2 = user_model.objects.create_user(
+            username='user2',
+            password='123',
+            email='user2@gmail.com'
+        )
+        user2_plant = Plant.objects.create(user=user2, uuid=uuid4())
+        user2_group = Group.objects.create(user=user2, uuid=uuid4())
+
+        # Confirm 2 plants and 2 groups exist
+        self.assertEqual(Plant.objects.count(), 2)
+        self.assertEqual(Group.objects.count(), 2)
+
+        # Sign in as user2
+        client = JSONClient()
+        client.login(username='user2', password='123')
+
+        # Send malicious request with uuids of user1's plant and group
+        response = client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(user1_plant.uuid), str(user1_group.uuid)]
+        })
+
+        # Confirm response says nothing was deleted
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'deleted': []})
+
+        # Confirm plant and group were not deleted
+        self.assertEqual(Plant.objects.count(), 2)
+        self.assertEqual(Group.objects.count(), 2)
+
 
 class UnnamedIndexRegressionTests(TestCase):
     def setUp(self):
