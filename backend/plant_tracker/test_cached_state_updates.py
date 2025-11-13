@@ -993,7 +993,7 @@ class EndpointStateUpdateTests(TestCase):
         response = self.client.post('/delete_plant_photos', {
             'plant_id': str(self.plant1.uuid),
             'photos': [
-                Photo.objects.all()[0].pk
+                Photo.objects.first().pk
             ]
         })
 
@@ -1017,7 +1017,7 @@ class EndpointStateUpdateTests(TestCase):
             content_type=MULTIPART_CONTENT
         )
         self.assertEqual(response.status_code, 202)
-        older_photo = Photo.objects.all()[0]
+        older_photo = Photo.objects.first()
 
         # Confirm cached overview state used most-recent photo for thumbnail
         self.assertEqual(

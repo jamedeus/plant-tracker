@@ -146,8 +146,8 @@ class SqlQueriesPerPageTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
         # Add plant to group, request state again, confirm 5 queries
-        plant = Plant.objects.all()[0]
-        plant.group = Group.objects.all()[0]
+        plant = Plant.objects.first()
+        plant.group = Group.objects.first()
         plant.save()
         cache.clear()
         with self.assertNumQueries(5):
@@ -173,8 +173,8 @@ class SqlQueriesPerPageTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
         # Add plant to group, load again, confirm 5 queries
-        plant = Plant.objects.all()[0]
-        plant.group = Group.objects.all()[0]
+        plant = Plant.objects.first()
+        plant.group = Group.objects.first()
         plant.save()
         cache.clear()
         with self.assertNumQueries(5):
@@ -198,7 +198,7 @@ class SqlQueriesPerPageTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
         # Add plant photo, confirm still 4 queries
-        plant = Plant.objects.all()[0]
+        plant = Plant.objects.first()
         photo = Photo.objects.create(photo=create_mock_photo(), plant=plant)
         photo.finalize_upload()
         cache.clear()
@@ -223,8 +223,8 @@ class SqlQueriesPerPageTests(TestCase):
         '''
 
         # Archive 1 plant and 1 group
-        plant = Plant.objects.all()[0]
-        group = Group.objects.all()[0]
+        plant = Plant.objects.first()
+        group = Group.objects.first()
         plant.archived = True
         group.archived = True
         plant.save()
@@ -255,7 +255,7 @@ class SqlQueriesPerPageTests(TestCase):
         (no extra query for last photo when annotation is None) or has parent
         (no extra query for parent details).
         '''
-        plant = Plant.objects.all()[0]
+        plant = Plant.objects.first()
 
         with self.assertNumQueries(1):
             response = self.client.get(f'/manage/{plant.uuid}')
@@ -394,7 +394,7 @@ class SqlQueriesPerPageTests(TestCase):
         Requesting the manage group state should make 4 queries regardless of
         whether group is named (no extra query for unnamed index).
         '''
-        group = Group.objects.all()[0]
+        group = Group.objects.first()
         with self.assertNumQueries(1):
             response = self.client.get(f'/manage/{group.uuid}')
             self.assertEqual(response.status_code, 200)
@@ -1312,7 +1312,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 202)
 
         # Set plant default photo
-        plant.default_photo = plant.photo_set.all()[0]
+        plant.default_photo = plant.photo_set.first()
         plant.save()
 
         # Confirm makes 5 queries when 1 photo uploaded

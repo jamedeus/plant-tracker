@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 from django.db import models
 from django.apps import apps
 from django.conf import settings
+from django.db.models.functions import JSONObject
 from django.utils.functional import cached_property
 from django.core.files.storage import default_storage
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models.functions import JSONObject, Cast
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import F, Subquery, OuterRef, Exists, JSONField
 

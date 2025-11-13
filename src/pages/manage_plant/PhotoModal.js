@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { v4 as uuidv4 } from 'uuid';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded, pendingPhotosResolved } from './timelineSlice';

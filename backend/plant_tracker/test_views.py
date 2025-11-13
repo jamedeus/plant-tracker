@@ -348,8 +348,8 @@ class OverviewTests(TestCase):
         Group.objects.create(uuid=group_id, name='test group', user=default_user)
         self.assertEqual(Plant.objects.count(), 1)
         self.assertEqual(Group.objects.count(), 1)
-        self.assertFalse(Plant.objects.all()[0].archived)
-        self.assertFalse(Group.objects.all()[0].archived)
+        self.assertFalse(Plant.objects.first().archived)
+        self.assertFalse(Group.objects.first().archived)
 
         # Post both UUIDs to /bulk_archive_plants_and_groups
         response = self.client.post('/bulk_archive_plants_and_groups', {
@@ -368,8 +368,8 @@ class OverviewTests(TestCase):
         )
         self.assertEqual(Plant.objects.count(), 1)
         self.assertEqual(Group.objects.count(), 1)
-        self.assertTrue(Plant.objects.all()[0].archived)
-        self.assertTrue(Group.objects.all()[0].archived)
+        self.assertTrue(Plant.objects.first().archived)
+        self.assertTrue(Group.objects.first().archived)
 
         # Create plant owned by a different user
         user = user_model.objects.create_user(username='unittest', password='12345')
@@ -610,7 +610,7 @@ class RegistrationTests(TestCase):
 
         # Confirm RepotEvent was created for new plant with same timestamp
         self.assertEqual(RepotEvent.objects.count(), 1)
-        repot = RepotEvent.objects.all().first()
+        repot = RepotEvent.objects.first()
         self.assertEqual(repot.timestamp, new_plant.created)
         # Confirm RepotEvent has parent pot size for old, child pot size for new
         self.assertEqual(repot.old_pot_size, 8)
@@ -1331,8 +1331,8 @@ class ManagePlantEndpointTests(TestCase):
 
         # Confirm correct pot_size attributes on plant and event entries
         self.assertEqual(self.plant.pot_size, 6)
-        self.assertEqual(self.plant.repotevent_set.all()[0].old_pot_size, 4)
-        self.assertEqual(self.plant.repotevent_set.all()[0].new_pot_size, 6)
+        self.assertEqual(self.plant.repotevent_set.first().old_pot_size, 4)
+        self.assertEqual(self.plant.repotevent_set.first().new_pot_size, 6)
 
     def test_repot_plant_blank_new_pot_size(self):
         # Set starting pot_size
@@ -1362,7 +1362,7 @@ class ManagePlantEndpointTests(TestCase):
 
         # Confirm succeeded, get DivisionEvent entry
         self.assertEqual(response.status_code, 200)
-        division_event = self.plant.divisionevent_set.all().first()
+        division_event = self.plant.divisionevent_set.first()
 
         # Confirm response contains plant and DivisionEvent primary keys
         self.assertEqual(
@@ -2015,7 +2015,7 @@ class NoteEventEndpointTests(TestCase):
         self.assertEqual(NoteEvent.objects.count(), 1)
         self.assertEqual(self.plant.noteevent_set.count(), 1)
         self.assertEqual(
-            NoteEvent.objects.all()[0].text,
+            NoteEvent.objects.first().text,
             'plant is looking healthier than last week'
         )
 
@@ -2227,7 +2227,7 @@ class PlantPhotoEndpointTests(TestCase):
                     "photo": "/media/user_1/images/mock_photo.jpg",
                     "thumbnail": None,
                     "preview": None,
-                    "key": Photo.objects.all()[0].pk,
+                    "key": Photo.objects.first().pk,
                     "pending": True
                 }
             ]
@@ -2239,7 +2239,7 @@ class PlantPhotoEndpointTests(TestCase):
 
         # Confirm Photo.timestamp was set from exif DateTimeOriginal param
         self.assertEqual(
-            Photo.objects.all()[0].timestamp.strftime('%Y:%m:%d %H:%M:%S'),
+            Photo.objects.first().timestamp.strftime('%Y:%m:%d %H:%M:%S'),
             '2024:03:22 10:52:03'
         )
 
@@ -2268,9 +2268,9 @@ class PlantPhotoEndpointTests(TestCase):
         self.assertEqual(response.json()["failed"], [])
 
         # Confirm photo timestamp matches last_modified (not current time)
-        photo = Photo.objects.all()[0]
+        photo = Photo.objects.first()
         self.assertIsNotNone(photo)
-        self.assertEqual(Photo.objects.all()[0].timestamp, last_modified)
+        self.assertEqual(Photo.objects.first().timestamp, last_modified)
         self.assertEqual(
             response.json()["urls"][0]["timestamp"],
             last_modified.isoformat()

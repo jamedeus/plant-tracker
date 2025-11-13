@@ -571,7 +571,7 @@ class ViewRegressionTests(TestCase):
 
         # Confirm only the first plant was created in database
         self.assertEqual(Plant.objects.count(), 1)
-        self.assertEqual(Plant.objects.all()[0].name, 'test plant')
+        self.assertEqual(Plant.objects.first().name, 'test plant')
 
     def test_register_group_uncaught_exception_if_uuid_already_exists(self):
         '''Issue: The /register_group endpoint passed user input to the Group
@@ -616,7 +616,7 @@ class ViewRegressionTests(TestCase):
 
         # Confirm only the first group was created in database
         self.assertEqual(Group.objects.count(), 1)
-        self.assertEqual(Group.objects.all()[0].name, 'test group')
+        self.assertEqual(Group.objects.first().name, 'test group')
 
     def test_register_endpoints_allow_creating_plant_and_group_with_same_uuid(self):
         '''Issue: The unique constraint on Plant and Group uuid fields only
@@ -783,7 +783,7 @@ class ViewRegressionTests(TestCase):
             content_type=MULTIPART_CONTENT
         )
         self.assertEqual(response.status_code, 202)
-        photo = Photo.objects.all()[0]
+        photo = Photo.objects.first()
 
         # Request overview page state, should not raise exception
         response = self.client.get('/get_overview_state')
@@ -1019,8 +1019,8 @@ class ViewRegressionTests(TestCase):
             password='123',
             email='user2@gmail.com'
         )
-        user2_plant = Plant.objects.create(user=user2, uuid=uuid4())
-        user2_group = Group.objects.create(user=user2, uuid=uuid4())
+        Plant.objects.create(user=user2, uuid=uuid4())
+        Group.objects.create(user=user2, uuid=uuid4())
 
         # Confirm 2 plants and 2 groups exist
         self.assertEqual(Plant.objects.count(), 2)
@@ -1569,7 +1569,7 @@ class CachedStateRegressionTests(TestCase):
             content_type=MULTIPART_CONTENT
         )
         self.assertEqual(response.status_code, 202)
-        photo = Photo.objects.all()[0]
+        photo = Photo.objects.first()
 
         # Request state again, confirm default_photo updated
         response = self.client.get(
