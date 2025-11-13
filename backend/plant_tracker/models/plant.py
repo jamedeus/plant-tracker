@@ -95,10 +95,6 @@ class PlantQueryset(models.QuerySet):
             )
         )
 
-    def with_uuid_as_string_annotation(self):
-        '''Adds uuid_str attribute containing uuid field cast to string.'''
-        return self.annotate(uuid_str=Cast("uuid", models.CharField()))
-
     def with_overview_annotation(self):
         '''Adds annotations covering everything shown on overview page
         (last_watered, last_fertilized, photo thumbnail, unnamed index, etc).

@@ -470,17 +470,16 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
     Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys.
     '''
 
-    # Get all plants in 1 query, add uuid_str annotation (pre-convert to string)
+    # Get all plants in 1 query
     plants = (
         Plant.objects
             .filter(uuid__in=data["plants"], user=user)
-            .with_uuid_as_string_annotation()
             .with_last_watered_time_annotation()
             .with_last_fertilized_time_annotation()
     )
 
     # Get lists of UUIDs that were found and not found in database
-    found = [plant.uuid_str for plant in plants]
+    found = [str(plant.uuid) for plant in plants]
     not_found = list(set(data["plants"]) - set(found))
 
     # Create events for all plants in a single query
@@ -734,18 +733,15 @@ def bulk_add_plants_to_group(user, group, data, **kwargs):
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
 
-    # Get all plants in 1 query, add uuid_str annotation (pre-convert to string)
+    # Get all plants in 1 query
     plants = (
         Plant.objects
             .filter(uuid__in=data["plants"], user=user)
-            .with_uuid_as_string_annotation()
             .with_overview_annotation()
     )
 
     # Get list of UUIDs that were not found in database
-    failed = list(
-        set(data["plants"]) - set(plant.uuid_str for plant in plants)
-    )
+    failed = list(set(data["plants"]) - set(str(plant.uuid) for plant in plants))
 
     added = []
     for plant in plants:
@@ -769,18 +765,15 @@ def bulk_remove_plants_from_group(user, data, group, **kwargs):
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
 
-    # Get all plants in 1 query, add uuid_str annotation (pre-convert to string)
+    # Get all plants in 1 query
     plants = (
         Plant.objects
             .filter(uuid__in=data["plants"], user=user)
-            .with_uuid_as_string_annotation()
             .with_overview_annotation()
     )
 
     # Get list of UUIDs that were not found in database
-    failed = list(
-        set(data["plants"]) - set(plant.uuid_str for plant in plants)
-    )
+    failed = list(set(data["plants"]) - set(str(plant.uuid) for plant in plants))
 
     removed = []
     for plant in plants:
