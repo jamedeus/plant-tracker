@@ -390,12 +390,14 @@ DivisionEventMarker.propTypes = {
 // Takes parent plant display name and UUID, renders marker with link to parent
 const DividedFromMarker = ({ name, uuid, dateKey }) => {
     return (
-        <span className="m-2 text-sm md:text-base line-clamp-1">
-            <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
-            Divided from&nbsp;
+        <span className="flex flex-col m-2 text-sm md:text-base">
+            <span>
+                <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
+                Divided from:
+            </span>
             <Link
                 to={`/manage/${uuid}?scrollToDate=${dateKey}`}
-                className="plant-link"
+                className="ml-6 text-base md:text-lg plant-link"
                 discover="none"
             >
                 {name}

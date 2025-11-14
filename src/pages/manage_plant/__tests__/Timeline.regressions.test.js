@@ -158,7 +158,7 @@ describe('Timeline regressions', () => {
         );
 
         // Confirm "Divided from" marker and repot event are in timeline
-        expect(app.getByText('Divided from')).toBeInTheDocument();
+        expect(app.getByText(/Divided from/)).toBeInTheDocument();
         expect(app.container.querySelector('[data-tip="8:19 PM"]')).toBeInTheDocument();
         expect(app.container.querySelector('[data-tip="8:19 PM"]')).toHaveTextContent('Repoted');
 
@@ -185,7 +185,7 @@ describe('Timeline regressions', () => {
         expect(global.fetch).toHaveBeenCalled();
 
         // Confirm repot event was deleted, "Divided from" marker still exists
-        expect(app.getByText('Divided from')).toBeInTheDocument();
+        expect(app.getByText(/Divided from/)).toBeInTheDocument();
         expect(app.queryByTitle('Repoted')).toBeNull();
         expect(app.queryByTitle('2024-02-11T04:19:23+00:00')).toBeNull();
     });

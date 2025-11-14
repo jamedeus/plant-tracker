@@ -7081,36 +7081,38 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           data-testid="2024-02-10-notes"
         />
         <span
-          class="m-2 text-sm md:text-base line-clamp-1"
+          class="flex flex-col m-2 text-sm md:text-base"
         >
-          <svg
-            class="fa-inline size-4 rotate-90 mr-2"
-            fill="none"
-            height="1em"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16 3h5v5"
-            />
-            <path
-              d="M8 3H3v5"
-            />
-            <path
-              d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"
-            />
-            <path
-              d="m15 9 6-6"
-            />
-          </svg>
-          Divided from 
+          <span>
+            <svg
+              class="fa-inline size-4 rotate-90 mr-2"
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 3h5v5"
+              />
+              <path
+                d="M8 3H3v5"
+              />
+              <path
+                d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"
+              />
+              <path
+                d="m15 9 6-6"
+              />
+            </svg>
+            Divided from:
+          </span>
           <a
-            class="plant-link"
+            class="ml-6 text-base md:text-lg plant-link"
             href="/manage/cc3fcb4f-120a-4577-ac87-ac6b5bea8968?scrollToDate=2024-02-10"
           >
             Parent plant
