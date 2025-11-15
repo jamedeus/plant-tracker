@@ -5,6 +5,16 @@ import photoDetailsProptypes from 'src/types/photoDetailsPropTypes';
 import defaultPhotoProptypes from 'src/types/defaultPhotoPropTypes';
 import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
 
+const stringOrNull = PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.oneOf([null])
+]);
+
+const numberOrNull = PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.oneOf([null])
+]);
+
 export default PropTypes.exact({
     plant_details: plantDetailsProptypes.isRequired,
     events: PropTypes.exact({
@@ -28,5 +38,17 @@ export default PropTypes.exact({
                 uuid: uuidPropType.isRequired,
             })
         )
-    )
+    ),
+    change_events: PropTypes.objectOf(
+        PropTypes.exact({
+            name_before: stringOrNull,
+            name_after: stringOrNull,
+            species_before: stringOrNull,
+            species_after: stringOrNull,
+            description_before: stringOrNull,
+            description_after: stringOrNull,
+            pot_size_before: numberOrNull,
+            pot_size_after: numberOrNull
+        })
+    ).isRequired
 });

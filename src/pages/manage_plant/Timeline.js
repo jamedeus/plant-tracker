@@ -652,6 +652,72 @@ NoteCollapse.propTypes = {
     timestamp: isoTimestampTzPropType.isRequired
 };
 
+const DetailsChangedLine = ({ prop, before, after }) => {
+    return (
+        <span>
+            {prop} changed
+            {before && (
+                <>
+                    {' '}from&nbsp;
+                    <span className="font-bold">{before}</span>
+                </>
+            )}
+            {' '}to{' '}
+            <span className="font-bold">{after}</span>
+        </span>
+    );
+};
+
+DetailsChangedLine.propTypes = {
+    prop: PropTypes.string.isRequired,
+    before: PropTypes.string,
+    after: PropTypes.string
+};
+
+const DetailsChangedSection = memo(function DetailsChangedSection({ detailsChanged }) {
+    return (
+        <div className='flex flex-col m-2 gap-2'>
+            {detailsChanged.name_before !== detailsChanged.name_after &&
+                <DetailsChangedLine
+                    prop='Name'
+                    before={detailsChanged.name_before}
+                    after={detailsChanged.name_after}
+                />
+            }
+            {detailsChanged.species_before !== detailsChanged.species_after &&
+                <DetailsChangedLine
+                    prop='Species'
+                    before={detailsChanged.species_before}
+                    after={detailsChanged.species_after}
+                />
+            }
+            {detailsChanged.description_before !== detailsChanged.description_after &&
+                <span>Description changed</span>
+            }
+            {detailsChanged.pot_size_before !== detailsChanged.pot_size_after &&
+                <DetailsChangedLine
+                    prop='Pot Size'
+                    before={detailsChanged.pot_size_before}
+                    after={detailsChanged.pot_size_after}
+                />
+            }
+        </div>
+    );
+});
+
+DetailsChangedSection.propTypes = {
+    detailsChanged: PropTypes.exact({
+        name_before: PropTypes.string,
+        name_after: PropTypes.string,
+        species_before: PropTypes.string,
+        species_after: PropTypes.string,
+        description_before: PropTypes.string,
+        description_after: PropTypes.string,
+        pot_size_before: PropTypes.number,
+        pot_size_after: PropTypes.number,
+    }).isRequired
+};
+
 // Takes YYYY-MM-DD dateKey matching a key in timelineSlice.timelineDays state.
 // Renders single row of timeline with timestamp in left column and div with
 // all events, photos, and notes from that day in right column.
@@ -716,6 +782,9 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                         />
                     ))}
                 </div>
+                {contents.detailsChanged &&
+                    <DetailsChangedSection detailsChanged={contents.detailsChanged} />
+                }
                 {contents.dividedInto &&
                     <DivisionEventMarker dividedPlants={contents.dividedInto} />
                 }

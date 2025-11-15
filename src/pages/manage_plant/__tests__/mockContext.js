@@ -65,7 +65,8 @@ export const mockContext = {
         key: 3
     },
     division_events: {},
-    divided_from: null
+    divided_from: null,
+    change_events: {}
 };
 
 export const mockContextNoEvents = {
@@ -102,7 +103,8 @@ export const mockContextNoEvents = {
         key: null
     },
     division_events: {},
-    divided_from: null
+    divided_from: null,
+    change_events: {}
 };
 
 export const mockEvents = {

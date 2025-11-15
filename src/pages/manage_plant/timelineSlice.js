@@ -32,6 +32,7 @@ function removeDateKeyIfEmpty(state, dateKey) {
         !Object.keys(state.timelineDays[dateKey].notes).length &&
         !Object.keys(state.timelineDays[dateKey].photos).length &&
         !nonEmptyKeys(state.timelineDays[dateKey].events).length &&
+        !state.timelineDays[dateKey].detailsChanged &&
         !state.timelineDays[dateKey].dividedFrom &&
         !state.timelineDays[dateKey].dividedInto
     ) {
@@ -59,6 +60,8 @@ export const timelineSlice = createSlice({
         // Object with full ISO event timestamps in UTC as keys, array of child
         // plant objects (name and uuid keys) created on that date as values
         divisionEvents: {},
+        // Object with UTC timestamps as keys, change details as values
+        detailsChangedEvents: {},
         // Keys are YYYY-MM-DD in user's local timezone
         // Values are array of event types (eg ['water', 'fertilize'])
         calendarDays: {},

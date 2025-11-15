@@ -65,8 +65,9 @@ const buildCalendarDays = (state) => {
     });
 };
 
-// Takes timelineSlice state with eventsByType, photos, divisionEvents, and
-// dividedFrom keys pre-populated (from initialState) and notes initialState.
+// Takes timelineSlice state (eventsByType, photos, divisionEvents, and
+// dividedFrom keys pre-populated from initialState), notes initialState, and
+// detailsChangedEvents initialState.
 //
 // Populates timelineDays state with YYYY-MM-DD dateKeys containing objects with
 // events, notes, and photos keys (used to render Timeline component). Only adds
@@ -78,7 +79,7 @@ const buildCalendarDays = (state) => {
 //
 // Populates navigationOptions state with YYYY keys containing arrays of MM
 // month strings (used to render QuickNavigation component).
-const buildTimelineState = (state, notes) => {
+const buildTimelineState = (state, notes, changeEvents) => {
     // Iterates timestamps for each event type (water, fertilize, prune, repot)
     // Add timestamp to correct event type array under correct dateKey
     Object.entries(state.eventsByType).forEach(([eventType, eventDates]) =>
@@ -101,6 +102,12 @@ const buildTimelineState = (state, notes) => {
     Object.entries(notes).forEach(([timestamp, text]) => {
         const dateKey = getDateKey(state, timestamp);
         state.timelineDays[dateKey].notes[timestamp] = text;
+    });
+
+    // Add detailsChanged keys to days with DetailsChangedEvents
+    Object.entries(changeEvents).forEach(([timestamp, details]) => {
+        const dateKey = getDateKey(state, timestamp);
+        state.timelineDays[dateKey].detailsChanged = details;
     });
 
     // Add dividedInto if has children (adds link(s) on days children were divided)
@@ -148,6 +155,7 @@ export function ReduxProvider({ children, initialState }) {
             eventsByType: initialState.events,
             dividedFrom: initialState.divided_from,
             divisionEvents: initialState.division_events,
+            detailsChangeEvents: initialState.change_events,
             calendarDays: {},
             timelineDays: {},
             photos: sortPhotosChronologically(
@@ -163,7 +171,11 @@ export function ReduxProvider({ children, initialState }) {
         };
 
         // Build timelineDays, calendarDays, and navigationOptions objects
-        buildTimelineState(timelineSliceState, initialState.notes);
+        buildTimelineState(
+            timelineSliceState,
+            initialState.notes,
+            initialState.change_events
+        );
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {
