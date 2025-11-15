@@ -155,7 +155,6 @@ export function ReduxProvider({ children, initialState }) {
             eventsByType: initialState.events,
             dividedFrom: initialState.divided_from,
             divisionEvents: initialState.division_events,
-            detailsChangeEvents: initialState.change_events,
             calendarDays: {},
             timelineDays: {},
             photos: sortPhotosChronologically(

@@ -3,6 +3,7 @@ import FormModal from 'src/components/FormModal';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { plantDetailsUpdated } from './plantSlice';
+import { detailsChangedEventAdded } from './timelineSlice';
 
 const EditPlantModal = ({ close }) => {
     const dispatch = useDispatch();
@@ -15,6 +16,10 @@ const EditPlantModal = ({ close }) => {
             species: data.species_after,
             description: data.description_after,
             pot_size: data.pot_size_after
+        }));
+        dispatch(detailsChangedEventAdded({
+            timestamp: new Date().toISOString(),
+            detailsChangedEvent: data
         }));
         close();
     };

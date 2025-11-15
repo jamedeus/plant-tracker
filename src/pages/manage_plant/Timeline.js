@@ -671,7 +671,7 @@ const DetailsChangedLine = ({ prop, before, after }) => {
 DetailsChangedLine.propTypes = {
     prop: PropTypes.string.isRequired,
     before: PropTypes.string,
-    after: PropTypes.string
+    after: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 const DetailsChangedSection = memo(function DetailsChangedSection({ detailsChanged }) {

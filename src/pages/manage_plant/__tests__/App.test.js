@@ -70,6 +70,12 @@ describe('App', () => {
     });
 
     it('sends correct payload when edit modal is submitted', async () => {
+        // Confirm details changed section not rendered in timeline
+        expect(app.queryByText(/Name changed to/)).toBeNull();
+        expect(app.queryByText(/Species changed to/)).toBeNull();
+        expect(app.queryByText(/Description changed/)).toBeNull();
+        expect(app.queryByText(/Pot Size changed to/)).toBeNull();
+
         // Mock /get_plant_species_options response (requested when modal opens)
         mockPlantSpeciesOptionsResponse();
 
@@ -93,6 +99,7 @@ describe('App', () => {
         // Click submit button inside edit modal
         const modal = document.body.querySelector(".modal-box");
         await user.click(within(modal).getByText("Edit"));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm correct data posted to /edit_plant_details endpoint
         expect(global.fetch).toHaveBeenCalledWith('/edit_plant_details', {
@@ -106,6 +113,12 @@ describe('App', () => {
             }),
             headers: postHeaders
         });
+
+        // Confirm details changed section appeared in timeline
+        expect(app.queryByText(/Name changed to/)).toBeInTheDocument();
+        expect(app.queryByText(/Species changed to/)).toBeInTheDocument();
+        expect(app.queryByText(/Description changed/)).toBeInTheDocument();
+        expect(app.queryByText(/Pot Size changed to/)).toBeInTheDocument();
     });
 
     it('disables edit modal submit button when fields are too long', async () => {
