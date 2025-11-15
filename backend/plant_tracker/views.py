@@ -7,9 +7,12 @@ import base64
 from uuid import UUID
 from io import BytesIO
 from itertools import chain
+from zoneinfo import ZoneInfo
+from datetime import timedelta
 
 from ua_parser import parse
 from django.conf import settings
+from django.utils import timezone
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.db import transaction, IntegrityError
@@ -26,7 +29,8 @@ from .models import (
     Photo,
     extract_timestamp_from_exif,
     NoteEvent,
-    DivisionEvent
+    DivisionEvent,
+    DetailsChangedEvent
 )
 from .view_decorators import (
     events_map,
@@ -234,11 +238,33 @@ def change_uuid(instance, data, **kwargs):
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body()
 @clean_payload_data
-def edit_plant_details(user, plant, data, **kwargs):
+def edit_plant_details(user, plant, data, user_tz, **kwargs):
     '''Updates description attributes of existing Plant entry.
     Requires JSON POST with plant_id (uuid), name, species, description
     (string), and pot_size (int) keys.
     '''
+
+    # Convert start and end of current day in user's timzone to UTC
+    now_user = timezone.now().astimezone(ZoneInfo(user_tz))
+    start_utc = now_user.replace(
+        hour=0, minute=0, second=0, microsecond=0
+    ).astimezone(ZoneInfo("UTC"))
+    end_utc = start_utc + timedelta(days=1)
+
+    # Check if DetailsChangedEvent already exits for current day in user timzone
+    change_event = DetailsChangedEvent.objects.filter(
+        plant=plant,
+        timestamp__range=(start_utc, end_utc)
+    ).first()
+    # Create DetailsChangedEvent if not found (don't save until plant updated)
+    if not change_event:
+        change_event = DetailsChangedEvent(
+            plant=plant,
+            timestamp=timezone.now(),
+            name_before=plant.name,
+            species_before=plant.species,
+            description_before=plant.description,
+        )
 
     # Check if plant was unnamed before editing
     unnamed_before = plant.is_unnamed()
@@ -271,6 +297,13 @@ def edit_plant_details(user, plant, data, **kwargs):
                 'description': plant.description
             }
         )
+
+    # Update DetailsChangedEvent
+    change_event.name_after = plant.get_display_name()
+    change_event.species_after = plant.species
+    change_event.description_after = plant.description
+    change_event.pot_size_after = plant.pot_size
+    change_event.save()
 
     # Return modified payload with new display_name
     del data["plant_id"]

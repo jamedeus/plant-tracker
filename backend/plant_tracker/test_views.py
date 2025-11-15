@@ -27,7 +27,8 @@ from .models import (
     RepotEvent,
     DivisionEvent,
     Photo,
-    NoteEvent
+    NoteEvent,
+    DetailsChangedEvent
 )
 from .unit_test_helpers import (
     JSONClient,
@@ -1200,6 +1201,9 @@ class ManagePlantEndpointTests(TestCase):
         self.assertIsNone(self.plant.name)
         self.assertIsNone(self.plant.species)
 
+        # Confirm no DetailsChangedEvent exists
+        self.assertEqual(DetailsChangedEvent.objects.count(), 0)
+
         # Send edit_plant_details request with leading/trailing spaces on some params
         response = self.client.post('/edit_plant_details', {
             'plant_id': self.plant.uuid,
@@ -1229,6 +1233,21 @@ class ManagePlantEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(self.plant.name, 'test plant')
         self.assertEqual(self.plant.species, 'Giant Sequoia')
+        self.assertEqual(self.plant.description, '300 feet and a few thousand years old')
+        self.assertEqual(self.plant.pot_size, 4)
+
+        # Confirm DetailsChangedEvent was created
+        self.assertEqual(DetailsChangedEvent.objects.count(), 1)
+        # Confirm DetailsChangedEvent logged correct details
+        change_event = DetailsChangedEvent.objects.first()
+        self.assertEqual(change_event.name_before, None)
+        self.assertEqual(change_event.name_after, 'test plant')
+        self.assertEqual(change_event.species_before, None)
+        self.assertEqual(change_event.species_after, 'Giant Sequoia')
+        self.assertEqual(change_event.description_before, None)
+        self.assertEqual(change_event.description_after, '300 feet and a few thousand years old')
+        self.assertEqual(change_event.pot_size_before, None)
+        self.assertEqual(change_event.pot_size_after, 4)
 
     def test_edit_plant_details_field_too_long(self):
         # Send edit_plant_details request with name longer than length limit (50 char)
@@ -1248,6 +1267,8 @@ class ManagePlantEndpointTests(TestCase):
 
         # Confirm name did not change in database
         self.assertIsNone(self.plant.name)
+        # Confirm DetailsChangedEvent was not created
+        self.assertEqual(DetailsChangedEvent.objects.count(), 0)
 
     def test_add_plant_to_group(self):
         # Confirm test plant and group have no database relation

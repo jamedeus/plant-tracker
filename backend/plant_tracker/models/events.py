@@ -87,3 +87,31 @@ class DivisionEvent(Event):
 
     class Meta:
         unique_together = ('plant', 'timestamp')
+
+
+class DetailsChangedEvent(Event):
+    '''Records plant details before and after edit.'''
+
+    name_before = models.CharField(max_length=50, blank=True, null=True)
+    name_after = models.CharField(max_length=50, blank=True, null=True)
+
+    species_before = models.CharField(max_length=50, blank=True, null=True)
+    species_after = models.CharField(max_length=50, blank=True, null=True)
+
+    description_before = models.CharField(max_length=500, blank=True, null=True)
+    description_after = models.CharField(max_length=500, blank=True, null=True)
+
+    pot_size_before = models.PositiveIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(36)],
+        blank=True,
+        null=True
+    )
+    pot_size_after = models.PositiveIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(36)],
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        unique_together = ('plant', 'timestamp')
+        ordering = ['-timestamp']

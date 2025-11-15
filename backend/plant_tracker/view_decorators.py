@@ -92,7 +92,7 @@ def requires_json_post(required_keys=None):
     '''Decorator throws error if request is not POST with JSON body.
     Accepts optional list of required keys, throws error if any are missing.
     Parses JSON from request body and passes to wrapped function as data kwarg.
-    Passes User-Timezone header (default=UTC) to wrapped function as timezone kwarg.
+    Passes User-Timezone header (default=UTC) to wrapped function as user_tz kwarg.
     '''
     def decorator(func):
         @wraps(func)
@@ -113,8 +113,8 @@ def requires_json_post(required_keys=None):
                         )
             except json.decoder.JSONDecodeError:
                 return JsonResponse({'error': 'request body must be JSON'}, status=405)
-            timezone = request.headers.get("User-Timezone", "Etc/UTC")
-            return func(request=request, data=data, timezone=timezone, **kwargs)
+            user_tz = request.headers.get("User-Timezone", "Etc/UTC")
+            return func(request=request, data=data, user_tz=user_tz, **kwargs)
         return wrapper
     return decorator
 

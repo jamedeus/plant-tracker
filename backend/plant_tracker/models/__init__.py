@@ -11,7 +11,8 @@ from .events import (
     PruneEvent,
     RepotEvent,
     NoteEvent,
-    DivisionEvent
+    DivisionEvent,
+    DetailsChangedEvent
 )
 
 __all__ = [
@@ -24,5 +25,6 @@ __all__ = [
     "PruneEvent",
     "RepotEvent",
     "NoteEvent",
-    "DivisionEvent"
+    "DivisionEvent",
+    "DetailsChangedEvent"
 ]

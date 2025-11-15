@@ -521,9 +521,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_edit_plant_details_endpoint(self):
-        '''/edit_plant_details should make 3 database queries.'''
+        '''/edit_plant_details should make 5 database queries.'''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(5):
             response = self.client.post('/edit_plant_details', {
                 'plant_id': plant.uuid,
                 'name': 'test plant',
@@ -546,24 +546,24 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_delete_plants_and_groups_endpoint_1_plant(self):
-        '''/bulk_delete_plants_and_groups should make 14 database queries when
+        '''/bulk_delete_plants_and_groups should make 15 database queries when
         deleting a single Plant instance.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user(), name='Plant 1')
-        with self.assertNumQueries(14):
+        with self.assertNumQueries(15):
             response = self.client.post('/bulk_delete_plants_and_groups', {
                 'uuids': [str(plant.uuid)]
             })
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_delete_plants_and_groups_endpoint_3_plants(self):
-        '''/bulk_delete_plants_and_groups should make 14 database queries when
+        '''/bulk_delete_plants_and_groups should make 15 database queries when
         deleting 3 Plant instances.
         '''
         plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user(), name='Plant 1')
         plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user(), name='Plant 2')
         plant3 = Plant.objects.create(uuid=uuid4(), user=get_default_user(), name='Plant 3')
-        with self.assertNumQueries(14):
+        with self.assertNumQueries(15):
             response = self.client.post('/bulk_delete_plants_and_groups', {
                 'uuids': [
                     str(plant1.uuid),
@@ -602,7 +602,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_delete_plants_and_groups_endpoint_3_plants_3_groups(self):
-        '''/bulk_delete_plants_and_groups should make 17 database queries when
+        '''/bulk_delete_plants_and_groups should make 18 database queries when
         deleting 3 plant instances and 3 Group instances.
         '''
         plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user(), name='Plant 1')
@@ -611,7 +611,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         group1 = Group.objects.create(uuid=uuid4(), user=get_default_user(), name='Group 1')
         group2 = Group.objects.create(uuid=uuid4(), user=get_default_user(), name='Group 2')
         group3 = Group.objects.create(uuid=uuid4(), user=get_default_user(), name='Group 3')
-        with self.assertNumQueries(17):
+        with self.assertNumQueries(18):
             response = self.client.post('/bulk_delete_plants_and_groups', {
                 'uuids': [
                     str(plant1.uuid),
@@ -625,7 +625,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_delete_plants_and_groups_endpoint_plant_in_group(self):
-        '''/bulk_delete_plants_and_groups should make 18 database queries when
+        '''/bulk_delete_plants_and_groups should make 19 database queries when
         deleting 3 plant instances and 3 Group instances when 2 plants are in
         a group (extra UPDATE query for related group object).
         '''
@@ -636,7 +636,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         plant1 = Plant.objects.create(uuid=uuid4(), user=user, name='Plant 1')
         plant2 = Plant.objects.create(uuid=uuid4(), user=user, group=group1, name='Plant 2')
         plant3 = Plant.objects.create(uuid=uuid4(), user=user, group=group1, name='Plant 3')
-        with self.assertNumQueries(18):
+        with self.assertNumQueries(19):
             response = self.client.post('/bulk_delete_plants_and_groups', {
                 'uuids': [
                     str(plant1.uuid),
