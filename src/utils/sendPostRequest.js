@@ -18,7 +18,8 @@ export default async function sendPostRequest(url, body, onSuccess, onError) {
         headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json',
-            "X-CSRFToken": Cookies.get('csrftoken')
+            "X-CSRFToken": Cookies.get('csrftoken'),
+            "User-Timezone": Intl.DateTimeFormat().resolvedOptions().timeZone
         }
     });
 

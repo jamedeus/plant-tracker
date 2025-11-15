@@ -291,7 +291,7 @@ class PasswordResetConfirmView(views.PasswordResetConfirmView):
 
 @disable_in_single_user_mode
 @requires_json_post(["username", "password", "email", "first_name", "last_name"])
-def create_user(request, data):
+def create_user(request, data, **kwargs):
     '''Creates a new user account and returns a response with session cookie.
     Requires JSON POST with username, password, email, first_name, and
     last_name keys.
