@@ -250,7 +250,7 @@ class SqlQueriesPerPageTests(TestCase):
     def test_manage_plant_page(self):
         '''Loading a manage_plant page should make 1 database query.
 
-        Requesting the manage plant state should make 5 queries regardless of
+        Requesting the manage plant state should make 6 queries regardless of
         whether plant is named (no extra query for unnamed index), has photos
         (no extra query for last photo when annotation is None) or has parent
         (no extra query for parent details).
@@ -261,40 +261,38 @@ class SqlQueriesPerPageTests(TestCase):
             response = self.client.get(f'/manage/{plant.uuid}')
             self.assertEqual(response.status_code, 200)
 
-        # Request state (no name or photos), confirm 5 queries
-        with self.assertNumQueries(5):
+        # Request state (no name or photos), confirm 6 queries
+        with self.assertNumQueries(6):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
 
-        # Set name, request again (name, no photos), confirm still 5 queries
+        # Set name, request again (name, no photos), confirm still 6 queries
         plant.name = 'has name'
         plant.save()
-        with self.assertNumQueries(5):
+        with self.assertNumQueries(6):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
 
-        # Add photo, confirm still 5 queries (no most-recent query, has annotation)
-        photo = Photo.objects.create(
-            photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
-        )
+        # Add photo, confirm still 6 queries (no most-recent query, has annotation)
+        photo = Photo.objects.create(photo=create_mock_photo(), plant=plant)
         photo.finalize_upload()
-        with self.assertNumQueries(5):
+        with self.assertNumQueries(6):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
 
-        # Set default, confirm 5 queries (no most-recent query, has annotation)
+        # Set default, confirm 6 queries (no most-recent query, has annotation)
         plant.default_photo = photo
         plant.save()
-        with self.assertNumQueries(5):
+        with self.assertNumQueries(6):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
@@ -306,18 +304,18 @@ class SqlQueriesPerPageTests(TestCase):
         plant.group = group
         plant.save()
 
-        # Request again, confirm makes 6 queries (+1 to get unnamed group name)
-        with self.assertNumQueries(6):
+        # Request again, confirm makes 7 queries (+1 to get unnamed group name)
+        with self.assertNumQueries(7):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
             )
             self.assertEqual(response.status_code, 200)
 
-        # Name group, request again, confirm makes 5 queries
+        # Name group, request again, confirm makes 6 queries
         group.name = 'Test group'
         group.save()
-        with self.assertNumQueries(5):
+        with self.assertNumQueries(6):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
@@ -333,8 +331,8 @@ class SqlQueriesPerPageTests(TestCase):
             divided_from_event=event
         )
 
-        # Request child plant state, confirm 5 queries (no extra for parent)
-        with self.assertNumQueries(5):
+        # Request child plant state, confirm 6 queries (no extra for parent)
+        with self.assertNumQueries(6):
             response = self.client.get(
                 f'/get_manage_state/{child.uuid}',
                 HTTP_ACCEPT='application/json'
@@ -343,7 +341,7 @@ class SqlQueriesPerPageTests(TestCase):
 
     def test_manage_plant_state_with_division_events(self):
         '''Requesting the manage plant state for a plant with DivisionEvents
-        should make 7 queries regardless of the number of DivisionEvents or
+        should make 8 queries regardless of the number of DivisionEvents or
         child plants.
         '''
 
@@ -358,8 +356,8 @@ class SqlQueriesPerPageTests(TestCase):
             divided_from_event=event
         )
 
-        # Request parent plant state, confirm 7 queries
-        with self.assertNumQueries(7):
+        # Request parent plant state, confirm 8 queries
+        with self.assertNumQueries(8):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'
@@ -380,8 +378,8 @@ class SqlQueriesPerPageTests(TestCase):
                 divided_from_event=event
             )
 
-        # Request parent plant state again, confirm still 7 queries
-        with self.assertNumQueries(7):
+        # Request parent plant state again, confirm still 8 queries
+        with self.assertNumQueries(8):
             response = self.client.get(
                 f'/get_manage_state/{plant.uuid}',
                 HTTP_ACCEPT='application/json'

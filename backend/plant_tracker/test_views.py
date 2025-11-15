@@ -982,7 +982,8 @@ class ManagePageTests(TestCase):
                     'key': None
                 },
                 'divided_from': None,
-                'division_events': {}
+                'division_events': {},
+                'change_events': {}
             }
         )
 
@@ -1038,6 +1039,62 @@ class ManagePageTests(TestCase):
         })
         # Confirm no divided_from (parent has no parent)
         self.assertFalse(response.json()['state']['divided_from'])
+
+    def test_get_new_plant_state_plant_has_change_events(self):
+        # Simulate plant with 2 DetailsChangedEvents
+        DetailsChangedEvent.objects.create(
+            plant=self.plant1,
+            timestamp=datetime(2024, 2, 26, 0, 0, 0, 0),
+            name_before=None,
+            name_after='test plant',
+            species_before=None,
+            species_after='calathea',
+            description_before=None,
+            description_after=None,
+            pot_size_before=None,
+            pot_size_after=4
+        )
+        DetailsChangedEvent.objects.create(
+            plant=self.plant1,
+            timestamp=datetime(2024, 2, 28, 0, 0, 0, 0),
+            name_before='test plant',
+            name_after='Test Plant',
+            species_before='calathea',
+            species_after='Geoppertia Warszewiczii',
+            description_before=None,
+            description_after=None,
+            pot_size_before=4,
+            pot_size_after=6
+        )
+
+        # Request new state
+        response = self.client.get_json(f'/get_manage_state/{self.plant1.uuid}')
+
+        # Confirm returned manage_plant state contains change_events with
+        # correct details
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['state']['change_events'], {
+            '2024-02-26T00:00:00+00:00': {
+                'name_before': None,
+                'name_after': 'test plant',
+                'species_before': None,
+                'species_after': 'calathea',
+                'description_before': None,
+                'description_after': None,
+                'pot_size_before': None,
+                'pot_size_after': 4
+            },
+            '2024-02-28T00:00:00+00:00': {
+                'name_before': 'test plant',
+                'name_after': 'Test Plant',
+                'species_before': 'calathea',
+                'species_after': 'Geoppertia Warszewiczii',
+                'description_before': None,
+                'description_after': None,
+                'pot_size_before': 4,
+                'pot_size_after': 6
+            }
+        })
 
     def test_get_new_plant_state_invalid(self):
         # Request new state with non-UUID string

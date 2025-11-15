@@ -30,7 +30,8 @@ def build_manage_plant_state(plant):
     state = {
         'plant_details': plant.get_details(),
         'photos': plant.get_photos(),
-        'default_photo': plant.default_photo_details
+        'default_photo': plant.default_photo_details,
+        'change_events': plant.get_change_events()
     }
 
     # Add all water, fertilize, prune, and repot timestamps
