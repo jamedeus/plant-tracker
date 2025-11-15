@@ -1197,9 +1197,11 @@ class ManagePlantEndpointTests(TestCase):
         self.assertIn('Fittonia', response.json()['options'])
 
     def test_edit_plant_details(self):
-        # Confirm test plant has no name or species
+        # Confirm test plant details fields are all blank
         self.assertIsNone(self.plant.name)
         self.assertIsNone(self.plant.species)
+        self.assertIsNone(self.plant.description)
+        self.assertIsNone(self.plant.pot_size)
 
         # Confirm no DetailsChangedEvent exists
         self.assertEqual(DetailsChangedEvent.objects.count(), 0)
@@ -1269,6 +1271,52 @@ class ManagePlantEndpointTests(TestCase):
         self.assertIsNone(self.plant.name)
         # Confirm DetailsChangedEvent was not created
         self.assertEqual(DetailsChangedEvent.objects.count(), 0)
+
+    def test_edit_plant_details_multiple_times_in_one_day(self):
+        # Confirm no DetailsChangedEvent exists
+        self.assertEqual(DetailsChangedEvent.objects.count(), 0)
+
+        # Send edit_plant_details request with typos in payload
+        response = self.client.post('/edit_plant_details', {
+            'plant_id': self.plant.uuid,
+            'name': 'rest olant',
+            'species': 'Fiant Aequoia',
+            'description': '300 geet and a fw thousand tears olf',
+            'pot_size': '3'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm DetailsChangedEvent was created
+        self.assertEqual(DetailsChangedEvent.objects.count(), 1)
+
+        # Send another edit_plant_details request to fix the typos
+        response = self.client.post('/edit_plant_details', {
+            'plant_id': self.plant.uuid,
+            'name': 'test plant',
+            'species': 'Giant Sequoia',
+            'description': '300 feet and a few thousand years old',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm no additional DetailsChangedEvent was created
+        self.assertEqual(DetailsChangedEvent.objects.count(), 1)
+
+        # Confirm DetailsChangedEvent before fields are blank (tracks initial
+        # values for day, does not overwrite when existing event updated)
+        change_event = DetailsChangedEvent.objects.first()
+        self.assertEqual(change_event.name_before, None)
+        self.assertEqual(change_event.species_before, None)
+        self.assertEqual(change_event.description_before, None)
+        self.assertEqual(change_event.pot_size_before, None)
+
+        # Confirm DetailsChangedEvent after fields contain current plant details
+        # (values from first edit request were overwritten by second request)
+        self.assertEqual(change_event.name_after, 'test plant')
+        self.assertEqual(change_event.species_after, 'Giant Sequoia')
+        self.assertEqual(change_event.description_after, '300 feet and a few thousand years old')
+        self.assertEqual(change_event.pot_size_after, 4)
+
 
     def test_add_plant_to_group(self):
         # Confirm test plant and group have no database relation
