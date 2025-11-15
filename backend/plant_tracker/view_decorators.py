@@ -7,17 +7,27 @@ from the decorator if any of these steps fail, simplifying endpoint functions.
 '''
 
 import json
-from datetime import datetime
+from zoneinfo import ZoneInfo
 from functools import wraps, cache
+from datetime import datetime, timedelta
 
 from django.conf import settings
+from django.utils import timezone
 from django.db.models import Value
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
 
-from .models import Group, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
+from .models import (
+    Group,
+    Plant,
+    WaterEvent,
+    FertilizeEvent,
+    PruneEvent,
+    RepotEvent,
+    DetailsChangedEvent
+)
 
 
 # Map event types to model that should be instantiated
@@ -92,7 +102,6 @@ def requires_json_post(required_keys=None):
     '''Decorator throws error if request is not POST with JSON body.
     Accepts optional list of required keys, throws error if any are missing.
     Parses JSON from request body and passes to wrapped function as data kwarg.
-    Passes User-Timezone header (default=UTC) to wrapped function as user_tz kwarg.
     '''
     def decorator(func):
         @wraps(func)
@@ -113,8 +122,7 @@ def requires_json_post(required_keys=None):
                         )
             except json.decoder.JSONDecodeError:
                 return JsonResponse({'error': 'request body must be JSON'}, status=405)
-            user_tz = request.headers.get("User-Timezone", "Etc/UTC")
-            return func(request=request, data=data, user_tz=user_tz, **kwargs)
+            return func(request=request, data=data, **kwargs)
         return wrapper
     return decorator
 
@@ -303,6 +311,50 @@ def get_event_type_from_post_body(func):
                 status=400
             )
         return func(event_type=data["event_type"], data=data, **kwargs)
+    return wrapper
+
+
+def get_details_changed_event_from_post_body(func):
+    '''Decorator looks up existing DetailsChangedEvent for plant_id in request.
+    If not found creates a new event with all plant details in _before fields.
+    Passes DetailsChangedEvent to wrapped function as change_event kwarg.
+
+    Must call after get_plant_from_post_body (expects plant kwarg).
+    If called after get_timestamp_from_post_body looks for DetailsChangedEvent
+    on same day as timestamp in user timezone (otherwise uses current day).
+    '''
+    def wrapper(request, plant, timestamp=None, **kwargs):
+        # Read user timezone from request header (default to UTC if missing)
+        user_tz = request.headers.get("User-Timezone", "Etc/UTC")
+        # Convert UTC from get_timestamp_from_post_body to user's timezone
+        if timestamp:
+            timestamp = timestamp.astimezone(ZoneInfo(user_tz))
+        # If no timestamp: use current day in user's timezone
+        else:
+            timestamp = timezone.now().astimezone(ZoneInfo(user_tz))
+        # Convert boundaries of target day in user's timezone to UTC
+        start_utc = timestamp.replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ).astimezone(ZoneInfo("UTC"))
+        end_utc = start_utc + timedelta(days=1)
+        # Find existing event if it exists
+        change_event = DetailsChangedEvent.objects.filter(
+            plant=plant,
+            timestamp__range=(start_utc, end_utc)
+        ).first()
+        # Create new event if not found
+        if not change_event:
+            # Don't write to database - if wrapped function fails event should
+            # not be created. Wrapped function will set _after fields and save.
+            change_event = DetailsChangedEvent(
+                plant=plant,
+                timestamp=timestamp if timestamp else timezone.now(),
+                name_before=plant.name,
+                species_before=plant.species,
+                description_before=plant.description,
+                pot_size_before=plant.pot_size
+            )
+        return func(plant=plant, change_event=change_event, timestamp=timestamp, **kwargs)
     return wrapper
 
 
