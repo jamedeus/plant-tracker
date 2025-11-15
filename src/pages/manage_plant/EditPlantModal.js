@@ -9,7 +9,13 @@ const EditPlantModal = ({ close }) => {
     const plantDetails = useSelector((state) => state.plant.plantDetails);
 
     const onSuccess = (data) => {
-        dispatch(plantDetailsUpdated(data));
+        dispatch(plantDetailsUpdated({
+            name: data.name_after,
+            display_name: data.name_after,
+            species: data.species_after,
+            description: data.description_after,
+            pot_size: data.pot_size_after
+        }));
         close();
     };
 

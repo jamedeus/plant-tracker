@@ -305,10 +305,8 @@ def edit_plant_details(user, plant, data, user_tz, **kwargs):
     change_event.pot_size_after = plant.pot_size
     change_event.save()
 
-    # Return modified payload with new display_name
-    del data["plant_id"]
-    data["display_name"] = plant.get_display_name()
-    return JsonResponse(data, status=200)
+    # Return DetailsChangedEvent details object used to update frontend state
+    return JsonResponse(change_event.get_details(), status=200)
 
 
 @get_user_token

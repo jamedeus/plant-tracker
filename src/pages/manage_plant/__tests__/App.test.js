@@ -80,11 +80,14 @@ describe('App', () => {
 
         // Mock fetch function to return expected response
         mockFetchResponse({
-            name: "Test Plant",
-            species: "Calathea",
-            pot_size: 4,
-            description: "This is a plant with a long description",
-            display_name: "Test Plant"
+            name_before: null,
+            name_after: "Test Plant",
+            species_before: null,
+            species_after: "Calathea",
+            pot_size_before: null,
+            pot_size_after: 4,
+            description_before: null,
+            description_after: "This is a plant with a long description",
         });
 
         // Click submit button inside edit modal

@@ -524,7 +524,7 @@ class ViewRegressionTests(TestCase):
 
         # Confirm request succeeded, response did not change pot_size
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['pot_size'], '36')
+        self.assertEqual(response.json()['pot_size_after'], 36)
 
     def test_register_plant_uncaught_exception_if_uuid_already_exists(self):
         '''Issue: The /register_plant endpoint passed user input to the Plant
@@ -698,11 +698,14 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(
             response.json(),
             {
-                'name': 'new plant name',
-                'display_name': 'new plant name',
-                'species': None,
-                'description': None,
-                'pot_size': None
+                'name_before': None,
+                'name_after': 'new plant name',
+                'species_before': None,
+                'species_after': None,
+                'description_before': None,
+                'description_after': None,
+                'pot_size_before': None,
+                'pot_size_after': None
             }
         )
 

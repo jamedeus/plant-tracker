@@ -115,3 +115,16 @@ class DetailsChangedEvent(Event):
     class Meta:
         unique_together = ('plant', 'timestamp')
         ordering = ['-timestamp']
+
+    def get_details(self):
+        '''Returns a dict containing all field names and values.'''
+        return {
+            'name_before': self.name_before,
+            'name_after': self.name_after,
+            'species_before': self.species_before,
+            'species_after': self.species_after,
+            'description_before': self.description_before,
+            'description_after': self.description_after,
+            'pot_size_before': self.pot_size_before,
+            'pot_size_after': self.pot_size_after
+        }

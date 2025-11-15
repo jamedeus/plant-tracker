@@ -434,16 +434,7 @@ class Plant(models.Model):
         containing each field as values.
         '''
         return {
-            event.timestamp.isoformat(): {
-                'name_before': event.name_before,
-                'name_after': event.name_after,
-                'species_before': event.species_before,
-                'species_after': event.species_after,
-                'description_before': event.description_before,
-                'description_after': event.description_after,
-                'pot_size_before': event.pot_size_before,
-                'pot_size_after': event.pot_size_after
-            }
+            event.timestamp.isoformat(): event.get_details()
             for event in self.detailschangedevent_set.all()
         }
 

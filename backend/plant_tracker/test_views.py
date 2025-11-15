@@ -1277,11 +1277,14 @@ class ManagePlantEndpointTests(TestCase):
         self.assertEqual(
             response.json(),
             {
-                'name': 'test plant',
-                'display_name': 'test plant',
-                'species': 'Giant Sequoia',
-                'description': '300 feet and a few thousand years old',
-                'pot_size': '4'
+                'name_before': None,
+                'name_after': 'test plant',
+                'species_before': None,
+                'species_after': 'Giant Sequoia',
+                'description_before': None,
+                'description_after': '300 feet and a few thousand years old',
+                'pot_size_before': None,
+                'pot_size_after': 4
             }
         )
 
