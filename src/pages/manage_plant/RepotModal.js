@@ -8,7 +8,7 @@ import Checkmark from 'src/components/Checkmark';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import ModalPages from 'src/components/ModalPages';
 import { useSelector, useDispatch } from 'react-redux';
-import { eventAdded } from './timelineSlice';
+import { eventAdded, detailsChangedEventAdded } from './timelineSlice';
 import { plantRepotted } from './plantSlice';
 import { changeQrScannerOpened } from './interfaceSlice';
 import { TbShovel } from "react-icons/tb";
@@ -89,7 +89,11 @@ const RepotModal = ({ close }) => {
         };
         const onSuccess = (data) => {
             // Update plantDetails state, add event to events state
-            dispatch(plantRepotted(data.pot_size));
+            dispatch(detailsChangedEventAdded({
+                timestamp: data.timestamp,
+                detailsChangedEvent: data.change_event
+            }));
+            dispatch(plantRepotted(data.change_event.pot_size_after));
             dispatch(eventAdded({timestamp: data.timestamp, type: 'repot'}));
             // Show success animation + change QR code button
             setModalContents("done");

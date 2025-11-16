@@ -318,3 +318,15 @@ export const mockGroupOptions = {
         archived: false
     }
 };
+
+// Mock change event used to simulate API response (spread + override values)
+export const mockChangeEvent = {
+    name_before: mockContext.plant_details.display_name,
+    name_after: mockContext.plant_details.display_name,
+    species_before: mockContext.plant_details.species,
+    species_after: mockContext.plant_details.species,
+    description_before: mockContext.plant_details.description,
+    description_after: mockContext.plant_details.description,
+    pot_size_before: mockContext.plant_details.pot_size,
+    pot_size_after: mockContext.plant_details.pot_size
+};

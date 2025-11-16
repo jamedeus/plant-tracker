@@ -800,7 +800,8 @@ def bulk_remove_plants_from_group(user, data, group, **kwargs):
 @requires_json_post(["plant_id", "new_pot_size", "timestamp"])
 @get_plant_from_post_body()
 @get_timestamp_from_post_body
-def repot_plant(plant, timestamp, data, **kwargs):
+@get_details_changed_event_from_post_body
+def repot_plant(plant, timestamp, change_event, data, **kwargs):
     '''Creates a RepotEvent for specified Plant with optional new_pot_size.
     Requires JSON POST with plant_id, new_pot_size, and timestamp keys.
     '''
@@ -819,12 +820,14 @@ def repot_plant(plant, timestamp, data, **kwargs):
             plant.pot_size = data["new_pot_size"]
             plant.save()
             update_cached_overview_details_keys(plant, {'pot_size': plant.pot_size})
+            change_event.pot_size_after = plant.pot_size
+            change_event.save()
         return JsonResponse(
             {
                 "action": "repot",
                 "plant": plant.uuid,
                 "timestamp": timestamp.isoformat(),
-                "pot_size": plant.pot_size
+                "change_event": change_event.get_details()
             },
             status=200
         )

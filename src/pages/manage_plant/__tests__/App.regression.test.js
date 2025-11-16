@@ -4,7 +4,7 @@ import mockFetchResponse, { mockMultipleFetchResponses } from 'src/testUtils/moc
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
-import { mockContextNoEvents } from './mockContext';
+import { mockContextNoEvents, mockChangeEvent } from './mockContext';
 import { act } from '@testing-library/react';
 
 describe('App', () => {
@@ -91,7 +91,7 @@ describe('App', () => {
             action: "repot",
             plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
             timestamp: "2024-03-01T20:00:00+00:00",
-            pot_size: 8
+            change_event: { ...mockChangeEvent, pot_size_after: 8 }
         });
 
         // Confirm no repot events are shown on calendar

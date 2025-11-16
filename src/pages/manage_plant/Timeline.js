@@ -670,7 +670,7 @@ const DetailsChangedLine = ({ prop, before, after }) => {
 
 DetailsChangedLine.propTypes = {
     prop: PropTypes.string.isRequired,
-    before: PropTypes.string,
+    before: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     after: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 

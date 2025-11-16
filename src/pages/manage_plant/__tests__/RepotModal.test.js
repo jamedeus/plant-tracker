@@ -4,7 +4,7 @@ import mockFetchResponse, { buildFetchMockResponse } from 'src/testUtils/mockFet
 import RepotModal from '../RepotModal';
 import { ReduxProvider } from '../store';
 import { ErrorModal } from 'src/components/ErrorModal';
-import { mockContext } from './mockContext';
+import { mockContext, mockChangeEvent } from './mockContext';
 import { changeQrScannerOpened } from '../interfaceSlice';
 
 // Mock useDispatch to return a mock (confirm changeQrScannerOpened called)
@@ -57,7 +57,7 @@ describe('RepotModal', () => {
                 action: "repot",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                 timestamp: "2024-03-01T20:00:00+00:00",
-                pot_size: 8
+                change_event: { ...mockChangeEvent, pot_size_after: 8 }
             })), 5)
         ));
 
@@ -81,7 +81,7 @@ describe('RepotModal', () => {
             action: "repot",
             plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
             timestamp: "2024-03-01T20:00:00+00:00",
-            pot_size: 8
+            change_event: { ...mockChangeEvent, pot_size_after: 8 }
         });
 
         // Select 8 inch pot
@@ -108,7 +108,7 @@ describe('RepotModal', () => {
             action: "repot",
             plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
             timestamp: "2024-03-01T20:00:00+00:00",
-            pot_size: 5
+            change_event: { ...mockChangeEvent, pot_size_after: 5 }
         });
 
         // Click custom pot size option, enter "5"
@@ -173,7 +173,7 @@ describe('RepotModal', () => {
             action: "repot",
             plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
             timestamp: "2024-03-01T20:00:00+00:00",
-            pot_size: 8
+            change_event: { ...mockChangeEvent, pot_size_after: 8 }
         });
 
         // Click submit button, confirm made request

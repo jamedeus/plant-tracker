@@ -1434,8 +1434,9 @@ class ManagePlantEndpointTests(TestCase):
         self.plant.pot_size = 4
         self.plant.save()
 
-        # Confirm plant has no RepotEvents
+        # Confirm plant has no RepotEvents or DetailsChangedEvents
         self.assertEqual(self.plant.repotevent_set.count(), 0)
+        self.assertEqual(self.plant.detailschangedevent_set.count(), 0)
 
         # Send repot_plant request
         response = self.client.post('/repot_plant', {
@@ -1452,7 +1453,16 @@ class ManagePlantEndpointTests(TestCase):
                 "action": "repot",
                 "plant": str(self.plant.uuid),
                 "timestamp": "2024-02-06T03:06:26+00:00",
-                "pot_size": 6
+                "change_event": {
+                    "name_before": None,
+                    "name_after": None,
+                    "species_before": None,
+                    "species_after": None,
+                    "description_before": None,
+                    "description_after": None,
+                    "pot_size_before": 4,
+                    "pot_size_after": 6
+                },
             }
         )
         self._refresh_test_models()
@@ -1463,10 +1473,19 @@ class ManagePlantEndpointTests(TestCase):
         self.assertEqual(self.plant.repotevent_set.first().old_pot_size, 4)
         self.assertEqual(self.plant.repotevent_set.first().new_pot_size, 6)
 
+        # Confirm DetailsChangedEvent was created, has before and after pot_size
+        self.assertEqual(self.plant.detailschangedevent_set.count(), 1)
+        self.assertEqual(self.plant.detailschangedevent_set.first().pot_size_before, 4)
+        self.assertEqual(self.plant.detailschangedevent_set.first().pot_size_after, 6)
+
     def test_repot_plant_blank_new_pot_size(self):
         # Set starting pot_size
         self.plant.pot_size = 4
         self.plant.save()
+
+        # Confirm plant has no RepotEvents or DetailsChangedEvents
+        self.assertEqual(self.plant.repotevent_set.count(), 0)
+        self.assertEqual(self.plant.detailschangedevent_set.count(), 0)
 
         # Send repot_plant request with blank new_pot_size
         response = self.client.post('/repot_plant', {
@@ -1477,7 +1496,12 @@ class ManagePlantEndpointTests(TestCase):
 
         # Confirm status, confirm plant pot_size did not change
         self.assertEqual(response.status_code, 200)
+        self._refresh_test_models()
         self.assertEqual(self.plant.pot_size, 4)
+
+        # Confirm RepotEvent was created, DetailsChangedEvent was not created
+        self.assertEqual(self.plant.repotevent_set.count(), 1)
+        self.assertEqual(self.plant.detailschangedevent_set.count(), 0)
 
     def test_divide_plant(self):
         # Confirm plant has no DivisionEvents

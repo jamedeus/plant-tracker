@@ -26,7 +26,8 @@ from .models import (
     WaterEvent,
     FertilizeEvent,
     RepotEvent,
-    DivisionEvent
+    DivisionEvent,
+    DetailsChangedEvent
 )
 from .view_decorators import (
     get_default_user,
@@ -388,6 +389,43 @@ class ViewRegressionTests(TestCase):
             {"error": "Event with same timestamp already exists"}
         )
         self.assertEqual(plant.repotevent_set.count(), 1)
+
+    def test_repot_plant_creates_details_changed_event_on_wrong_day(self):
+        '''Issue: While writing the get_details_changed_event_from_post_body
+        decorator there was an issue where UTC timestamps passed from the
+        get_timestamp_from_post_body decorator were not converted to user's
+        timezone (never committed but worth covering). If DetailsChangedEvents
+        already existed on 2 consecutive days /repot_plant calls with timestamps
+        less than 8 hours before midnight PST (next day in UTC) would update the
+        event matching the UTC day, not the PST day.
+        '''
+
+        # Create plant with DetailsChangedEvents on March 5 and 6
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        DetailsChangedEvent.objects.create(
+            plant=plant,
+            timestamp=datetime(2024, 3, 5, 18, 0)
+        )
+        DetailsChangedEvent.objects.create(
+            plant=plant,
+            timestamp=datetime(2024, 3, 6, 18, 0)
+        )
+        self.assertEqual(plant.detailschangedevent_set.count(), 2)
+
+        # Repot plant on March 5 at 9:00pm PST (UTC: March 6 at 5:00am)
+        response = JSONClient().post('/repot_plant', {
+            'plant_id': str(plant.uuid),
+            'timestamp': '2024-03-06T05:00:00+00:00',
+            'new_pot_size': '7'
+        }, HTTP_USER_TIMEZONE='America/Los_Angeles')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm March 5 DetailsChangedEvent was updated
+        self.assertEqual(plant.detailschangedevent_set.last().timestamp.day, 5)
+        self.assertEqual(plant.detailschangedevent_set.last().pot_size_after, 7)
+        # Confirm March 6 DetailsChangedEvent was NOT updated
+        self.assertEqual(plant.detailschangedevent_set.first().timestamp.day, 6)
+        self.assertIsNone(plant.detailschangedevent_set.first().pot_size_after)
 
     def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
         '''Issue: delete_plant_photos looked up photos in the database using a
