@@ -9,7 +9,7 @@ import LoadingAnimation from 'src/components/LoadingAnimation';
 import ModalPages from 'src/components/ModalPages';
 import { useSelector, useDispatch } from 'react-redux';
 import { eventAdded, detailsChangedEventAdded } from './timelineSlice';
-import { plantRepotted } from './plantSlice';
+import { plantDetailsUpdated } from './plantSlice';
 import { changeQrScannerOpened } from './interfaceSlice';
 import { TbShovel } from "react-icons/tb";
 import { LuScanSearch } from "react-icons/lu";
@@ -95,7 +95,9 @@ const RepotModal = ({ close }) => {
                     timestamp: data.timestamp,
                     detailsChangedEvent: data.change_event
                 }));
-                dispatch(plantRepotted(data.change_event.pot_size_after));
+                dispatch(plantDetailsUpdated({
+                    pot_size: data.change_event.pot_size_after
+                }));
             }
             // Add repot event to timeline and calendar
             dispatch(eventAdded({timestamp: data.timestamp, type: 'repot'}));

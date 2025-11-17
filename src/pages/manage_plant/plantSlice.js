@@ -17,12 +17,6 @@ export const plantSlice = createSlice({
             };
         },
 
-        // Takes new pot size
-        // Does NOT create event (dispatch timelineSlice.eventAdded separately)
-        plantRepotted(state, action) {
-            state.plantDetails.pot_size = action.payload;
-        },
-
         // Takes object with name and uuid keys
         plantAddedToGroup(state, action) {
             state.plantDetails.group = action.payload;
@@ -37,7 +31,6 @@ export const plantSlice = createSlice({
 // Export individual action creators from slice
 export const {
     plantDetailsUpdated,
-    plantRepotted,
     plantAddedToGroup,
     plantRemovedFromGroup
 } = plantSlice.actions;
