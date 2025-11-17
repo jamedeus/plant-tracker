@@ -794,4 +794,24 @@ describe('App', () => {
         expect(app.queryByText(/Dividing a plant lets you register new plants/)).toBeNull();
         expect(app.getByRole('button', { name: 'Register with QR code' })).toBeInTheDocument();
     });
+
+    it('does not add empty DetailsChangedSection when repotted to same pot size', async () => {
+        // Mock fetch function to return expected response when /repot_plant
+        // called with existing pot size (nothing changed, no change event)
+        mockFetchResponse({
+            action: "repot",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            timestamp: "2024-03-01T20:00:00+00:00",
+            change_event: null
+        });
+
+        // Open Repot Modal, click submit button
+        await user.click(app.getAllByText(/Repot plant/)[0]);
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await user.click(app.getByRole('button', {name: 'Repot Plant'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm DetailsChangedSection did not render
+        expect(app.queryByTestId('2024-03-01-details-changed')).toBeNull();
+    });
 });

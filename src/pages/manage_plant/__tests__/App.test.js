@@ -71,6 +71,7 @@ describe('App', () => {
 
     it('sends correct payload when edit modal is submitted', async () => {
         // Confirm details changed section not rendered in timeline
+        expect(app.queryByTestId('2024-03-01-details-changed')).toBeNull();
         expect(app.queryByText(/Name changed to/)).toBeNull();
         expect(app.queryByText(/Species changed to/)).toBeNull();
         expect(app.queryByText(/Description changed/)).toBeNull();
@@ -115,6 +116,7 @@ describe('App', () => {
         });
 
         // Confirm details changed section appeared in timeline
+        expect(app.queryByTestId('2024-03-01-details-changed')).toBeInTheDocument();
         expect(app.queryByText(/Name changed to/)).toBeInTheDocument();
         expect(app.queryByText(/Species changed to/)).toBeInTheDocument();
         expect(app.queryByText(/Description changed/)).toBeInTheDocument();

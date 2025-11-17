@@ -804,6 +804,7 @@ def bulk_remove_plants_from_group(user, data, group, **kwargs):
 def repot_plant(plant, timestamp, change_event, data, **kwargs):
     '''Creates a RepotEvent for specified Plant with optional new_pot_size.
     Requires JSON POST with plant_id, new_pot_size, and timestamp keys.
+    If new_pot_size given creates/updates DetailsChangedEvent.
     '''
 
     try:
@@ -815,19 +816,21 @@ def repot_plant(plant, timestamp, change_event, data, **kwargs):
                 old_pot_size=plant.pot_size,
                 new_pot_size=data["new_pot_size"] or plant.pot_size
             )
-        # If new_pot_size specified update plant.pot_size and event.new_pot_size
-        if data["new_pot_size"]:
+        change_event_details = None
+        # If pot size changed update plant.pot_size and DetailsChangedEvent
+        if data["new_pot_size"] and plant.pot_size != int(data["new_pot_size"]):
             plant.pot_size = data["new_pot_size"]
-            plant.save()
+            plant.save(update_fields=["pot_size"])
             update_cached_overview_details_keys(plant, {'pot_size': plant.pot_size})
             change_event.pot_size_after = plant.pot_size
             change_event.save()
+            change_event_details = change_event.get_details()
         return JsonResponse(
             {
                 "action": "repot",
                 "plant": plant.uuid,
                 "timestamp": timestamp.isoformat(),
-                "change_event": change_event.get_details()
+                "change_event": change_event_details
             },
             status=200
         )

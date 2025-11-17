@@ -88,12 +88,16 @@ const RepotModal = ({ close }) => {
             timestamp: timestamp
         };
         const onSuccess = (data) => {
-            // Update plantDetails state, add event to events state
-            dispatch(detailsChangedEventAdded({
-                timestamp: data.timestamp,
-                detailsChangedEvent: data.change_event
-            }));
-            dispatch(plantRepotted(data.change_event.pot_size_after));
+            // If response contains change event (pot size changed) add to
+            // timeline and update plantDetails.pot_size
+            if (data.change_event) {
+                dispatch(detailsChangedEventAdded({
+                    timestamp: data.timestamp,
+                    detailsChangedEvent: data.change_event
+                }));
+                dispatch(plantRepotted(data.change_event.pot_size_after));
+            }
+            // Add repot event to timeline and calendar
             dispatch(eventAdded({timestamp: data.timestamp, type: 'repot'}));
             // Show success animation + change QR code button
             setModalContents("done");

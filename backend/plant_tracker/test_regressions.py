@@ -427,6 +427,40 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(plant.detailschangedevent_set.first().timestamp.day, 6)
         self.assertIsNone(plant.detailschangedevent_set.first().pot_size_after)
 
+    def test_repot_plant_creates_details_changed_event_when_nothing_changed(self):
+        '''Issue: When /repot_plant was called with plant's existing pot size
+        (no change, just repotted) a DetailsChangedEvent was created anyway and
+        included in the response. This caused the frontend to render an empty
+        timeline section that messed up spacing. Should only create event when
+        something actually changed.
+        '''
+
+        # Create plant with 4 inch pot
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user(), pot_size=4)
+        self.assertEqual(plant.detailschangedevent_set.count(), 0)
+
+        # Repot plant to another 4 inch pot
+        response = JSONClient().post('/repot_plant', {
+            'plant_id': str(plant.uuid),
+            'timestamp': '2024-03-06T05:00:00+00:00',
+            'new_pot_size': '4'
+        })
+
+        # Confirm response does not contain DetailsChangedEvent dict
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "action": "repot",
+                "plant": str(plant.uuid),
+                "timestamp": "2024-03-06T05:00:00+00:00",
+                "change_event": None
+            }
+        )
+
+        # Confirm no DetailsChangedEvent was created
+        self.assertEqual(plant.detailschangedevent_set.count(), 0)
+
     def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
         '''Issue: delete_plant_photos looked up photos in the database using a
         plant UUID and creation timestamp. If multiple photos of the same plant

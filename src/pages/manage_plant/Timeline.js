@@ -674,9 +674,12 @@ DetailsChangedLine.propTypes = {
     after: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
-const DetailsChangedSection = memo(function DetailsChangedSection({ detailsChanged }) {
+const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, detailsChanged }) {
     return (
-        <div className='flex flex-col m-2 gap-2'>
+        <div
+            className='flex flex-col m-2 gap-2'
+            data-testid={`${dateKey}-details-changed`}
+        >
             {detailsChanged.name_before !== detailsChanged.name_after &&
                 <DetailsChangedLine
                     prop='Name'
@@ -706,6 +709,7 @@ const DetailsChangedSection = memo(function DetailsChangedSection({ detailsChang
 });
 
 DetailsChangedSection.propTypes = {
+    dateKey: dateKeyPropType.isRequired,
     detailsChanged: PropTypes.exact({
         name_before: PropTypes.string,
         name_after: PropTypes.string,
@@ -783,7 +787,10 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     ))}
                 </div>
                 {contents.detailsChanged &&
-                    <DetailsChangedSection detailsChanged={contents.detailsChanged} />
+                    <DetailsChangedSection
+                        dateKey={dateKey}
+                        detailsChanged={contents.detailsChanged}
+                    />
                 }
                 {contents.dividedInto &&
                     <DivisionEventMarker dividedPlants={contents.dividedInto} />
