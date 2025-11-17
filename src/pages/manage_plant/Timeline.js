@@ -653,19 +653,24 @@ NoteCollapse.propTypes = {
 };
 
 const DetailsChangedLine = ({ prop, before, after }) => {
-    return (
-        <span>
-            {prop} changed
-            {before && (
-                <>
-                    {' '}from&nbsp;
-                    <span className="font-bold">{before}</span>
-                </>
-            )}
-            {' '}to{' '}
-            <span className="font-bold">{after}</span>
-        </span>
-    );
+    // Has after value: "<prop> changed from <before> to <after>"
+    if (after) {
+        return (
+            <span>
+                {`${prop} changed`}
+                {before && (
+                    <>
+                        {' from\u00A0'}
+                        <span className="font-bold">{before}</span>
+                    </>
+                )}
+                {' to\u00A0'}
+                <span className="font-bold">{after}</span>
+            </span>
+        );
+    }
+    // No after value: "<prop> removed (was <before>)"
+    return <span>{`${prop} removed (was ${before})`}</span>;
 };
 
 DetailsChangedLine.propTypes = {

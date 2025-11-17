@@ -121,4 +121,43 @@ describe('Timeline', () => {
         );
         expect(container).toMatchSnapshot();
     });
+
+    it('matches snapshot when plant has details changed event', () => {
+        // Render Timeline with mock context containing 2 details_changed
+        // events, confirm matches snapshot
+        const { container } = render(
+            <>
+                <ReduxProvider initialState={{
+                    ...mockContextNoEvents,
+                    change_events: {
+                        "2024-01-05T04:19:23+00:00": {
+                            name_before: null,
+                            name_after: "Test plant",
+                            species_before: null,
+                            species_after: "Calathea",
+                            description_before: null,
+                            description_after: "Pretty healthy",
+                            pot_size_before: null,
+                            pot_size_after: 4
+                        },
+                        "2024-03-14T04:19:23+00:00": {
+                            name_before: "Test plant",
+                            name_after: "Real name",
+                            species_before: "Calathea",
+                            species_after: null,
+                            description_before: "Pretty healthy",
+                            description_after: null,
+                            pot_size_before: 4,
+                            pot_size_after: 4
+                        }
+                    }
+                }}>
+                    <Timeline />
+                </ReduxProvider>
+                <Toast />
+                <ErrorModal />
+            </>
+        );
+        expect(container).toMatchSnapshot();
+    });
 });
