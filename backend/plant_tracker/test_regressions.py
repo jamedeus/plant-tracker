@@ -461,6 +461,50 @@ class ViewRegressionTests(TestCase):
         # Confirm no DetailsChangedEvent was created
         self.assertEqual(plant.detailschangedevent_set.count(), 0)
 
+    def test_repot_plant_returns_timestamp_in_user_timezone_not_utc(self):
+        '''Issue: The get_details_changed_event_from_post_body decorator when
+        called after get_timestamp_from_post_body converted the timestamp to the
+        user's timezone, then passed it to the calling function as the timestamp
+        kwarg. This did not cause any issues but is unexpected, other endpoints
+        always return UTC timestamps.
+        '''
+
+        # Create test plant
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Repot plant with no user timezone header
+        response = JSONClient().post('/repot_plant', {
+            'plant_id': str(plant.uuid),
+            'timestamp': '2024-03-06T05:00:00+00:00',
+            'new_pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm response contains UTC timestamp
+        self.assertEqual(response.json()['timestamp'], '2024-03-06T05:00:00+00:00')
+
+        # Repot plant with America/Los_Angeles in user timezone header
+        response = JSONClient().post('/repot_plant', {
+            'plant_id': str(plant.uuid),
+            'timestamp': '2024-03-06T05:00:01+00:00',
+            'new_pot_size': '4'
+        }, HTTP_USER_TIMEZONE='America/Los_Angeles')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm response contains UTC timestamp (not PST)
+        self.assertEqual(response.json()['timestamp'], '2024-03-06T05:00:01+00:00')
+
+        # Repot plant with Asia/Kolkata in user timezone header
+        response = JSONClient().post('/repot_plant', {
+            'plant_id': str(plant.uuid),
+            'timestamp': '2024-03-06T05:00:02+00:00',
+            'new_pot_size': '4'
+        }, HTTP_USER_TIMEZONE='Asia/Kolkata')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm response contains UTC timestamp (not IST)
+        self.assertEqual(response.json()['timestamp'], '2024-03-06T05:00:02+00:00')
+
     def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
         '''Issue: delete_plant_photos looked up photos in the database using a
         plant UUID and creation timestamp. If multiple photos of the same plant

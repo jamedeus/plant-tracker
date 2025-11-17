@@ -328,19 +328,19 @@ def get_details_changed_event_from_post_body(func):
         user_tz = request.headers.get("User-Timezone", "Etc/UTC")
         # Convert UTC from get_timestamp_from_post_body to user's timezone
         if timestamp:
-            timestamp = timestamp.astimezone(ZoneInfo(user_tz))
+            timestamp_user_tz = timestamp.astimezone(ZoneInfo(user_tz))
         # If no timestamp: use current day in user's timezone
         else:
-            timestamp = timezone.now().astimezone(ZoneInfo(user_tz))
+            timestamp_user_tz = timezone.now().astimezone(ZoneInfo(user_tz))
         # Convert boundaries of target day in user's timezone to UTC
-        start_utc = timestamp.replace(
+        user_day_utc_start = timestamp_user_tz.replace(
             hour=0, minute=0, second=0, microsecond=0
         ).astimezone(ZoneInfo("UTC"))
-        end_utc = start_utc + timedelta(days=1)
+        user_day_utc_end = user_day_utc_start + timedelta(days=1)
         # Find existing event if it exists
         change_event = DetailsChangedEvent.objects.filter(
             plant=plant,
-            timestamp__range=(start_utc, end_utc)
+            timestamp__range=(user_day_utc_start, user_day_utc_end)
         ).first()
         # Create new event if not found
         if not change_event:
