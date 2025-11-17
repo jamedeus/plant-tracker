@@ -10,7 +10,7 @@ import LoadingAnimation from 'src/components/LoadingAnimation';
 import { openErrorModal } from 'src/components/ErrorModal';
 import Checkmark from 'src/components/Checkmark';
 import { FaPlus } from 'react-icons/fa6';
-import { plantAddedToGroup } from './plantSlice';
+import { plantDetailsUpdated } from './plantSlice';
 import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 const RegisterGroup = ({ close, cancel, setTitle, addPlantToGroup }) => {
@@ -98,9 +98,11 @@ const Options = ({ options, setTitle, close }) => {
     const addPlantToGroup = async (groupID) => {
         const payload = { plant_id: plantID, group_id: groupID };
         // Update plant state with group name and UUID from response
-        const onSuccess = (data) => dispatch(plantAddedToGroup({
-            name: data.group_name,
-            uuid: data.group_uuid
+        const onSuccess = (data) => dispatch(plantDetailsUpdated({
+            group: {
+                name: data.group_name,
+                uuid: data.group_uuid
+            }
         }));
         return await sendPostRequest('/add_plant_to_group', payload, onSuccess);
     };

@@ -8,7 +8,7 @@ import PlantDetails from 'src/components/PlantDetails';
 import ChangeQrScannerButton from 'src/components/ChangeQrScanner';
 import { FaPlus } from 'react-icons/fa6';
 import { IoMdCloseCircle } from "react-icons/io";
-import { plantRemovedFromGroup } from './plantSlice';
+import { plantDetailsUpdated } from './plantSlice';
 import {
     titleDrawerOpened,
     changeQrScannerOpened,
@@ -54,7 +54,7 @@ const DetailsDrawer = memo(function DetailsDrawer({ openGroupModal, openEditModa
     const handleRemoveGroup = async () => {
         const payload = { plant_id: plantDetails.uuid };
         // Remove group details from plant state
-        const onSuccess = () => dispatch(plantRemovedFromGroup());
+        const onSuccess = () => dispatch(plantDetailsUpdated({ group: null }));
         await sendPostRequest('/remove_plant_from_group', payload, onSuccess);
     };
 
