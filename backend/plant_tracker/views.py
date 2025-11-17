@@ -135,16 +135,10 @@ def register_plant(user, data, **kwargs):
             # Add to cached overview state
             add_instance_to_cached_overview_state(plant)
 
-        # If divided from existing plant: create RepotEvent with parent plant
-        # pot size as old and current pot size as new
+        # If divided from existing plant: create RepotEvent
         if plant.divided_from:
             with transaction.atomic():
-                RepotEvent.objects.create(
-                    plant=plant,
-                    timestamp=plant.created,
-                    old_pot_size=plant.divided_from.pot_size,
-                    new_pot_size=plant.pot_size
-                )
+                RepotEvent.objects.create(plant=plant, timestamp=plant.created)
 
         # Return new plant details
         return JsonResponse(
@@ -810,12 +804,7 @@ def repot_plant(plant, timestamp, change_event, data, **kwargs):
     try:
         # Create with current pot_size as both old and new
         with transaction.atomic():
-            RepotEvent.objects.create(
-                plant=plant,
-                timestamp=timestamp,
-                old_pot_size=plant.pot_size,
-                new_pot_size=data["new_pot_size"] or plant.pot_size
-            )
+            RepotEvent.objects.create(plant=plant, timestamp=timestamp)
         change_event_details = None
         # If pot size changed update plant.pot_size and DetailsChangedEvent
         if data["new_pot_size"] and plant.pot_size != int(data["new_pot_size"]):

@@ -613,9 +613,6 @@ class RegistrationTests(TestCase):
         self.assertEqual(RepotEvent.objects.count(), 1)
         repot = RepotEvent.objects.first()
         self.assertEqual(repot.timestamp, new_plant.created)
-        # Confirm RepotEvent has parent pot size for old, child pot size for new
-        self.assertEqual(repot.old_pot_size, 8)
-        self.assertEqual(repot.new_pot_size, 4)
 
     def test_register_group_endpoint(self):
         # Confirm no plants or groups in database
@@ -1468,10 +1465,8 @@ class ManagePlantEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(self.plant.repotevent_set.count(), 1)
 
-        # Confirm correct pot_size attributes on plant and event entries
+        # Confirm plant pot_size attribute was updated correctly
         self.assertEqual(self.plant.pot_size, 6)
-        self.assertEqual(self.plant.repotevent_set.first().old_pot_size, 4)
-        self.assertEqual(self.plant.repotevent_set.first().new_pot_size, 6)
 
         # Confirm DetailsChangedEvent was created, has before and after pot_size
         self.assertEqual(self.plant.detailschangedevent_set.count(), 1)
