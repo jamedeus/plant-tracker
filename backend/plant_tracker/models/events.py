@@ -53,18 +53,6 @@ class PruneEvent(Event):
 class RepotEvent(Event):
     '''Records timestamp when a Plant entry was repotted.'''
 
-    # Optional old and new pot sizes
-    old_pot_size = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(36)],
-        blank=True,
-        null=True
-    )
-    new_pot_size = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(36)],
-        blank=True,
-        null=True
-    )
-
     class Meta:
         unique_together = ('plant', 'timestamp')
         ordering = ['-timestamp']
