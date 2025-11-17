@@ -350,9 +350,13 @@ def get_details_changed_event_from_post_body(func):
                 plant=plant,
                 timestamp=timestamp if timestamp else timezone.now(),
                 name_before=plant.name,
+                name_after=plant.name,
                 species_before=plant.species,
+                species_after=plant.species,
                 description_before=plant.description,
-                pot_size_before=plant.pot_size
+                description_after=plant.description,
+                pot_size_before=plant.pot_size,
+                pot_size_after=plant.pot_size
             )
         return func(plant=plant, change_event=change_event, timestamp=timestamp, **kwargs)
     return wrapper

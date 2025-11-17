@@ -505,6 +505,50 @@ class ViewRegressionTests(TestCase):
         # Confirm response contains UTC timestamp (not IST)
         self.assertEqual(response.json()['timestamp'], '2024-03-06T05:00:02+00:00')
 
+    def test_repot_plant_creates_details_updated_event_with_blank_after_fields(self):
+        '''Issue: When no DetailsChangedEvent existed on the target day the
+        get_details_changed_event_from_post_body decorator created one with the
+        _before fields populated, but not the _after fields. This was originally
+        for /edit_plant_details which was about to set all _after fields before
+        saving. When it was reused for /repot_plant (only sets pot_size_after)
+        the DetailsChangedEvent incorrectly reported that all other fields had
+        been cleared (saved event with None in all _after fields).
+
+        The get_details_changed_event_from_post_body decorator now populates
+        both _before and _after fields with current values.
+        '''
+
+        # Create test plant with name, species, description, and pot size set
+        plant = Plant.objects.create(
+            uuid=uuid4(),
+            user=get_default_user(),
+            name='test plant',
+            species='test species',
+            description='test description',
+            pot_size=4
+        )
+        self.assertEqual(plant.detailschangedevent_set.count(), 0)
+
+        # Repot plant, confirm DetailsChangedEvent was created
+        response = JSONClient().post('/repot_plant', {
+            'plant_id': str(plant.uuid),
+            'timestamp': '2024-03-06T05:00:00+00:00',
+            'new_pot_size': '6'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(plant.detailschangedevent_set.count(), 1)
+
+        # Confirm DetailsChangedEvent has all fields set (not just _before)
+        event = plant.detailschangedevent_set.first()
+        self.assertEqual(event.name_before, 'test plant')
+        self.assertEqual(event.name_after, 'test plant')
+        self.assertEqual(event.species_before, 'test species')
+        self.assertEqual(event.species_after, 'test species')
+        self.assertEqual(event.description_before, 'test description')
+        self.assertEqual(event.description_after, 'test description')
+        self.assertEqual(event.pot_size_before, 4)
+        self.assertEqual(event.pot_size_after, 6)
+
     def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
         '''Issue: delete_plant_photos looked up photos in the database using a
         plant UUID and creation timestamp. If multiple photos of the same plant
