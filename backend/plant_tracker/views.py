@@ -693,8 +693,7 @@ def add_plant_to_group(plant, group, change_event, **kwargs):
         {
             "action": "add_plant_to_group",
             "plant": plant.uuid,
-            "group_name": group.get_display_name(),
-            "group_uuid": group.uuid
+            "change_event": change_event.get_details()
         },
         status=200
     )
@@ -728,7 +727,11 @@ def remove_plant_from_group(plant, change_event, **kwargs):
     )
 
     return JsonResponse(
-        {"action": "remove_plant_from_group", "plant": plant.uuid},
+        {
+            "action": "remove_plant_from_group",
+            "plant": plant.uuid,
+            "change_event": change_event.get_details()
+        },
         status=200
     )
 

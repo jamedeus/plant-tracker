@@ -1385,6 +1385,8 @@ class ManagePlantEndpointTests(TestCase):
         # Confirm test plant and group have no database relation
         self.assertIsNone(self.plant.group)
         self.assertEqual(self.group.plant_set.count(), 0)
+        # Confirm no DetailsChangedEvent exists
+        self.assertEqual(self.plant.detailschangedevent_set.count(), 0)
 
         # Send add_plant_to_group request, confirm response
         response = self.client.post('/add_plant_to_group', {
@@ -1397,8 +1399,21 @@ class ManagePlantEndpointTests(TestCase):
             {
                 "action": "add_plant_to_group",
                 "plant": str(self.plant.uuid),
-                "group_name": 'Unnamed group 1',
-                "group_uuid": str(self.group.uuid)
+                "change_event": {
+                    "name_before": None,
+                    "name_after": None,
+                    "species_before": None,
+                    "species_after": None,
+                    "description_before": None,
+                    "description_after": None,
+                    "pot_size_before": None,
+                    "pot_size_after": None,
+                    "group_before": None,
+                    "group_after": {
+                        'name': 'Unnamed group 1',
+                        'uuid': str(self.group.uuid)
+                    }
+                },
             }
         )
 
@@ -1407,14 +1422,22 @@ class ManagePlantEndpointTests(TestCase):
         self.assertEqual(self.plant.group, self.group)
         self.assertEqual(self.group.plant_set.count(), 1)
 
+        # Confirm DetailsChangedEvent was created, has group details
+        self.assertEqual(self.plant.detailschangedevent_set.count(), 1)
+        change_event = self.plant.detailschangedevent_set.first()
+        self.assertIsNone(change_event.group_before)
+        self.assertEqual(change_event.group_after, self.group)
+
     def test_remove_plant_from_group(self):
         # Add test plant to group, confirm relation
         self.plant.group = self.group
         self.plant.save()
         self.assertEqual(self.plant.group, self.group)
         self.assertEqual(self.group.plant_set.count(), 1)
+        # Confirm no DetailsChangedEvent exists
+        self.assertEqual(self.plant.detailschangedevent_set.count(), 0)
 
-        # Send add_plant_to_group request, confirm response
+        # Send remove_plant_from_group request, confirm response
         response = self.client.post('/remove_plant_from_group', {
             'plant_id': self.plant.uuid
         })
@@ -1423,7 +1446,22 @@ class ManagePlantEndpointTests(TestCase):
             response.json(),
             {
                 'action': 'remove_plant_from_group',
-                'plant': str(self.plant.uuid)
+                'plant': str(self.plant.uuid),
+                'change_event': {
+                    'name_before': None,
+                    'name_after': None,
+                    'species_before': None,
+                    'species_after': None,
+                    'description_before': None,
+                    'description_after': None,
+                    'pot_size_before': None,
+                    'pot_size_after': None,
+                    'group_before': {
+                        'name': 'Unnamed group 1',
+                        'uuid': str(self.group.uuid)
+                    },
+                    'group_after': None
+                },
             }
         )
 
@@ -1431,6 +1469,13 @@ class ManagePlantEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertIsNone(self.plant.group)
         self.assertEqual(self.group.plant_set.count(), 0)
+
+
+        # Confirm DetailsChangedEvent was created, has group details
+        self.assertEqual(self.plant.detailschangedevent_set.count(), 1)
+        change_event = self.plant.detailschangedevent_set.first()
+        self.assertEqual(change_event.group_before, self.group)
+        self.assertIsNone(change_event.group_after)
 
     def test_repot_plant(self):
         # Set starting pot_size

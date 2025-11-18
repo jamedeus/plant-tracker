@@ -1158,7 +1158,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
     def test_add_plant_to_group_endpoint(self):
         '''/add_plant_to_group should make 7 database queries if Group is named,
-        9 queries if Group is unnamed (must get unnamed index).'''
+        8 queries if Group is unnamed (must get unnamed index).'''
         user = get_default_user()
         plant = Plant.objects.create(uuid=uuid4(), user=user)
         group = Group.objects.create(uuid=uuid4(), user=user, name='Outside')
@@ -1173,7 +1173,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         group.save()
         plant.group = None
         plant.save()
-        with self.assertNumQueries(9):
+        with self.assertNumQueries(8):
             response = self.client.post('/add_plant_to_group', {
                 'plant_id': plant.uuid,
                 'group_id': group.uuid
@@ -1183,7 +1183,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
     def test_remove_plant_from_group_endpoint(self):
         '''/remove_plant_from_group should make 6 database queries.'''
         user = get_default_user()
-        group = Group.objects.create(uuid=uuid4(), user=user)
+        group = Group.objects.create(uuid=uuid4(), user=user, name='Test group')
         plant = Plant.objects.create(uuid=uuid4(), user=user, group=group)
         with self.assertNumQueries(6):
             response = self.client.post('/remove_plant_from_group', {
