@@ -62,7 +62,8 @@ export const mockContext = {
         photo: '/media/images/photo3.jpg',
         thumbnail: '/media/thumbnails/photo3_thumb.webp',
         preview: '/media/previews/photo3_preview.webp',
-        key: 3
+        key: 3,
+        pending: false
     },
     division_events: {},
     divided_from: null,
@@ -100,7 +101,8 @@ export const mockContextNoEvents = {
         timestamp: null,
         photo: null,
         thumbnail: null,
-        key: null
+        key: null,
+        pending: false
     },
     division_events: {},
     divided_from: null,

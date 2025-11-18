@@ -27,7 +27,8 @@ DEFAULT_PHOTO_DETAILS_PLACEHOLDER = {
     'photo': None,
     'thumbnail': None,
     'preview': None,
-    'key': None
+    'key': None,
+    'pending': False
 }
 
 
@@ -377,7 +378,8 @@ class Plant(models.Model):
                     'photo': default_storage.url(self.last_photo_details['photo']),
                     'thumbnail': default_storage.url(self.last_photo_details['thumbnail']),
                     'preview': default_storage.url(self.last_photo_details['preview']),
-                    'key': self.last_photo_details['key']
+                    'key': self.last_photo_details['key'],
+                    'pending': False
                 }
             # Annotation is None: no photos, skip query below
             return DEFAULT_PHOTO_DETAILS_PLACEHOLDER

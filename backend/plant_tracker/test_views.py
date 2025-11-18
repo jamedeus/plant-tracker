@@ -984,7 +984,8 @@ class ManagePageTests(TestCase):
                     'photo': None,
                     'thumbnail': None,
                     'preview': None,
-                    'key': None
+                    'key': None,
+                    'pending': False
                 },
                 'divided_from': None,
                 'division_events': {},

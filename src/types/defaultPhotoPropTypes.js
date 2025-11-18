@@ -7,5 +7,6 @@ export default PropTypes.exact({
     photo: PropTypes.string,
     preview: PropTypes.string,
     thumbnail: PropTypes.string,
-    timestamp: isoTimestampTzPropType
+    timestamp: isoTimestampTzPropType,
+    pending: PropTypes.bool.isRequired
 });

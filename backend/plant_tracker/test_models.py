@@ -196,7 +196,8 @@ class PlantModelTests(TestCase):
                 "photo": None,
                 "thumbnail": None,
                 "preview": None,
-                "key": None
+                "key": None,
+                "pending": False
             }
         )
 

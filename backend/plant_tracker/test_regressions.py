@@ -1722,7 +1722,8 @@ class CachedStateRegressionTests(TestCase):
                 'photo': None,
                 'thumbnail': None,
                 'preview': None,
-                'key': None
+                'key': None,
+                'pending': False
             }
         )
 
@@ -1755,7 +1756,8 @@ class CachedStateRegressionTests(TestCase):
                 'photo': '/media/user_1/images/photo1.jpg',
                 'thumbnail': '/media/user_1/thumbnails/photo1_thumb.webp',
                 'preview': '/media/user_1/previews/photo1_preview.webp',
-                'key': photo.pk
+                'key': photo.pk,
+                'pending': False
             }
         )
 
@@ -1781,7 +1783,8 @@ class CachedStateRegressionTests(TestCase):
                 'photo': None,
                 'thumbnail': None,
                 'preview': None,
-                'key': None
+                'key': None,
+                'pending': False
             }
         )
 
