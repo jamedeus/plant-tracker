@@ -353,7 +353,9 @@ def get_or_create_details_changed_event(plant, timestamp=None, user_tz='Etc/UTC'
             pot_size_before=plant.pot_size,
             pot_size_after=plant.pot_size,
             group_before=plant.group if plant.group else None,
-            group_after=plant.group if plant.group else None
+            group_after=plant.group if plant.group else None,
+            archived_before=plant.archived,
+            archived_after=plant.archived
         )
     return change_event
 

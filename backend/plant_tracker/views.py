@@ -385,15 +385,24 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
 
 @get_user_token
 @requires_json_post(["uuids", "archived"])
-def bulk_archive_plants_and_groups(user, data, **kwargs):
+def bulk_archive_plants_and_groups(request, user, data, **kwargs):
     '''Sets the archived attribute for a list of plants and groups owned by the
     requesting user.
     Requires JSON POST with uuids (list of uuids) and archived (bool) keys.
     '''
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
     archived = []
 
     plants = Plant.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
     groups = Group.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
+
+    # Update DetailsChangedEvent for each plant
+    for plant in plants:
+        change_event = get_or_create_details_changed_event(plant=plant, user_tz=user_tz)
+        change_event.archived_after = data["archived"]
+        change_event.save()
+
+    # Update archived bool for each plant and group
     for instance in chain(plants, groups):
         archived.append(str(instance.uuid))
         instance.archived = data["archived"]

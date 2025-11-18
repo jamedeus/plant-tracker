@@ -109,6 +109,9 @@ class DetailsChangedEvent(Event):
         related_name='details_changed_after_events'
     )
 
+    archived_before = models.BooleanField(default=False)
+    archived_after = models.BooleanField(default=False)
+
     class Meta:
         unique_together = ('plant', 'timestamp')
         ordering = ['-timestamp']
@@ -131,5 +134,7 @@ class DetailsChangedEvent(Event):
             'group_after': {
                 'name': self.group_after.display_name,
                 'uuid': str(self.group_after.uuid)
-            } if self.group_after else None
+            } if self.group_after else None,
+            'archived_before': self.archived_before,
+            'archived_after': self.archived_after
         }

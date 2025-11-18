@@ -351,6 +351,8 @@ class OverviewTests(TestCase):
         self.assertEqual(Group.objects.count(), 1)
         self.assertFalse(Plant.objects.first().archived)
         self.assertFalse(Group.objects.first().archived)
+        # Confirm plant has no DetailsChangedEvents
+        self.assertEqual(Plant.objects.first().detailschangedevent_set.count(), 0)
 
         # Post both UUIDs to /bulk_archive_plants_and_groups
         response = self.client.post('/bulk_archive_plants_and_groups', {
@@ -371,6 +373,12 @@ class OverviewTests(TestCase):
         self.assertEqual(Group.objects.count(), 1)
         self.assertTrue(Plant.objects.first().archived)
         self.assertTrue(Group.objects.first().archived)
+
+        # Confirm DetailsChangedEvents was created for plant
+        self.assertEqual(Plant.objects.first().detailschangedevent_set.count(), 1)
+        change_event = Plant.objects.first().detailschangedevent_set.first()
+        self.assertFalse(change_event.archived_before)
+        self.assertTrue(change_event.archived_after)
 
         # Create plant owned by a different user
         user = user_model.objects.create_user(username='unittest', password='12345')
@@ -1081,7 +1089,9 @@ class ManagePageTests(TestCase):
                 'pot_size_before': None,
                 'pot_size_after': 4,
                 'group_before': None,
-                'group_after': None
+                'group_after': None,
+                'archived_before': False,
+                'archived_after': False
             },
             '2024-02-28T00:00:00+00:00': {
                 'name_before': 'test plant',
@@ -1093,7 +1103,9 @@ class ManagePageTests(TestCase):
                 'pot_size_before': 4,
                 'pot_size_after': 6,
                 'group_before': None,
-                'group_after': None
+                'group_after': None,
+                'archived_before': False,
+                'archived_after': False
             }
         })
 
@@ -1287,7 +1299,9 @@ class ManagePlantEndpointTests(TestCase):
                 'pot_size_before': None,
                 'pot_size_after': 4,
                 'group_before': None,
-                'group_after': None
+                'group_after': None,
+                'archived_before': False,
+                'archived_after': False
             }
         )
 
@@ -1412,7 +1426,9 @@ class ManagePlantEndpointTests(TestCase):
                     "group_after": {
                         'name': 'Unnamed group 1',
                         'uuid': str(self.group.uuid)
-                    }
+                    },
+                    'archived_before': False,
+                    'archived_after': False
                 },
             }
         )
@@ -1460,7 +1476,9 @@ class ManagePlantEndpointTests(TestCase):
                         'name': 'Unnamed group 1',
                         'uuid': str(self.group.uuid)
                     },
-                    'group_after': None
+                    'group_after': None,
+                    'archived_before': False,
+                    'archived_after': False
                 },
             }
         )
@@ -1511,7 +1529,9 @@ class ManagePlantEndpointTests(TestCase):
                     "pot_size_before": 4,
                     "pot_size_after": 6,
                     "group_before": None,
-                    "group_after": None
+                    "group_after": None,
+                    'archived_before': False,
+                    'archived_after': False
                 },
             }
         )

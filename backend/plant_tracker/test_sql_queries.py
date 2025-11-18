@@ -648,11 +648,11 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_archive_plants_and_groups_endpoint_1_plant(self):
-        '''/bulk_archive_plants_and_groups should make 5 database queries when
+        '''/bulk_archive_plants_and_groups should make 7 database queries when
         archiving a single Plant instance.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(5):
+        with self.assertNumQueries(7):
             response = self.client.post('/bulk_archive_plants_and_groups', {
                 'uuids': [str(plant.uuid)],
                 'archived': True
@@ -660,13 +660,13 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_archive_plants_and_groups_endpoint_3_plants(self):
-        '''/bulk_archive_plants_and_groups should make 5 database queries when
+        '''/bulk_archive_plants_and_groups should make 11 database queries when
         archiving 3 Plant instances.
         '''
         plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         plant3 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(5):
+        with self.assertNumQueries(11):
             response = self.client.post('/bulk_archive_plants_and_groups', {
                 'uuids': [
                     str(plant1.uuid),
@@ -708,7 +708,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_archive_plants_and_groups_endpoint_3_plants_3_groups(self):
-        '''/bulk_archive_plants_and_groups should make 6 database queries when
+        '''/bulk_archive_plants_and_groups should make 12 database queries when
         archiving 3 plant instances and 3 Group instances.
         '''
         plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
@@ -717,7 +717,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         group1 = Group.objects.create(uuid=uuid4(), user=get_default_user())
         group2 = Group.objects.create(uuid=uuid4(), user=get_default_user())
         group3 = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(6):
+        with self.assertNumQueries(12):
             response = self.client.post('/bulk_archive_plants_and_groups', {
                 'uuids': [
                     str(plant1.uuid),
