@@ -9,6 +9,7 @@ import ChangeQrScannerButton from 'src/components/ChangeQrScanner';
 import { FaPlus } from 'react-icons/fa6';
 import { IoMdCloseCircle } from "react-icons/io";
 import { plantDetailsUpdated } from './plantSlice';
+import { detailsChangedEventAdded } from './timelineSlice';
 import {
     titleDrawerOpened,
     changeQrScannerOpened,
@@ -54,7 +55,13 @@ const DetailsDrawer = memo(function DetailsDrawer({ openGroupModal, openEditModa
     const handleRemoveGroup = async () => {
         const payload = { plant_id: plantDetails.uuid };
         // Remove group details from plant state
-        const onSuccess = () => dispatch(plantDetailsUpdated({ group: null }));
+        const onSuccess = (data) => {
+            dispatch(plantDetailsUpdated({ group: null }));
+            dispatch(detailsChangedEventAdded({
+                timestamp: new Date().toISOString(),
+                detailsChangedEvent: data.change_event
+            }));
+        };
         await sendPostRequest('/remove_plant_from_group', payload, onSuccess);
     };
 

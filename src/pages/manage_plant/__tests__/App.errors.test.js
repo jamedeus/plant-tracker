@@ -3,7 +3,7 @@ import mockFetchResponse from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
-import { mockContext, mockGroupOptions } from './mockContext';
+import { mockContext, mockGroupOptions, mockChangeEvent } from './mockContext';
 
 describe('App', () => {
     let app, user;
@@ -100,7 +100,8 @@ describe('App', () => {
         // Mock "Remove from group" response (must remove before add button appears)
         mockFetchResponse({
             action: "remove_plant_from_group",
-            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            change_event: {  ...mockChangeEvent,  group_after: null }
         });
 
         // Click "Remove from group" button in details dropdown

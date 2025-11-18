@@ -11,6 +11,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import Checkmark from 'src/components/Checkmark';
 import { FaPlus } from 'react-icons/fa6';
 import { plantDetailsUpdated } from './plantSlice';
+import { detailsChangedEventAdded } from './timelineSlice';
 import groupDetailsProptypes from 'src/types/groupDetailsPropTypes';
 
 const RegisterGroup = ({ close, cancel, setTitle, addPlantToGroup }) => {
@@ -98,12 +99,18 @@ const Options = ({ options, setTitle, close }) => {
     const addPlantToGroup = async (groupID) => {
         const payload = { plant_id: plantID, group_id: groupID };
         // Update plant state with group name and UUID from response
-        const onSuccess = (data) => dispatch(plantDetailsUpdated({
-            group: {
-                name: data.group_name,
-                uuid: data.group_uuid
-            }
-        }));
+        const onSuccess = (data) => {
+            dispatch(plantDetailsUpdated({
+                group: {
+                    name: data.change_event.group_after.name,
+                    uuid: data.change_event.group_after.uuid
+                }
+            }));
+            dispatch(detailsChangedEventAdded({
+                timestamp: new Date().toISOString(),
+                detailsChangedEvent: data.change_event
+            }));
+        };
         return await sendPostRequest('/add_plant_to_group', payload, onSuccess);
     };
 

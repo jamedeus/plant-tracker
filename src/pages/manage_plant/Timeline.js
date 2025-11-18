@@ -679,12 +679,75 @@ DetailsChangedLine.propTypes = {
     after: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
+const GroupChangedLine = ({ groupBefore, groupAfter }) => {
+    if (!groupBefore) {
+        return (
+            <span>
+                {`Added to group `}
+                <Link
+                    to={`/manage/${groupAfter.uuid}`}
+                    className="font-bold underline"
+                >
+                    {groupAfter.name}
+                </Link>
+            </span>
+        );
+    } else if (!groupAfter) {
+        return (
+            <span>
+                {`Removed from group `}
+                <Link
+                    to={`/manage/${groupBefore.uuid}`}
+                    className="font-bold underline"
+                >
+                    {groupBefore.name}
+                </Link>
+            </span>
+        );
+    }
+    return (
+        <span>
+            {`Moved from group `}
+            <Link
+                to={`/manage/${groupBefore.uuid}`}
+                className="font-bold underline"
+            >
+                {groupBefore.name}
+            </Link>
+            {` to group `}
+            <Link
+                to={`/manage/${groupAfter.uuid}`}
+                className="font-bold underline"
+            >
+                {groupAfter.name}
+            </Link>
+        </span>
+    );
+};
+
+GroupChangedLine.propTypes = {
+    groupBefore: PropTypes.exact({
+        name: PropTypes.string.isRequired,
+        uuid: uuidPropType.isRequired,
+    }),
+    groupAfter: PropTypes.exact({
+        name: PropTypes.string.isRequired,
+        uuid: uuidPropType.isRequired,
+    })
+};
+
 const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, detailsChanged }) {
     return (
         <div
             className='flex flex-col m-2 gap-2'
             data-testid={`${dateKey}-details-changed`}
         >
+            {detailsChanged.group_before?.uuid !== detailsChanged.group_after?.uuid &&
+                <GroupChangedLine
+                    groupBefore={detailsChanged.group_before}
+                    groupAfter={detailsChanged.group_after}
+                />
+            }
             {detailsChanged.name_before !== detailsChanged.name_after &&
                 <DetailsChangedLine
                     prop='Name'
@@ -724,6 +787,14 @@ DetailsChangedSection.propTypes = {
         description_after: PropTypes.string,
         pot_size_before: PropTypes.number,
         pot_size_after: PropTypes.number,
+        group_before: PropTypes.exact({
+            name: PropTypes.string.isRequired,
+            uuid: uuidPropType.isRequired,
+        }),
+        group_after: PropTypes.exact({
+            name: PropTypes.string.isRequired,
+            uuid: uuidPropType.isRequired,
+        })
     }).isRequired
 };
 

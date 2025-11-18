@@ -8,7 +8,7 @@ import { v4 as mockUuidv4 } from 'uuid';
 import GroupModal from '../GroupModal';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { ReduxProvider } from '../store';
-import { mockContext, mockGroupOptions } from './mockContext';
+import { mockContext, mockGroupOptions, mockChangeEvent } from './mockContext';
 import { waitFor } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 
@@ -144,6 +144,19 @@ describe('GroupModal', () => {
         );
         await act(async () => await jest.advanceTimersByTimeAsync(0));
 
+        // Mock expected reponse when plant is added to group
+        mockFetchResponse({
+            action: "add_plant_to_group",
+            plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            change_event: {
+                ...mockChangeEvent,
+                group_after: {
+                    group_name: "Test group",
+                    group_uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                }
+            }
+        });
+
         // Simulate user clicking group option (nextSibling targets transparent
         // absolute-positioned div with click listener that covers group card)
         await user.click(component.getByLabelText('Go to Test group page').nextSibling);
@@ -229,8 +242,13 @@ describe('GroupModal', () => {
             [{
                 action: "add_plant_to_group",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                group_name: "Test group",
-                group_uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                change_event: {
+                    ...mockChangeEvent,
+                    group_after: {
+                        group_name: "Test group",
+                        group_uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    }
+                }
             }]
         ]);
         global.fetch.mockClear();

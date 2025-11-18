@@ -48,7 +48,15 @@ export default PropTypes.exact({
             description_before: stringOrNull,
             description_after: stringOrNull,
             pot_size_before: numberOrNull,
-            pot_size_after: numberOrNull
+            pot_size_after: numberOrNull,
+            group_before: PropTypes.exact({
+                name: PropTypes.string.isRequired,
+                uuid: uuidPropType.isRequired,
+            }),
+            group_after: PropTypes.exact({
+                name: PropTypes.string.isRequired,
+                uuid: uuidPropType.isRequired,
+            })
         })
     ).isRequired
 });
