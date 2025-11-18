@@ -3,7 +3,8 @@
 from typing import TYPE_CHECKING
 
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
+
+from .pot_size_field import PotSizeField
 
 if TYPE_CHECKING:  # pragma: no cover
     from .plant import Plant
@@ -89,16 +90,8 @@ class DetailsChangedEvent(Event):
     description_before = models.CharField(max_length=500, blank=True, null=True)
     description_after = models.CharField(max_length=500, blank=True, null=True)
 
-    pot_size_before = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(36)],
-        blank=True,
-        null=True
-    )
-    pot_size_after = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(36)],
-        blank=True,
-        null=True
-    )
+    pot_size_before = PotSizeField()
+    pot_size_after = PotSizeField()
 
     class Meta:
         unique_together = ('plant', 'timestamp')

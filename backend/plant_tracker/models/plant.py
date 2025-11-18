@@ -8,10 +8,10 @@ from django.conf import settings
 from django.db.models.functions import JSONObject
 from django.utils.functional import cached_property
 from django.core.files.storage import default_storage
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import F, Subquery, OuterRef, Exists, JSONField
 
+from .pot_size_field import PotSizeField
 from .annotations import unnamed_index_annotation
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -242,11 +242,7 @@ class Plant(models.Model):
     archived = models.BooleanField(default=False)
 
     # Accept pot sizes between 1 inch and 3 feet (optional)
-    pot_size = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(36)],
-        blank=True,
-        null=True
-    )
+    pot_size = PotSizeField()
 
     # Optional relation to manage multiple plants in the same group
     group = models.ForeignKey(
