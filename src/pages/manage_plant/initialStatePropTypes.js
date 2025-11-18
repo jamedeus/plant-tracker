@@ -56,7 +56,9 @@ export default PropTypes.exact({
             group_after: PropTypes.exact({
                 name: PropTypes.string.isRequired,
                 uuid: uuidPropType.isRequired,
-            })
+            }),
+            archived_before: PropTypes.bool.isRequired,
+            archived_after: PropTypes.bool.isRequired,
         })
     ).isRequired
 });

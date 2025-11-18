@@ -330,5 +330,7 @@ export const mockChangeEvent = {
     pot_size_before: mockContext.plant_details.pot_size,
     pot_size_after: mockContext.plant_details.pot_size,
     group_before: mockContext.plant_details.group,
-    group_after: mockContext.plant_details.group
+    group_after: mockContext.plant_details.group,
+    archived_before: mockContext.plant_details.archived,
+    archived_after: mockContext.plant_details.archived
 };

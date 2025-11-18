@@ -748,6 +748,13 @@ const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, det
                     groupAfter={detailsChanged.group_after}
                 />
             }
+            {detailsChanged.archived_before !== detailsChanged.archived_after && (
+                detailsChanged.archived_after ? (
+                    <span>Plant archived</span>
+                ) : (
+                    <span>Plant un-archived</span>
+                )
+            )}
             {detailsChanged.name_before !== detailsChanged.name_after &&
                 <DetailsChangedLine
                     prop='Name'
@@ -794,7 +801,9 @@ DetailsChangedSection.propTypes = {
         group_after: PropTypes.exact({
             name: PropTypes.string.isRequired,
             uuid: uuidPropType.isRequired,
-        })
+        }),
+        archived_before: PropTypes.bool.isRequired,
+        archived_after: PropTypes.bool.isRequired,
     }).isRequired
 };
 
