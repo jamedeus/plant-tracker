@@ -144,7 +144,7 @@ describe('GroupModal', () => {
         );
         await act(async () => await jest.advanceTimersByTimeAsync(0));
 
-        // Mock expected reponse when plant is added to group
+        // Mock expected response when plant is added to group
         mockFetchResponse({
             action: "add_plant_to_group",
             plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",

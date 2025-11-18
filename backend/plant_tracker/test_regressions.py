@@ -1,4 +1,4 @@
-# pylint: disable=missing-docstring,R0801,too-many-lines,global-statement
+# pylint: disable=missing-docstring,R0801,too-many-lines,global-statement,too-many-public-methods
 
 import threading
 from uuid import uuid4
