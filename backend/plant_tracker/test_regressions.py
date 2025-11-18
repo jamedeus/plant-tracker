@@ -865,7 +865,9 @@ class ViewRegressionTests(TestCase):
                 'description_before': None,
                 'description_after': None,
                 'pot_size_before': None,
-                'pot_size_after': None
+                'pot_size_after': None,
+                'group_before': None,
+                'group_after': None
             }
         )
 

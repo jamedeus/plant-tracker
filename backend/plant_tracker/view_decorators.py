@@ -314,6 +314,50 @@ def get_event_type_from_post_body(func):
     return wrapper
 
 
+def get_or_create_details_changed_event(plant, timestamp=None, user_tz='Etc/UTC'):
+    '''Takes plant entry and optional timestamp and user timezone string.
+    Looks up DetailsChangedEvent for plant on same day as timestamp in user_tz.
+    If not found creates a new event with all plant details in _before fields.
+    If timestamp not given uses current day in user_tz (or UTC if not given).
+    '''
+
+    # Convert UTC from get_timestamp_from_post_body to user's timezone
+    if timestamp:
+        timestamp_user_tz = timestamp.astimezone(ZoneInfo(user_tz))
+    # If no timestamp: use current day in user's timezone
+    else:
+        timestamp_user_tz = timezone.now().astimezone(ZoneInfo(user_tz))
+    # Convert boundaries of target day in user's timezone to UTC
+    user_day_utc_start = timestamp_user_tz.replace(
+        hour=0, minute=0, second=0, microsecond=0
+    ).astimezone(ZoneInfo("UTC"))
+    user_day_utc_end = user_day_utc_start + timedelta(days=1)
+    # Find existing event if it exists
+    change_event = DetailsChangedEvent.objects.filter(
+        plant=plant,
+        timestamp__range=(user_day_utc_start, user_day_utc_end)
+    ).first()
+    # Create new event if not found
+    if not change_event:
+        # Don't write to database - if wrapped function fails event should
+        # not be created. Wrapped function will set _after fields and save.
+        change_event = DetailsChangedEvent(
+            plant=plant,
+            timestamp=timestamp if timestamp else timezone.now(),
+            name_before=plant.name,
+            name_after=plant.name,
+            species_before=plant.species,
+            species_after=plant.species,
+            description_before=plant.description,
+            description_after=plant.description,
+            pot_size_before=plant.pot_size,
+            pot_size_after=plant.pot_size,
+            group_before=plant.group if plant.group else None,
+            group_after=plant.group if plant.group else None
+        )
+    return change_event
+
+
 def get_details_changed_event_from_post_body(func):
     '''Decorator looks up existing DetailsChangedEvent for plant_id in request.
     If not found creates a new event with all plant details in _before fields.
@@ -326,38 +370,7 @@ def get_details_changed_event_from_post_body(func):
     def wrapper(request, plant, timestamp=None, **kwargs):
         # Read user timezone from request header (default to UTC if missing)
         user_tz = request.headers.get("User-Timezone", "Etc/UTC")
-        # Convert UTC from get_timestamp_from_post_body to user's timezone
-        if timestamp:
-            timestamp_user_tz = timestamp.astimezone(ZoneInfo(user_tz))
-        # If no timestamp: use current day in user's timezone
-        else:
-            timestamp_user_tz = timezone.now().astimezone(ZoneInfo(user_tz))
-        # Convert boundaries of target day in user's timezone to UTC
-        user_day_utc_start = timestamp_user_tz.replace(
-            hour=0, minute=0, second=0, microsecond=0
-        ).astimezone(ZoneInfo("UTC"))
-        user_day_utc_end = user_day_utc_start + timedelta(days=1)
-        # Find existing event if it exists
-        change_event = DetailsChangedEvent.objects.filter(
-            plant=plant,
-            timestamp__range=(user_day_utc_start, user_day_utc_end)
-        ).first()
-        # Create new event if not found
-        if not change_event:
-            # Don't write to database - if wrapped function fails event should
-            # not be created. Wrapped function will set _after fields and save.
-            change_event = DetailsChangedEvent(
-                plant=plant,
-                timestamp=timestamp if timestamp else timezone.now(),
-                name_before=plant.name,
-                name_after=plant.name,
-                species_before=plant.species,
-                species_after=plant.species,
-                description_before=plant.description,
-                description_after=plant.description,
-                pot_size_before=plant.pot_size,
-                pot_size_after=plant.pot_size
-            )
+        change_event = get_or_create_details_changed_event(plant, timestamp, user_tz)
         return func(plant=plant, change_event=change_event, timestamp=timestamp, **kwargs)
     return wrapper
 

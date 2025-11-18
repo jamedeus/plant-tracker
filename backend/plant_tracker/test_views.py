@@ -1079,7 +1079,9 @@ class ManagePageTests(TestCase):
                 'description_before': None,
                 'description_after': None,
                 'pot_size_before': None,
-                'pot_size_after': 4
+                'pot_size_after': 4,
+                'group_before': None,
+                'group_after': None
             },
             '2024-02-28T00:00:00+00:00': {
                 'name_before': 'test plant',
@@ -1089,7 +1091,9 @@ class ManagePageTests(TestCase):
                 'description_before': None,
                 'description_after': None,
                 'pot_size_before': 4,
-                'pot_size_after': 6
+                'pot_size_after': 6,
+                'group_before': None,
+                'group_after': None
             }
         })
 
@@ -1281,7 +1285,9 @@ class ManagePlantEndpointTests(TestCase):
                 'description_before': None,
                 'description_after': '300 feet and a few thousand years old',
                 'pot_size_before': None,
-                'pot_size_after': 4
+                'pot_size_after': 4,
+                'group_before': None,
+                'group_after': None
             }
         )
 
@@ -1458,7 +1464,9 @@ class ManagePlantEndpointTests(TestCase):
                     "description_before": None,
                     "description_after": None,
                     "pot_size_before": 4,
-                    "pot_size_after": 6
+                    "pot_size_after": 6,
+                    "group_before": None,
+                    "group_after": None
                 },
             }
         )

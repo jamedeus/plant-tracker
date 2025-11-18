@@ -8,6 +8,7 @@ from .pot_size_field import PotSizeField
 
 if TYPE_CHECKING:  # pragma: no cover
     from .plant import Plant
+    from .group import Group
 
 # Timestamp format used to print DateTimeFields, parse exif into datetime, etc.
 TIME_FORMAT = '%Y:%m:%d %H:%M:%S'
@@ -93,6 +94,21 @@ class DetailsChangedEvent(Event):
     pot_size_before = PotSizeField()
     pot_size_after = PotSizeField()
 
+    group_before = models.ForeignKey(
+        'Group',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='details_changed_before_events'
+    )
+    group_after = models.ForeignKey(
+        'Group',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='details_changed_after_events'
+    )
+
     class Meta:
         unique_together = ('plant', 'timestamp')
         ordering = ['-timestamp']
@@ -107,5 +123,13 @@ class DetailsChangedEvent(Event):
             'description_before': self.description_before,
             'description_after': self.description_after,
             'pot_size_before': self.pot_size_before,
-            'pot_size_after': self.pot_size_after
+            'pot_size_after': self.pot_size_after,
+            'group_before': {
+                'name': self.group_before.display_name,
+                'uuid': str(self.group_before.uuid)
+            } if self.group_before else None,
+            'group_after': {
+                'name': self.group_after.display_name,
+                'uuid': str(self.group_after.uuid)
+            } if self.group_after else None
         }

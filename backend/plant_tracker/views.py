@@ -38,6 +38,7 @@ from .view_decorators import (
     get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
+    get_or_create_details_changed_event,
     get_details_changed_event_from_post_body,
     clean_payload_data
 )
@@ -674,13 +675,16 @@ def delete_plant_notes(plant, data, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body()
+@get_details_changed_event_from_post_body
 @get_group_from_post_body()
-def add_plant_to_group(plant, group, **kwargs):
+def add_plant_to_group(plant, group, change_event, **kwargs):
     '''Adds specified Plant to specified Group (creates database relation).
     Requires JSON POST with plant_id (uuid) and group_id (uuid) keys.
     '''
     plant.group = group
     plant.save(update_fields=["group"])
+    change_event.group_after = plant.group
+    change_event.save()
     # Update cached overview state
     update_cached_overview_details_keys(plant, {'group': plant.get_group_details()})
     update_cached_overview_details_keys(group, {'plants': group.get_number_of_plants()})
@@ -699,7 +703,8 @@ def add_plant_to_group(plant, group, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body(select_related="group")
-def remove_plant_from_group(plant, **kwargs):
+@get_details_changed_event_from_post_body
+def remove_plant_from_group(plant, change_event, **kwargs):
     '''Removes specified Plant from Group (deletes database relation).
     Requires JSON POST with plant_id (uuid) key.
     '''
@@ -712,6 +717,8 @@ def remove_plant_from_group(plant, **kwargs):
     # Remove plant from group
     plant.group = None
     plant.save(update_fields=["group"])
+    change_event.group_after = None
+    change_event.save()
 
     # Update cached overview state
     update_cached_overview_details_keys(plant, {'group': None})
@@ -729,10 +736,12 @@ def remove_plant_from_group(plant, **kwargs):
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body()
-def bulk_add_plants_to_group(user, group, data, **kwargs):
+def bulk_add_plants_to_group(request, user, group, data, **kwargs):
     '''Adds a list of Plants to specified Group (creates database relation for each).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
+
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
 
     # Get all plants in 1 query
     plants = (
@@ -748,6 +757,9 @@ def bulk_add_plants_to_group(user, group, data, **kwargs):
     for plant in plants:
         plant.group = group
         added.append(plant.get_details())
+        change_event = get_or_create_details_changed_event(plant=plant, user_tz=user_tz)
+        change_event.group_after = plant.group
+        change_event.save()
         # Add group details to plant details in cached overview state
         update_cached_overview_details_keys(plant, {'group': plant.get_group_details()})
     Plant.objects.bulk_update(plants, ['group'])
@@ -761,10 +773,12 @@ def bulk_add_plants_to_group(user, group, data, **kwargs):
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body()
-def bulk_remove_plants_from_group(user, data, group, **kwargs):
+def bulk_remove_plants_from_group(request, user, data, group, **kwargs):
     '''Removes a list of Plants from specified Group (deletes database relations).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
+
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
 
     # Get all plants in 1 query
     plants = (
@@ -780,6 +794,9 @@ def bulk_remove_plants_from_group(user, data, group, **kwargs):
     for plant in plants:
         plant.group = None
         removed.append(plant.get_details())
+        change_event = get_or_create_details_changed_event(plant=plant, user_tz=user_tz)
+        change_event.group_after = None
+        change_event.save()
         # Clear group details in plant details in cached overview state
         update_cached_overview_details_keys(plant, {'group': None})
     Plant.objects.bulk_update(plants, ['group'])
