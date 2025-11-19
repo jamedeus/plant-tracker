@@ -485,7 +485,9 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
           class="flex flex-col m-2 gap-2"
           data-testid="2024-03-13-details-changed"
         >
-          <span>
+          <span
+            class="text-sm md:text-base"
+          >
             Name changed
              from 
             <span
@@ -503,7 +505,9 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
           <span>
             Species removed (was Calathea)
           </span>
-          <span>
+          <span
+            class="text-sm md:text-base"
+          >
             Description changed
           </span>
         </div>
@@ -553,7 +557,9 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
           class="flex flex-col m-2 gap-2"
           data-testid="2024-01-04-details-changed"
         >
-          <span>
+          <span
+            class="text-sm md:text-base"
+          >
             Name changed
              to 
             <span
@@ -562,7 +568,9 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
               Test plant
             </span>
           </span>
-          <span>
+          <span
+            class="text-sm md:text-base"
+          >
             Species changed
              to 
             <span
@@ -571,10 +579,14 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
               Calathea
             </span>
           </span>
-          <span>
+          <span
+            class="text-sm md:text-base"
+          >
             Description changed
           </span>
-          <span>
+          <span
+            class="text-sm md:text-base"
+          >
             Pot Size changed
              to 
             <span

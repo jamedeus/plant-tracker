@@ -656,7 +656,7 @@ const DetailsChangedLine = ({ prop, before, after }) => {
     // Has after value: "<prop> changed from <before> to <after>"
     if (after) {
         return (
-            <span>
+            <span className="text-sm md:text-base">
                 {`${prop} changed`}
                 {before && (
                     <>
@@ -682,7 +682,7 @@ DetailsChangedLine.propTypes = {
 const GroupChangedLine = ({ groupBefore, groupAfter }) => {
     if (!groupBefore) {
         return (
-            <span>
+            <span className="text-sm md:text-base">
                 {`Added to group `}
                 <Link
                     to={`/manage/${groupAfter.uuid}`}
@@ -694,7 +694,7 @@ const GroupChangedLine = ({ groupBefore, groupAfter }) => {
         );
     } else if (!groupAfter) {
         return (
-            <span>
+            <span className="text-sm md:text-base">
                 {`Removed from group `}
                 <Link
                     to={`/manage/${groupBefore.uuid}`}
@@ -706,7 +706,7 @@ const GroupChangedLine = ({ groupBefore, groupAfter }) => {
         );
     }
     return (
-        <span>
+        <span className="text-sm md:text-base">
             {`Moved from group `}
             <Link
                 to={`/manage/${groupBefore.uuid}`}
@@ -750,9 +750,9 @@ const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, det
             }
             {detailsChanged.archived_before !== detailsChanged.archived_after && (
                 detailsChanged.archived_after ? (
-                    <span>Plant archived</span>
+                    <span className="text-sm md:text-base">Plant archived</span>
                 ) : (
-                    <span>Plant un-archived</span>
+                    <span className="text-sm md:text-base">Plant un-archived</span>
                 )
             )}
             {detailsChanged.name_before !== detailsChanged.name_after &&
@@ -770,7 +770,7 @@ const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, det
                 />
             }
             {detailsChanged.description_before !== detailsChanged.description_after &&
-                <span>Description changed</span>
+                <span className="text-sm md:text-base">Description changed</span>
             }
             {detailsChanged.pot_size_before !== detailsChanged.pot_size_after &&
                 <DetailsChangedLine
