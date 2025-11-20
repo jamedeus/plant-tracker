@@ -152,8 +152,33 @@ redis-cli flushall
 
 Django tests should be run with the [test_settings](backend/backend/test_settings.py) (see `--settings` flag below). This prevents the tests writing caches to redis, does not require a celery worker, and prevents writing mock photos to the real data directory.
 
+Install python dependencies:
 ```
 pipenv install --dev
+```
+
+Install cairosvg (used for QR code logos):
+```
+sudo apt install -y --no-install-recommends libcairo2
+# MacOS
+# brew install cairo
+```
+
+Start postgres test database (note the POSTGRES_PASSWORD env var must match DATABASE_PASSWORD in your `.env`):
+```
+docker run \
+    --name database-test \
+    --shm-size=128mb \
+    -e POSTGRES_DB=plant_tracker \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_PASSWORD=dbpassword \
+    -p 5432:5432 \
+    --rm \
+    postgres:17.5
+```
+
+Run unit tests:
+```
 pipenv shell
 cd backend
 coverage run manage.py test --settings=backend.test_settings --parallel 16

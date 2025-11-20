@@ -13,11 +13,12 @@ Copy the `.env.example` to set env vars automatically when the venv is activated
 cp .env.example .env
 ```
 
-Install python dependencies and redis:
+Install python dependencies, redis, and cairosvg (used for QR code logos):
 ```
 pipenv install --dev
 sudo apt update
 sudo apt install -y redis
+sudo apt install -y --no-install-recommends libcairo2
 ```
 
 ### Frontend
