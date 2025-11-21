@@ -1,5 +1,9 @@
 @reference './index.css';
 
+.timeline-text {
+    @apply text-sm md:text-base m-2;
+}
+
 /* Layout classes */
 .timeline-layout {
     @apply grid grid-cols-min-max gap-4 md:gap-8 overflow-hidden;

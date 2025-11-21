@@ -347,7 +347,7 @@ const DivisionEventMarker = ({ dividedPlants }) => {
     const hasChildren = dividedPlants.length > 0;
 
     return (
-        <div className="flex flex-col m-2 text-sm md:text-base">
+        <div className="flex flex-col timeline-text">
             <span className={clsx(hasChildren && "mb-1")}>
                 <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
                 {hasChildren ? "Divided into:" : "Divided"}
@@ -390,7 +390,7 @@ DivisionEventMarker.propTypes = {
 // Takes parent plant display name and UUID, renders marker with link to parent
 const DividedFromMarker = ({ name, uuid, dateKey }) => {
     return (
-        <span className="flex flex-col m-2 text-sm md:text-base">
+        <span className="flex flex-col timeline-text">
             <span>
                 <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
                 Divided from:
@@ -656,7 +656,7 @@ const DetailsChangedLine = ({ prop, before, after }) => {
     // Has after value: "<prop> changed from <before> to <after>"
     if (after) {
         return (
-            <span className="text-sm md:text-base">
+            <span className="timeline-text">
                 {`${prop} changed`}
                 {before && (
                     <>
@@ -670,7 +670,11 @@ const DetailsChangedLine = ({ prop, before, after }) => {
         );
     }
     // No after value: "<prop> removed (was <before>)"
-    return <span>{`${prop} removed (was ${before})`}</span>;
+    return (
+        <span className="timeline-text">
+            {`${prop} removed (was ${before})`}
+        </span>
+    );
 };
 
 DetailsChangedLine.propTypes = {
@@ -682,7 +686,7 @@ DetailsChangedLine.propTypes = {
 const GroupChangedLine = ({ groupBefore, groupAfter }) => {
     if (!groupBefore) {
         return (
-            <span className="text-sm md:text-base">
+            <span className="timeline-text">
                 {`Added to group `}
                 <Link
                     to={`/manage/${groupAfter.uuid}`}
@@ -694,7 +698,7 @@ const GroupChangedLine = ({ groupBefore, groupAfter }) => {
         );
     } else if (!groupAfter) {
         return (
-            <span className="text-sm md:text-base">
+            <span className="timeline-text">
                 {`Removed from group `}
                 <Link
                     to={`/manage/${groupBefore.uuid}`}
@@ -706,7 +710,7 @@ const GroupChangedLine = ({ groupBefore, groupAfter }) => {
         );
     }
     return (
-        <span className="text-sm md:text-base">
+        <span className="timeline-text">
             {`Moved from group `}
             <Link
                 to={`/manage/${groupBefore.uuid}`}
@@ -739,7 +743,7 @@ GroupChangedLine.propTypes = {
 const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, detailsChanged }) {
     return (
         <div
-            className='flex flex-col m-2 gap-2'
+            className='flex flex-col'
             data-testid={`${dateKey}-details-changed`}
         >
             {detailsChanged.group_before?.uuid !== detailsChanged.group_after?.uuid &&
@@ -750,9 +754,9 @@ const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, det
             }
             {detailsChanged.archived_before !== detailsChanged.archived_after && (
                 detailsChanged.archived_after ? (
-                    <span className="text-sm md:text-base">Plant archived</span>
+                    <span className="timeline-text">Plant archived</span>
                 ) : (
-                    <span className="text-sm md:text-base">Plant un-archived</span>
+                    <span className="timeline-text">Plant un-archived</span>
                 )
             )}
             {detailsChanged.name_before !== detailsChanged.name_after &&
@@ -770,7 +774,7 @@ const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, det
                 />
             }
             {detailsChanged.description_before !== detailsChanged.description_after &&
-                <span className="text-sm md:text-base">Description changed</span>
+                <span className="timeline-text">Description changed</span>
             }
             {detailsChanged.pot_size_before !== detailsChanged.pot_size_after &&
                 <DetailsChangedLine

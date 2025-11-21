@@ -219,7 +219,7 @@ exports[`Timeline matches snapshot when plant has DivisionEvent with no children
           data-testid="2024-02-10-notes"
         />
         <div
-          class="flex flex-col m-2 text-sm md:text-base"
+          class="flex flex-col timeline-text"
         >
           <span
             class=""
@@ -482,11 +482,11 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
           data-testid="2024-03-13-notes"
         />
         <div
-          class="flex flex-col m-2 gap-2"
+          class="flex flex-col"
           data-testid="2024-03-13-details-changed"
         >
           <span
-            class="text-sm md:text-base"
+            class="timeline-text"
           >
             Name changed
              from 
@@ -502,11 +502,13 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
               Real name
             </span>
           </span>
-          <span>
+          <span
+            class="timeline-text"
+          >
             Species removed (was Calathea)
           </span>
           <span
-            class="text-sm md:text-base"
+            class="timeline-text"
           >
             Description changed
           </span>
@@ -554,11 +556,11 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
           data-testid="2024-01-04-notes"
         />
         <div
-          class="flex flex-col m-2 gap-2"
+          class="flex flex-col"
           data-testid="2024-01-04-details-changed"
         >
           <span
-            class="text-sm md:text-base"
+            class="timeline-text"
           >
             Name changed
              to 
@@ -569,7 +571,7 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
             </span>
           </span>
           <span
-            class="text-sm md:text-base"
+            class="timeline-text"
           >
             Species changed
              to 
@@ -580,12 +582,12 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
             </span>
           </span>
           <span
-            class="text-sm md:text-base"
+            class="timeline-text"
           >
             Description changed
           </span>
           <span
-            class="text-sm md:text-base"
+            class="timeline-text"
           >
             Pot Size changed
              to 
@@ -821,7 +823,7 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           data-testid="2024-02-10-notes"
         />
         <div
-          class="flex flex-col m-2 text-sm md:text-base"
+          class="flex flex-col timeline-text"
         >
           <span
             class="mb-1"
@@ -7425,7 +7427,7 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           data-testid="2024-02-10-notes"
         />
         <span
-          class="flex flex-col m-2 text-sm md:text-base"
+          class="flex flex-col timeline-text"
         >
           <span>
             <svg
