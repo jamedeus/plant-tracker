@@ -647,85 +647,99 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_bulk_archive_plants_and_groups_endpoint_1_plant(self):
+    def test_bulk_archive_plants_and_groups_endpoint_plants(self):
         '''/bulk_archive_plants_and_groups should make 7 database queries when
-        archiving a single Plant instance.
+        archiving any number of Plant instances.
         '''
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        plant3 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        plant4 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Confirm makes 7 queries when 1 Plant is archived
         with self.assertNumQueries(7):
             response = self.client.post('/bulk_archive_plants_and_groups', {
-                'uuids': [str(plant.uuid)],
-                'archived': True
-            })
-            self.assertEqual(response.status_code, 200)
-
-    def test_bulk_archive_plants_and_groups_endpoint_3_plants(self):
-        '''/bulk_archive_plants_and_groups should make 11 database queries when
-        archiving 3 Plant instances.
-        '''
-        plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        plant3 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(11):
-            response = self.client.post('/bulk_archive_plants_and_groups', {
                 'uuids': [
-                    str(plant1.uuid),
-                    str(plant2.uuid),
-                    str(plant3.uuid)
+                    str(plant1.uuid)
                 ],
                 'archived': True
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_bulk_archive_plants_and_groups_endpoint_1_group(self):
-        '''/bulk_archive_plants_and_groups should make 5 database queries when
-        archiving a single Group instance.
-        '''
-        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(5):
-            response = self.client.post('/bulk_archive_plants_and_groups', {
-                'uuids': [str(group.uuid)],
-                'archived': True
-            })
-            self.assertEqual(response.status_code, 200)
-
-    def test_bulk_archive_plants_and_groups_endpoint_3_groups(self):
-        '''/bulk_archive_plants_and_groups should make 5 database queries when
-        archiving 3 Group instances.
-        '''
-        group1 = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        group2 = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        group3 = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(5):
+        # Confirm makes 7 queries when 3 Plants are archived
+        with self.assertNumQueries(7):
             response = self.client.post('/bulk_archive_plants_and_groups', {
                 'uuids': [
-                    str(group1.uuid),
-                    str(group2.uuid),
-                    str(group3.uuid)
-                ],
-                'archived': True
-            })
-            self.assertEqual(response.status_code, 200)
-
-    def test_bulk_archive_plants_and_groups_endpoint_3_plants_3_groups(self):
-        '''/bulk_archive_plants_and_groups should make 12 database queries when
-        archiving 3 plant instances and 3 Group instances.
-        '''
-        plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        plant3 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        group1 = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        group2 = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        group3 = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(12):
-            response = self.client.post('/bulk_archive_plants_and_groups', {
-                'uuids': [
-                    str(plant1.uuid),
                     str(plant2.uuid),
                     str(plant3.uuid),
-                    str(group1.uuid),
+                    str(plant4.uuid)
+                ],
+                'archived': True
+            })
+            self.assertEqual(response.status_code, 200)
+
+    def test_bulk_archive_plants_and_groups_endpoint_groups(self):
+        '''/bulk_archive_plants_and_groups should make 5 database queries when
+        archiving any number of Group instances.
+        '''
+
+        group1 = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        group2 = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        group3 = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        group4 = Group.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Confirm makes 5 queries when 1 Group is archived
+        with self.assertNumQueries(5):
+            response = self.client.post('/bulk_archive_plants_and_groups', {
+                'uuids': [
+                    str(group1.uuid)
+                ],
+                'archived': True
+            })
+            self.assertEqual(response.status_code, 200)
+
+        # Confirm makes 5 queries when 3 Groups are archived
+        with self.assertNumQueries(5):
+            response = self.client.post('/bulk_archive_plants_and_groups', {
+                'uuids': [
                     str(group2.uuid),
-                    str(group3.uuid)
+                    str(group3.uuid),
+                    str(group4.uuid)
+                ],
+                'archived': True
+            })
+            self.assertEqual(response.status_code, 200)
+
+    def test_bulk_archive_plants_and_groups_endpoint_plants_and_groups(self):
+        '''/bulk_archive_plants_and_groups should make 8 database queries when
+        archiving any number of Plant and Group instances.
+        '''
+        plants, groups = [], []
+        for i in range(1, 5):
+            plants.append(Plant.objects.create(uuid=uuid4(), user=get_default_user()))
+            groups.append(Group.objects.create(uuid=uuid4(), user=get_default_user()))
+
+        # Confirm makes 8 queries when 1 Plant and 1 Group are archived
+        with self.assertNumQueries(8):
+            response = self.client.post('/bulk_archive_plants_and_groups', {
+                'uuids': [
+                    str(plants[0].uuid),
+                    str(groups[0].uuid)
+                ],
+                'archived': True
+            })
+            self.assertEqual(response.status_code, 200)
+
+        # Confirm makes 8 queries when 3 Plants and 3 Group are archived
+        with self.assertNumQueries(8):
+            response = self.client.post('/bulk_archive_plants_and_groups', {
+                'uuids': [
+                    str(plants[1].uuid),
+                    str(plants[2].uuid),
+                    str(plants[3].uuid),
+                    str(groups[1].uuid),
+                    str(groups[2].uuid),
+                    str(groups[3].uuid)
                 ],
                 'archived': True
             })
@@ -1211,8 +1225,8 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-        # Confirm makes 9 queries when 2 Plants added to Group
-        with self.assertNumQueries(9):
+        # Confirm makes 7 queries when 2 Plants added to Group
+        with self.assertNumQueries(7):
             response = self.client.post('/bulk_add_plants_to_group', {
                 'group_id': group.uuid,
                 'plants': [
@@ -1223,7 +1237,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_remove_plants_from_group_endpoint(self):
-        '''/bulk_remove_plants_from_group should make 9 database queries
+        '''/bulk_remove_plants_from_group should make 7 database queries
         regardless of the number of plants removed from group.
         '''
         user = get_default_user()
@@ -1242,8 +1256,8 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-        # Confirm makes 9 queries when 2 Plants removed from Group
-        with self.assertNumQueries(9):
+        # Confirm makes 7 queries when 2 Plants removed from Group
+        with self.assertNumQueries(7):
             response = self.client.post('/bulk_remove_plants_from_group', {
                 'group_id': group.uuid,
                 'plants': [
