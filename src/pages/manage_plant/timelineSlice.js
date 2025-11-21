@@ -287,10 +287,16 @@ export const timelineSlice = createSlice({
         detailsChangedEventAdded(state, action) {
             const { timestamp, detailsChangedEvent } = action.payload;
             const dateKey = getDateKey(state, timestamp);
-            state.timelineDays[dateKey].detailsChanged = detailsChangedEvent;
-            // Remove timelineDays day if no changes after updating (ie user
-            // changed back to original value) and no other content on same day
-            removeDateKeyIfEmpty(state, dateKey);
+            // If new event has no changes (ie user changed value then changed
+            // back to original) remove DetailsChangedEvent from timelineDays
+            if (!detailsChangedEventHasChanges(detailsChangedEvent)) {
+                delete state.timelineDays[dateKey].detailsChanged;
+                // Remove timelineDays day if no content left
+                removeDateKeyIfEmpty(state, dateKey);
+            // If event has changes add to timelineDays
+            } else {
+                state.timelineDays[dateKey].detailsChanged = detailsChangedEvent;
+            }
         },
     }
 });
