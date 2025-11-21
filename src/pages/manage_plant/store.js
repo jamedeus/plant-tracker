@@ -55,6 +55,19 @@ export function getDateKey(state, timestamp) {
     return dateKey;
 }
 
+// Takes DetailsChangedEvent object, checks if _before and _after values match.
+// Returns true if any values are different, false if all match (no changes).
+export function detailsChangedEventHasChanges(event) {
+    if (!event) return false;
+    const name = event.name_before !== event.name_after;
+    const species = event.species_before !== event.species_after;
+    const potSize = event.pot_size_before !== event.pot_size_after;
+    const description = event.description_before !== event.description_after;
+    const group = event.group_before?.uuid !== event.group_after?.uuid;
+    const archived = event.archived_before !== event.archived_after;
+    return name || species || potSize || description || group || archived;
+}
+
 // Takes timelineSlice state with timelineDays populated with events.
 // Populates calendarDays key with YYYY-MM-DD dateKeys containing an array of
 // event types for each day (used to render EventCalendar component).
@@ -106,8 +119,11 @@ const buildTimelineState = (state, notes, changeEvents) => {
 
     // Add detailsChanged keys to days with DetailsChangedEvents
     Object.entries(changeEvents).forEach(([timestamp, details]) => {
-        const dateKey = getDateKey(state, timestamp);
-        state.timelineDays[dateKey].detailsChanged = details;
+        // Don't add if no changes (creates empty TimelineDay)
+        if (detailsChangedEventHasChanges(details)) {
+            const dateKey = getDateKey(state, timestamp);
+            state.timelineDays[dateKey].detailsChanged = details;
+        }
     });
 
     // Add dividedInto if has children (adds link(s) on days children were divided)

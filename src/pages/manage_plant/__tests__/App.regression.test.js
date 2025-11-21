@@ -1,5 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import mockFetchResponse, { mockMultipleFetchResponses } from 'src/testUtils/mockFetchResponse';
 import App from '../App';
 import { Toast } from 'src/components/Toast';
@@ -812,6 +813,42 @@ describe('App', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(100));
 
         // Confirm DetailsChangedSection did not render
+        expect(app.queryByTestId('2024-03-01-details-changed')).toBeNull();
+    });
+
+    it('does not add empty timeline day when DetailsChangedEvent has no changes', async () => {
+        // Confirm no TimelineDay or DetailsChangedSection for March 1 2024
+        expect(app.container.querySelector('[data-date="2024-03-01"]')).toBeNull();
+        expect(app.queryByTestId('2024-03-01-details-changed')).toBeNull();
+
+        // Open Edit Modal
+        mockPlantSpeciesOptionsResponse();
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Change name, click submit button
+        await user.clear(app.getByRole('textbox', {name: 'Plant name'}));
+        await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'new name');
+        mockFetchResponse({ ...mockChangeEvent, name_after: "new name" });
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm TimelineDay and DetailsChangedSection appeared in timeline
+        expect(app.container.querySelector('[data-date="2024-03-01"]')).not.toBeNull();
+        expect(app.queryByTestId('2024-03-01-details-changed')).not.toBeNull();
+
+        // Open Edit Modal again, change name back, click submit button
+        mockPlantSpeciesOptionsResponse();
+        await user.click(app.getByRole('button', {name: 'Edit Details'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await user.clear(app.getByRole('textbox', {name: 'Plant name'}));
+        await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Test Plant');
+        mockFetchResponse(mockChangeEvent);
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm TimelineDay and DetailsChangedSection disappeared (before/after match)
+        expect(app.container.querySelector('[data-date="2024-03-01"]')).toBeNull();
         expect(app.queryByTestId('2024-03-01-details-changed')).toBeNull();
     });
 });

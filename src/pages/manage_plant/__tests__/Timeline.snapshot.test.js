@@ -123,8 +123,8 @@ describe('Timeline', () => {
     });
 
     it('matches snapshot when plant has details changed event', () => {
-        // Render Timeline with mock context containing 2 details_changed
-        // events, confirm matches snapshot
+        // Render Timeline with mock context containing 3 details_changed
+        // events (one where nothing changed), confirm matches snapshot
         const { container } = render(
             <>
                 <ReduxProvider initialState={{
@@ -138,6 +138,16 @@ describe('Timeline', () => {
                             description_before: null,
                             description_after: "Pretty healthy",
                             pot_size_before: null,
+                            pot_size_after: 4
+                        },
+                        "2024-01-07T04:19:23+00:00": {
+                            name_before: "Test plant",
+                            name_after: "Test plant",
+                            species_before: "Calathea",
+                            species_after: "Calathea",
+                            description_before: "Pretty healthy",
+                            description_after: "Pretty healthy",
+                            pot_size_before: 4,
                             pot_size_after: 4
                         },
                         "2024-03-14T04:19:23+00:00": {

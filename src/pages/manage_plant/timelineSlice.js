@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { timestampToDateString } from 'src/utils/timestampUtils';
-import { getDateKey, nonEmptyKeys, sortPhotosChronologically } from './store';
+import {
+    getDateKey,
+    nonEmptyKeys,
+    sortPhotosChronologically,
+    detailsChangedEventHasChanges
+} from './store';
 
 // Takes timelineSlice state and removed YYYY-MM-DD dateKey
 // Removes month and year from navigationOptions if there are no days left in
@@ -32,7 +37,7 @@ function removeDateKeyIfEmpty(state, dateKey) {
         !Object.keys(state.timelineDays[dateKey].notes).length &&
         !Object.keys(state.timelineDays[dateKey].photos).length &&
         !nonEmptyKeys(state.timelineDays[dateKey].events).length &&
-        !state.timelineDays[dateKey].detailsChanged &&
+        !detailsChangedEventHasChanges(state.timelineDays[dateKey].detailsChanged) &&
         !state.timelineDays[dateKey].dividedFrom &&
         !state.timelineDays[dateKey].dividedInto
     ) {
@@ -283,6 +288,9 @@ export const timelineSlice = createSlice({
             const { timestamp, detailsChangedEvent } = action.payload;
             const dateKey = getDateKey(state, timestamp);
             state.timelineDays[dateKey].detailsChanged = detailsChangedEvent;
+            // Remove timelineDays day if no changes after updating (ie user
+            // changed back to original value) and no other content on same day
+            removeDateKeyIfEmpty(state, dateKey);
         },
     }
 });
