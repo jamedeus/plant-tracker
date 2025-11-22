@@ -27,7 +27,7 @@ from .models import (
     extract_timestamp_from_exif,
     NoteEvent,
     DivisionEvent,
-    DetailsChangedEvent
+    log_changed_details
 )
 from .view_decorators import (
     events_map,
@@ -39,7 +39,6 @@ from .view_decorators import (
     get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
-    log_changed_details,
     clean_payload_data
 )
 from .get_state_views import (

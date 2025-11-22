@@ -7,13 +7,10 @@ from the decorator if any of these steps fail, simplifying endpoint functions.
 '''
 
 import json
-from itertools import chain
-from zoneinfo import ZoneInfo
+from datetime import datetime
 from functools import wraps, cache
-from datetime import datetime, timedelta
 
 from django.conf import settings
-from django.utils import timezone
 from django.db.models import Value
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
@@ -26,8 +23,7 @@ from .models import (
     WaterEvent,
     FertilizeEvent,
     PruneEvent,
-    RepotEvent,
-    DetailsChangedEvent
+    RepotEvent
 )
 
 
@@ -313,112 +309,6 @@ def get_event_type_from_post_body(func):
             )
         return func(event_type=data["event_type"], data=data, **kwargs)
     return wrapper
-
-
-def _get_user_day_utc_range(timestamp=None, user_tz='Etc/UTC'):
-    '''Takes timestamp (default = now) and user timezone string (default = UTC).
-    Converts timestamp to user's timezone and returns start/end of day in UTC.
-    '''
-
-    # Convert UTC from get_timestamp_from_post_body to user's timezone
-    if timestamp:
-        timestamp_user_tz = timestamp.astimezone(ZoneInfo(user_tz))
-    # If no timestamp: use current day in user's timezone
-    else:
-        timestamp_user_tz = timezone.now().astimezone(ZoneInfo(user_tz))
-    # Convert boundaries of target day in user's timezone to UTC
-    user_day_utc_start = timestamp_user_tz.replace(
-        hour=0, minute=0, second=0, microsecond=0
-    ).astimezone(ZoneInfo("UTC"))
-    user_day_utc_end = user_day_utc_start + timedelta(days=1)
-    return user_day_utc_start, user_day_utc_end
-
-
-def _build_details_changed_event(plant, timestamp=None):
-    '''Takes Plant entry and optional timestamp (current time if not given).
-    Returns unsaved DetailsChangedEvent with current plant details in _before
-    and _after fields (update _after fields before saving).
-    '''
-    return DetailsChangedEvent(
-        plant=plant,
-        timestamp=timestamp if timestamp else timezone.now(),
-        name_before=plant.name,
-        name_after=plant.name,
-        species_before=plant.species,
-        species_after=plant.species,
-        description_before=plant.description,
-        description_after=plant.description,
-        pot_size_before=plant.pot_size,
-        pot_size_after=plant.pot_size,
-        group_before=plant.group if plant.group else None,
-        group_after=plant.group if plant.group else None,
-        archived_before=plant.archived,
-        archived_after=plant.archived
-    )
-
-
-def log_changed_details(plants, changes, timestamp=None, user_tz='Etc/UTC'):
-    '''Takes list of Plants, dict with attributes to change and new values,
-    optional timestamp (default = now), optional user timezone (default = UTC).
-
-    Finds existing DetailsChangedEvent for each plant on same day as timestamp
-    in user_tz (creates new events for plants that did not have one) and updates
-    all requested _after attributes to new values. Makes a maximum of 3 queries.
-
-    Returns list of all DetailsChangedEvents so caller can access get_details.
-
-    Always call this before changing the Plant instance attributes (if no event
-    exists it will be created with current Plant values in _before attributes).
-    '''
-
-    # Don't query database if no plants given
-    if not plants:
-        return
-
-    # Get start and end of day that contains timestamp in user's timezone
-    user_day_utc_start, user_day_utc_end = _get_user_day_utc_range(
-        timestamp,
-        user_tz
-    )
-
-    # Get list of UUIDs + dict with UUID keys, plant instance values
-    plant_ids = [str(plant.uuid) for plant in plants]
-    plants_by_uuid = {str(plant.uuid): plant for plant in plants}
-
-    # Find all existing DetailsChangedEvents
-    existing_change_events = (
-        DetailsChangedEvent.objects.filter(
-            plant__uuid__in=plant_ids,
-            timestamp__range=(user_day_utc_start, user_day_utc_end)
-        ).select_related('plant')
-    )
-    # Get list of plant UUIDs that had an existing DetailsChangedEvent
-    existing_ids = [str(event.plant.uuid) for event in existing_change_events]
-
-    # Create new DetailsChangedEvents (unsaved) for all other plants
-    new_change_events = [
-        _build_details_changed_event(plants_by_uuid[plant_id], timestamp)
-        for plant_id in plant_ids
-        if plant_id not in existing_ids
-    ]
-
-    # Update requested keys for all new and existing DetailsChangedEvents
-    for event in chain(existing_change_events, new_change_events):
-        for key, value in changes.items():
-            setattr(event, f'{key}_after', value)
-
-    # Write changes to database in 2 queries (all existing, all new)
-    if existing_change_events:
-        DetailsChangedEvent.objects.bulk_update(
-            existing_change_events,
-            [f'{key}_after' for key in changes.keys()]
-        )
-    if new_change_events:
-        DetailsChangedEvent.objects.bulk_create(new_change_events)
-
-    # Return list of all DetailsChangedEvents (new and existing)
-    new_change_events.extend(existing_change_events)
-    return new_change_events
 
 
 def clean_payload_data(func):
