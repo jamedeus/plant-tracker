@@ -39,8 +39,7 @@ from .view_decorators import (
     get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
-    get_or_create_details_changed_event,
-    bulk_get_or_create_details_changed_event,
+    log_changed_details,
     get_details_changed_event_from_post_body,
     clean_payload_data
 )
@@ -398,22 +397,8 @@ def bulk_archive_plants_and_groups(request, user, data, **kwargs):
     plants = Plant.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
     groups = Group.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
 
-    # Get DetailsChangedEvent on current day for each plant
-    change_events_map = bulk_get_or_create_details_changed_event(
-        plant_queryset=plants,
-        user_tz=user_tz
-    )
-
-    # Update archived_after in all DetailsChangedEvents
-    for plant in plants:
-        # Update archived_after in DetailsChangedEvent
-        change_events_map['by_uuid'][str(plant.uuid)].archived_after = data["archived"]
-
-    # Update existing DetailsChangedEvents, create new DetailsChangedEvents
-    if change_events_map['existing']:
-        DetailsChangedEvent.objects.bulk_update(change_events_map['existing'], ['archived_after'])
-    if change_events_map['new']:
-        DetailsChangedEvent.objects.bulk_create(change_events_map['new'])
+    # Update archived_after in DetailsChangedEvents for each plant
+    log_changed_details(plants, {'archived': data["archived"]}, user_tz=user_tz)
 
     # Update archived bool for each plant and group
     for instance in chain(plants, groups):
@@ -778,27 +763,16 @@ def bulk_add_plants_to_group(request, user, group, data, **kwargs):
     # Get list of UUIDs that were not found in database
     failed = list(set(data["plants"]) - set(str(plant.uuid) for plant in plants))
 
-    # Get DetailsChangedEvent on current day for each plant
-    change_events_map = bulk_get_or_create_details_changed_event(
-        plant_queryset=plants,
-        user_tz=user_tz
-    )
+    # Update group_after in DetailsChangedEvents for each plant
+    log_changed_details(plants, {'group': group}, user_tz=user_tz)
 
     added = []
     for plant in plants:
         plant.group = group
         added.append(plant.get_details())
-        # Update group_after in DetailsChangedEvent
-        change_events_map['by_uuid'][str(plant.uuid)].group_after = plant.group
         # Add group details to plant details in cached overview state
         update_cached_overview_details_keys(plant, {'group': plant.get_group_details()})
     Plant.objects.bulk_update(plants, ['group'])
-
-    # Update existing DetailsChangedEvents, create new DetailsChangedEvents
-    if change_events_map['existing']:
-        DetailsChangedEvent.objects.bulk_update(change_events_map['existing'], ['group_after'])
-    if change_events_map['new']:
-        DetailsChangedEvent.objects.bulk_create(change_events_map['new'])
 
     # Update number of plants in group in cached overview state
     update_cached_overview_details_keys(group, {'plants': group.get_number_of_plants()})
@@ -827,27 +801,16 @@ def bulk_remove_plants_from_group(request, user, data, group, **kwargs):
     # Get list of UUIDs that were not found in database
     failed = list(set(data["plants"]) - set(str(plant.uuid) for plant in plants))
 
-    # Get DetailsChangedEvent on current day for each plant
-    change_events_map = bulk_get_or_create_details_changed_event(
-        plant_queryset=plants,
-        user_tz=user_tz
-    )
+    # Update group_after in DetailsChangedEvents for each plant
+    log_changed_details(plants, {'group': None}, user_tz=user_tz)
 
     removed = []
     for plant in plants:
         plant.group = None
         removed.append(plant.get_details())
-        # Update group_after in DetailsChangedEvent
-        change_events_map['by_uuid'][str(plant.uuid)].group_after = None
         # Clear group details in plant details in cached overview state
         update_cached_overview_details_keys(plant, {'group': None})
     Plant.objects.bulk_update(plants, ['group'])
-
-    # Update existing DetailsChangedEvents, create new DetailsChangedEvents
-    if change_events_map['existing']:
-        DetailsChangedEvent.objects.bulk_update(change_events_map['existing'], ['group_after'])
-    if change_events_map['new']:
-        DetailsChangedEvent.objects.bulk_create(change_events_map['new'])
 
     # Update number of plants in group in cached overview state
     update_cached_overview_details_keys(group, {'plants': group.get_number_of_plants()})

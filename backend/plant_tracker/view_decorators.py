@@ -316,7 +316,7 @@ def get_event_type_from_post_body(func):
 
 
 def _get_user_day_utc_range(timestamp=None, user_tz='Etc/UTC'):
-    '''Takes timestamp (default = now) and user timezone string (deafult = UTC).
+    '''Takes timestamp (default = now) and user timezone string (default = UTC).
     Converts timestamp to user's timezone and returns start/end of day in UTC.
     '''
 
@@ -382,22 +382,18 @@ def get_or_create_details_changed_event(plant, timestamp=None, user_tz='Etc/UTC'
     return change_event
 
 
-def bulk_get_or_create_details_changed_event(plant_queryset, timestamp=None, user_tz='Etc/UTC'):
-    '''Takes plant_queryset and optional timestamp and user timezone string.
-    Looks up DetailsChangedEvent for each plant on same day as timestamp in
-    user_tz (creates new unsaved event for plants that did not have one).
+def log_changed_details(plants, changes, timestamp=None, user_tz='Etc/UTC'):
+    '''Takes list of Plants, dict with attributes to change and new values,
+    optional timestamp (default = now), optional user timezone (default = UTC).
 
-    Returns mapping dict with 3 keys:
-      - existing: list of existing DetailsChangedEvents
-      - new: list of new DetailsChangedEvent (unsaved)
-      - by_uuid: mapping dict with plant UUID keys, DetailsChangedEvents values
+    Finds existing DetailsChangedEvent for each plant on same day as timestamp
+    in user_tz (creates new events for plants that did not have one) and updates
+    all requested _after attributes to new values. Makes a maximum of 3 queries.
     '''
 
-    change_events_map = { 'existing': [], 'new': [], 'by_uuid': {} }
-
     # Don't query database if no plants given
-    if not plant_queryset:
-        return change_events_map
+    if not plants:
+        return
 
     # Get start and end of day that contains timestamp in user's timezone
     user_day_utc_start, user_day_utc_end = _get_user_day_utc_range(
@@ -406,31 +402,39 @@ def bulk_get_or_create_details_changed_event(plant_queryset, timestamp=None, use
     )
 
     # Get list of UUIDs + dict with UUID keys, plant instance values
-    plant_ids = [str(plant.uuid) for plant in plant_queryset]
-    plants_by_uuid = {str(plant.uuid): plant for plant in plant_queryset}
+    plant_ids = [str(plant.uuid) for plant in plants]
+    plants_by_uuid = {str(plant.uuid): plant for plant in plants}
 
     # Find all existing DetailsChangedEvents
-    change_events_map['existing'] = list(
+    existing_change_events = (
         DetailsChangedEvent.objects.filter(
             plant__uuid__in=plant_ids,
             timestamp__range=(user_day_utc_start, user_day_utc_end)
         ).select_related('plant')
     )
     # Get list of plant UUIDs that had an existing DetailsChangedEvent
-    existing_ids = [str(event.plant.uuid) for event in change_events_map['existing']]
+    existing_ids = [str(event.plant.uuid) for event in existing_change_events]
 
     # Create new DetailsChangedEvents (unsaved) for all other plants
-    change_events_map['new'] = [
+    new_change_events = [
         _build_details_changed_event(plants_by_uuid[plant_id], timestamp)
         for plant_id in plant_ids
         if plant_id not in existing_ids
     ]
 
-    # Build mapping dict with plant UUID keys, DetailsChangedEvents values
-    for event in chain(change_events_map['existing'], change_events_map['new']):
-        change_events_map['by_uuid'][str(event.plant.uuid)] = event
+    # Update requested keys for all new and existing DetailsChangedEvents
+    for event in chain(existing_change_events, new_change_events):
+        for key, value in changes.items():
+            setattr(event, f'{key}_after', value)
 
-    return change_events_map
+    # Write changes to database in 2 queries (all existing, all new)
+    if existing_change_events:
+        DetailsChangedEvent.objects.bulk_update(
+            existing_change_events,
+            [f'{key}_after' for key in changes.keys()]
+        )
+    if new_change_events:
+        DetailsChangedEvent.objects.bulk_create(new_change_events)
 
 
 def get_details_changed_event_from_post_body(func):

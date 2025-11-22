@@ -715,7 +715,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
         archiving any number of Plant and Group instances.
         '''
         plants, groups = [], []
-        for i in range(1, 5):
+        for _ in range(1, 5):
             plants.append(Plant.objects.create(uuid=uuid4(), user=get_default_user()))
             groups.append(Group.objects.create(uuid=uuid4(), user=get_default_user()))
 
