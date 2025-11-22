@@ -49,6 +49,7 @@ const getRelativeTimeString = (timestamp) => {
 
 // History title with dropdown menu to jump to a specific month in timeline
 const Title = memo(function Title() {
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const archived = useSelector((state) => state.plant.plantDetails.archived);
     const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
     const hasEvents = useSelector((state) => state.timeline.hasEvents);
@@ -167,6 +168,7 @@ const Title = memo(function Title() {
             </div>
 
             <LazyModal
+                key={plantID}
                 ref={photoModal.ref}
                 initialTitle="Upload Photos"
                 ariaLabel="Upload plant photos"
