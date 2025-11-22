@@ -2,6 +2,7 @@ import AppRoot from 'src/AppRoot';
 import { routes } from 'src/routes';
 import { createMemoryRouter } from 'react-router-dom';
 import { render, waitFor, cleanup } from '@testing-library/react';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import FakeBarcodeDetector, { mockQrCodeInViewport } from 'src/testUtils/mockBarcodeDetector';
 import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import mockFetchResponse from 'src/testUtils/mockFetchResponse';
@@ -131,5 +132,123 @@ describe('SPA regression tests', () => {
         await user.click(getByText('Add photos'));
         await act(async () => await jest.advanceTimersByTimeAsync(100));
         expect(queryByText('Uploading 1 photo...')).toBeNull();
+    });
+
+    // Original bug: When keepContents was added to DivisionModal (don't unmount
+    // when closed) it became possible for modal to persist after user navigated
+    // to another plant. If user navigated to overview first this did not happen
+    // (whole page unmounts), but navigating with the QR code scanner renders
+    // the same page and keeps elements with unchanged props/keys. This caused
+    // the modal to still show the registration form (DivisionEvent already
+    // created) after navigating to another plant.
+    it('unmounts DivisionModal when user navigates to another plant', async () => {
+        // Mock fetch function to return manage_plant page state
+        mockFetchResponse({
+            page: 'manage_plant',
+            title: 'First Plant',
+            state: mockPlantContext
+        });
+
+        // Render SPA on manage_plant page
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        mockCurrentURL('https://plants.lan/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12');
+        const router = createMemoryRouter(routes, { initialEntries: [
+            '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        ] });
+        const { getByText, queryByText, getByTitle, getByRole, getByTestId, queryByTestId } = render(
+            <AppRoot router={router} />
+        );
+        await act(async () =>  await jest.advanceTimersByTimeAsync(100));
+        expect(document.title).toBe('First Plant');
+
+        // Open DivisionModal, wait until modal renders
+        await user.click(getByText('Divide plant'));
+        await waitFor(() => {
+            expect(queryByText('When did you divide your plant?')).not.toBeNull();
+        });
+
+        // Mock fetch function to return expected /divide_plant response
+        mockFetchResponse({
+            plant_key: 'divided-parent-key',
+            division_event_key: 'division-event-key',
+            action: 'divide',
+            plant: mockPlantContext.plant_details.uuid
+        });
+
+        // Simulate user creating DivisionEvent
+        await user.click(getByRole('button', { name: 'Start Dividing' }));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(global.fetch).toHaveBeenCalled();
+
+        // Confirm division event appeared in timeline (but no children yet)
+        expect(queryByText('Divided')).not.toBeNull();
+        expect(queryByText('Divided into:')).toBeNull();
+
+        // Mock /get_plant_species_options response (requested when form loads)
+        // Simulate user clicking "Add QR code later" button to load form
+        mockPlantSpeciesOptionsResponse();
+        await user.click(getByRole('button', { name: 'Add QR code later' }));
+
+        // Mock fetch function to return expected response when plant registered
+        mockFetchResponse({
+            success: 'plant registered',
+            name: 'Baby plant',
+            uuid: 'cc3fcb4f-120a-4577-ac87-ac6b5bea8968'
+        });
+
+        // Simulate user submitting form, confirm success screen appears
+        await user.click(getByRole('button', { name: 'Register New Plant' }));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        expect(getByText('1st plant registered!')).toBeInTheDocument();
+
+        // Confirm child plant appeared in timeline
+        expect(queryByText('Divided into:')).not.toBeNull();
+        expect(getByText('Baby plant')).toBeInTheDocument();
+        expect(getByText('Baby plant')).toHaveAttribute(
+            'href',
+            '/manage/cc3fcb4f-120a-4577-ac87-ac6b5bea8968'
+        );
+
+        // Mock fetch function to return manage_plant page state for child plant
+        mockFetchResponse({
+            page: 'manage_plant',
+            title: 'Baby plant',
+            state: {
+                ...mockPlantContext,
+                plant_details: {
+                    ...mockPlantContext.plant_details,
+                    display_name: "Baby plant",
+                    uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                },
+                divided_from: {
+                    name: "Test Plant",
+                    uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    timestamp: "2024-02-11T04:19:23+00:00"
+                }
+            }
+        });
+        // Mock current URL to division event marker destination (clicking link
+        // will update react-router history but not window.location in tests)
+        mockCurrentURL(`https://plants.lan/manage/cc3fcb4f-120a-4577-ac87-ac6b5bea8968?scrollToDate=2024-02-10`);
+
+        // Simulate user navigating to child plant by clicking link
+        await user.click(getByText('Baby plant'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+
+        // Confirm title changed, fetched child plant state
+        expect(document.title).toBe('Baby plant');
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_manage_state/cc3fcb4f-120a-4577-ac87-ac6b5bea8968',
+            {headers: {Accept: "application/json"}}
+        );
+
+        // Open DivisionModal, confirm first screen appears (not registration)
+        await user.click(getByText('Divide plant'));
+        await act(async () => await jest.advanceTimersByTimeAsync(100));
+        await waitFor(() => {
+            expect(queryByText('When did you divide your plant?')).not.toBeNull();
+        });
+        // Confirm registration form not rendered
+        expect(queryByText('Register with QR code')).toBeNull();
     });
 });

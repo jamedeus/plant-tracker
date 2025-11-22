@@ -21,7 +21,10 @@ const App = ({ initialState }) => {
     setDivisionModalHandle(divisionModal);
 
     return (
-        <ReduxProvider initialState={initialState}>
+        <ReduxProvider
+            initialState={initialState}
+            key={initialState.plant_details.uuid}
+        >
             <Layout />
             <Settings />
             <LazyModal
@@ -38,6 +41,7 @@ const App = ({ initialState }) => {
             />
 
             <LazyModal
+                key={initialState.plant_details.uuid}
                 ref={divisionModal.ref}
                 initialTitle="Divide Plant"
                 ariaLabel="Divide plant"
