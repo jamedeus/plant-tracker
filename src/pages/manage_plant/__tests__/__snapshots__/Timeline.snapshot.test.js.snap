@@ -512,6 +512,11 @@ exports[`Timeline matches snapshot when plant has details changed event 1`] = `
           >
             Description changed
           </span>
+          <span
+            class="timeline-text"
+          >
+            QR code changed
+          </span>
         </div>
       </div>
       <div

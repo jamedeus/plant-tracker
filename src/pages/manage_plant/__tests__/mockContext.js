@@ -334,5 +334,7 @@ export const mockChangeEvent = {
     group_before: mockContext.plant_details.group,
     group_after: mockContext.plant_details.group,
     archived_before: mockContext.plant_details.archived,
-    archived_after: mockContext.plant_details.archived
+    archived_after: mockContext.plant_details.archived,
+    uuid_before: mockContext.plant_details.uuid,
+    uuid_after: mockContext.plant_details.uuid
 };

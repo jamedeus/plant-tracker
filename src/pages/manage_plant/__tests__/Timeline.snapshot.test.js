@@ -138,7 +138,9 @@ describe('Timeline', () => {
                             description_before: null,
                             description_after: "Pretty healthy",
                             pot_size_before: null,
-                            pot_size_after: 4
+                            pot_size_after: 4,
+                            uuid_before: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                            uuid_after: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         },
                         "2024-01-07T04:19:23+00:00": {
                             name_before: "Test plant",
@@ -148,7 +150,9 @@ describe('Timeline', () => {
                             description_before: "Pretty healthy",
                             description_after: "Pretty healthy",
                             pot_size_before: 4,
-                            pot_size_after: 4
+                            pot_size_after: 4,
+                            uuid_before: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                            uuid_after: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         },
                         "2024-03-14T04:19:23+00:00": {
                             name_before: "Test plant",
@@ -158,7 +162,9 @@ describe('Timeline', () => {
                             description_before: "Pretty healthy",
                             description_after: null,
                             pot_size_before: 4,
-                            pot_size_after: 4
+                            pot_size_after: 4,
+                            uuid_before: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                            uuid_after: "62227289-e959-4a7b-8f1d-7fd81c3cd883"
                         }
                     }
                 }}>

@@ -783,6 +783,9 @@ const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, det
                     after={detailsChanged.pot_size_after}
                 />
             }
+            {detailsChanged.uuid_before !== detailsChanged.uuid_after &&
+                <span className="timeline-text">QR code changed</span>
+            }
         </div>
     );
 });
@@ -808,6 +811,8 @@ DetailsChangedSection.propTypes = {
         }),
         archived_before: PropTypes.bool.isRequired,
         archived_after: PropTypes.bool.isRequired,
+        uuid_before: uuidPropType,
+        uuid_after: uuidPropType
     }).isRequired
 };
 

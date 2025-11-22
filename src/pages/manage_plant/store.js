@@ -65,7 +65,8 @@ export function detailsChangedEventHasChanges(event) {
     const description = event.description_before !== event.description_after;
     const group = event.group_before?.uuid !== event.group_after?.uuid;
     const archived = event.archived_before !== event.archived_after;
-    return name || species || potSize || description || group || archived;
+    const qr = event.uuid_before !== event.uuid_after;
+    return name || species || potSize || description || group || archived || qr;
 }
 
 // Takes timelineSlice state with timelineDays populated with events.

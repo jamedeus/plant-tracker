@@ -59,6 +59,8 @@ export default PropTypes.exact({
             }),
             archived_before: PropTypes.bool.isRequired,
             archived_after: PropTypes.bool.isRequired,
+            uuid_before: uuidPropType,
+            uuid_after: uuidPropType
         })
     ).isRequired
 });

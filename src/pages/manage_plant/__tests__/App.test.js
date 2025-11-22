@@ -95,6 +95,8 @@ describe('App', () => {
             pot_size_after: 4,
             description_before: null,
             description_after: "This is a plant with a long description",
+            uuid_before: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+            uuid_after: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
         });
 
         // Click submit button inside edit modal
