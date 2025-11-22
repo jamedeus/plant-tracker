@@ -1268,13 +1268,13 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_repot_plant_endpoint(self):
-        '''/repot_plant should make 4 database queries if new_pot_size is not
+        '''/repot_plant should make 3 database queries if new_pot_size is not
         given and 6 queries if it is given (create/update DetailsChangedEvent).
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
-        # Confirm 4 queries if new_pot_size is not given
-        with self.assertNumQueries(4):
+        # Confirm 3 queries if new_pot_size is not given
+        with self.assertNumQueries(3):
             response = self.client.post('/repot_plant', {
                 'plant_id': plant.uuid,
                 'timestamp': '2024-02-06T03:06:26.000Z',

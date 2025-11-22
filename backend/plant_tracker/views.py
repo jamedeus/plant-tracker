@@ -40,7 +40,6 @@ from .view_decorators import (
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
     log_changed_details,
-    get_details_changed_event_from_post_body,
     clean_payload_data
 )
 from .get_state_views import (
@@ -230,9 +229,8 @@ def change_uuid(instance, data, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body()
-@get_details_changed_event_from_post_body
 @clean_payload_data
-def edit_plant_details(user, plant, change_event, data, **kwargs):
+def edit_plant_details(request, user, plant, data, **kwargs):
     '''Updates description attributes of existing Plant entry.
     Requires JSON POST with plant_id (uuid), name, species, description
     (string), and pot_size (int) keys.
@@ -241,17 +239,24 @@ def edit_plant_details(user, plant, change_event, data, **kwargs):
     # Check if plant was unnamed before editing
     unnamed_before = plant.is_unnamed()
 
-    # Overwrite database params with user values (remove extra whitespace)
-    plant.name = data["name"]
-    plant.species = data["species"]
-    plant.description = data["description"]
-    plant.pot_size = data["pot_size"]
-    # Enforce length limits
+    # Validate new values for each field (enforce types and length limits)
+    del data["plant_id"]
+    if data["pot_size"]:
+        data["pot_size"] = int(data["pot_size"])
     try:
-        plant.clean_fields(exclude=['user', 'group', 'default_photo'])
-        plant.save()
+        for field_name, value in data.items():
+            Plant._meta.get_field(field_name).clean(value, None)
     except ValidationError as error:
-        return JsonResponse({"error": error.message_dict}, status=400)
+        return JsonResponse({"error": {field_name: error.messages}}, status=400)
+
+    # Update plant detail _after fields in DetailsChangedEvents
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
+    change_events = log_changed_details([plant], data, user_tz=user_tz)
+
+    # Overwrite database params with user values
+    for field_name, value in data.items():
+        setattr(plant, field_name, value)
+    plant.save(update_fields=['name', 'species', 'description', 'pot_size'])
 
     # Clear cached overview state if plant was named or unnamed (need to update
     # all sequential "Unnamed plant n" display names)
@@ -270,15 +275,8 @@ def edit_plant_details(user, plant, change_event, data, **kwargs):
             }
         )
 
-    # Update DetailsChangedEvent
-    change_event.name_after = plant.get_display_name()
-    change_event.species_after = plant.species
-    change_event.description_after = plant.description
-    change_event.pot_size_after = plant.pot_size
-    change_event.save()
-
     # Return DetailsChangedEvent details object used to update frontend state
-    return JsonResponse(change_event.get_details(), status=200)
+    return JsonResponse(change_events[0].get_details(), status=200)
 
 
 @get_user_token
@@ -391,13 +389,13 @@ def bulk_archive_plants_and_groups(request, user, data, **kwargs):
     requesting user.
     Requires JSON POST with uuids (list of uuids) and archived (bool) keys.
     '''
-    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
     archived = []
 
     plants = Plant.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
     groups = Group.objects.filter(user_id=user.pk, uuid__in=data["uuids"])
 
     # Update archived_after in DetailsChangedEvents for each plant
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
     log_changed_details(plants, {'archived': data["archived"]}, user_tz=user_tz)
 
     # Update archived bool for each plant and group
@@ -682,16 +680,15 @@ def delete_plant_notes(plant, data, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body()
-@get_details_changed_event_from_post_body
 @get_group_from_post_body()
-def add_plant_to_group(plant, group, change_event, **kwargs):
+def add_plant_to_group(request, plant, group, **kwargs):
     '''Adds specified Plant to specified Group (creates database relation).
     Requires JSON POST with plant_id (uuid) and group_id (uuid) keys.
     '''
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
+    change_events = log_changed_details([plant], {'group': group}, user_tz=user_tz)
     plant.group = group
     plant.save(update_fields=["group"])
-    change_event.group_after = plant.group
-    change_event.save()
     # Update cached overview state
     update_cached_overview_details_keys(plant, {'group': plant.get_group_details()})
     update_cached_overview_details_keys(group, {'plants': group.get_number_of_plants()})
@@ -700,7 +697,7 @@ def add_plant_to_group(plant, group, change_event, **kwargs):
         {
             "action": "add_plant_to_group",
             "plant": plant.uuid,
-            "change_event": change_event.get_details()
+            "change_event": change_events[0].get_details()
         },
         status=200
     )
@@ -709,8 +706,7 @@ def add_plant_to_group(plant, group, change_event, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body(select_related="group")
-@get_details_changed_event_from_post_body
-def remove_plant_from_group(plant, change_event, **kwargs):
+def remove_plant_from_group(request, plant, **kwargs):
     '''Removes specified Plant from Group (deletes database relation).
     Requires JSON POST with plant_id (uuid) key.
     '''
@@ -721,10 +717,10 @@ def remove_plant_from_group(plant, change_event, **kwargs):
     old_group.user = plant.user
 
     # Remove plant from group
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
+    change_events = log_changed_details([plant], {'group': None}, user_tz=user_tz)
     plant.group = None
     plant.save(update_fields=["group"])
-    change_event.group_after = None
-    change_event.save()
 
     # Update cached overview state
     update_cached_overview_details_keys(plant, {'group': None})
@@ -737,7 +733,7 @@ def remove_plant_from_group(plant, change_event, **kwargs):
         {
             "action": "remove_plant_from_group",
             "plant": plant.uuid,
-            "change_event": change_event.get_details()
+            "change_event": change_events[0].get_details()
         },
         status=200
     )
@@ -751,8 +747,6 @@ def bulk_add_plants_to_group(request, user, group, data, **kwargs):
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
 
-    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
-
     # Get all plants in 1 query
     plants = (
         Plant.objects
@@ -764,6 +758,7 @@ def bulk_add_plants_to_group(request, user, group, data, **kwargs):
     failed = list(set(data["plants"]) - set(str(plant.uuid) for plant in plants))
 
     # Update group_after in DetailsChangedEvents for each plant
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
     log_changed_details(plants, {'group': group}, user_tz=user_tz)
 
     added = []
@@ -788,8 +783,6 @@ def bulk_remove_plants_from_group(request, user, data, group, **kwargs):
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
 
-    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
-
     # Get all plants in 1 query
     plants = (
         Plant.objects
@@ -802,6 +795,7 @@ def bulk_remove_plants_from_group(request, user, data, group, **kwargs):
     failed = list(set(data["plants"]) - set(str(plant.uuid) for plant in plants))
 
     # Update group_after in DetailsChangedEvents for each plant
+    user_tz = request.headers.get("User-Timezone", "Etc/UTC")
     log_changed_details(plants, {'group': None}, user_tz=user_tz)
 
     removed = []
@@ -822,8 +816,7 @@ def bulk_remove_plants_from_group(request, user, data, group, **kwargs):
 @requires_json_post(["plant_id", "new_pot_size", "timestamp"])
 @get_plant_from_post_body()
 @get_timestamp_from_post_body
-@get_details_changed_event_from_post_body
-def repot_plant(plant, timestamp, change_event, data, **kwargs):
+def repot_plant(request, plant, timestamp, data, **kwargs):
     '''Creates a RepotEvent for specified Plant with optional new_pot_size.
     Requires JSON POST with plant_id, new_pot_size, and timestamp keys.
     If new_pot_size given creates/updates DetailsChangedEvent.
@@ -836,12 +829,16 @@ def repot_plant(plant, timestamp, change_event, data, **kwargs):
         change_event_details = None
         # If pot size changed update plant.pot_size and DetailsChangedEvent
         if data["new_pot_size"] and plant.pot_size != int(data["new_pot_size"]):
+            change_events = log_changed_details(
+                [plant],
+                {'pot_size': int(data["new_pot_size"])},
+                timestamp=timestamp,
+                user_tz=request.headers.get("User-Timezone", "Etc/UTC")
+            )
+            change_event_details = change_events[0].get_details()
             plant.pot_size = data["new_pot_size"]
             plant.save(update_fields=["pot_size"])
             update_cached_overview_details_keys(plant, {'pot_size': plant.pot_size})
-            change_event.pot_size_after = plant.pot_size
-            change_event.save()
-            change_event_details = change_event.get_details()
         return JsonResponse(
             {
                 "action": "repot",

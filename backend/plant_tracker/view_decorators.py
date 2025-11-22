@@ -357,31 +357,6 @@ def _build_details_changed_event(plant, timestamp=None):
     )
 
 
-def get_or_create_details_changed_event(plant, timestamp=None, user_tz='Etc/UTC'):
-    '''Takes plant entry and optional timestamp and user timezone string.
-    Looks up DetailsChangedEvent for plant on same day as timestamp in user_tz.
-    If not found creates a new event with all plant details in _before fields.
-    If timestamp not given uses current day in user_tz (or UTC if not given).
-    '''
-
-    # Get start and end of day that contains timestamp in user's timezone
-    user_day_utc_start, user_day_utc_end = _get_user_day_utc_range(
-        timestamp,
-        user_tz
-    )
-    # Find existing event if it exists
-    change_event = DetailsChangedEvent.objects.filter(
-        plant=plant,
-        timestamp__range=(user_day_utc_start, user_day_utc_end)
-    ).first()
-    # Create new event if not found
-    if not change_event:
-        # Don't write to database - if wrapped function fails event should
-        # not be created. Wrapped function will set _after fields and save.
-        change_event = _build_details_changed_event(plant, timestamp)
-    return change_event
-
-
 def log_changed_details(plants, changes, timestamp=None, user_tz='Etc/UTC'):
     '''Takes list of Plants, dict with attributes to change and new values,
     optional timestamp (default = now), optional user timezone (default = UTC).
@@ -389,6 +364,8 @@ def log_changed_details(plants, changes, timestamp=None, user_tz='Etc/UTC'):
     Finds existing DetailsChangedEvent for each plant on same day as timestamp
     in user_tz (creates new events for plants that did not have one) and updates
     all requested _after attributes to new values. Makes a maximum of 3 queries.
+
+    Returns list of all DetailsChangedEvents so caller can access get_details.
 
     Always call this before changing the Plant instance attributes (if no event
     exists it will be created with current Plant values in _before attributes).
@@ -439,22 +416,9 @@ def log_changed_details(plants, changes, timestamp=None, user_tz='Etc/UTC'):
     if new_change_events:
         DetailsChangedEvent.objects.bulk_create(new_change_events)
 
-
-def get_details_changed_event_from_post_body(func):
-    '''Decorator looks up existing DetailsChangedEvent for plant_id in request.
-    If not found creates a new event with all plant details in _before fields.
-    Passes DetailsChangedEvent to wrapped function as change_event kwarg.
-
-    Must call after get_plant_from_post_body (expects plant kwarg).
-    If called after get_timestamp_from_post_body looks for DetailsChangedEvent
-    on same day as timestamp in user timezone (otherwise uses current day).
-    '''
-    def wrapper(request, plant, timestamp=None, **kwargs):
-        # Read user timezone from request header (default to UTC if missing)
-        user_tz = request.headers.get("User-Timezone", "Etc/UTC")
-        change_event = get_or_create_details_changed_event(plant, timestamp, user_tz)
-        return func(plant=plant, change_event=change_event, timestamp=timestamp, **kwargs)
-    return wrapper
+    # Return list of all DetailsChangedEvents (new and existing)
+    new_change_events.extend(existing_change_events)
+    return new_change_events
 
 
 def clean_payload_data(func):
