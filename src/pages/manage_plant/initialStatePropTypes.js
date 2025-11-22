@@ -15,6 +15,29 @@ const numberOrNull = PropTypes.oneOfType([
     PropTypes.oneOf([null])
 ]);
 
+export const detailsChangedEventPropTypes = PropTypes.exact({
+    name_before: stringOrNull,
+    name_after: stringOrNull,
+    species_before: stringOrNull,
+    species_after: stringOrNull,
+    description_before: stringOrNull,
+    description_after: stringOrNull,
+    pot_size_before: numberOrNull,
+    pot_size_after: numberOrNull,
+    group_before: PropTypes.exact({
+        name: PropTypes.string.isRequired,
+        uuid: uuidPropType.isRequired,
+    }),
+    group_after: PropTypes.exact({
+        name: PropTypes.string.isRequired,
+        uuid: uuidPropType.isRequired,
+    }),
+    archived_before: PropTypes.bool.isRequired,
+    archived_after: PropTypes.bool.isRequired,
+    uuid_before: uuidPropType,
+    uuid_after: uuidPropType
+});
+
 export default PropTypes.exact({
     plant_details: plantDetailsProptypes.isRequired,
     events: PropTypes.exact({
@@ -40,27 +63,6 @@ export default PropTypes.exact({
         )
     ),
     change_events: PropTypes.objectOf(
-        PropTypes.exact({
-            name_before: stringOrNull,
-            name_after: stringOrNull,
-            species_before: stringOrNull,
-            species_after: stringOrNull,
-            description_before: stringOrNull,
-            description_after: stringOrNull,
-            pot_size_before: numberOrNull,
-            pot_size_after: numberOrNull,
-            group_before: PropTypes.exact({
-                name: PropTypes.string.isRequired,
-                uuid: uuidPropType.isRequired,
-            }),
-            group_after: PropTypes.exact({
-                name: PropTypes.string.isRequired,
-                uuid: uuidPropType.isRequired,
-            }),
-            archived_before: PropTypes.bool.isRequired,
-            archived_after: PropTypes.bool.isRequired,
-            uuid_before: uuidPropType,
-            uuid_after: uuidPropType
-        })
+        detailsChangedEventPropTypes
     ).isRequired
 });

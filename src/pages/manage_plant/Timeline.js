@@ -31,6 +31,7 @@ import {
 import uuidPropType from 'src/types/uuidPropType';
 import dateKeyPropType from 'src/types/dateKeyPropType';
 import isoTimestampTzPropType from 'src/types/isoTimestampTzPropType';
+import { detailsChangedEventPropTypes } from './initialStatePropTypes';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 
 // Takes ISO timestamp string, returns "x days ago"
@@ -792,28 +793,7 @@ const DetailsChangedSection = memo(function DetailsChangedSection({ dateKey, det
 
 DetailsChangedSection.propTypes = {
     dateKey: dateKeyPropType.isRequired,
-    detailsChanged: PropTypes.exact({
-        name_before: PropTypes.string,
-        name_after: PropTypes.string,
-        species_before: PropTypes.string,
-        species_after: PropTypes.string,
-        description_before: PropTypes.string,
-        description_after: PropTypes.string,
-        pot_size_before: PropTypes.number,
-        pot_size_after: PropTypes.number,
-        group_before: PropTypes.exact({
-            name: PropTypes.string.isRequired,
-            uuid: uuidPropType.isRequired,
-        }),
-        group_after: PropTypes.exact({
-            name: PropTypes.string.isRequired,
-            uuid: uuidPropType.isRequired,
-        }),
-        archived_before: PropTypes.bool.isRequired,
-        archived_after: PropTypes.bool.isRequired,
-        uuid_before: uuidPropType,
-        uuid_after: uuidPropType
-    }).isRequired
+    detailsChanged: detailsChangedEventPropTypes.isRequired
 };
 
 // Takes YYYY-MM-DD dateKey matching a key in timelineSlice.timelineDays state.
