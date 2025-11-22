@@ -389,6 +389,9 @@ def log_changed_details(plants, changes, timestamp=None, user_tz='Etc/UTC'):
     Finds existing DetailsChangedEvent for each plant on same day as timestamp
     in user_tz (creates new events for plants that did not have one) and updates
     all requested _after attributes to new values. Makes a maximum of 3 queries.
+
+    Always call this before changing the Plant instance attributes (if no event
+    exists it will be created with current Plant values in _before attributes).
     '''
 
     # Don't query database if no plants given

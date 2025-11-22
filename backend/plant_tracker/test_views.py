@@ -1724,10 +1724,12 @@ class ManageGroupEndpointTests(TestCase):
         self.assertIsNone(self.group1.name)
 
     def test_bulk_add_plants_to_group(self):
-        # Confirm test plants are not in test group
+        # Confirm test plants are not in test group, have no DetailsChangedEvents
         self.assertIsNone(self.plant1.group)
         self.assertIsNone(self.plant2.group)
         self.assertEqual(self.group1.plant_set.count(), 0)
+        self.assertEqual(self.plant1.detailschangedevent_set.count(), 0)
+        self.assertEqual(self.plant2.detailschangedevent_set.count(), 0)
 
         # Send bulk_add_plants_to_group request with both IDs + 1 fake ID
         response = self.client.post('/bulk_add_plants_to_group', {
@@ -1757,6 +1759,14 @@ class ManageGroupEndpointTests(TestCase):
         self.assertEqual(self.plant2.group, self.group1)
         self.assertEqual(self.group1.plant_set.count(), 2)
 
+        # Confirm DetailsChangedEvents were created for both plants
+        self.assertEqual(self.plant1.detailschangedevent_set.count(), 1)
+        self.assertEqual(self.plant2.detailschangedevent_set.count(), 1)
+        self.assertEqual(self.plant1.detailschangedevent_set.first().group_before, None)
+        self.assertEqual(self.plant2.detailschangedevent_set.first().group_before, None)
+        self.assertEqual(self.plant1.detailschangedevent_set.first().group_after, self.group1)
+        self.assertEqual(self.plant2.detailschangedevent_set.first().group_after, self.group1)
+
     def test_bulk_remove_plants_from_group(self):
         # Add 2 test plants to test group, confirm relation exists
         self.plant1.group = self.group1
@@ -1766,8 +1776,11 @@ class ManageGroupEndpointTests(TestCase):
         self.assertEqual(self.plant1.group, self.group1)
         self.assertEqual(self.plant2.group, self.group1)
         self.assertEqual(self.group1.plant_set.count(), 2)
+        # Confirm no DetailsChangedEvents exist
+        self.assertEqual(self.plant1.detailschangedevent_set.count(), 0)
+        self.assertEqual(self.plant2.detailschangedevent_set.count(), 0)
 
-        # Send bulk_add_plants_to_group request with both IDs + 1 fake ID
+        # Send bulk_remove_plants_from_group request with both IDs + 1 fake ID
         response = self.client.post('/bulk_remove_plants_from_group', {
             'group_id': self.group1.uuid,
             'plants': [
@@ -1795,6 +1808,14 @@ class ManageGroupEndpointTests(TestCase):
         self.assertIsNone(self.plant1.group)
         self.assertIsNone(self.plant2.group)
         self.assertEqual(self.group1.plant_set.count(), 0)
+
+        # Confirm DetailsChangedEvents were created for both plants
+        self.assertEqual(self.plant1.detailschangedevent_set.count(), 1)
+        self.assertEqual(self.plant2.detailschangedevent_set.count(), 1)
+        self.assertEqual(self.plant1.detailschangedevent_set.first().group_before, self.group1)
+        self.assertEqual(self.plant2.detailschangedevent_set.first().group_before, self.group1)
+        self.assertEqual(self.plant1.detailschangedevent_set.first().group_after, None)
+        self.assertEqual(self.plant2.detailschangedevent_set.first().group_after, None)
 
     def test_get_plant_options(self):
         # Confirm endpoint returns dict with details of all plants
@@ -2071,7 +2092,7 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(self.plant1.waterevent_set.count(), 0)
         self.assertEqual(self.plant2.waterevent_set.count(), 0)
 
-        # Send bulk_add_plants_to_group request with both IDs
+        # Send bulk_add_plant_events request with both IDs
         response = self.client.post('/bulk_add_plant_events', {
             'plants': [
                 str(self.plant1.uuid),
@@ -2101,7 +2122,7 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(self.plant1.fertilizeevent_set.count(), 0)
         self.assertEqual(self.plant2.fertilizeevent_set.count(), 0)
 
-        # Send bulk_add_plants_to_group request with both IDs
+        # Send bulk_add_plant_events request with both IDs
         response = self.client.post('/bulk_add_plant_events', {
             'plants': [
                 str(self.plant1.uuid),
