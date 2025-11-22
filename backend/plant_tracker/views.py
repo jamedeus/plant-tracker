@@ -202,20 +202,28 @@ def register_group(user, data, **kwargs):
 @get_user_token
 @requires_json_post(["uuid", "new_id"])
 @get_qr_instance_from_post_body(annotate=True)
-def change_uuid(instance, data, **kwargs):
+def change_uuid(request, instance, data, **kwargs):
     '''Changes UUID of an existing Plant or Group.
     Requires JSON POST with uuid (uuid) and new_id (uuid) keys.
     '''
     try:
-        # Delete plant/group from cached overview state (prevent duplicate, keys
-        # are uuid so once it changes the old entry can't be removed)
-        remove_instance_from_cached_overview_state(instance)
-        # Change UUID,
-        instance.uuid = UUID(data["new_id"])
-        instance.save(update_fields=["uuid"])
-        # Add back to cached overview state under new UUID
-        add_instance_to_cached_overview_state(instance)
-        return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
+        # Use transaction.atomic to prevent DetailsChangedEvent from being
+        # created if new_id is a duplicate (IntegrityError at instance.save)
+        with transaction.atomic():
+            # Delete plant/group from cached overview state (prevent duplicate,
+            # keys are uuid so once it changes the old entry can't be removed)
+            remove_instance_from_cached_overview_state(instance)
+            # If plant: update uuid_after in DetailsChangedEvent
+            if isinstance(instance, Plant):
+                user_tz = request.headers.get("User-Timezone", "Etc/UTC")
+                changes = {'uuid': data['new_id']}
+                log_changed_details([instance], changes, user_tz=user_tz)
+            # Change UUID
+            instance.uuid = UUID(data["new_id"])
+            instance.save(update_fields=["uuid"])
+            # Add back to cached overview state under new UUID
+            add_instance_to_cached_overview_state(instance)
+            return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except (ValidationError, ValueError):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
     except IntegrityError:

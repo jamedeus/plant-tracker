@@ -10,6 +10,7 @@ from datetime import datetime, timezone as datetime_tz
 
 from django.conf import settings
 from django.test import TestCase
+from django.db import transaction
 from django.utils import timezone
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
@@ -1058,7 +1059,9 @@ class ManagePageTests(TestCase):
             description_before=None,
             description_after=None,
             pot_size_before=None,
-            pot_size_after=4
+            pot_size_after=4,
+            uuid_before=str(self.plant1.uuid),
+            uuid_after=str(self.plant1.uuid)
         )
         DetailsChangedEvent.objects.create(
             plant=self.plant1,
@@ -1070,7 +1073,9 @@ class ManagePageTests(TestCase):
             description_before=None,
             description_after=None,
             pot_size_before=4,
-            pot_size_after=6
+            pot_size_after=6,
+            uuid_before=str(self.plant1.uuid),
+            uuid_after=str(self.plant1.uuid)
         )
 
         # Request new state
@@ -1092,7 +1097,9 @@ class ManagePageTests(TestCase):
                 'group_before': None,
                 'group_after': None,
                 'archived_before': False,
-                'archived_after': False
+                'archived_after': False,
+                'uuid_before': str(self.plant1.uuid),
+                'uuid_after': str(self.plant1.uuid)
             },
             '2024-02-28T00:00:00+00:00': {
                 'name_before': 'test plant',
@@ -1106,7 +1113,9 @@ class ManagePageTests(TestCase):
                 'group_before': None,
                 'group_after': None,
                 'archived_before': False,
-                'archived_after': False
+                'archived_after': False,
+                'uuid_before': str(self.plant1.uuid),
+                'uuid_after': str(self.plant1.uuid)
             }
         })
 
@@ -1302,7 +1311,9 @@ class ManagePlantEndpointTests(TestCase):
                 'group_before': None,
                 'group_after': None,
                 'archived_before': False,
-                'archived_after': False
+                'archived_after': False,
+                'uuid_before': str(self.plant.uuid),
+                'uuid_after': str(self.plant.uuid)
             }
         )
 
@@ -1429,7 +1440,9 @@ class ManagePlantEndpointTests(TestCase):
                         'uuid': str(self.group.uuid)
                     },
                     'archived_before': False,
-                    'archived_after': False
+                    'archived_after': False,
+                    'uuid_before': str(self.plant.uuid),
+                    'uuid_after': str(self.plant.uuid)
                 },
             }
         )
@@ -1479,7 +1492,9 @@ class ManagePlantEndpointTests(TestCase):
                     },
                     'group_after': None,
                     'archived_before': False,
-                    'archived_after': False
+                    'archived_after': False,
+                    'uuid_before': str(self.plant.uuid),
+                    'uuid_after': str(self.plant.uuid)
                 },
             }
         )
@@ -1532,7 +1547,9 @@ class ManagePlantEndpointTests(TestCase):
                     "group_before": None,
                     "group_after": None,
                     'archived_before': False,
-                    'archived_after': False
+                    'archived_after': False,
+                    'uuid_before': str(self.plant.uuid),
+                    'uuid_after': str(self.plant.uuid)
                 },
             }
         )
@@ -1909,7 +1926,11 @@ class ChangeQrCodeTests(TestCase):
         self.group1.refresh_from_db()
 
     def test_change_uuid_endpoint_plant(self):
+        # Confirm plant has no DetailsChangedEvents
+        self.assertEqual(self.plant1.detailschangedevent_set.count(), 0)
+
         # Post new UUID to change_uuid endpoint, confirm response
+        uuid_before = self.plant1.uuid
         response = self.client.post('/change_uuid', {
             'uuid': str(self.plant1.uuid),
             'new_id': str(self.fake_id)
@@ -1923,6 +1944,11 @@ class ChangeQrCodeTests(TestCase):
         # Confirm plant UUID changed
         self._refresh_test_models()
         self.assertEqual(str(self.plant1.uuid), str(self.fake_id))
+
+        # Confirm DetailsChangedEvent was created
+        self.assertEqual(self.plant1.detailschangedevent_set.count(), 1)
+        self.assertEqual(self.plant1.detailschangedevent_set.first().uuid_before, uuid_before)
+        self.assertEqual(self.plant1.detailschangedevent_set.first().uuid_after, self.fake_id)
 
     def test_change_uuid_endpoint_group(self):
         # Post new UUID to change_uuid endpoint, confirm response
@@ -1940,6 +1966,9 @@ class ChangeQrCodeTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(str(self.group1.uuid), str(self.fake_id))
 
+        # Confirm no DetailsChangedEvent was created (only for plants)
+        self.assertEqual(DetailsChangedEvent.objects.count(), 0)
+
     def test_change_uuid_invalid(self):
         # post invalid UUID to change_uuid endpoint, confirm error
         response = self.client.post('/change_uuid', {
@@ -1951,6 +1980,9 @@ class ChangeQrCodeTests(TestCase):
             response.json(),
             {"error": "new_id key is not a valid UUID"}
         )
+
+        # Confirm no DetailsChangedEvent was created
+        self.assertEqual(DetailsChangedEvent.objects.count(), 0)
 
 
 class PlantEventEndpointTests(TestCase):

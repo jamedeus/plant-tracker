@@ -745,6 +745,7 @@ class UniqueUUIDTests(TransactionTestCase):
         # Create Plant and Group with different UUIDs
         plant = Plant.objects.create(user=self.user, uuid=uuid4())
         group = Group.objects.create(user=self.user, uuid=uuid4())
+        self.assertEqual(plant.detailschangedevent_set.count(), 0)
 
         # Attempt to change plant UUID to group UUID
         response = JSONClient().post('/change_uuid', {
@@ -760,6 +761,9 @@ class UniqueUUIDTests(TransactionTestCase):
 
         # Confirm only 2 UUID entries exist (changed UUID was dropped)
         self.assertEqual(UUID.objects.count(), 2)
+
+        # Confirm no DetailsChangedEvent was created
+        self.assertEqual(plant.detailschangedevent_set.count(), 0)
 
     def test_create_duplicate_with_change_uuid_endpoint_race_condition(self):
         # Create Plant and Group with different UUIDs

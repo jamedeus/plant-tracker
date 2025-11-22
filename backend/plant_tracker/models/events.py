@@ -116,6 +116,9 @@ class DetailsChangedEvent(Event):
     archived_before = models.BooleanField(default=False)
     archived_after = models.BooleanField(default=False)
 
+    uuid_before = models.UUIDField(unique=False, null=True)
+    uuid_after = models.UUIDField(unique=False, null=True)
+
     class Meta:
         unique_together = ('plant', 'timestamp')
         ordering = ['-timestamp']
@@ -140,7 +143,9 @@ class DetailsChangedEvent(Event):
                 'uuid': str(self.group_after.uuid)
             } if self.group_after else None,
             'archived_before': self.archived_before,
-            'archived_after': self.archived_after
+            'archived_after': self.archived_after,
+            'uuid_before': self.uuid_before,
+            'uuid_after': self.uuid_after
         }
 
 
@@ -182,7 +187,9 @@ def _build_details_changed_event(plant, timestamp=None):
         group_before=plant.group if plant.group else None,
         group_after=plant.group if plant.group else None,
         archived_before=plant.archived,
-        archived_after=plant.archived
+        archived_after=plant.archived,
+        uuid_before=plant.uuid,
+        uuid_after=plant.uuid
     )
 
 

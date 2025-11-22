@@ -499,9 +499,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_change_uuid_endpoint_plant(self):
-        '''/change_uuid should make 4 database queries when target is Plant.'''
+        '''/change_uuid should make 6 database queries when target is Plant.'''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        with self.assertNumQueries(4):
+        with self.assertNumQueries(6):
             response = self.client.post('/change_uuid', {
                 'uuid': str(plant.uuid),
                 'new_id': str(uuid4())

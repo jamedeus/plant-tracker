@@ -869,7 +869,9 @@ class ViewRegressionTests(TestCase):
                 'group_before': None,
                 'group_after': None,
                 'archived_before': False,
-                'archived_after': False
+                'archived_after': False,
+                'uuid_before': str(plant.uuid),
+                'uuid_after': str(plant.uuid)
             }
         )
 
